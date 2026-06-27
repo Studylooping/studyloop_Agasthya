@@ -1,0 +1,26 @@
+{
+  "name": "StudyLoop — Free STEM practice",
+  "short_name": "StudyLoop",
+  "description": "Free guided STEM practice for CBSE Classes 9-12, AP, SAT, and IIT-JEE. Original questions, hint ladders, deterministic grading, and privacy-first review.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#fcfcfd",
+  "theme_color": "#4338ca",
+  "orientation": "portrait-primary",
+  "categories": ["education", "productivity"],
+  "lang": "en",
+  "icons": [
+    {
+      "src": "/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}
