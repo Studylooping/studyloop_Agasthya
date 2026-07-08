@@ -5,6 +5,7 @@ import { ScrollText, Eye } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { MixedMath } from "@/components/math/math";
+import { getItemFingerprint } from "@/lib/content/item-fingerprint";
 import {
   makeLocalStorageKey,
   readLocalValue,
@@ -15,6 +16,7 @@ import { recordFrqSelfScore } from "@/lib/review-memory";
 import type { FrqItem } from "@/lib/content/types";
 
 interface StoredFrqAttempt {
+  itemFingerprint: string;
   response: string;
   revealed: boolean;
   scored: Record<number, boolean>;
@@ -43,6 +45,7 @@ export function FrqAttempt({ item }: { item: FrqItem }) {
     null,
   );
   const { hydrated, profileStorageId } = useLocalProfile();
+  const itemFingerprint = React.useMemo(() => getItemFingerprint(item), [item]);
 
   const storageKey = React.useMemo(
     () => makeLocalStorageKey("frq-attempt", profileStorageId, item.contentId),
@@ -52,27 +55,40 @@ export function FrqAttempt({ item }: { item: FrqItem }) {
   React.useEffect(() => {
     if (!hydrated) return;
 
-    const stored = readLocalValue<StoredFrqAttempt>(storageKey);
-    setResponse(stored?.response ?? "");
-    setRevealed(stored?.revealed ?? false);
-    setScored(stored?.scored ?? {});
+    const stored = readLocalValue<Partial<StoredFrqAttempt>>(storageKey);
+    const canRestore = stored?.itemFingerprint === itemFingerprint;
+    setResponse(canRestore ? (stored.response ?? "") : "");
+    setRevealed(canRestore ? (stored.revealed ?? false) : false);
+    setScored(canRestore ? (stored.scored ?? {}) : {});
     setLoadedStorageKey(storageKey);
-  }, [hydrated, storageKey]);
+  }, [hydrated, itemFingerprint, storageKey]);
 
   React.useEffect(() => {
     if (!hydrated || loadedStorageKey !== storageKey) return;
 
     writeLocalValue<StoredFrqAttempt>(storageKey, {
+      itemFingerprint,
       response,
       revealed,
       scored,
       updatedAt: new Date().toISOString(),
     });
-  }, [hydrated, loadedStorageKey, response, revealed, scored, storageKey]);
+  }, [
+    hydrated,
+    itemFingerprint,
+    loadedStorageKey,
+    response,
+    revealed,
+    scored,
+    storageKey,
+  ]);
 
   const totalEarned = Object.entries(scored)
     .filter(([, v]) => v)
-    .reduce((sum, [i]) => sum + (item.rubric.criteria[Number(i)]?.points ?? 0), 0);
+    .reduce(
+      (sum, [i]) => sum + (item.rubric.criteria[Number(i)]?.points ?? 0),
+      0,
+    );
   const usesMarks = Boolean(item.responseType && item.responseType !== "frq");
   const scoreLabel = (value: number, compact = false) => {
     const singular = usesMarks ? "mark" : compact ? "pt" : "point";
@@ -118,7 +134,10 @@ export function FrqAttempt({ item }: { item: FrqItem }) {
 
       {/* ── Response area ────────────────────────────────────────────── */}
       <div>
-        <label htmlFor={`frq-response-${item.contentId}`} className="text-sm font-medium">
+        <label
+          htmlFor={`frq-response-${item.contentId}`}
+          className="text-sm font-medium"
+        >
           Your response (optional — you can also work on paper)
         </label>
         <textarea
@@ -203,7 +222,9 @@ export function FrqAttempt({ item }: { item: FrqItem }) {
 
           {/* Common errors */}
           <div className="rounded-md border border-warning/30 bg-warning/5 p-4 text-sm">
-            <p className="font-semibold text-warning">Common errors on this item</p>
+            <p className="font-semibold text-warning">
+              Common errors on this item
+            </p>
             <ul className="mt-2 space-y-1 pl-5 text-muted-foreground [&>li]:list-disc">
               {item.commonErrors.map((err, i) => (
                 <li key={i}>

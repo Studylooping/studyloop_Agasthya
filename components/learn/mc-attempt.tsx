@@ -5,6 +5,7 @@ import { CheckCircle2, XCircle, Lightbulb, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Tex, MixedMath } from "@/components/math/math";
+import { getItemFingerprint } from "@/lib/content/item-fingerprint";
 import { cn } from "@/lib/utils";
 import { gradeMcSingle, type GradeResult } from "@/lib/grading/mc";
 import {
@@ -18,6 +19,7 @@ import type { McSingleItem } from "@/lib/content/types";
 
 interface StoredMcAttempt {
   hintsShown: number;
+  itemFingerprint: string;
   selected: string | null;
   showSolution: boolean;
   submitted: boolean;
@@ -46,32 +48,34 @@ export function McAttempt({ item }: { item: McSingleItem }) {
     null,
   );
   const { hydrated, profileStorageId } = useLocalProfile();
+  const itemFingerprint = React.useMemo(() => getItemFingerprint(item), [item]);
 
   const storageKey = React.useMemo(
     () => makeLocalStorageKey("mc-attempt", profileStorageId, item.contentId),
     [item.contentId, profileStorageId],
   );
 
-  const result: GradeResult | null = submitted && selected
-    ? gradeMcSingle(item, selected)
-    : null;
+  const result: GradeResult | null =
+    submitted && selected ? gradeMcSingle(item, selected) : null;
 
   React.useEffect(() => {
     if (!hydrated) return;
 
-    const stored = readLocalValue<StoredMcAttempt>(storageKey);
-    setSelected(stored?.selected ?? null);
-    setSubmitted(stored?.submitted ?? false);
-    setHintsShown(stored?.hintsShown ?? 0);
-    setShowSolution(stored?.showSolution ?? false);
+    const stored = readLocalValue<Partial<StoredMcAttempt>>(storageKey);
+    const canRestore = stored?.itemFingerprint === itemFingerprint;
+    setSelected(canRestore ? (stored.selected ?? null) : null);
+    setSubmitted(canRestore ? (stored.submitted ?? false) : false);
+    setHintsShown(canRestore ? (stored.hintsShown ?? 0) : 0);
+    setShowSolution(canRestore ? (stored.showSolution ?? false) : false);
     setLoadedStorageKey(storageKey);
-  }, [hydrated, storageKey]);
+  }, [hydrated, itemFingerprint, storageKey]);
 
   React.useEffect(() => {
     if (!hydrated || loadedStorageKey !== storageKey) return;
 
     writeLocalValue<StoredMcAttempt>(storageKey, {
       hintsShown,
+      itemFingerprint,
       selected,
       showSolution,
       submitted,
@@ -80,6 +84,7 @@ export function McAttempt({ item }: { item: McSingleItem }) {
   }, [
     hintsShown,
     hydrated,
+    itemFingerprint,
     loadedStorageKey,
     selected,
     showSolution,
@@ -157,14 +162,16 @@ export function McAttempt({ item }: { item: McSingleItem }) {
                   </span>
                   <MixedMath text={choice.text} />
                 </div>
-                {submitted && choice.rationaleIfWrong && (isChosen || isCorrectChoice) && (
-                  <p
-                    id={`rationale-${choice.letter}`}
-                    className="mt-2 text-sm text-muted-foreground"
-                  >
-                    <MixedMath text={choice.rationaleIfWrong} />
-                  </p>
-                )}
+                {submitted &&
+                  choice.rationaleIfWrong &&
+                  (isChosen || isCorrectChoice) && (
+                    <p
+                      id={`rationale-${choice.letter}`}
+                      className="mt-2 text-sm text-muted-foreground"
+                    >
+                      <MixedMath text={choice.rationaleIfWrong} />
+                    </p>
+                  )}
               </div>
               {submitted && isCorrectChoice && (
                 <CheckCircle2
@@ -293,9 +300,17 @@ function FeedbackPanel({
             </p>
             <p className="mt-1 text-sm text-muted-foreground">
               {isCorrect && hintsUsed === 0 && "Nailed it on the first try."}
-              {isCorrect && hintsUsed > 0 && `Solved with ${hintsUsed} of ${totalHints} hints.`}
-              {!isCorrect && !studentChoiceRationale && hintsUsed === 0 && "Try a hint, then compare your work with the solution."}
-              {!isCorrect && !studentChoiceRationale && hintsUsed > 0 && "Check the worked solution below to see where it diverged."}
+              {isCorrect &&
+                hintsUsed > 0 &&
+                `Solved with ${hintsUsed} of ${totalHints} hints.`}
+              {!isCorrect &&
+                !studentChoiceRationale &&
+                hintsUsed === 0 &&
+                "Try a hint, then compare your work with the solution."}
+              {!isCorrect &&
+                !studentChoiceRationale &&
+                hintsUsed > 0 &&
+                "Check the worked solution below to see where it diverged."}
             </p>
             {!isCorrect && studentChoiceRationale && (
               <div className="mt-3 rounded-md bg-background/70 p-3 text-sm">

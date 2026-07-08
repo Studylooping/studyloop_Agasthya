@@ -5,6 +5,7 @@ import { CheckCircle2, Lightbulb, XCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { MixedMath, Tex } from "@/components/math/math";
+import { getItemFingerprint } from "@/lib/content/item-fingerprint";
 import {
   makeLocalStorageKey,
   readLocalValue,
@@ -17,6 +18,7 @@ import type { NumericItem } from "@/lib/content/types";
 interface StoredNumericAttempt {
   answerText: string;
   hintsShown: number;
+  itemFingerprint: string;
   showSolution: boolean;
   submitted: boolean;
   updatedAt: string;
@@ -44,22 +46,25 @@ export function NumericAttempt({ item }: { item: NumericItem }) {
     null,
   );
   const { hydrated, profileStorageId } = useLocalProfile();
+  const itemFingerprint = React.useMemo(() => getItemFingerprint(item), [item]);
 
   const storageKey = React.useMemo(
-    () => makeLocalStorageKey("numeric-attempt", profileStorageId, item.contentId),
+    () =>
+      makeLocalStorageKey("numeric-attempt", profileStorageId, item.contentId),
     [item.contentId, profileStorageId],
   );
 
   React.useEffect(() => {
     if (!hydrated) return;
 
-    const stored = readLocalValue<StoredNumericAttempt>(storageKey);
-    setAnswerText(stored?.answerText ?? "");
-    setSubmitted(stored?.submitted ?? false);
-    setHintsShown(stored?.hintsShown ?? 0);
-    setShowSolution(stored?.showSolution ?? false);
+    const stored = readLocalValue<Partial<StoredNumericAttempt>>(storageKey);
+    const canRestore = stored?.itemFingerprint === itemFingerprint;
+    setAnswerText(canRestore ? (stored.answerText ?? "") : "");
+    setSubmitted(canRestore ? (stored.submitted ?? false) : false);
+    setHintsShown(canRestore ? (stored.hintsShown ?? 0) : 0);
+    setShowSolution(canRestore ? (stored.showSolution ?? false) : false);
     setLoadedStorageKey(storageKey);
-  }, [hydrated, storageKey]);
+  }, [hydrated, itemFingerprint, storageKey]);
 
   React.useEffect(() => {
     if (!hydrated || loadedStorageKey !== storageKey) return;
@@ -67,6 +72,7 @@ export function NumericAttempt({ item }: { item: NumericItem }) {
     writeLocalValue<StoredNumericAttempt>(storageKey, {
       answerText,
       hintsShown,
+      itemFingerprint,
       showSolution,
       submitted,
       updatedAt: new Date().toISOString(),
@@ -75,6 +81,7 @@ export function NumericAttempt({ item }: { item: NumericItem }) {
     answerText,
     hintsShown,
     hydrated,
+    itemFingerprint,
     loadedStorageKey,
     showSolution,
     storageKey,

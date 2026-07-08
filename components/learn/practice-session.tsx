@@ -15,6 +15,7 @@ import { Button } from "@/components/ui/button";
 import { QuestionReportButton } from "@/components/feedback/question-report-button";
 import { ItemFigure } from "@/components/learn/item-figure";
 import { Tex, MixedMath, QuestionStem } from "@/components/math/math";
+import { getItemFingerprint } from "@/lib/content/item-fingerprint";
 import { gradeMcSingle } from "@/lib/grading/mc";
 import {
   makeLocalStorageKey,
@@ -45,6 +46,7 @@ interface StoredPracticeSession {
   finished: boolean;
   hintsShown: number;
   index: number;
+  itemFingerprints: string[];
   itemIds: string[];
   selected: string | null;
   submitted: boolean;
@@ -85,6 +87,10 @@ export function PracticeSession({
     () => items.map((item) => item.contentId),
     [items],
   );
+  const itemFingerprints = React.useMemo(
+    () => items.map((item) => getItemFingerprint(item)),
+    [items],
+  );
   const storageKey = React.useMemo(
     () =>
       makeLocalStorageKey(
@@ -102,7 +108,11 @@ export function PracticeSession({
     if (!hydrated) return;
 
     const stored = readLocalValue<StoredPracticeSession>(storageKey);
-    if (stored && stored.itemIds.join("|") === itemIds.join("|")) {
+    if (
+      stored &&
+      stored.itemIds.join("|") === itemIds.join("|") &&
+      stored.itemFingerprints?.join("|") === itemFingerprints.join("|")
+    ) {
       setIndex(Math.min(Math.max(stored.index, 0), total - 1));
       setSelected(stored.selected);
       setSubmitted(stored.submitted);
@@ -118,7 +128,7 @@ export function PracticeSession({
       setFinished(false);
     }
     setLoadedStorageKey(storageKey);
-  }, [hydrated, itemIds, storageKey, total]);
+  }, [hydrated, itemFingerprints, itemIds, storageKey, total]);
 
   React.useEffect(() => {
     if (!hydrated || loadedStorageKey !== storageKey) return;
@@ -128,6 +138,7 @@ export function PracticeSession({
       finished,
       hintsShown,
       index,
+      itemFingerprints,
       itemIds,
       selected,
       submitted,
@@ -139,6 +150,7 @@ export function PracticeSession({
     hintsShown,
     hydrated,
     index,
+    itemFingerprints,
     itemIds,
     loadedStorageKey,
     selected,
