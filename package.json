@@ -5,6 +5,7 @@
   "description": "Free STEM study companion with original practice, hints, feedback, and local nickname memory. studyloop.in",
   "scripts": {
     "build": "node node_modules/next/dist/bin/next build",
+    "build:pages": "node scripts/build-pages.mjs",
     "dev": "node scripts/next-dev.mjs",
     "clean": "node scripts/clean-next.mjs",
     "start": "node node_modules/next/dist/bin/next start",
@@ -20,6 +21,8 @@
     "build:cloudflare": "opennextjs-cloudflare build",
     "deploy:cloudflare": "opennextjs-cloudflare deploy",
     "upload:cloudflare": "opennextjs-cloudflare upload",
+    "deploy:pages": "node scripts/build-pages.mjs && wrangler pages deploy out --project-name=studyloop2",
+    "deploy:feedback": "wrangler deploy --config wrangler.feedback.jsonc",
     "cf-typegen": "wrangler types --env-interface CloudflareEnv cloudflare-env.d.ts"
   },
   "dependencies": {

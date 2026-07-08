@@ -68,9 +68,9 @@ To stop the server, press `Ctrl+C` in PowerShell.
 
 ## Founder Feedback Notifications
 
-Question reports and site feedback use the `FEEDBACK_EMAIL` binding in
-`wrangler.jsonc`. Production submissions notify `hello@studyloop.in` from
-`feedback@studyloop.in`.
+Question reports and site feedback should use the tiny feedback Worker in
+`workers/feedback.ts`, not the full Next app Worker. Production submissions
+notify `hello@studyloop.in` from `feedback@studyloop.in`.
 
 Complete this once in Cloudflare before the production deploy:
 
@@ -78,12 +78,36 @@ Complete this once in Cloudflare before the production deploy:
 2. Add `hello@studyloop.in` and complete the verification email.
 3. Onboard `studyloop.in` in Email Service so `feedback@studyloop.in` is an
    allowed sender on the domain.
-4. Deploy the Worker and submit one question report from the live site.
-5. Confirm the message arrives at `hello@studyloop.in`.
+4. Deploy the feedback Worker with `pnpm deploy:feedback`.
+5. Route `/api/feedback` on the live hostname to `studyloop-feedback`, or set
+   `NEXT_PUBLIC_FEEDBACK_ENDPOINT` to the feedback Worker URL before building
+   Pages.
+6. Submit one question report from the live site.
+7. Confirm the message arrives at `hello@studyloop.in`.
 
 Local `pnpm dev` submissions are written to the terminal instead of sending
 real email. If production delivery is unavailable, the form shows the founder
 email address and does not claim that the report was sent.
+
+## Cloudflare Pages Deployment
+
+For public hosting, use Cloudflare Pages static output instead of the OpenNext
+Worker deployment:
+
+```powershell
+pnpm run build:pages
+```
+
+In Cloudflare Pages set:
+
+```text
+Build command: pnpm run build:pages
+Output directory: out
+```
+
+This keeps question pages as static files. The older OpenNext Worker route can
+hit Cloudflare's free Worker CPU limit because it boots a Next server and can
+pull the course bank into Worker runtime.
 
 ## Pages To Check
 

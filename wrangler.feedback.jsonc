@@ -1,0 +1,16 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "studyloop-feedback",
+  "main": "workers/feedback.ts",
+  "compatibility_date": "2026-06-27",
+  "send_email": [
+    {
+      "name": "FEEDBACK_EMAIL",
+      "destination_address": "hello@studyloop.in",
+      "allowed_sender_addresses": ["feedback@studyloop.in"],
+    },
+  ],
+  "observability": {
+    "enabled": true,
+  },
+}

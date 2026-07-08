@@ -13,6 +13,7 @@ coverage/
 .next-dev/
 out/
 next-env.d.ts
+.static-build-disabled/
 
 # production
 build/

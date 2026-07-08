@@ -85,11 +85,14 @@ export function FeedbackDialog({
     };
 
     try {
-      const response = await fetch("/api/feedback", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
-      });
+      const response = await fetch(
+        process.env.NEXT_PUBLIC_FEEDBACK_ENDPOINT ?? "/api/feedback",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload),
+        },
+      );
 
       if (!response.ok) throw new Error("Feedback delivery failed");
       setSubmissionState("sent");

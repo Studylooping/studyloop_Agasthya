@@ -93,50 +93,66 @@ A 404 lives at any unknown URL.
 
 ## Scripts
 
-| Command                                    | What it does                                               |
-| ------------------------------------------ | ---------------------------------------------------------- |
-| `pnpm dev`                                 | Clean `.next-dev` and start the dev server with hot reload |
-| `pnpm clean`                               | Remove generated Next.js build folders                     |
-| `pnpm build`                               | Build the production Next.js bundle                        |
-| `pnpm start`                               | Run the production build locally                           |
-| `pnpm build:cloudflare`                    | Build the OpenNext Worker bundle                           |
-| `pnpm deploy:cloudflare`                   | Deploy an already-built Worker bundle                      |
-| `pnpm lint`                                | ESLint check                                               |
-| `pnpm typecheck`                           | TypeScript check (no emit)                                 |
-| `pnpm feedback:audit`                      | Check MCQ wrong-answer feedback quality                    |
-| `pnpm review:export -- u2-differentiation` | Export Unit 2 reviewer package                             |
-| `pnpm review:export -- u3-comp-implicit`   | Export Unit 3 reviewer package                             |
-| `pnpm review:export -- u4-contextual-app`  | Export Unit 4 reviewer package                             |
-| `pnpm review:export -- u5-analytical-app`  | Export Unit 5 reviewer package                             |
-| `pnpm review:export -- u6-integration`     | Export Unit 6 reviewer package                             |
-| `pnpm review:export -- u7-diff-eqs`        | Export Unit 7 reviewer package                             |
-| `pnpm review:export -- u8-app-integration` | Export Unit 8 reviewer package                             |
-| `pnpm format`                              | Prettier write                                             |
-| `pnpm format:check`                        | Prettier check (CI)                                        |
+| Command                                    | What it does                                                 |
+| ------------------------------------------ | ------------------------------------------------------------ |
+| `pnpm dev`                                 | Clean `.next-dev` and start the dev server with hot reload   |
+| `pnpm clean`                               | Remove generated Next.js build folders                       |
+| `pnpm build`                               | Build the production Next.js bundle                          |
+| `pnpm build:pages`                         | Build static Cloudflare Pages output in `out/`               |
+| `pnpm start`                               | Run the production build locally                             |
+| `pnpm build:cloudflare`                    | Build the OpenNext Worker bundle                             |
+| `pnpm deploy:cloudflare`                   | Deploy an already-built Worker bundle                        |
+| `pnpm deploy:pages`                        | Build and upload static Pages output to project `studyloop2` |
+| `pnpm deploy:feedback`                     | Deploy the tiny feedback-only Worker                         |
+| `pnpm lint`                                | ESLint check                                                 |
+| `pnpm typecheck`                           | TypeScript check (no emit)                                   |
+| `pnpm feedback:audit`                      | Check MCQ wrong-answer feedback quality                      |
+| `pnpm review:export -- u2-differentiation` | Export Unit 2 reviewer package                               |
+| `pnpm review:export -- u3-comp-implicit`   | Export Unit 3 reviewer package                               |
+| `pnpm review:export -- u4-contextual-app`  | Export Unit 4 reviewer package                               |
+| `pnpm review:export -- u5-analytical-app`  | Export Unit 5 reviewer package                               |
+| `pnpm review:export -- u6-integration`     | Export Unit 6 reviewer package                               |
+| `pnpm review:export -- u7-diff-eqs`        | Export Unit 7 reviewer package                               |
+| `pnpm review:export -- u8-app-integration` | Export Unit 8 reviewer package                               |
+| `pnpm format`                              | Prettier write                                               |
+| `pnpm format:check`                        | Prettier check (CI)                                          |
 
 ---
 
-## Deploying to studyloop.in
+## Deploying to Cloudflare
 
-StudyLoop deploys to Cloudflare Workers through OpenNext.
+The public learning site should deploy as static Cloudflare Pages output. This
+keeps course, unit, question, and practice-session pages out of the Worker
+runtime, which is important on Cloudflare's free Worker CPU limits.
+
+Recommended Pages settings:
 
 1. In Cloudflare, open **Workers & Pages** and choose **Create application**.
-2. Select **Import a repository** and choose
+2. Select **Pages** > **Import a repository** and choose
    `Studylooping/studyloop_Agasthya`.
-3. Set the Worker name to `studyloop` and the production branch to `main`.
-4. Set the build command to `pnpm run build:cloudflare`.
-5. Set the deploy command to `pnpm run deploy:cloudflare`.
-6. Save and deploy. Cloudflare will provide a `workers.dev` preview URL.
-7. In the Worker's **Domains** tab, add `studyloop.in` and optionally
-   `www.studyloop.in`.
+3. Set the production branch to `main`.
+4. Set the build command to `pnpm run build:pages`.
+5. Set the output directory to `out`.
+6. Add `NEXT_PUBLIC_SITE_URL=https://www2.studyloop.in` or the final canonical
+   hostname as a Pages build variable.
+7. Add `NEXT_PUBLIC_FEEDBACK_ENDPOINT=/api/feedback` if a feedback Worker is
+   routed on the same hostname.
 
-Before enabling public feedback notifications, verify `hello@studyloop.in`
+Feedback notifications should run through the tiny feedback-only Worker, not
+the full Next app Worker:
+
+```bash
+pnpm deploy:feedback
+```
+
+Then route `www2.studyloop.in/api/feedback` to the `studyloop-feedback` Worker
+or set `NEXT_PUBLIC_FEEDBACK_ENDPOINT` to the Worker URL/subdomain before the
+Pages build. Before enabling public notifications, verify `hello@studyloop.in`
 under **Email Service > Email Routing > Destination Addresses** and onboard
-`studyloop.in` as an Email Service domain. The `FEEDBACK_EMAIL` binding is
-already declared in `wrangler.jsonc`.
+`studyloop.in` as an Email Service domain so `feedback@studyloop.in` can send.
 
-Every push to `main` triggers a production build after the Git integration is
-connected.
+The OpenNext Worker scripts are still present for experimentation, but they are
+not the recommended public deployment path for the question site.
 
 ---
 
