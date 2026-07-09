@@ -15,6 +15,10 @@ import { Button } from "@/components/ui/button";
 import { QuestionReportButton } from "@/components/feedback/question-report-button";
 import { Card } from "@/components/ui/card";
 import { MixedMath, QuestionStem, Tex } from "@/components/math/math";
+import {
+  getDisplayLetterForOriginal,
+  getDisplayMcChoices,
+} from "@/lib/grading/choice-display";
 import { gradeMcSingle } from "@/lib/grading/mc";
 import { useLocalProfile } from "@/lib/local-memory";
 import {
@@ -237,6 +241,15 @@ function ReviewCard({
   onReset?: () => void;
   record: ReviewRecord;
 }) {
+  const visibleLastAnswer =
+    record.kind === "mc_single" && entry.item.kind === "mc_single"
+      ? getDisplayLetterForOriginal(entry.item, record.lastSelectedLetter)
+      : null;
+  const visibleCorrectAnswer =
+    record.kind === "mc_single" && entry.item.kind === "mc_single"
+      ? getDisplayLetterForOriginal(entry.item, record.correctLetter)
+      : null;
+
   return (
     <Card className="p-5">
       <div className="flex flex-wrap items-start justify-between gap-3">
@@ -265,9 +278,9 @@ function ReviewCard({
         <p>Saved {formatDate(record.lastMissedAt)}</p>
         {record.kind === "mc_single" ? (
           <p>
-            Last answer {record.lastSelectedLetter}; correct answer{" "}
-            {record.correctLetter}. Missed {record.misses}{" "}
-            {record.misses === 1 ? "time" : "times"}.
+            Last answer {visibleLastAnswer ?? record.lastSelectedLetter};{" "}
+            correct answer {visibleCorrectAnswer ?? record.correctLetter}.
+            Missed {record.misses} {record.misses === 1 ? "time" : "times"}.
           </p>
         ) : (
           <p>
@@ -330,6 +343,10 @@ function ReviewPractice({
   const [selected, setSelected] = React.useState<string | null>(null);
   const [submitted, setSubmitted] = React.useState(false);
   const [showSolution, setShowSolution] = React.useState(false);
+  const displayChoices = React.useMemo(
+    () => getDisplayMcChoices(entry.item),
+    [entry.item],
+  );
 
   React.useEffect(() => {
     setSelected(null);
@@ -397,7 +414,7 @@ function ReviewPractice({
 
           <fieldset disabled={submitted} className="space-y-2.5">
             <legend className="sr-only">Choose an answer</legend>
-            {entry.item.choices.map((choice) => {
+            {displayChoices.map(({ choice, displayLetter }) => {
               const isChosen = selected === choice.letter;
               const isCorrectChoice = result?.correctLetter === choice.letter;
               const isWrongPick = submitted && isChosen && !result?.isCorrect;
@@ -428,7 +445,7 @@ function ReviewPractice({
                     className="h-4 w-4 cursor-pointer accent-primary"
                   />
                   <span className="font-semibold text-foreground">
-                    {choice.letter}.
+                    {displayLetter}.
                   </span>
                   <MixedMath text={choice.text} className="flex-1" />
                   {submitted && isCorrectChoice && (

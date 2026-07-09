@@ -62,8 +62,15 @@ export function MixedMath({
   const textCommandSegments = splitLatexTextCommands(text);
   if (!hasInlineMathDelimiter(text) && textCommandSegments) {
     return (
-      <span className={className}>
-        {renderSegments(textCommandSegments)}
+      <span className={className}>{renderSegments(textCommandSegments)}</span>
+    );
+  }
+
+  if (!hasInlineMathDelimiter(text) && looksLikeProseStem(text)) {
+    const segments = splitHybridQuestion(text);
+    return (
+      <span className={cn("whitespace-normal break-words", className)}>
+        {renderSegments(segments)}
       </span>
     );
   }
@@ -339,26 +346,29 @@ function splitHybridQuestion(text: string) {
 }
 
 function readMathChunk(text: string): { value: string; length: number } | null {
-  const pipeMatch = text.match(/^\|[^|]+\|(?:\s*[=<>]\s*[-+]?\d+(?:\.\d+)?(?:\/\d+)?)?/);
+  const pipeMatch = text.match(
+    /^\|[^|]+\|(?:\s*[=<>]\s*[-+]?\d+(?:\.\d+)?(?:\/\d+)?)?/,
+  );
   if (pipeMatch) return trimTrailingPunctuation(pipeMatch[0]);
 
   const setMatch = text.match(/^\\\{.*?\\\}/);
   if (setMatch) return trimTrailingPunctuation(setMatch[0]);
 
   const commandExpression = text.match(
-    /^(?:[A-Za-z]\s*[:=])?\\(?:mathbb|dfrac|frac|sqrt|operatorname|underbrace)[^,.;?]*/,
+    /^(?:[A-Za-z]\s*[:=])?\\(?:mathbb|dfrac|frac|sqrt|operatorname|underbrace|gcd|binom|cal)[^,.;?]*/,
   );
   if (commandExpression) return trimTrailingPunctuation(commandExpression[0]);
 
   const relationExpression = text.match(
-    /^(?:[A-Za-z]\([^)]*\)|\([^)]+\)\(x\)|f\^\{?\d+\}?\(x\)|f\^\{-1\}\(x\)|[fg]\s*\\circ\s*[fg])\s*=\s*[^,.;?]*/,
+    /^(?:[A-Za-z]\([^)]*\)|\([^)]+\)\(x\)|f\^\{?\d+\}?\(x\)|f\^\{-1\}\(x\)|[fg]\s*\\circ\s*[fg]|[A-Za-z](?:\s*[:=]\s*|:\s*)\\?[{\\A-Za-z])[^,.;?]*/,
   );
   if (relationExpression) return trimTrailingPunctuation(relationExpression[0]);
 
   const cardinalityExpression = text.match(
     /^[A-Z](?:,[A-Z]){1,},?|^[A-Z]\\(?:cup|cap|setminus|triangle)\s*[A-Z](?:\s*=\s*[A-Z])?/,
   );
-  if (cardinalityExpression) return trimTrailingPunctuation(cardinalityExpression[0]);
+  if (cardinalityExpression)
+    return trimTrailingPunctuation(cardinalityExpression[0]);
 
   const compactMath = text.match(
     /^[A-Za-z]\^[^,\s.;?]+|^[A-Za-z]\([^)]*\)|^[a-z][A-Z][a-z]|^[A-Za-z]\\(?:to|circ|cup|cap|setminus|triangle|subseteq|subset|ne|le|ge|infty)[^,.;?]*/,

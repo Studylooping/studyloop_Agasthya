@@ -7,6 +7,7 @@ import { Card } from "@/components/ui/card";
 import { Tex, MixedMath } from "@/components/math/math";
 import { getItemFingerprint } from "@/lib/content/item-fingerprint";
 import { cn } from "@/lib/utils";
+import { getDisplayMcChoices } from "@/lib/grading/choice-display";
 import { gradeMcSingle, type GradeResult } from "@/lib/grading/mc";
 import {
   makeLocalStorageKey,
@@ -49,6 +50,7 @@ export function McAttempt({ item }: { item: McSingleItem }) {
   );
   const { hydrated, profileStorageId } = useLocalProfile();
   const itemFingerprint = React.useMemo(() => getItemFingerprint(item), [item]);
+  const displayChoices = React.useMemo(() => getDisplayMcChoices(item), [item]);
 
   const storageKey = React.useMemo(
     () => makeLocalStorageKey("mc-attempt", profileStorageId, item.contentId),
@@ -123,7 +125,7 @@ export function McAttempt({ item }: { item: McSingleItem }) {
       {/* ── Choices ──────────────────────────────────────────────────── */}
       <fieldset disabled={submitted} className="space-y-2">
         <legend className="sr-only">Choose an answer</legend>
-        {item.choices.map((choice) => {
+        {displayChoices.map(({ choice, displayLetter }) => {
           const isChosen = selected === choice.letter;
           const isCorrectChoice = result?.correctLetter === choice.letter;
           const isStudentWrongChoice =
@@ -158,7 +160,7 @@ export function McAttempt({ item }: { item: McSingleItem }) {
               <div className="flex-1">
                 <div className="flex items-baseline gap-2">
                   <span className="font-semibold text-foreground">
-                    {choice.letter}.
+                    {displayLetter}.
                   </span>
                   <MixedMath text={choice.text} />
                 </div>

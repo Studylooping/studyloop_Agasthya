@@ -10,7 +10,7 @@ import type {
 
 const COURSE = "jee-main-math";
 const UNIT = "u1-sets-relations-functions";
-const VERSION = "0.3.1";
+const VERSION = "0.3.2";
 const REVIEW_STATUS = "human_review_required" as const;
 const SOURCE_TYPE = "original_ai_assisted_question" as const;
 const LETTERS = ["A", "B", "C", "D"] as const;
@@ -91,10 +91,10 @@ function makeMc(meta: TopicMeta, seed: McSeed, index: number): McSingleItem {
       isCorrect,
       rationaleIfWrong: isCorrect
         ? null
-        : seed.rationales[letter] ?? fallbackWrongRationale(seed, letter),
+        : (seed.rationales[letter] ?? fallbackWrongRationale(seed, letter)),
       misconceptionTag: isCorrect
         ? null
-        : seed.misconceptionTags?.[letter] ?? "jee_unit1_distractor_trap",
+        : (seed.misconceptionTags?.[letter] ?? "jee_unit1_distractor_trap"),
     };
   }) as McChoice[];
 
@@ -122,9 +122,15 @@ function makeMc(meta: TopicMeta, seed: McSeed, index: number): McSingleItem {
   };
 }
 
-function makeNumeric(meta: TopicMeta, seed: NumericSeed, index: number): NumericItem {
+function makeNumeric(
+  meta: TopicMeta,
+  seed: NumericSeed,
+  index: number,
+): NumericItem {
   if (seed.numericAnswer === undefined) {
-    throw new Error(`Missing numericAnswer for ${meta.topicCode} numeric item ${index + 1}`);
+    throw new Error(
+      `Missing numericAnswer for ${meta.topicCode} numeric item ${index + 1}`,
+    );
   }
 
   return {
@@ -181,42 +187,10 @@ function makeTopic(seed: TopicSeed): Topic {
   };
 }
 
-const setPartitionFigure: ItemFigure = {
-  type: "svg",
-  title: "Three-set Venn diagram",
-  description:
-    "A clean three-set Venn diagram labelled only with the sets in the stem.",
-  svg: `<svg viewBox="0 0 520 300" xmlns="http://www.w3.org/2000/svg" role="img">
-  <rect x="8" y="8" width="504" height="284" rx="8" fill="#ffffff" stroke="#cbd5e1" stroke-width="2"/>
-  <circle cx="220" cy="132" r="92" fill="#bfdbfe" fill-opacity="0.55" stroke="#2563eb" stroke-width="3"/>
-  <circle cx="300" cy="132" r="92" fill="#fed7aa" fill-opacity="0.55" stroke="#f97316" stroke-width="3"/>
-  <circle cx="260" cy="204" r="92" fill="#bbf7d0" fill-opacity="0.55" stroke="#16a34a" stroke-width="3"/>
-  <text x="171" y="78" font-size="22" font-family="Arial, sans-serif" fill="#1e3a8a">A</text>
-  <text x="335" y="78" font-size="22" font-family="Arial, sans-serif" fill="#9a3412">B</text>
-  <text x="260" y="278" font-size="22" text-anchor="middle" font-family="Arial, sans-serif" fill="#166534">C</text>
-</svg>`,
-};
-
-const powerSetOverlapFigure: ItemFigure = {
-  type: "svg",
-  title: "Two-set overlap",
-  description:
-    "Two overlapping sets labelled only with A and B.",
-  svg: `<svg viewBox="0 0 500 240" xmlns="http://www.w3.org/2000/svg" role="img">
-  <rect width="500" height="240" fill="#ffffff"/>
-  <rect x="24" y="22" width="452" height="196" rx="8" fill="#f8fafc" stroke="#cbd5e1" stroke-width="2"/>
-  <ellipse cx="210" cy="120" rx="120" ry="72" fill="#dbeafe" fill-opacity="0.7" stroke="#2563eb" stroke-width="3"/>
-  <ellipse cx="290" cy="120" rx="120" ry="72" fill="#dcfce7" fill-opacity="0.7" stroke="#16a34a" stroke-width="3"/>
-  <text x="150" y="78" font-size="22" text-anchor="middle" font-family="Arial, sans-serif" fill="#1e40af">A</text>
-  <text x="350" y="78" font-size="22" text-anchor="middle" font-family="Arial, sans-serif" fill="#166534">B</text>
-</svg>`,
-};
-
 const relationGraphFigure: ItemFigure = {
   type: "svg",
   title: "Relation graph",
-  description:
-    "A graph of the relation pairs stated in the question.",
+  description: "A graph of the relation pairs stated in the question.",
   svg: `<svg viewBox="0 0 420 250" xmlns="http://www.w3.org/2000/svg" role="img">
   <defs>
     <marker id="arrowRel" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto">
@@ -265,8 +239,7 @@ const functionMappingFigure: ItemFigure = {
 const compositionFlowFigure: ItemFigure = {
   type: "svg",
   title: "Composition flow",
-  description:
-    "A neutral flow diagram for a composition expression.",
+  description: "A neutral flow diagram for a composition expression.",
   svg: `<svg viewBox="0 0 520 180" xmlns="http://www.w3.org/2000/svg" role="img">
   <defs>
     <marker id="arrowComp" markerWidth="9" markerHeight="9" refX="8" refY="4.5" orient="auto">
@@ -296,7 +269,6 @@ const topicSeeds: readonly TopicSeed[] = [
         questionLatex: L`In a universal set of 60 elements, sets A,B,C satisfy |A|=32,\ |B|=28,\ |C|=26,\ |A\cap B|=14,\ |B\cap C|=12,\ |C\cap A|=10. If exactly 29 elements belong to exactly one of A,B,C, then |A\cap B\cap C| is`,
         difficulty: 4,
         skillTags: ["three_set_inclusion_exclusion", "exactly_one_counting"],
-        figure: setPartitionFigure,
         choices: [L`$4$`, L`$5$`, L`$6$`, L`$7$`],
         correctLetter: "B",
         rationales: {
@@ -337,7 +309,6 @@ const topicSeeds: readonly TopicSeed[] = [
         questionLatex: L`For finite sets A and B, |{\cal P}(A\cup B)|=512,\ |{\cal P}(A\cap B)|=8, and |{\cal P}(A\setminus B)|=32. Then |B\setminus A| equals`,
         difficulty: 4,
         skillTags: ["power_set_cardinality", "set_partition"],
-        figure: powerSetOverlapFigure,
         choices: [L`$1$`, L`$2$`, L`$3$`, L`$4$`],
         correctLetter: "A",
         rationales: {
@@ -358,7 +329,8 @@ const topicSeeds: readonly TopicSeed[] = [
         solution: [
           {
             step: 1,
-            explanation: "Convert power-set cardinalities into set cardinalities.",
+            explanation:
+              "Convert power-set cardinalities into set cardinalities.",
             math: L`|A\cup B|=9,\quad |A\cap B|=3,\quad |A\setminus B|=5`,
           },
           {
@@ -489,7 +461,8 @@ const topicSeeds: readonly TopicSeed[] = [
           },
           {
             step: 2,
-            explanation: "Therefore the desired count is minimized by the smallest possible overlap.",
+            explanation:
+              "Therefore the desired count is minimized by the smallest possible overlap.",
             math: L`|{\cal P}(A)\setminus{\cal P}(B)|=2^a-2^{|A\cap B|}`,
           },
           {
@@ -529,12 +502,14 @@ const topicSeeds: readonly TopicSeed[] = [
           },
           {
             step: 2,
-            explanation: "The second equation gives the symmetric-difference size.",
+            explanation:
+              "The second equation gives the symmetric-difference size.",
             math: L`2^{|A\cup B|}=64\cdot2^{|A\cap B|}\Rightarrow |A\triangle B|=6`,
           },
           {
             step: 3,
-            explanation: "With $x=|A\\setminus B|$ and $y=|B\\setminus A|$, solve $x-y=2$ and $x+y=6$.",
+            explanation:
+              "With $x=|A\\setminus B|$ and $y=|B\\setminus A|$, solve $x-y=2$ and $x+y=6$.",
             math: L`x=4`,
           },
         ],
@@ -563,12 +538,14 @@ const topicSeeds: readonly TopicSeed[] = [
         solution: [
           {
             step: 1,
-            explanation: "Half of all subsets of a nonempty finite set have even size.",
+            explanation:
+              "Half of all subsets of a nonempty finite set have even size.",
             math: L`2^9=512`,
           },
           {
             step: 2,
-            explanation: "With 1,2,3 absent, choose an even subset from the remaining 7 elements.",
+            explanation:
+              "With 1,2,3 absent, choose an even subset from the remaining 7 elements.",
             math: L`2^6=64`,
           },
           {
@@ -602,7 +579,8 @@ const topicSeeds: readonly TopicSeed[] = [
         solution: [
           {
             step: 1,
-            explanation: "Each of the 8 elements has exactly two allowed states.",
+            explanation:
+              "Each of the 8 elements has exactly two allowed states.",
             math: L`2^8`,
           },
         ],
@@ -636,12 +614,14 @@ const topicSeeds: readonly TopicSeed[] = [
         solution: [
           {
             step: 1,
-            explanation: "An element of the left side is in A and in exactly one of B,C.",
+            explanation:
+              "An element of the left side is in A and in exactly one of B,C.",
             math: null,
           },
           {
             step: 2,
-            explanation: "Equivalently, it is in exactly one of $A\\cap B$ and $A\\cap C$.",
+            explanation:
+              "Equivalently, it is in exactly one of $A\\cap B$ and $A\\cap C$.",
             math: L`A\cap(B\triangle C)=(A\cap B)\triangle(A\cap C)`,
           },
         ],
@@ -675,7 +655,8 @@ const topicSeeds: readonly TopicSeed[] = [
           },
           {
             step: 2,
-            explanation: "Use inclusion-exclusion on the forbidden subset families.",
+            explanation:
+              "Use inclusion-exclusion on the forbidden subset families.",
             math: L`2^9-2^5-2^6+2^2=512-32-64+4=420`,
           },
         ],
@@ -829,7 +810,8 @@ const topicSeeds: readonly TopicSeed[] = [
         solution: [
           {
             step: 1,
-            explanation: "Reflexivity holds because every element divides itself.",
+            explanation:
+              "Reflexivity holds because every element divides itself.",
             math: L`a\mid a`,
           },
           {
@@ -875,13 +857,13 @@ const topicSeeds: readonly TopicSeed[] = [
         solution: [
           {
             step: 1,
-            explanation: "$x+y$ is even exactly when $x$ and $y$ have the same parity.",
+            explanation:
+              "$x+y$ is even exactly when $x$ and $y$ have the same parity.",
             math: null,
           },
           {
             step: 2,
-            explanation:
-              "Same parity is reflexive, symmetric, and transitive.",
+            explanation: "Same parity is reflexive, symmetric, and transitive.",
             math: null,
           },
           {
@@ -1033,9 +1015,22 @@ const topicSeeds: readonly TopicSeed[] = [
           "The transitive ones are exactly the equivalence relations on a 3-element set.",
         ],
         solution: [
-          { step: 1, explanation: "All reflexive symmetric relations:", math: L`2^{\binom32}=8` },
-          { step: 2, explanation: "The transitive cases are equivalence relations, i.e. partitions of a 3-element set.", math: L`5` },
-          { step: 3, explanation: "Subtract transitive cases.", math: L`8-5=3` },
+          {
+            step: 1,
+            explanation: "All reflexive symmetric relations:",
+            math: L`2^{\binom32}=8`,
+          },
+          {
+            step: 2,
+            explanation:
+              "The transitive cases are equivalence relations, i.e. partitions of a 3-element set.",
+            math: L`5`,
+          },
+          {
+            step: 3,
+            explanation: "Subtract transitive cases.",
+            math: L`8-5=3`,
+          },
         ],
       },
       {
@@ -1060,8 +1055,16 @@ const topicSeeds: readonly TopicSeed[] = [
           "For an equivalence relation, $|R|$ is the sum of squares of class sizes.",
         ],
         solution: [
-          { step: 1, explanation: "The classes in $X$ have sizes 2, 4, and 4.", math: L`\{0,5\},\ \{1,4,6,9\},\ \{2,3,7,8\}` },
-          { step: 2, explanation: "Count ordered pairs inside each class.", math: L`2^2+4^2+4^2=36` },
+          {
+            step: 1,
+            explanation: "The classes in $X$ have sizes 2, 4, and 4.",
+            math: L`\{0,5\},\ \{1,4,6,9\},\ \{2,3,7,8\}`,
+          },
+          {
+            step: 2,
+            explanation: "Count ordered pairs inside each class.",
+            math: L`2^2+4^2+4^2=36`,
+          },
         ],
       },
       {
@@ -1086,8 +1089,16 @@ const topicSeeds: readonly TopicSeed[] = [
           "The only nontrivial chain is $1R2$ and $2R3$.",
         ],
         solution: [
-          { step: 1, explanation: "All diagonal pairs are already present.", math: null },
-          { step: 2, explanation: "The chain $(1,2),(2,3)$ forces $(1,3)$.", math: L`(1,3)` },
+          {
+            step: 1,
+            explanation: "All diagonal pairs are already present.",
+            math: null,
+          },
+          {
+            step: 2,
+            explanation: "The chain $(1,2),(2,3)$ forces $(1,3)$.",
+            math: L`(1,3)`,
+          },
         ],
       },
       {
@@ -1117,8 +1128,16 @@ const topicSeeds: readonly TopicSeed[] = [
           "Check whether any relation ever leaves the pair it starts in.",
         ],
         solution: [
-          { step: 1, explanation: "The relation groups 1 with 4 and 2 with 3.", math: L`\{1,4\},\quad \{2,3\}` },
-          { step: 2, explanation: "These two blocks define an equivalence relation.", math: null },
+          {
+            step: 1,
+            explanation: "The relation groups 1 with 4 and 2 with 3.",
+            math: L`\{1,4\},\quad \{2,3\}`,
+          },
+          {
+            step: 2,
+            explanation: "These two blocks define an equivalence relation.",
+            math: null,
+          },
         ],
       },
       {
@@ -1143,8 +1162,17 @@ const topicSeeds: readonly TopicSeed[] = [
           "Anti-symmetry forbids both directions for distinct elements.",
         ],
         solution: [
-          { step: 1, explanation: "No off-diagonal pair can be present.", math: null },
-          { step: 2, explanation: "Each of the two diagonal pairs may be chosen independently.", math: L`2^2=4` },
+          {
+            step: 1,
+            explanation: "No off-diagonal pair can be present.",
+            math: null,
+          },
+          {
+            step: 2,
+            explanation:
+              "Each of the two diagonal pairs may be chosen independently.",
+            math: L`2^2=4`,
+          },
         ],
       },
     ],
@@ -1338,7 +1366,8 @@ const topicSeeds: readonly TopicSeed[] = [
           },
           {
             step: 2,
-            explanation: "Subtract those missing a fixed target, and add back those missing two targets.",
+            explanation:
+              "Subtract those missing a fixed target, and add back those missing two targets.",
             math: L`3^4-\binom31 2^4+\binom32 1^4=81-48+3=36`,
           },
         ],
@@ -1383,7 +1412,8 @@ const topicSeeds: readonly TopicSeed[] = [
           },
           {
             step: 3,
-            explanation: "The solved preimage is unique, so the function is bijective.",
+            explanation:
+              "The solved preimage is unique, so the function is bijective.",
             math: null,
           },
         ],
@@ -1392,7 +1422,12 @@ const topicSeeds: readonly TopicSeed[] = [
         questionLatex: L`For f(x)=|x-1|+|x+1| with domain \mathbb R, the range of f is`,
         difficulty: 3,
         skillTags: ["absolute_value_range", "piecewise_functions"],
-        choices: [L`$[0,\infty)$`, L`$[1,\infty)$`, L`$[2,\infty)$`, L`$(2,\infty)$`],
+        choices: [
+          L`$[0,\infty)$`,
+          L`$[1,\infty)$`,
+          L`$[2,\infty)$`,
+          L`$(2,\infty)$`,
+        ],
         correctLetter: "C",
         rationales: {
           A: "The sum is the distance from $x$ to $1$ plus the distance from $x$ to $-1$; it cannot be below 2.",
@@ -1486,8 +1521,17 @@ const topicSeeds: readonly TopicSeed[] = [
           "The two remaining choices are independent.",
         ],
         solution: [
-          { step: 1, explanation: "Choose the fixed points.", math: L`\binom42=6` },
-          { step: 2, explanation: "Each of the other two elements has 3 possible images.", math: L`3^2` },
+          {
+            step: 1,
+            explanation: "Choose the fixed points.",
+            math: L`\binom42=6`,
+          },
+          {
+            step: 2,
+            explanation:
+              "Each of the other two elements has 3 possible images.",
+            math: L`3^2`,
+          },
           { step: 3, explanation: "Multiply.", math: L`6\cdot9=54` },
         ],
       },
@@ -1513,8 +1557,16 @@ const topicSeeds: readonly TopicSeed[] = [
           "Subtract the two constant functions.",
         ],
         solution: [
-          { step: 1, explanation: "Choose the two-element range.", math: L`\binom32=3` },
-          { step: 2, explanation: "Onto maps to a fixed two-element set:", math: L`2^4-2=14` },
+          {
+            step: 1,
+            explanation: "Choose the two-element range.",
+            math: L`\binom32=3`,
+          },
+          {
+            step: 2,
+            explanation: "Onto maps to a fixed two-element set:",
+            math: L`2^4-2=14`,
+          },
           { step: 3, explanation: "Multiply.", math: L`3\cdot14=42` },
         ],
       },
@@ -1541,7 +1593,11 @@ const topicSeeds: readonly TopicSeed[] = [
         ],
         solution: [
           { step: 1, explanation: "All functions:", math: L`5^3=125` },
-          { step: 2, explanation: "One-one functions:", math: L`{}^5P_3=5\cdot4\cdot3=60` },
+          {
+            step: 2,
+            explanation: "One-one functions:",
+            math: L`{}^5P_3=5\cdot4\cdot3=60`,
+          },
           { step: 3, explanation: "Subtract.", math: L`125-60=65` },
         ],
       },
@@ -1549,7 +1605,12 @@ const topicSeeds: readonly TopicSeed[] = [
         questionLatex: L`The range of f:[1,\infty)\to\mathbb R defined by f(x)=x^2-2x+3 is`,
         difficulty: 3,
         skillTags: ["quadratic_range", "domain_restriction"],
-        choices: [L`$[0,\infty)$`, L`$[1,\infty)$`, L`$[2,\infty)$`, L`$\mathbb R$`],
+        choices: [
+          L`$[0,\infty)$`,
+          L`$[1,\infty)$`,
+          L`$[2,\infty)$`,
+          L`$\mathbb R$`,
+        ],
         correctLetter: "C",
         rationales: {
           A: "The vertex value is 2, not 0.",
@@ -1567,8 +1628,16 @@ const topicSeeds: readonly TopicSeed[] = [
           "Read the least value from the completed square form.",
         ],
         solution: [
-          { step: 1, explanation: "Complete the square.", math: L`f(x)=(x-1)^2+2` },
-          { step: 2, explanation: "On $[1,\\infty)$ the square term is at least 0.", math: L`\operatorname{Range}(f)=[2,\infty)` },
+          {
+            step: 1,
+            explanation: "Complete the square.",
+            math: L`f(x)=(x-1)^2+2`,
+          },
+          {
+            step: 2,
+            explanation: "On $[1,\\infty)$ the square term is at least 0.",
+            math: L`\operatorname{Range}(f)=[2,\infty)`,
+          },
         ],
       },
       {
@@ -1598,8 +1667,17 @@ const topicSeeds: readonly TopicSeed[] = [
           "Check uniqueness of the preimage.",
         ],
         solution: [
-          { step: 1, explanation: "Solve for $x$.", math: L`y=\frac{3x+1}{x+2}\Rightarrow x=\frac{1-2y}{y-3}` },
-          { step: 2, explanation: "This exists uniquely for each $y\\ne3$ and never equals $-2$.", math: null },
+          {
+            step: 1,
+            explanation: "Solve for $x$.",
+            math: L`y=\frac{3x+1}{x+2}\Rightarrow x=\frac{1-2y}{y-3}`,
+          },
+          {
+            step: 2,
+            explanation:
+              "This exists uniquely for each $y\\ne3$ and never equals $-2$.",
+            math: null,
+          },
         ],
       },
     ],
@@ -1727,7 +1805,12 @@ const topicSeeds: readonly TopicSeed[] = [
         questionLatex: L`For f(x)=\dfrac{x+1}{x-1}, x\ne1, the expression f(f(x)) equals`,
         difficulty: 4,
         skillTags: ["function_composition", "rational_involution"],
-        choices: [L`$x$`, L`$\dfrac{1}{x}$`, L`$\dfrac{x-1}{x+1}$`, L`$\dfrac{x+1}{1-x}$`],
+        choices: [
+          L`$x$`,
+          L`$\dfrac{1}{x}$`,
+          L`$\dfrac{x-1}{x+1}$`,
+          L`$\dfrac{x+1}{1-x}$`,
+        ],
         correctLetter: "A",
         rationales: {
           B: "This is the common result of inverting the input instead of substituting the whole function into itself.",
@@ -1870,7 +1953,8 @@ const topicSeeds: readonly TopicSeed[] = [
           },
           {
             step: 2,
-            explanation: "Pair the remaining four elements into two transpositions.",
+            explanation:
+              "Pair the remaining four elements into two transpositions.",
             math: L`\frac{4!}{2^2\cdot2!}=3`,
           },
           {
@@ -1936,8 +2020,16 @@ const topicSeeds: readonly TopicSeed[] = [
           "A sign appears from $2g(x)-1$.",
         ],
         solution: [
-          { step: 1, explanation: "Substitute.", math: L`f(g(x))=\frac{\frac{x-1}{2x+1}+1}{2\frac{x-1}{2x+1}-1}` },
-          { step: 2, explanation: "Simplify the complex fraction.", math: L`\frac{\frac{3x}{2x+1}}{\frac{-3}{2x+1}}=-x` },
+          {
+            step: 1,
+            explanation: "Substitute.",
+            math: L`f(g(x))=\frac{\frac{x-1}{2x+1}+1}{2\frac{x-1}{2x+1}-1}`,
+          },
+          {
+            step: 2,
+            explanation: "Simplify the complex fraction.",
+            math: L`\frac{\frac{3x}{2x+1}}{\frac{-3}{2x+1}}=-x`,
+          },
         ],
       },
       {
@@ -1967,8 +2059,16 @@ const topicSeeds: readonly TopicSeed[] = [
           "Here $f^n(x)=\\frac{x}{nx+1}$.",
         ],
         solution: [
-          { step: 1, explanation: "The first few iterates are:", math: L`f^2(x)=\frac{x}{2x+1},\quad f^3(x)=\frac{x}{3x+1}` },
-          { step: 2, explanation: "Thus the fifth iterate is:", math: L`f^5(x)=\frac{x}{5x+1}` },
+          {
+            step: 1,
+            explanation: "The first few iterates are:",
+            math: L`f^2(x)=\frac{x}{2x+1},\quad f^3(x)=\frac{x}{3x+1}`,
+          },
+          {
+            step: 2,
+            explanation: "Thus the fifth iterate is:",
+            math: L`f^5(x)=\frac{x}{5x+1}`,
+          },
         ],
       },
       {
@@ -1998,8 +2098,16 @@ const topicSeeds: readonly TopicSeed[] = [
           "Do not assume one order is enough unless domains/codomains differ.",
         ],
         solution: [
-          { step: 1, explanation: "Compute one order.", math: L`f(g(x))=2\cdot\frac{x+3}{2}-3=x` },
-          { step: 2, explanation: "Compute the other.", math: L`g(f(x))=\frac{(2x-3)+3}{2}=x` },
+          {
+            step: 1,
+            explanation: "Compute one order.",
+            math: L`f(g(x))=2\cdot\frac{x+3}{2}-3=x`,
+          },
+          {
+            step: 2,
+            explanation: "Compute the other.",
+            math: L`g(f(x))=\frac{(2x-3)+3}{2}=x`,
+          },
         ],
       },
       {
@@ -2024,8 +2132,16 @@ const topicSeeds: readonly TopicSeed[] = [
           "Apply the remaining number of steps from 1.",
         ],
         solution: [
-          { step: 1, explanation: "Reduce the exponent.", math: L`2026\equiv2\pmod4` },
-          { step: 2, explanation: "Two steps from 1 gives 3.", math: L`f^2(1)=3` },
+          {
+            step: 1,
+            explanation: "Reduce the exponent.",
+            math: L`2026\equiv2\pmod4`,
+          },
+          {
+            step: 2,
+            explanation: "Two steps from 1 gives 3.",
+            math: L`f^2(1)=3`,
+          },
         ],
       },
       {
@@ -2055,9 +2171,22 @@ const topicSeeds: readonly TopicSeed[] = [
           "Compare coefficients.",
         ],
         solution: [
-          { step: 1, explanation: "The inverse is:", math: L`f^{-1}(x)=\frac{x-b}{a}` },
-          { step: 2, explanation: "Equating coefficients with $ax+b$ gives $a^2=1$ and $b(a+1)=0$.", math: null },
-          { step: 3, explanation: "Thus either $a=1,b=0$ or $a=-1$ with any real $b$.", math: null },
+          {
+            step: 1,
+            explanation: "The inverse is:",
+            math: L`f^{-1}(x)=\frac{x-b}{a}`,
+          },
+          {
+            step: 2,
+            explanation:
+              "Equating coefficients with $ax+b$ gives $a^2=1$ and $b(a+1)=0$.",
+            math: null,
+          },
+          {
+            step: 3,
+            explanation: "Thus either $a=1,b=0$ or $a=-1$ with any real $b$.",
+            math: null,
+          },
         ],
       },
     ],
@@ -2411,7 +2540,11 @@ const topicSeeds: readonly TopicSeed[] = [
           "Choose the image set, then map non-image elements into it.",
         ],
         solution: [
-          { step: 1, explanation: "Sum over possible image sizes.", math: L`\sum_{k=1}^{3}\binom3k k^{3-k}` },
+          {
+            step: 1,
+            explanation: "Sum over possible image sizes.",
+            math: L`\sum_{k=1}^{3}\binom3k k^{3-k}`,
+          },
           { step: 2, explanation: "Evaluate.", math: L`3+3\cdot2+1=10` },
         ],
       },
@@ -2437,8 +2570,17 @@ const topicSeeds: readonly TopicSeed[] = [
           "Subtract relations missing at least one element of B from the range.",
         ],
         solution: [
-          { step: 1, explanation: "Full domain gives nonempty subsets in each row.", math: L`7^2=49` },
-          { step: 2, explanation: "Subtract missing range elements and add back missing two.", math: L`49-\binom31 3^2+\binom32 1^2=49-27+3=25` },
+          {
+            step: 1,
+            explanation: "Full domain gives nonempty subsets in each row.",
+            math: L`7^2=49`,
+          },
+          {
+            step: 2,
+            explanation:
+              "Subtract missing range elements and add back missing two.",
+            math: L`49-\binom31 3^2+\binom32 1^2=49-27+3=25`,
+          },
         ],
       },
       {
@@ -2464,7 +2606,12 @@ const topicSeeds: readonly TopicSeed[] = [
         ],
         solution: [
           { step: 1, explanation: "Choose the image.", math: L`\binom42=6` },
-          { step: 2, explanation: "The remaining two elements each have 2 image choices.", math: L`2^2` },
+          {
+            step: 2,
+            explanation:
+              "The remaining two elements each have 2 image choices.",
+            math: L`2^2`,
+          },
           { step: 3, explanation: "Multiply.", math: L`6\cdot4=24` },
         ],
       },
@@ -2490,9 +2637,21 @@ const topicSeeds: readonly TopicSeed[] = [
           "Each remaining element has two states: both or neither.",
         ],
         solution: [
-          { step: 1, explanation: "Choose the symmetric difference.", math: L`\binom73` },
-          { step: 2, explanation: "Assign states for all elements.", math: L`2^3\cdot2^4=2^7` },
-          { step: 3, explanation: "Multiply.", math: L`\binom73 2^7=35\cdot128=4480` },
+          {
+            step: 1,
+            explanation: "Choose the symmetric difference.",
+            math: L`\binom73`,
+          },
+          {
+            step: 2,
+            explanation: "Assign states for all elements.",
+            math: L`2^3\cdot2^4=2^7`,
+          },
+          {
+            step: 3,
+            explanation: "Multiply.",
+            math: L`\binom73 2^7=35\cdot128=4480`,
+          },
         ],
       },
       {
@@ -2517,8 +2676,17 @@ const topicSeeds: readonly TopicSeed[] = [
           "For two rows and two columns, there are $3^2-2$ valid row-subset choices.",
         ],
         solution: [
-          { step: 1, explanation: "Choose the domain and range supports.", math: L`\binom32\binom32=9` },
-          { step: 2, explanation: "For the chosen supports, each row has a nonempty subset of two columns, and both columns must appear.", math: L`3^2-2=7` },
+          {
+            step: 1,
+            explanation: "Choose the domain and range supports.",
+            math: L`\binom32\binom32=9`,
+          },
+          {
+            step: 2,
+            explanation:
+              "For the chosen supports, each row has a nonempty subset of two columns, and both columns must appear.",
+            math: L`3^2-2=7`,
+          },
           { step: 3, explanation: "Multiply.", math: L`9\cdot7=63` },
         ],
       },
@@ -2638,4 +2806,5 @@ const topicSeeds: readonly TopicSeed[] = [
   },
 ];
 
-export const jeeSetsRelationsFunctionsTopics: Topic[] = topicSeeds.map(makeTopic);
+export const jeeSetsRelationsFunctionsTopics: Topic[] =
+  topicSeeds.map(makeTopic);

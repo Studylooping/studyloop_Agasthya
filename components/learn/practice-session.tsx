@@ -16,6 +16,7 @@ import { QuestionReportButton } from "@/components/feedback/question-report-butt
 import { ItemFigure } from "@/components/learn/item-figure";
 import { Tex, MixedMath, QuestionStem } from "@/components/math/math";
 import { getItemFingerprint } from "@/lib/content/item-fingerprint";
+import { getDisplayMcChoices } from "@/lib/grading/choice-display";
 import { gradeMcSingle } from "@/lib/grading/mc";
 import {
   makeLocalStorageKey,
@@ -82,6 +83,10 @@ export function PracticeSession({
   const { activeProfile, hydrated, profileStorageId } = useLocalProfile();
 
   const current = items[index];
+  const displayChoices = React.useMemo(
+    () => getDisplayMcChoices(current),
+    [current],
+  );
   const unitHref = `/${courseSlug}/${unitSlug}`;
   const itemIds = React.useMemo(
     () => items.map((item) => item.contentId),
@@ -346,7 +351,7 @@ export function PracticeSession({
           {/* Choices */}
           <fieldset disabled={submitted} className="space-y-2.5">
             <legend className="sr-only">Choose an answer</legend>
-            {current.choices.map((choice) => {
+            {displayChoices.map(({ choice, displayLetter }) => {
               const isChosen = selected === choice.letter;
               const isCorrectChoice = result?.correctLetter === choice.letter;
               const isWrongPick = submitted && isChosen && !result?.isCorrect;
@@ -377,7 +382,7 @@ export function PracticeSession({
                     className="h-4 w-4 cursor-pointer accent-primary"
                   />
                   <span className="font-semibold text-foreground">
-                    {choice.letter}.
+                    {displayLetter}.
                   </span>
                   <MixedMath text={choice.text} className="flex-1" />
                   {submitted && isCorrectChoice && (
