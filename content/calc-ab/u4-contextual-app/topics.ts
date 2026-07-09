@@ -76,11 +76,11 @@ function makeMc(meta: TopicMeta, seed: McSeed, index: number): McSingleItem {
       isCorrect,
       rationaleIfWrong: isCorrect
         ? null
-        : seed.rationales?.[seedLetter] ??
-          "This answer uses the wrong contextual rate, sign, unit, or derivative relationship.",
+        : (seed.rationales?.[seedLetter] ??
+          "This answer uses the wrong contextual rate, sign, unit, or derivative relationship."),
       misconceptionTag: isCorrect
         ? null
-        : seed.misconceptionTags?.[seedLetter] ?? "incorrect_contextual_rate",
+        : (seed.misconceptionTags?.[seedLetter] ?? "incorrect_contextual_rate"),
     };
   });
 
@@ -202,7 +202,8 @@ const topicSeeds: readonly TopicSeed[] = [
           },
           {
             step: 2,
-            explanation: "The negative sign means the inflow rate is decreasing.",
+            explanation:
+              "The negative sign means the inflow rate is decreasing.",
             math: "\\text{The inflow rate decreases by }1.8\\text{ gal/min each minute at }t=6.",
           },
         ],
@@ -342,7 +343,11 @@ const topicSeeds: readonly TopicSeed[] = [
       questionLatex:
         "\\text{The temperature of a metal rod is }T(t)\\text{ degrees Celsius }t\\text{ minutes after heating begins. Suppose }T(5)=84,\\ T'(5)=6.4,\\text{ and }T''(5)=-1.2.",
       difficulty: 3,
-      skillTags: ["derivative_interpretation", "units", "local_linear_interpretation"],
+      skillTags: [
+        "derivative_interpretation",
+        "units",
+        "local_linear_interpretation",
+      ],
       parts: [
         {
           letter: "a",
@@ -351,7 +356,8 @@ const topicSeeds: readonly TopicSeed[] = [
         },
         {
           letter: "b",
-          promptMarkdown: "Use a tangent-line approximation to estimate $T(5.25)$.",
+          promptMarkdown:
+            "Use a tangent-line approximation to estimate $T(5.25)$.",
           points: 2,
         },
         {
@@ -369,12 +375,37 @@ const topicSeeds: readonly TopicSeed[] = [
       rubric: {
         maxPoints: 6,
         criteria: [
-          { part: "a", points: 1, description: "States that temperature is increasing at t=5." },
-          { part: "a", points: 1, description: "Includes correct units, degrees Celsius per minute." },
-          { part: "b", points: 1, description: "Sets up tangent-line approximation correctly." },
-          { part: "b", points: 1, description: "Computes $85.6$ degrees Celsius." },
-          { part: "c", points: 1, description: "Uses $T''(5)<0$ to identify concave down behavior." },
-          { part: "c", points: 1, description: "Concludes the tangent estimate is likely an overestimate." },
+          {
+            part: "a",
+            points: 1,
+            description: "States that temperature is increasing at t=5.",
+          },
+          {
+            part: "a",
+            points: 1,
+            description: "Includes correct units, degrees Celsius per minute.",
+          },
+          {
+            part: "b",
+            points: 1,
+            description: "Sets up tangent-line approximation correctly.",
+          },
+          {
+            part: "b",
+            points: 1,
+            description: "Computes $85.6$ degrees Celsius.",
+          },
+          {
+            part: "c",
+            points: 1,
+            description: "Uses $T''(5)<0$ to identify concave down behavior.",
+          },
+          {
+            part: "c",
+            points: 1,
+            description:
+              "Concludes the tangent estimate is likely an overestimate.",
+          },
         ],
       },
       commonErrors: [
@@ -403,7 +434,8 @@ const topicSeeds: readonly TopicSeed[] = [
   },
   {
     topicCode: "4.2",
-    title: "Straight-Line Motion: Connecting Position, Velocity, and Acceleration",
+    title:
+      "Straight-Line Motion: Connecting Position, Velocity, and Acceleration",
     subtopic:
       "Using derivatives to connect position, velocity, acceleration, direction, rest, and speed behavior",
     mc: [
@@ -412,7 +444,12 @@ const topicSeeds: readonly TopicSeed[] = [
           "\\text{A particle has position }s(t)=\\frac53t^3-11t^2+8t\\text{ meters. What is its velocity at }t=2?",
         difficulty: 2,
         skillTags: ["motion", "velocity"],
-        choices: ["$-16\\text{ m/s}$", "$16\\text{ m/s}$", "$2\\text{ m/s}$", "$-8\\text{ m/s}$"],
+        choices: [
+          "$-16\\text{ m/s}$",
+          "$16\\text{ m/s}$",
+          "$2\\text{ m/s}$",
+          "$-8\\text{ m/s}$",
+        ],
         correctLetter: "A",
         rationales: {
           B: "This has the wrong sign.",
@@ -437,7 +474,12 @@ const topicSeeds: readonly TopicSeed[] = [
           "\\text{For }s(t)=\\frac53t^3-11t^2+8t\\text{ on }0\\le t\\le5,\\text{ when is the particle at rest?}",
         difficulty: 2,
         skillTags: ["motion", "particle_at_rest"],
-        choices: ["$t=\\frac25\\text{ and }t=4$", "$t=0\\text{ and }t=5$", "$t=2$", "\\text{Never}"],
+        choices: [
+          "$t=\\frac25\\text{ and }t=4$",
+          "$t=0\\text{ and }t=5$",
+          "$t=2$",
+          "\\text{Never}",
+        ],
         correctLetter: "A",
         rationales: {
           B: "Those are interval endpoints, not zeros of velocity.",
@@ -528,7 +570,12 @@ const topicSeeds: readonly TopicSeed[] = [
           "\\begin{array}{c|ccc}t&1&2&3\\\\\\hline v(t)&-4&-1&2\\\\ a(t)&3&4&5\\end{array}\\quad \\text{At which listed time is the particle slowing down?}",
         difficulty: 3,
         skillTags: ["motion", "speed_increasing_decreasing", "table_values"],
-        choices: ["$t=1\\text{ and }t=2$", "$t=3\\text{ only}$", "$t=1\\text{ only}$", "\\text{None of them}"],
+        choices: [
+          "$t=1\\text{ and }t=2$",
+          "$t=3\\text{ only}$",
+          "$t=1\\text{ only}$",
+          "\\text{None of them}",
+        ],
         correctLetter: "A",
         rationales: {
           B: "At t=3, velocity and acceleration are both positive, so speed is increasing.",
@@ -553,16 +600,23 @@ const topicSeeds: readonly TopicSeed[] = [
       questionLatex:
         "\\text{A particle moves on the }x\\text{-axis with velocity }v(t)=(5t-2)(t-4)\\text{ meters per second for }0\\le t\\le5.",
       difficulty: 4,
-      skillTags: ["motion", "particle_at_rest", "acceleration", "speed_increasing_decreasing"],
+      skillTags: [
+        "motion",
+        "particle_at_rest",
+        "acceleration",
+        "speed_increasing_decreasing",
+      ],
       parts: [
         {
           letter: "a",
-          promptMarkdown: "Find all times in $0\\le t\\le4$ when the particle is at rest.",
+          promptMarkdown:
+            "Find all times in $0\\le t\\le4$ when the particle is at rest.",
           points: 1,
         },
         {
           letter: "b",
-          promptMarkdown: "Find the acceleration function $a(t)$ and the value of $a(2)$.",
+          promptMarkdown:
+            "Find the acceleration function $a(t)$ and the value of $a(2)$.",
           points: 1,
         },
         {
@@ -586,12 +640,38 @@ const topicSeeds: readonly TopicSeed[] = [
       rubric: {
         maxPoints: 6,
         criteria: [
-          { part: "a", points: 1, description: "Finds rest times $t=\\frac25$ and $t=4$." },
-          { part: "b", points: 1, description: "Finds $a(t)=10t-22$ and $a(2)=-2$." },
-          { part: "c", points: 1, description: "Correctly determines the sign of $v(t)$ on the three intervals." },
-          { part: "c", points: 1, description: "Connects positive velocity to moving right and negative velocity to moving left." },
-          { part: "d", points: 1, description: "Uses $v(1)=-9$ and $a(1)=-12$." },
-          { part: "d", points: 1, description: "Concludes speed is increasing at $t=1$." },
+          {
+            part: "a",
+            points: 1,
+            description: "Finds rest times $t=\\frac25$ and $t=4$.",
+          },
+          {
+            part: "b",
+            points: 1,
+            description: "Finds $a(t)=10t-22$ and $a(2)=-2$.",
+          },
+          {
+            part: "c",
+            points: 1,
+            description:
+              "Correctly determines the sign of $v(t)$ on the three intervals.",
+          },
+          {
+            part: "c",
+            points: 1,
+            description:
+              "Connects positive velocity to moving right and negative velocity to moving left.",
+          },
+          {
+            part: "d",
+            points: 1,
+            description: "Uses $v(1)=-9$ and $a(1)=-12$.",
+          },
+          {
+            part: "d",
+            points: 1,
+            description: "Concludes speed is increasing at $t=1$.",
+          },
         ],
       },
       commonErrors: [
@@ -634,7 +714,12 @@ const topicSeeds: readonly TopicSeed[] = [
           "\\text{The radius of a circular oil slick is increasing at }0.5\\text{ m/min. When }r=4\\text{ m, how fast is the area increasing?}",
         difficulty: 3,
         skillTags: ["rates_other_contexts", "area_rate"],
-        choices: ["$4\\pi\\text{ m}^2/\\text{min}$", "$8\\pi\\text{ m}^2/\\text{min}$", "$2\\pi\\text{ m}^2/\\text{min}$", "$16\\pi\\text{ m}^2/\\text{min}$"],
+        choices: [
+          "$4\\pi\\text{ m}^2/\\text{min}$",
+          "$8\\pi\\text{ m}^2/\\text{min}$",
+          "$2\\pi\\text{ m}^2/\\text{min}$",
+          "$16\\pi\\text{ m}^2/\\text{min}$",
+        ],
         correctLetter: "A",
         rationales: {
           B: "This uses $dr/dt=1$ instead of $0.5$.",
@@ -658,7 +743,11 @@ const topicSeeds: readonly TopicSeed[] = [
         questionLatex:
           "\\text{Demand for a product is }q(p)=100-2p\\text{ items at price }p\\text{ dollars. Revenue is }R(p)=p q(p).\\text{ What is }R'(20)?",
         difficulty: 3,
-        skillTags: ["rates_other_contexts", "revenue_derivative", "product_rule"],
+        skillTags: [
+          "rates_other_contexts",
+          "revenue_derivative",
+          "product_rule",
+        ],
         choices: ["$20$", "$60$", "$100$", "$-20$"],
         correctLetter: "A",
         rationales: {
@@ -684,7 +773,12 @@ const topicSeeds: readonly TopicSeed[] = [
           "\\text{The volume of a spherical balloon is }V=\\frac43\\pi r^3.\\text{ If }\\frac{dV}{dt}=36\\pi\\text{ cm}^3/\\text{s}\\text{ when }r=3,\\text{ then }\\frac{dr}{dt}=",
         difficulty: 3,
         skillTags: ["rates_other_contexts", "volume_rate"],
-        choices: ["$1\\text{ cm/s}$", "$3\\text{ cm/s}$", "$4\\text{ cm/s}$", "$\\frac13\\text{ cm/s}$"],
+        choices: [
+          "$1\\text{ cm/s}$",
+          "$3\\text{ cm/s}$",
+          "$4\\text{ cm/s}$",
+          "$\\frac13\\text{ cm/s}$",
+        ],
         correctLetter: "A",
         rationales: {
           B: "This divides by $12\\pi$ instead of $36\\pi$.",
@@ -709,7 +803,12 @@ const topicSeeds: readonly TopicSeed[] = [
           "\\text{The temperature in a freezer is }F(t)=-18+6e^{-0.2t}\\text{ degrees Celsius. What is }F'(0)?",
         difficulty: 2,
         skillTags: ["rates_other_contexts", "temperature_rate", "chain_rule"],
-        choices: ["$-1.2\\text{ deg C/min}$", "$6\\text{ deg C/min}$", "$-18\\text{ deg C/min}$", "$1.2\\text{ deg C/min}$"],
+        choices: [
+          "$-1.2\\text{ deg C/min}$",
+          "$6\\text{ deg C/min}$",
+          "$-18\\text{ deg C/min}$",
+          "$1.2\\text{ deg C/min}$",
+        ],
         correctLetter: "A",
         rationales: {
           B: "This is the initial exponential offset, not the derivative.",
@@ -734,7 +833,12 @@ const topicSeeds: readonly TopicSeed[] = [
           "\\text{A cube has side length }s(t)\\text{ cm. If }s=5\\text{ and }\\frac{ds}{dt}=0.2\\text{ cm/s, what is }\\frac{d}{dt}(s^3)?",
         difficulty: 2,
         skillTags: ["rates_other_contexts", "volume_rate", "chain_rule"],
-        choices: ["$15\\text{ cm}^3/\\text{s}$", "$3\\text{ cm}^3/\\text{s}$", "$25\\text{ cm}^3/\\text{s}$", "$75\\text{ cm}^3/\\text{s}$"],
+        choices: [
+          "$15\\text{ cm}^3/\\text{s}$",
+          "$3\\text{ cm}^3/\\text{s}$",
+          "$25\\text{ cm}^3/\\text{s}$",
+          "$75\\text{ cm}^3/\\text{s}$",
+        ],
         correctLetter: "A",
         rationales: {
           B: "This uses $3s\\,ds/dt$ instead of $3s^2\\,ds/dt$.",
@@ -759,11 +863,16 @@ const topicSeeds: readonly TopicSeed[] = [
       questionLatex:
         "\\text{A circular stain has radius }r(t)\\text{ centimeters at time }t\\text{ minutes. At }t=10,\\ r=6\\text{ and }\\frac{dr}{dt}=0.4.",
       difficulty: 4,
-      skillTags: ["rates_other_contexts", "area_rate", "second_derivative_context"],
+      skillTags: [
+        "rates_other_contexts",
+        "area_rate",
+        "second_derivative_context",
+      ],
       parts: [
         {
           letter: "a",
-          promptMarkdown: "Find the rate at which the area of the stain is changing at $t=10$.",
+          promptMarkdown:
+            "Find the rate at which the area of the stain is changing at $t=10$.",
           points: 2,
         },
         {
@@ -789,10 +898,27 @@ const topicSeeds: readonly TopicSeed[] = [
         criteria: [
           { part: "a", points: 1, description: "Sets up $dA/dt=2\\pi r r'$." },
           { part: "a", points: 1, description: "Computes $4.8\\pi$ cm²/min." },
-          { part: "b", points: 1, description: "Differentiates $2\\pi r r'$ correctly." },
-          { part: "b", points: 1, description: "Substitutes all values correctly." },
-          { part: "b", points: 1, description: "Computes $-0.04\\pi$ cm²/min²." },
-          { part: "c", points: 1, description: "Interprets the negative sign as the area growth rate decreasing." },
+          {
+            part: "b",
+            points: 1,
+            description: "Differentiates $2\\pi r r'$ correctly.",
+          },
+          {
+            part: "b",
+            points: 1,
+            description: "Substitutes all values correctly.",
+          },
+          {
+            part: "b",
+            points: 1,
+            description: "Computes $-0.04\\pi$ cm²/min².",
+          },
+          {
+            part: "c",
+            points: 1,
+            description:
+              "Interprets the negative sign as the area growth rate decreasing.",
+          },
         ],
       },
       commonErrors: [
@@ -830,7 +956,12 @@ const topicSeeds: readonly TopicSeed[] = [
           "\\text{A square has side length }s\\text{ and area }A.\\text{ Which equation correctly relates }\\frac{dA}{dt}\\text{ and }\\frac{ds}{dt}?",
         difficulty: 2,
         skillTags: ["related_rates_setup", "area_rate"],
-        choices: ["$\\frac{dA}{dt}=2s\\frac{ds}{dt}$", "$\\frac{dA}{dt}=s^2\\frac{ds}{dt}$", "$\\frac{dA}{dt}=2\\frac{ds}{dt}$", "$\\frac{dA}{dt}=\\frac{ds}{dt}$"],
+        choices: [
+          "$\\frac{dA}{dt}=2s\\frac{ds}{dt}$",
+          "$\\frac{dA}{dt}=s^2\\frac{ds}{dt}$",
+          "$\\frac{dA}{dt}=2\\frac{ds}{dt}$",
+          "$\\frac{dA}{dt}=\\frac{ds}{dt}$",
+        ],
         correctLetter: "A",
         rationales: {
           B: "This multiplies by the original area instead of differentiating $s^2$.",
@@ -915,7 +1046,12 @@ const topicSeeds: readonly TopicSeed[] = [
           "\\text{A }6\\text{-ft person walks away from a }15\\text{-ft lamp. If }x\\text{ is the person's distance from the lamp and }y\\text{ is the shadow length, which relation follows from similar triangles?}",
         difficulty: 3,
         skillTags: ["related_rates_setup", "similar_triangles"],
-        choices: ["$\\frac{15}{x+y}=\\frac6y$", "$\\frac{15}{x}=\\frac6y$", "$\\frac6{x+y}=\\frac{15}{y}$", "$15y=6x$"],
+        choices: [
+          "$\\frac{15}{x+y}=\\frac6y$",
+          "$\\frac{15}{x}=\\frac6y$",
+          "$\\frac6{x+y}=\\frac{15}{y}$",
+          "$15y=6x$",
+        ],
         correctLetter: "A",
         rationales: {
           B: "The large triangle's base is $x+y$, not x.",
@@ -940,7 +1076,12 @@ const topicSeeds: readonly TopicSeed[] = [
           "\\text{A cone has fixed shape with height }h=3r.\\text{ Which formula expresses volume only in terms of }h?",
         difficulty: 3,
         skillTags: ["related_rates_setup", "cone_volume"],
-        choices: ["$V=\\frac{\\pi h^3}{27}$", "$V=\\pi h^3$", "$V=\\frac{\\pi h^3}{9}$", "$V=\\frac{\\pi h^2}{9}$"],
+        choices: [
+          "$V=\\frac{\\pi h^3}{27}$",
+          "$V=\\pi h^3$",
+          "$V=\\frac{\\pi h^3}{9}$",
+          "$V=\\frac{\\pi h^2}{9}$",
+        ],
         correctLetter: "A",
         rationales: {
           B: "This ignores both the cone formula and the radius-height relationship.",
@@ -995,7 +1136,11 @@ const topicSeeds: readonly TopicSeed[] = [
         maxPoints: 6,
         criteria: [
           { part: "a", points: 1, description: "Uses chain rule on $r^3$." },
-          { part: "a", points: 1, description: "Gets $dV/dt=4\\pi r^2 dr/dt$." },
+          {
+            part: "a",
+            points: 1,
+            description: "Gets $dV/dt=4\\pi r^2 dr/dt$.",
+          },
           { part: "b", points: 1, description: "Substitutes $dV/dt=48\\pi$." },
           { part: "b", points: 1, description: "Solves for $dr/dt=12/r^2$." },
           { part: "c", points: 1, description: "Substitutes $r=4$." },
@@ -1010,8 +1155,7 @@ const topicSeeds: readonly TopicSeed[] = [
       workedSolution: [
         {
           part: "a",
-          explanation:
-            "$\\frac{dV}{dt}=4\\pi r^2\\frac{dr}{dt}$.",
+          explanation: "$\\frac{dV}{dt}=4\\pi r^2\\frac{dr}{dt}$.",
         },
         {
           part: "b",
@@ -1037,7 +1181,12 @@ const topicSeeds: readonly TopicSeed[] = [
           "\\text{The radius of a circle is increasing at }2\\text{ cm/s. When }r=5\\text{ cm, how fast is the area increasing?}",
         difficulty: 2,
         skillTags: ["related_rates", "area_rate"],
-        choices: ["$20\\pi\\text{ cm}^2/\\text{s}$", "$10\\pi\\text{ cm}^2/\\text{s}$", "$25\\pi\\text{ cm}^2/\\text{s}$", "$4\\pi\\text{ cm}^2/\\text{s}$"],
+        choices: [
+          "$20\\pi\\text{ cm}^2/\\text{s}$",
+          "$10\\pi\\text{ cm}^2/\\text{s}$",
+          "$25\\pi\\text{ cm}^2/\\text{s}$",
+          "$4\\pi\\text{ cm}^2/\\text{s}$",
+        ],
         correctLetter: "A",
         rationales: {
           B: "This uses $dr/dt=1$ instead of 2.",
@@ -1062,7 +1211,12 @@ const topicSeeds: readonly TopicSeed[] = [
           "\\text{A }13\\text{-ft ladder slides down a wall. When the top is }5\\text{ ft high, it is moving downward at }2\\text{ ft/s. How fast is the bottom moving away from the wall?}",
         difficulty: 3,
         skillTags: ["related_rates", "ladder_problem"],
-        choices: ["$\\frac56\\text{ ft/s}$", "$\\frac{10}{13}\\text{ ft/s}$", "$\\frac{12}{5}\\text{ ft/s}$", "$\\frac65\\text{ ft/s}$"],
+        choices: [
+          "$\\frac56\\text{ ft/s}$",
+          "$\\frac{10}{13}\\text{ ft/s}$",
+          "$\\frac{12}{5}\\text{ ft/s}$",
+          "$\\frac65\\text{ ft/s}$",
+        ],
         correctLetter: "A",
         rationales: {
           B: "This uses the ladder length as the horizontal distance.",
@@ -1089,10 +1243,15 @@ const topicSeeds: readonly TopicSeed[] = [
       },
       {
         questionLatex:
-          "\\text{Water flows into a cone at }3\\text{ cm}^3/\\text{s}. The water height }h\\text{ and radius }r\\text{ satisfy }h=2r.\\text{ When }h=6,\\text{ what is }\\frac{dh}{dt}?",
+          "Water flows into a cone at $3\\text{ cm}^3/\\text{s}$. The water height $h$ and radius $r$ satisfy $h=2r$. When $h=6$, what is $\\frac{dh}{dt}$?",
         difficulty: 4,
         skillTags: ["related_rates", "cone_volume"],
-        choices: ["$\\frac1{3\\pi}\\text{ cm/s}$", "$\\frac1{9\\pi}\\text{ cm/s}$", "$\\frac3\\pi\\text{ cm/s}$", "$\\frac1\\pi\\text{ cm/s}$"],
+        choices: [
+          "$\\frac1{3\\pi}\\text{ cm/s}$",
+          "$\\frac1{9\\pi}\\text{ cm/s}$",
+          "$\\frac3\\pi\\text{ cm/s}$",
+          "$\\frac1\\pi\\text{ cm/s}$",
+        ],
         correctLetter: "A",
         rationales: {
           B: "This uses an incorrect volume-height relationship.",
@@ -1122,7 +1281,12 @@ const topicSeeds: readonly TopicSeed[] = [
           "\\text{A }6\\text{-ft person walks away from a }15\\text{-ft lamp at }4\\text{ ft/s. How fast is the tip of the shadow moving away from the lamp?}",
         difficulty: 4,
         skillTags: ["related_rates", "shadow_problem", "similar_triangles"],
-        choices: ["$\\frac{20}{3}\\text{ ft/s}$", "$\\frac83\\text{ ft/s}$", "$4\\text{ ft/s}$", "$\\frac{12}{5}\\text{ ft/s}$"],
+        choices: [
+          "$\\frac{20}{3}\\text{ ft/s}$",
+          "$\\frac83\\text{ ft/s}$",
+          "$4\\text{ ft/s}$",
+          "$\\frac{12}{5}\\text{ ft/s}$",
+        ],
         correctLetter: "A",
         rationales: {
           B: "This is the rate at which the shadow length changes, not the tip's distance from the lamp.",
@@ -1149,10 +1313,15 @@ const topicSeeds: readonly TopicSeed[] = [
       },
       {
         questionLatex:
-          "\\text{A spherical balloon's volume increases at }12\\pi\\text{ in}^3/\\text{s}. When }r=2\\text{ in, how fast is the radius increasing?}",
+          "A spherical balloon's volume increases at $12\\pi\\text{ in}^3/\\text{s}$. When $r=2\\text{ in}$, how fast is the radius increasing?",
         difficulty: 2,
         skillTags: ["related_rates", "sphere_volume"],
-        choices: ["$\\frac34\\text{ in/s}$", "$3\\text{ in/s}$", "$\\frac{3}{16}\\text{ in/s}$", "$12\\pi\\text{ in/s}$"],
+        choices: [
+          "$\\frac34\\text{ in/s}$",
+          "$3\\text{ in/s}$",
+          "$\\frac{3}{16}\\text{ in/s}$",
+          "$12\\pi\\text{ in/s}$",
+        ],
         correctLetter: "A",
         rationales: {
           B: "This divides by $4\\pi$ instead of $16\\pi$.",
@@ -1181,7 +1350,8 @@ const topicSeeds: readonly TopicSeed[] = [
       parts: [
         {
           letter: "a",
-          promptMarkdown: "Write an equation relating $x$ and $y$, then differentiate it with respect to time.",
+          promptMarkdown:
+            "Write an equation relating $x$ and $y$, then differentiate it with respect to time.",
           points: 2,
         },
         {
@@ -1206,11 +1376,23 @@ const topicSeeds: readonly TopicSeed[] = [
         maxPoints: 6,
         criteria: [
           { part: "a", points: 1, description: "Writes $x^2+y^2=100$." },
-          { part: "a", points: 1, description: "Differentiates to $x dx/dt+y dy/dt=0$ or equivalent." },
+          {
+            part: "a",
+            points: 1,
+            description: "Differentiates to $x dx/dt+y dy/dt=0$ or equivalent.",
+          },
           { part: "b", points: 1, description: "Finds $y=8$ when $x=6$." },
           { part: "b", points: 1, description: "Computes $dy/dt=-9/8$ ft/s." },
-          { part: "c", points: 1, description: "Compares speed magnitudes $9/8$ and $3/2$." },
-          { part: "c", points: 1, description: "Concludes the top is moving slower." },
+          {
+            part: "c",
+            points: 1,
+            description: "Compares speed magnitudes $9/8$ and $3/2$.",
+          },
+          {
+            part: "c",
+            points: 1,
+            description: "Concludes the top is moving slower.",
+          },
         ],
       },
       commonErrors: [
@@ -1239,7 +1421,8 @@ const topicSeeds: readonly TopicSeed[] = [
   },
   {
     topicCode: "4.6",
-    title: "Approximating Values of a Function Using Local Linearity and Linearization",
+    title:
+      "Approximating Values of a Function Using Local Linearity and Linearization",
     subtopic:
       "Using tangent lines and differentials to approximate values and reason about overestimates or underestimates",
     mc: [
@@ -1298,7 +1481,12 @@ const topicSeeds: readonly TopicSeed[] = [
           "\\text{If }f''(x)<0\\text{ near }x=a,\\text{ then the tangent-line approximation to }f(a+h)\\text{ for small }h\\text{ is usually}",
         difficulty: 3,
         skillTags: ["linearization", "concavity_error"],
-        choices: ["\\text{an overestimate}", "\\text{an underestimate}", "\\text{exact}", "\\text{impossible to compare from concavity}"],
+        choices: [
+          "\\text{an overestimate}",
+          "\\text{an underestimate}",
+          "\\text{exact}",
+          "\\text{impossible to compare from concavity}",
+        ],
         correctLetter: "A",
         rationales: {
           B: "For concave down functions, tangent lines lie above the graph locally.",
@@ -1323,7 +1511,12 @@ const topicSeeds: readonly TopicSeed[] = [
           "\\text{A sphere has radius }3\\text{ cm. Use differentials to approximate the change in volume if the radius increases by }0.1\\text{ cm.}",
         difficulty: 3,
         skillTags: ["differentials", "volume_approximation"],
-        choices: ["$3.6\\pi\\text{ cm}^3$", "$0.9\\pi\\text{ cm}^3$", "$36\\pi\\text{ cm}^3$", "$4\\pi\\text{ cm}^3$"],
+        choices: [
+          "$3.6\\pi\\text{ cm}^3$",
+          "$0.9\\pi\\text{ cm}^3$",
+          "$36\\pi\\text{ cm}^3$",
+          "$4\\pi\\text{ cm}^3$",
+        ],
         correctLetter: "A",
         rationales: {
           B: "This uses $\\pi r^2dr$ instead of $4\\pi r^2dr$.",
@@ -1355,11 +1548,7 @@ const topicSeeds: readonly TopicSeed[] = [
           C: "This is $\\ln1$ but ignores the input change.",
           D: "This is the derivative near 1.1, not the linear estimate from x=1.",
         },
-        hints: [
-          "$f(1)=0$.",
-          "$f'(1)=1$.",
-          "Use $L(x)=x-1$.",
-        ],
+        hints: ["$f(1)=0$.", "$f'(1)=1$.", "Use $L(x)=x-1$."],
         solution: [
           {
             step: 1,
@@ -1370,8 +1559,7 @@ const topicSeeds: readonly TopicSeed[] = [
       },
     ],
     frq: {
-      questionLatex:
-        "\\text{Let }f(x)=\\sqrt{x+5}.",
+      questionLatex: "\\text{Let }f(x)=\\sqrt{x+5}.",
       difficulty: 4,
       skillTags: ["linearization", "concavity_error", "tangent_line"],
       parts: [
@@ -1400,12 +1588,25 @@ const topicSeeds: readonly TopicSeed[] = [
       rubric: {
         maxPoints: 6,
         criteria: [
-          { part: "a", points: 1, description: "Finds $f(4)=3$ and $f'(4)=1/6$." },
-          { part: "a", points: 1, description: "Writes $L(x)=3+\\frac16(x-4)$." },
+          {
+            part: "a",
+            points: 1,
+            description: "Finds $f(4)=3$ and $f'(4)=1/6$.",
+          },
+          {
+            part: "a",
+            points: 1,
+            description: "Writes $L(x)=3+\\frac16(x-4)$.",
+          },
           { part: "b", points: 1, description: "Substitutes x=4.3 correctly." },
           { part: "b", points: 1, description: "Computes $3.05$." },
           { part: "c", points: 1, description: "Identifies that $f''(x)<0$." },
-          { part: "c", points: 1, description: "Concludes the tangent-line approximation is an overestimate." },
+          {
+            part: "c",
+            points: 1,
+            description:
+              "Concludes the tangent-line approximation is an overestimate.",
+          },
         ],
       },
       commonErrors: [
@@ -1421,8 +1622,7 @@ const topicSeeds: readonly TopicSeed[] = [
         },
         {
           part: "b",
-          explanation:
-            "$f(4.3)\\approx L(4.3)=3+\\frac16(0.3)=3.05$.",
+          explanation: "$f(4.3)\\approx L(4.3)=3+\\frac16(0.3)=3.05$.",
         },
         {
           part: "c",
@@ -1434,13 +1634,13 @@ const topicSeeds: readonly TopicSeed[] = [
   },
   {
     topicCode: "4.7",
-    title: "Using L'Hospital's Rule for Determining Limits of Indeterminate Forms",
+    title:
+      "Using L'Hospital's Rule for Determining Limits of Indeterminate Forms",
     subtopic:
       "Applying L'Hospital's Rule with justification, including repeated use and non-applicable forms",
     mc: [
       {
-        questionLatex:
-          "\\lim_{x\\to0}\\frac{\\sin(3x)}{x}=",
+        questionLatex: "\\lim_{x\\to0}\\frac{\\sin(3x)}{x}=",
         difficulty: 2,
         skillTags: ["lhospital", "trig_limit"],
         choices: ["$3$", "$1$", "$0$", "\\text{Does not exist}"],
@@ -1464,8 +1664,7 @@ const topicSeeds: readonly TopicSeed[] = [
         ],
       },
       {
-        questionLatex:
-          "\\lim_{x\\to\\infty}\\frac{x}{e^x}=",
+        questionLatex: "\\lim_{x\\to\\infty}\\frac{x}{e^x}=",
         difficulty: 2,
         skillTags: ["lhospital", "infinity_over_infinity"],
         choices: ["$0$", "$1$", "\\infty", "\\text{Does not exist}"],
@@ -1489,8 +1688,7 @@ const topicSeeds: readonly TopicSeed[] = [
         ],
       },
       {
-        questionLatex:
-          "\\lim_{x\\to0}\\frac{e^{2x}-1}{x}=",
+        questionLatex: "\\lim_{x\\to0}\\frac{e^{2x}-1}{x}=",
         difficulty: 2,
         skillTags: ["lhospital", "exponential_limit"],
         choices: ["$2$", "$1$", "$0$", "$e^2$"],
@@ -1514,8 +1712,7 @@ const topicSeeds: readonly TopicSeed[] = [
         ],
       },
       {
-        questionLatex:
-          "\\lim_{x\\to0}\\frac{1-\\cos x}{x^2}=",
+        questionLatex: "\\lim_{x\\to0}\\frac{1-\\cos x}{x^2}=",
         difficulty: 3,
         skillTags: ["lhospital", "repeated_lhospital"],
         choices: ["$\\frac12$", "$1$", "$0$", "\\text{Does not exist}"],
@@ -1587,7 +1784,8 @@ const topicSeeds: readonly TopicSeed[] = [
         },
         {
           letter: "b",
-          promptMarkdown: "$\\displaystyle \\lim_{x\\to\\infty}\\frac{\\ln x}{x}$",
+          promptMarkdown:
+            "$\\displaystyle \\lim_{x\\to\\infty}\\frac{\\ln x}{x}$",
           points: 2,
         },
         {
@@ -1605,12 +1803,35 @@ const topicSeeds: readonly TopicSeed[] = [
       rubric: {
         maxPoints: 6,
         criteria: [
-          { part: "a", points: 1, description: "Identifies 0/0 and applies L'Hospital appropriately." },
-          { part: "a", points: 1, description: "Applies L'Hospital twice and obtains $1/2$." },
-          { part: "b", points: 1, description: "Identifies $\\infty/\\infty$ and differentiates correctly." },
+          {
+            part: "a",
+            points: 1,
+            description: "Identifies 0/0 and applies L'Hospital appropriately.",
+          },
+          {
+            part: "a",
+            points: 1,
+            description: "Applies L'Hospital twice and obtains $1/2$.",
+          },
+          {
+            part: "b",
+            points: 1,
+            description:
+              "Identifies $\\infty/\\infty$ and differentiates correctly.",
+          },
           { part: "b", points: 1, description: "Obtains 0." },
-          { part: "c", points: 1, description: "States the numerator tends to 1 and denominator tends to 0." },
-          { part: "c", points: 1, description: "Concludes the form is not 0/0 or $\\infty/\\infty$, so direct L'Hospital is not allowed." },
+          {
+            part: "c",
+            points: 1,
+            description:
+              "States the numerator tends to 1 and denominator tends to 0.",
+          },
+          {
+            part: "c",
+            points: 1,
+            description:
+              "Concludes the form is not 0/0 or $\\infty/\\infty$, so direct L'Hospital is not allowed.",
+          },
         ],
       },
       commonErrors: [
