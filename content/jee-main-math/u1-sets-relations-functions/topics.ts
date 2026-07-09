@@ -10,7 +10,7 @@ import type {
 
 const COURSE = "jee-main-math";
 const UNIT = "u1-sets-relations-functions";
-const VERSION = "0.3.2";
+const VERSION = "0.3.3";
 const REVIEW_STATUS = "human_review_required" as const;
 const SOURCE_TYPE = "original_ai_assisted_question" as const;
 const LETTERS = ["A", "B", "C", "D"] as const;
@@ -266,7 +266,7 @@ const topicSeeds: readonly TopicSeed[] = [
       "Inclusion-exclusion, complements, symmetric difference, and power-set counts with constraints.",
     mc: [
       {
-        questionLatex: L`In a universal set of 60 elements, sets A,B,C satisfy |A|=32,\ |B|=28,\ |C|=26,\ |A\cap B|=14,\ |B\cap C|=12,\ |C\cap A|=10. If exactly 29 elements belong to exactly one of A,B,C, then |A\cap B\cap C| is`,
+        questionLatex: L`In a universal set of 60 elements, sets $A,B,C$ satisfy $|A|=32$, $|B|=28$, $|C|=26$, $|A\cap B|=14$, $|B\cap C|=12$, $|C\cap A|=10$. If exactly 29 elements belong to exactly one of $A,B,C$, then $|A\cap B\cap C|$ is`,
         difficulty: 4,
         skillTags: ["three_set_inclusion_exclusion", "exactly_one_counting"],
         choices: [L`$4$`, L`$5$`, L`$6$`, L`$7$`],
@@ -306,7 +306,7 @@ const topicSeeds: readonly TopicSeed[] = [
         ],
       },
       {
-        questionLatex: L`For finite sets A and B, |{\cal P}(A\cup B)|=512,\ |{\cal P}(A\cap B)|=8, and |{\cal P}(A\setminus B)|=32. Then |B\setminus A| equals`,
+        questionLatex: L`For finite sets $A$ and $B$, $|{\cal P}(A\cup B)|=512$, $|{\cal P}(A\cap B)|=8$, and $|{\cal P}(A\setminus B)|=32$. Then $|B\setminus A|$ equals`,
         difficulty: 4,
         skillTags: ["power_set_cardinality", "set_partition"],
         choices: [L`$1$`, L`$2$`, L`$3$`, L`$4$`],
@@ -346,7 +346,7 @@ const topicSeeds: readonly TopicSeed[] = [
         ],
       },
       {
-        questionLatex: L`Let X=\{1,2,\ldots,8\}. The number of subsets S of X that contain exactly one element from each of \{1,2\} and \{3,4\}, and do not contain both 5 and 6, is`,
+        questionLatex: L`Let $X=\{1,2,\ldots,8\}$. The number of subsets $S$ of $X$ that contain exactly one element from each of $\{1,2\}$ and $\{3,4\}$, and do not contain both $5$ and $6$, is`,
         difficulty: 4,
         skillTags: ["restricted_subsets", "case_counting"],
         choices: [L`$32$`, L`$40$`, L`$48$`, L`$64$`],
@@ -386,7 +386,7 @@ const topicSeeds: readonly TopicSeed[] = [
         ],
       },
       {
-        questionLatex: L`For subsets A and B of a universal set U, which identity is always true?`,
+        questionLatex: L`For subsets $A$ and $B$ of a universal set $U$, which identity is always true?`,
         difficulty: 3,
         skillTags: ["symmetric_difference", "complement_laws"],
         choices: [
@@ -427,7 +427,7 @@ const topicSeeds: readonly TopicSeed[] = [
         ],
       },
       {
-        questionLatex: L`Let |U|=n,\ |A|=a,\ |B|=b, where A,B\subseteq U. The maximum possible value of |{\cal P}(A)\setminus{\cal P}(B)| is`,
+        questionLatex: L`Let $|U|=n$, $|A|=a$, $|B|=b$, where $A,B\subseteq U$. The maximum possible value of $|{\cal P}(A)\setminus{\cal P}(B)|$ is`,
         difficulty: 5,
         skillTags: ["power_set_difference", "extremal_set_intersection"],
         choices: [
@@ -474,7 +474,7 @@ const topicSeeds: readonly TopicSeed[] = [
         ],
       },
       {
-        questionLatex: L`For finite sets A,B\subseteq U, suppose |{\cal P}(A)|=4|{\cal P}(B)| and |{\cal P}(A\cup B)|=64|{\cal P}(A\cap B)|. Then |A\setminus B| is`,
+        questionLatex: L`For finite sets $A,B\subseteq U$, suppose $|{\cal P}(A)|=4|{\cal P}(B)|$ and $|{\cal P}(A\cup B)|=64|{\cal P}(A\cap B)|$. Then $|A\setminus B|$ is`,
         difficulty: 5,
         skillTags: ["power_set_cardinality", "symmetric_difference_counting"],
         choices: [L`$2$`, L`$3$`, L`$4$`, L`$6$`],
@@ -515,7 +515,7 @@ const topicSeeds: readonly TopicSeed[] = [
         ],
       },
       {
-        questionLatex: L`The number of subsets S of \{1,2,\ldots,10\} having even cardinality and containing at least one of 1,2,3 is`,
+        questionLatex: L`The number of subsets $S$ of $\{1,2,\ldots,10\}$ having even cardinality and containing at least one of $1,2,3$ is`,
         difficulty: 4,
         skillTags: ["restricted_subsets", "parity_counting"],
         choices: [L`$384$`, L`$448$`, L`$496$`, L`$512$`],
@@ -556,7 +556,7 @@ const topicSeeds: readonly TopicSeed[] = [
         ],
       },
       {
-        questionLatex: L`Let U have 8 elements. The number of ordered pairs (A,B) of subsets of U such that A\cup B=U and A\cap B=\varnothing is`,
+        questionLatex: L`Let $U$ have $8$ elements. The number of ordered pairs $(A,B)$ of subsets of $U$ such that $A\cup B=U$ and $A\cap B=\varnothing$ is`,
         difficulty: 3,
         skillTags: ["set_pair_counting", "partition_counting"],
         choices: [L`$2^8$`, L`$3^8$`, L`$2^8-2$`, L`$\binom82$`],
@@ -586,7 +586,7 @@ const topicSeeds: readonly TopicSeed[] = [
         ],
       },
       {
-        questionLatex: L`If A,B,C are subsets of a universal set U, then A\cap(B\triangle C) is always equal to`,
+        questionLatex: L`If $A,B,C$ are subsets of a universal set $U$, then $A\cap(B\triangle C)$ is always equal to`,
         difficulty: 4,
         skillTags: ["set_identities", "symmetric_difference"],
         choices: [
@@ -627,7 +627,7 @@ const topicSeeds: readonly TopicSeed[] = [
         ],
       },
       {
-        questionLatex: L`Let |A|=5,\ |B|=6 and |A\cap B|=2. The number of subsets of A\cup B that are not subsets of A and not subsets of B is`,
+        questionLatex: L`Let $|A|=5$, $|B|=6$, and $|A\cap B|=2$. The number of subsets of $A\cup B$ that are not subsets of $A$ and not subsets of $B$ is`,
         difficulty: 4,
         skillTags: ["power_set_counting", "complement_counting"],
         choices: [L`$384$`, L`$420$`, L`$448$`, L`$512$`],
@@ -664,7 +664,7 @@ const topicSeeds: readonly TopicSeed[] = [
     ],
     numeric: [
       {
-        questionLatex: L`Let U=\{1,2,\ldots,100\}. Let A,B,C be the sets of multiples of 2,3,5 respectively. Find the number of elements of U that belong to exactly two of A,B,C.`,
+        questionLatex: L`Let $U=\{1,2,\ldots,100\}$. Let $A,B,C$ be the sets of multiples of $2,3,5$ respectively. Find the number of elements of $U$ that belong to exactly two of $A,B,C$.`,
         difficulty: 4,
         skillTags: ["exactly_two_counting", "multiples_inclusion_exclusion"],
         promptMarkdown: "Enter the number of such elements.",
@@ -686,7 +686,7 @@ const topicSeeds: readonly TopicSeed[] = [
           "The pairwise counts are $\\lfloor100/6\\rfloor=16$, $\\lfloor100/10\\rfloor=10$, and $\\lfloor100/15\\rfloor=6$. The triple count is $\\lfloor100/30\\rfloor=3$. Therefore exactly two equals $(16-3)+(10-3)+(6-3)=23$.",
       },
       {
-        questionLatex: L`A set X has 12 elements and T\subset X has 5 elements. How many subsets S of X satisfy |S\cap T|=3 and |S\setminus T|\ge 2?`,
+        questionLatex: L`A set $X$ has $12$ elements and $T\subset X$ has $5$ elements. How many subsets $S$ of $X$ satisfy $|S\cap T|=3$ and $|S\setminus T|\ge 2$?`,
         difficulty: 4,
         skillTags: ["restricted_subsets", "combination_counting"],
         promptMarkdown: "Enter the number of subsets.",
@@ -708,7 +708,7 @@ const topicSeeds: readonly TopicSeed[] = [
           "Choose $3$ from $T$ in $\\binom53=10$ ways. From the other 7 elements, all subsets except sizes 0 and 1 are allowed, giving $2^7-1-7=120$ choices. Hence the answer is $10\\cdot120=1200$.",
       },
       {
-        questionLatex: L`For three sets A,B,C, suppose |A\cup B\cup C|=40. Exactly 18 elements belong to exactly one of the sets, and exactly 15 elements belong to exactly two of the sets. Find |A\cap B\cap C|.`,
+        questionLatex: L`For three sets $A,B,C$, suppose $|A\cup B\cup C|=40$. Exactly $18$ elements belong to exactly one of the sets, and exactly $15$ elements belong to exactly two of the sets. Find $|A\cap B\cap C|$.`,
         difficulty: 3,
         skillTags: ["venn_partition", "three_set_counting"],
         promptMarkdown: "Enter the value of $|A\\cap B\\cap C|$.",
@@ -730,7 +730,7 @@ const topicSeeds: readonly TopicSeed[] = [
           "The union is partitioned into exactly one, exactly two, and exactly three. Hence $40=18+15+|A\\cap B\\cap C|$, so $|A\\cap B\\cap C|=7$.",
       },
       {
-        questionLatex: L`If |{\cal P}(A\cap B)|=16,\ |{\cal P}(A\cup B)|=1024, and |A\setminus B|=3, find |B\setminus A|.`,
+        questionLatex: L`If $|{\cal P}(A\cap B)|=16$, $|{\cal P}(A\cup B)|=1024$, and $|A\setminus B|=3$, find $|B\setminus A|$.`,
         difficulty: 4,
         skillTags: ["power_set_cardinality", "set_partition"],
         promptMarkdown: "Enter the value of $|B\\setminus A|$.",
@@ -752,7 +752,7 @@ const topicSeeds: readonly TopicSeed[] = [
           "$|A\\cap B|=4$ and $|A\\cup B|=10$. Since $A\\cup B$ splits as $(A\\setminus B)\\cup(A\\cap B)\\cup(B\\setminus A)$, we get $10=3+4+|B\\setminus A|$. Thus $|B\\setminus A|=3$.",
       },
       {
-        questionLatex: L`Let X=\{1,2,\ldots,6\}. Find the number of ordered pairs (A,B) of subsets of X such that A\subseteq B and |B\setminus A|=2.`,
+        questionLatex: L`Let $X=\{1,2,\ldots,6\}$. Find the number of ordered pairs $(A,B)$ of subsets of $X$ such that $A\subseteq B$ and $|B\setminus A|=2$.`,
         difficulty: 5,
         skillTags: ["ordered_subset_pairs", "state_counting"],
         promptMarkdown: "Enter the number of ordered pairs.",
@@ -782,7 +782,7 @@ const topicSeeds: readonly TopicSeed[] = [
       "Reflexive, symmetric, transitive, anti-symmetric, and equivalence-class reasoning.",
     mc: [
       {
-        questionLatex: L`On A=\{1,2,3,4\}, define a relation R by aRb if and only if a divides b or b divides a. Which option correctly describes R?`,
+        questionLatex: L`On $A=\{1,2,3,4\}$, define a relation $R$ by $aRb$ if and only if $a$ divides $b$ or $b$ divides $a$. Which option correctly describes $R$?`,
         difficulty: 4,
         skillTags: ["relation_properties", "transitivity_counterexample"],
         choices: [
@@ -829,7 +829,7 @@ const topicSeeds: readonly TopicSeed[] = [
         ],
       },
       {
-        questionLatex: L`On A=\{1,2,3,4,5\}, define xRy if and only if x+y is even. Then R is`,
+        questionLatex: L`On $A=\{1,2,3,4,5\}$, define $xRy$ if and only if $x+y$ is even. Then $R$ is`,
         difficulty: 3,
         skillTags: ["equivalence_relation", "parity_classes"],
         choices: [
@@ -874,7 +874,7 @@ const topicSeeds: readonly TopicSeed[] = [
         ],
       },
       {
-        questionLatex: L`Let R be the relation on \{1,2,3,4,5,6\} defined by aRb if and only if \gcd(a,b)>1. Which statement is true?`,
+        questionLatex: L`Let $R$ be the relation on $\{1,2,3,4,5,6\}$ defined by $aRb$ if and only if $\gcd(a,b)>1$. Which statement is true?`,
         difficulty: 4,
         skillTags: ["relation_properties", "gcd_relation"],
         choices: [
@@ -918,7 +918,7 @@ const topicSeeds: readonly TopicSeed[] = [
         ],
       },
       {
-        questionLatex: L`The number of symmetric relations on a 4-element set that are not reflexive is`,
+        questionLatex: L`The number of symmetric relations on a $4$-element set that are not reflexive is`,
         difficulty: 5,
         skillTags: ["counting_relations", "symmetric_relations"],
         choices: [L`$64$`, L`$512$`, L`$960$`, L`$1024$`],
@@ -958,7 +958,7 @@ const topicSeeds: readonly TopicSeed[] = [
         ],
       },
       {
-        questionLatex: L`Let R on integers be defined by aRb if and only if a-b is divisible by 6. Restricted to \{1,2,\ldots,100\}, the number of equivalence classes represented is`,
+        questionLatex: L`Let $R$ on integers be defined by $aRb$ if and only if $a-b$ is divisible by $6$. Restricted to $\{1,2,\ldots,100\}$, the number of equivalence classes represented is`,
         difficulty: 3,
         skillTags: ["modular_equivalence", "equivalence_classes"],
         choices: [L`$4$`, L`$5$`, L`$6$`, L`$100$`],
@@ -994,7 +994,7 @@ const topicSeeds: readonly TopicSeed[] = [
         ],
       },
       {
-        questionLatex: L`The number of reflexive and symmetric relations on a 3-element set that are not transitive is`,
+        questionLatex: L`The number of reflexive and symmetric relations on a $3$-element set that are not transitive is`,
         difficulty: 5,
         skillTags: ["relation_counting", "transitivity"],
         choices: [L`$2$`, L`$3$`, L`$4$`, L`$5$`],
@@ -1034,7 +1034,7 @@ const topicSeeds: readonly TopicSeed[] = [
         ],
       },
       {
-        questionLatex: L`On X=\{0,1,2,\ldots,9\}, define aRb if and only if a^2\equiv b^2\pmod 5. Then |R| is`,
+        questionLatex: L`On $X=\{0,1,2,\ldots,9\}$, define $aRb$ if and only if $a^2\equiv b^2\pmod 5$. Then $|R|$ is`,
         difficulty: 5,
         skillTags: ["modular_equivalence", "relation_cardinality"],
         choices: [L`$20$`, L`$28$`, L`$36$`, L`$40$`],
@@ -1068,7 +1068,7 @@ const topicSeeds: readonly TopicSeed[] = [
         ],
       },
       {
-        questionLatex: L`Let R=\{(1,1),(2,2),(3,3),(1,2),(2,3)\} on A=\{1,2,3\}. The minimum number of ordered pairs that must be added to make R reflexive and transitive is`,
+        questionLatex: L`Let $R=\{(1,1),(2,2),(3,3),(1,2),(2,3)\}$ on $A=\{1,2,3\}$. The minimum number of ordered pairs that must be added to make $R$ reflexive and transitive is`,
         difficulty: 4,
         skillTags: ["transitive_closure", "relation_repair"],
         choices: [L`$0$`, L`$1$`, L`$2$`, L`$3$`],
@@ -1102,7 +1102,7 @@ const topicSeeds: readonly TopicSeed[] = [
         ],
       },
       {
-        questionLatex: L`On A=\{1,2,3,4\}, define aRb if and only if a=b or a+b=5. Which statement is correct?`,
+        questionLatex: L`On $A=\{1,2,3,4\}$, define $aRb$ if and only if $a=b$ or $a+b=5$. Which statement is correct?`,
         difficulty: 4,
         skillTags: ["equivalence_relation", "relation_properties"],
         choices: [
@@ -1141,7 +1141,7 @@ const topicSeeds: readonly TopicSeed[] = [
         ],
       },
       {
-        questionLatex: L`The number of relations on a 2-element set that are both symmetric and anti-symmetric is`,
+        questionLatex: L`The number of relations on a $2$-element set that are both symmetric and anti-symmetric is`,
         difficulty: 4,
         skillTags: ["relation_counting", "symmetric_antisymmetric"],
         choices: [L`$2$`, L`$4$`, L`$6$`, L`$8$`],
@@ -1178,7 +1178,7 @@ const topicSeeds: readonly TopicSeed[] = [
     ],
     numeric: [
       {
-        questionLatex: L`Find the number of equivalence relations on A=\{1,2,3,4\} having exactly two equivalence classes.`,
+        questionLatex: L`Find the number of equivalence relations on $A=\{1,2,3,4\}$ having exactly two equivalence classes.`,
         difficulty: 4,
         skillTags: ["equivalence_relations", "set_partitions"],
         promptMarkdown: "Enter the number of such equivalence relations.",
@@ -1200,7 +1200,7 @@ const topicSeeds: readonly TopicSeed[] = [
           "A two-class equivalence relation is a partition of the 4-element set into two nonempty blocks. Choose a nonempty proper block in $2^4-2=14$ ways, then divide by 2 because each partition is counted by either block. The answer is $14/2=7$.",
       },
       {
-        questionLatex: L`On A=\{1,2,\ldots,9\}, define aRb if and only if |a-b| is divisible by 3. Find the product of the sizes of all equivalence classes.`,
+        questionLatex: L`On $A=\{1,2,\ldots,9\}$, define $aRb$ if and only if $|a-b|$ is divisible by $3$. Find the product of the sizes of all equivalence classes.`,
         difficulty: 3,
         skillTags: ["modular_classes", "class_size_counting"],
         promptMarkdown: "Enter the product.",
@@ -1222,7 +1222,7 @@ const topicSeeds: readonly TopicSeed[] = [
           "The classes are $\\{1,4,7\\}$, $\\{2,5,8\\}$, and $\\{3,6,9\\}$. Each has size 3, so the product is $3\\cdot3\\cdot3=27$.",
       },
       {
-        questionLatex: L`On A=\{1,2,3\}, let R=\{(1,1),(2,2),(3,3),(1,2),(2,1),(2,3),(3,2)\}. What is the minimum number of ordered pairs that must be added to make R an equivalence relation?`,
+        questionLatex: L`On $A=\{1,2,3\}$, let $R=\{(1,1),(2,2),(3,3),(1,2),(2,1),(2,3),(3,2)\}$. What is the minimum number of ordered pairs that must be added to make $R$ an equivalence relation?`,
         difficulty: 4,
         skillTags: ["equivalence_closure", "transitive_closure"],
         figure: relationGraphFigure,
@@ -1245,7 +1245,7 @@ const topicSeeds: readonly TopicSeed[] = [
           "The given relation already contains all three diagonal pairs and is symmetric. Since $(1,2)$ and $(2,3)$ are in $R$, transitivity requires $(1,3)$. By symmetry, $(3,1)$ is also needed. These two additions make the relation universal on $A$, hence an equivalence relation. The answer is $2$.",
       },
       {
-        questionLatex: L`Find the number of anti-symmetric relations on a 3-element set.`,
+        questionLatex: L`Find the number of anti-symmetric relations on a $3$-element set.`,
         difficulty: 5,
         skillTags: ["antisymmetric_relation_counting"],
         promptMarkdown: "Enter the number of anti-symmetric relations.",
@@ -1267,7 +1267,7 @@ const topicSeeds: readonly TopicSeed[] = [
           "Each diagonal pair may be included or not, giving $2^3$ choices. For each of the $\\binom32=3$ unordered distinct pairs, the allowed choices are neither direction, one direction, or the other direction: 3 choices. Total $2^3\\cdot3^3=216$.",
       },
       {
-        questionLatex: L`Let A=\{1,2,\ldots,10\}. Define aRb if and only if a+b is even. Find the number of ordered pairs in R.`,
+        questionLatex: L`Let $A=\{1,2,\ldots,10\}$. Define $aRb$ if and only if $a+b$ is even. Find the number of ordered pairs in $R$.`,
         difficulty: 3,
         skillTags: ["relation_cardinality", "parity_counting"],
         promptMarkdown: "Enter $|R|$.",
@@ -1297,7 +1297,7 @@ const topicSeeds: readonly TopicSeed[] = [
       "Function counts, range restrictions, one-one tests, and domain/range traps.",
     mc: [
       {
-        questionLatex: L`Let f:[a,\infty)\to\mathbb R be defined by f(x)=x^2-4x+k. For which values of a is f one-one for every real k?`,
+        questionLatex: L`Let $f:[a,\infty)\to\mathbb R$ be defined by $f(x)=x^2-4x+k$. For which values of $a$ is $f$ one-one for every real $k$?`,
         difficulty: 4,
         skillTags: ["injectivity_on_interval", "quadratic_monotonicity"],
         choices: [L`$a\ge 2$`, L`$a>0$`, L`$a\le 2$`, L`$a\in\mathbb R$`],
@@ -1338,7 +1338,7 @@ const topicSeeds: readonly TopicSeed[] = [
         ],
       },
       {
-        questionLatex: L`The number of onto functions from a 4-element set to a 3-element set is`,
+        questionLatex: L`The number of onto functions from a $4$-element set to a $3$-element set is`,
         difficulty: 4,
         skillTags: ["onto_function_counting", "inclusion_exclusion"],
         choices: [L`$24$`, L`$36$`, L`$48$`, L`$81$`],
@@ -1373,7 +1373,7 @@ const topicSeeds: readonly TopicSeed[] = [
         ],
       },
       {
-        questionLatex: L`Let f:\mathbb R\setminus\{1\}\to\mathbb R\setminus\{2\} be defined by f(x)=\dfrac{2x+3}{x-1}. Then f is`,
+        questionLatex: L`Let $f:\mathbb R\setminus\{1\}\to\mathbb R\setminus\{2\}$ be defined by $f(x)=\dfrac{2x+3}{x-1}$. Then $f$ is`,
         difficulty: 4,
         skillTags: ["bijection_test", "rational_function_range"],
         choices: [
@@ -1419,7 +1419,7 @@ const topicSeeds: readonly TopicSeed[] = [
         ],
       },
       {
-        questionLatex: L`For f(x)=|x-1|+|x+1| with domain \mathbb R, the range of f is`,
+        questionLatex: L`For $f(x)=|x-1|+|x+1|$ with domain $\mathbb R$, the range of $f$ is`,
         difficulty: 3,
         skillTags: ["absolute_value_range", "piecewise_functions"],
         choices: [
@@ -1459,7 +1459,7 @@ const topicSeeds: readonly TopicSeed[] = [
         ],
       },
       {
-        questionLatex: L`Let f:\{1,2,3,4,5\}\to\{1,2,3\} be onto and suppose |f^{-1}(1)|=3. The number of such functions is`,
+        questionLatex: L`Let $f:\{1,2,3,4,5\}\to\{1,2,3\}$ be onto and suppose $|f^{-1}(1)|=3$. The number of such functions is`,
         difficulty: 4,
         skillTags: ["onto_function_counting", "preimage_size"],
         figure: functionMappingFigure,
@@ -1500,7 +1500,7 @@ const topicSeeds: readonly TopicSeed[] = [
         ],
       },
       {
-        questionLatex: L`The number of functions f:\{1,2,3,4\}\to\{1,2,3,4\} having exactly two fixed points is`,
+        questionLatex: L`The number of functions $f:\{1,2,3,4\}\to\{1,2,3,4\}$ having exactly two fixed points is`,
         difficulty: 4,
         skillTags: ["fixed_points", "function_counting"],
         choices: [L`$36$`, L`$54$`, L`$72$`, L`$81$`],
@@ -1536,7 +1536,7 @@ const topicSeeds: readonly TopicSeed[] = [
         ],
       },
       {
-        questionLatex: L`Let |A|=4 and |B|=3. The number of functions f:A\to B whose range has exactly two elements is`,
+        questionLatex: L`Let $|A|=4$ and $|B|=3$. The number of functions $f:A\to B$ whose range has exactly two elements is`,
         difficulty: 4,
         skillTags: ["range_size_counting", "onto_to_subset"],
         choices: [L`$36$`, L`$42$`, L`$48$`, L`$54$`],
@@ -1571,7 +1571,7 @@ const topicSeeds: readonly TopicSeed[] = [
         ],
       },
       {
-        questionLatex: L`Let |A|=3 and |B|=5. The number of functions from A to B that are not one-one is`,
+        questionLatex: L`Let $|A|=3$ and $|B|=5$. The number of functions from $A$ to $B$ that are not one-one is`,
         difficulty: 4,
         skillTags: ["injective_function_counting", "complement_counting"],
         choices: [L`$55$`, L`$60$`, L`$65$`, L`$75$`],
@@ -1602,7 +1602,7 @@ const topicSeeds: readonly TopicSeed[] = [
         ],
       },
       {
-        questionLatex: L`The range of f:[1,\infty)\to\mathbb R defined by f(x)=x^2-2x+3 is`,
+        questionLatex: L`The range of $f:[1,\infty)\to\mathbb R$ defined by $f(x)=x^2-2x+3$ is`,
         difficulty: 3,
         skillTags: ["quadratic_range", "domain_restriction"],
         choices: [
@@ -1641,7 +1641,7 @@ const topicSeeds: readonly TopicSeed[] = [
         ],
       },
       {
-        questionLatex: L`Let f:\mathbb R\setminus\{-2\}\to\mathbb R\setminus\{3\} be defined by f(x)=\dfrac{3x+1}{x+2}. Then f is`,
+        questionLatex: L`Let $f:\mathbb R\setminus\{-2\}\to\mathbb R\setminus\{3\}$ be defined by $f(x)=\dfrac{3x+1}{x+2}$. Then $f$ is`,
         difficulty: 4,
         skillTags: ["bijection_test", "rational_function_range"],
         choices: [
@@ -1683,7 +1683,7 @@ const topicSeeds: readonly TopicSeed[] = [
     ],
     numeric: [
       {
-        questionLatex: L`Find the number of one-one functions from a 5-element set to a 7-element set.`,
+        questionLatex: L`Find the number of one-one functions from a $5$-element set to a $7$-element set.`,
         difficulty: 3,
         skillTags: ["injective_function_counting"],
         promptMarkdown: "Enter the number of one-one functions.",
@@ -1705,7 +1705,7 @@ const topicSeeds: readonly TopicSeed[] = [
           "For the five domain elements, choose distinct images in order: $^7P_5=7\\cdot6\\cdot5\\cdot4\\cdot3=2520$.",
       },
       {
-        questionLatex: L`Let A=\{1,2,3,4\}. How many functions f:A\to A satisfy f(f(x))=x for all x\in A and have exactly two fixed points?`,
+        questionLatex: L`Let $A=\{1,2,3,4\}$. How many functions $f:A\to A$ satisfy $f(f(x))=x$ for all $x\in A$ and have exactly two fixed points?`,
         difficulty: 5,
         skillTags: ["involutions", "function_counting"],
         promptMarkdown: "Enter the number of functions.",
@@ -1727,7 +1727,7 @@ const topicSeeds: readonly TopicSeed[] = [
           "Choose the two fixed points in $\\binom42=6$ ways. The two remaining elements cannot be fixed, so they must map to each other. Hence there are $6$ such functions.",
       },
       {
-        questionLatex: L`Find the length of the domain interval of f(x)=\sqrt{5-2x}+\sqrt{x+1}.`,
+        questionLatex: L`Find the length of the domain interval of $f(x)=\sqrt{5-2x}+\sqrt{x+1}$.`,
         difficulty: 3,
         skillTags: ["domain_of_radicals"],
         promptMarkdown: "Enter the interval length.",
@@ -1749,7 +1749,7 @@ const topicSeeds: readonly TopicSeed[] = [
           "The conditions are $x\\le5/2$ and $x\\ge-1$. Thus the domain is $[-1,5/2]$, whose length is $5/2-(-1)=7/2$.",
       },
       {
-        questionLatex: L`For f:\mathbb R\setminus\{2\}\to\mathbb R defined by f(x)=\dfrac{x^2-5x+6}{x-2}, exactly one real number is missing from the range. Find it.`,
+        questionLatex: L`For $f:\mathbb R\setminus\{2\}\to\mathbb R$ defined by $f(x)=\dfrac{x^2-5x+6}{x-2}$, exactly one real number is missing from the range. Find it.`,
         difficulty: 4,
         skillTags: ["range_with_hole", "rational_function_simplification"],
         promptMarkdown: "Enter the missing value.",
@@ -1771,7 +1771,7 @@ const topicSeeds: readonly TopicSeed[] = [
           "For $x\\ne2$, $f(x)=\\frac{(x-2)(x-3)}{x-2}=x-3$. The line $y=x-3$ would produce $y=-1$ at $x=2$, but $x=2$ is excluded. Therefore the missing value is $-1$.",
       },
       {
-        questionLatex: L`Let f:\{1,2,3,4,5\}\to\{1,2,3\}. Find the number of onto functions f such that |f^{-1}(1)|=2.`,
+        questionLatex: L`Let $f:\{1,2,3,4,5\}\to\{1,2,3\}$. Find the number of onto functions $f$ such that $|f^{-1}(1)|=2$.`,
         difficulty: 4,
         skillTags: ["onto_function_counting", "fixed_fibre_size"],
         promptMarkdown: "Enter the number of functions.",
@@ -1802,7 +1802,7 @@ const topicSeeds: readonly TopicSeed[] = [
       "Order of composition, rational inverse traps, finite bijections, and iterated functions.",
     mc: [
       {
-        questionLatex: L`For f(x)=\dfrac{x+1}{x-1}, x\ne1, the expression f(f(x)) equals`,
+        questionLatex: L`For $f(x)=\dfrac{x+1}{x-1}$, $x\ne1$, the expression $f(f(x))$ equals`,
         difficulty: 4,
         skillTags: ["function_composition", "rational_involution"],
         choices: [
@@ -1841,7 +1841,7 @@ const topicSeeds: readonly TopicSeed[] = [
         ],
       },
       {
-        questionLatex: L`Let f(x)=\dfrac{1}{x-1} and g(x)=\dfrac{1}{x+1}. The domain of f\circ g is`,
+        questionLatex: L`Let $f(x)=\dfrac{1}{x-1}$ and $g(x)=\dfrac{1}{x+1}$. The domain of $f\circ g$ is`,
         difficulty: 4,
         skillTags: ["composition_domain", "rational_functions"],
         figure: compositionFlowFigure,
@@ -1886,7 +1886,7 @@ const topicSeeds: readonly TopicSeed[] = [
         ],
       },
       {
-        questionLatex: L`If f(x)=ax+b,\ a>0, and f(f(x))=4x+9 for all real x, then a+b equals`,
+        questionLatex: L`If $f(x)=ax+b$, $a>0$, and $f(f(x))=4x+9$ for all real $x$, then $a+b$ equals`,
         difficulty: 4,
         skillTags: ["linear_function_iteration", "coefficient_comparison"],
         choices: [L`$3$`, L`$4$`, L`$5$`, L`$7$`],
@@ -1925,7 +1925,7 @@ const topicSeeds: readonly TopicSeed[] = [
         ],
       },
       {
-        questionLatex: L`Let X be a 5-element set. The number of bijections f:X\to X such that f^{-1}=f and f has exactly one fixed point is`,
+        questionLatex: L`Let $X$ be a $5$-element set. The number of bijections $f:X\to X$ such that $f^{-1}=f$ and $f$ has exactly one fixed point is`,
         difficulty: 5,
         skillTags: ["inverse_bijections", "finite_function_counting"],
         choices: [L`$10$`, L`$15$`, L`$20$`, L`$30$`],
@@ -1965,7 +1965,7 @@ const topicSeeds: readonly TopicSeed[] = [
         ],
       },
       {
-        questionLatex: L`If f and g are bijections on a 5-element set and f\circ g is the identity function, then the number of ordered pairs (f,g) is`,
+        questionLatex: L`If $f$ and $g$ are bijections on a $5$-element set and $f\circ g$ is the identity function, then the number of ordered pairs $(f,g)$ is`,
         difficulty: 4,
         skillTags: ["finite_bijections", "inverse_functions"],
         choices: [L`$5$`, L`$25$`, L`$120$`, L`$240$`],
@@ -1999,7 +1999,7 @@ const topicSeeds: readonly TopicSeed[] = [
         ],
       },
       {
-        questionLatex: L`Let f(x)=\dfrac{x+1}{2x-1} and g(x)=\dfrac{x-1}{2x+1}. Then (f\circ g)(x) equals`,
+        questionLatex: L`Let $f(x)=\dfrac{x+1}{2x-1}$ and $g(x)=\dfrac{x-1}{2x+1}$. Then $(f\circ g)(x)$ equals`,
         difficulty: 4,
         skillTags: ["rational_composition", "composition_order"],
         choices: [L`$x$`, L`$-x$`, L`$\dfrac1x$`, L`$\dfrac{x+1}{x-1}$`],
@@ -2033,7 +2033,7 @@ const topicSeeds: readonly TopicSeed[] = [
         ],
       },
       {
-        questionLatex: L`For f(x)=\dfrac{x}{x+1}, the value of f^{5}(x)=\underbrace{f(f(\cdots f(x)))}_{5\text{ times}} is`,
+        questionLatex: L`For $f(x)=\dfrac{x}{x+1}$, the value of $f^{5}(x)=\underbrace{f(f(\cdots f(x)))}_{5\text{ times}}$ is`,
         difficulty: 5,
         skillTags: ["iterated_function", "composition_pattern"],
         choices: [
@@ -2072,7 +2072,7 @@ const topicSeeds: readonly TopicSeed[] = [
         ],
       },
       {
-        questionLatex: L`Let f(x)=2x-3 and g(x)=\dfrac{x+3}{2}. Which statement is correct?`,
+        questionLatex: L`Let $f(x)=2x-3$ and $g(x)=\dfrac{x+3}{2}$. Which statement is correct?`,
         difficulty: 3,
         skillTags: ["inverse_functions", "composition"],
         choices: [
@@ -2111,7 +2111,7 @@ const topicSeeds: readonly TopicSeed[] = [
         ],
       },
       {
-        questionLatex: L`Let f:\{1,2,3,4\}\to\{1,2,3,4\} be the cycle f(1)=2,\ f(2)=3,\ f(3)=4,\ f(4)=1. Then f^{2026}(1) equals`,
+        questionLatex: L`Let $f:\{1,2,3,4\}\to\{1,2,3,4\}$ be the cycle $f(1)=2$, $f(2)=3$, $f(3)=4$, $f(4)=1$. Then $f^{2026}(1)$ equals`,
         difficulty: 4,
         skillTags: ["function_iteration", "finite_cycles"],
         choices: [L`$1$`, L`$2$`, L`$3$`, L`$4$`],
@@ -2145,7 +2145,7 @@ const topicSeeds: readonly TopicSeed[] = [
         ],
       },
       {
-        questionLatex: L`If f(x)=ax+b,\ a\ne0, and f^{-1}(x)=f(x) for all real x, then which condition is necessary and sufficient?`,
+        questionLatex: L`If $f(x)=ax+b$, $a\ne0$, and $f^{-1}(x)=f(x)$ for all real $x$, then which condition is necessary and sufficient?`,
         difficulty: 5,
         skillTags: ["inverse_function_equation", "linear_functions"],
         choices: [
@@ -2192,7 +2192,7 @@ const topicSeeds: readonly TopicSeed[] = [
     ],
     numeric: [
       {
-        questionLatex: L`Let f(x)=\dfrac{3x-2}{x+1}. Find f^{-1}(2).`,
+        questionLatex: L`Let $f(x)=\dfrac{3x-2}{x+1}$. Find $f^{-1}(2)$.`,
         difficulty: 3,
         skillTags: ["inverse_value", "rational_function"],
         promptMarkdown: "Enter the value of $f^{-1}(2)$.",
@@ -2214,7 +2214,7 @@ const topicSeeds: readonly TopicSeed[] = [
           "Let $f(t)=2$. Then $\\frac{3t-2}{t+1}=2$, so $3t-2=2t+2$ and $t=4$. Hence $f^{-1}(2)=4$.",
       },
       {
-        questionLatex: L`Let f(x)=2x+1 and g(x)=x^2. Find the sum of all real solutions of (f\circ g)(x)=(g\circ f)(x).`,
+        questionLatex: L`Let $f(x)=2x+1$ and $g(x)=x^2$. Find the sum of all real solutions of $(f\circ g)(x)=(g\circ f)(x)$.`,
         difficulty: 4,
         skillTags: ["composition_equation", "quadratic_roots"],
         promptMarkdown: "Enter the sum of the real solutions.",
@@ -2236,7 +2236,7 @@ const topicSeeds: readonly TopicSeed[] = [
           "$(f\\circ g)(x)=2x^2+1$, while $(g\\circ f)(x)=(2x+1)^2=4x^2+4x+1$. Thus $2x^2+1=4x^2+4x+1$, so $2x(x+2)=0$. The roots are $0$ and $-2$, and their sum is $-2$.",
       },
       {
-        questionLatex: L`For f(x)=\dfrac{x}{x+1}, define f^3(x)=f(f(f(x))). If f^3(x)=\dfrac{x}{kx+1}, find k.`,
+        questionLatex: L`For $f(x)=\dfrac{x}{x+1}$, define $f^3(x)=f(f(f(x)))$. If $f^3(x)=\dfrac{x}{kx+1}$, find $k$.`,
         difficulty: 5,
         skillTags: ["iterated_function", "rational_composition"],
         promptMarkdown: "Enter the value of $k$.",
@@ -2258,7 +2258,7 @@ const topicSeeds: readonly TopicSeed[] = [
           "$f^2(x)=f(f(x))=\\frac{x}{2x+1}$. Applying $f$ again gives $f^3(x)=\\frac{x/(2x+1)}{x/(2x+1)+1}=\\frac{x}{3x+1}$. Therefore $k=3$.",
       },
       {
-        questionLatex: L`Find the number of bijections f on \{1,2,3,4\} such that f\circ f is the identity and f has no fixed point.`,
+        questionLatex: L`Find the number of bijections $f$ on $\{1,2,3,4\}$ such that $f\circ f$ is the identity and $f$ has no fixed point.`,
         difficulty: 5,
         skillTags: ["bijection_involution", "derangement_with_cycles"],
         promptMarkdown: "Enter the number of such bijections.",
@@ -2280,7 +2280,7 @@ const topicSeeds: readonly TopicSeed[] = [
           "The function must be a product of two disjoint transpositions. The number of ways to pair four labelled elements is $\\frac{4!}{2^2\\cdot2!}=3$.",
       },
       {
-        questionLatex: L`Let f(x)=\dfrac{x-1}{x+2}. Find the number of real x for which f^{-1}(x)=f(x).`,
+        questionLatex: L`Let $f(x)=\dfrac{x-1}{x+2}$. Find the number of real $x$ for which $f^{-1}(x)=f(x)$.`,
         difficulty: 5,
         skillTags: ["inverse_function_equation", "rational_equation"],
         promptMarkdown: "Enter the number of real solutions.",
@@ -2310,7 +2310,7 @@ const topicSeeds: readonly TopicSeed[] = [
       "Parameter-free contest-style counts combining set partitions, relations, functions, and composition.",
     mc: [
       {
-        questionLatex: L`On X=\{1,2,3,4,5\}, define xRy if and only if x+2y is divisible by 3. Which statement is true?`,
+        questionLatex: L`On $X=\{1,2,3,4,5\}$, define $xRy$ if and only if $x+2y$ is divisible by $3$. Which statement is true?`,
         difficulty: 4,
         skillTags: ["equivalence_relation", "modular_reasoning"],
         choices: [
@@ -2356,7 +2356,7 @@ const topicSeeds: readonly TopicSeed[] = [
         ],
       },
       {
-        questionLatex: L`The number of functions f:\{1,2,3,4\}\to\{1,2,3,4\} satisfying f(f(x))=f(x) for every x is`,
+        questionLatex: L`The number of functions $f:\{1,2,3,4\}\to\{1,2,3,4\}$ satisfying $f(f(x))=f(x)$ for every $x$ is`,
         difficulty: 5,
         skillTags: ["idempotent_functions", "image_set_counting"],
         choices: [L`$37$`, L`$40$`, L`$41$`, L`$44$`],
@@ -2397,7 +2397,7 @@ const topicSeeds: readonly TopicSeed[] = [
         ],
       },
       {
-        questionLatex: L`Let |A|=3 and |B|=4. The number of relations from A to B whose domain is all of A and whose range has exactly two elements is`,
+        questionLatex: L`Let $|A|=3$ and $|B|=4$. The number of relations from $A$ to $B$ whose domain is all of $A$ and whose range has exactly two elements is`,
         difficulty: 5,
         skillTags: ["relation_counting", "domain_range_constraints"],
         choices: [L`$108$`, L`$144$`, L`$150$`, L`$216$`],
@@ -2438,7 +2438,7 @@ const topicSeeds: readonly TopicSeed[] = [
         ],
       },
       {
-        questionLatex: L`Let X be a 5-element set and Y be a 4-element set. The number of functions f:X\to Y whose range has exactly 3 elements is`,
+        questionLatex: L`Let $X$ be a $5$-element set and $Y$ be a $4$-element set. The number of functions $f:X\to Y$ whose range has exactly $3$ elements is`,
         difficulty: 4,
         skillTags: ["range_size_counting", "onto_to_subset"],
         choices: [L`$240$`, L`$480$`, L`$600$`, L`$720$`],
@@ -2478,7 +2478,7 @@ const topicSeeds: readonly TopicSeed[] = [
         ],
       },
       {
-        questionLatex: L`Let S=\{1,2,\ldots,10\}. Define F:{\cal P}(S)\to{\cal P}(S) by F(A)=A\triangle\{1,2,3\}. Which statement is correct?`,
+        questionLatex: L`Let $S=\{1,2,\ldots,10\}$. Define $F:{\cal P}(S)\to{\cal P}(S)$ by $F(A)=A\triangle\{1,2,3\}$. Which statement is correct?`,
         difficulty: 4,
         skillTags: ["symmetric_difference_function", "power_set_function"],
         choices: [
@@ -2519,7 +2519,7 @@ const topicSeeds: readonly TopicSeed[] = [
         ],
       },
       {
-        questionLatex: L`The number of functions f:\{1,2,3\}\to\{1,2,3\} satisfying f(f(x))=f(x) for every x is`,
+        questionLatex: L`The number of functions $f:\{1,2,3\}\to\{1,2,3\}$ satisfying $f(f(x))=f(x)$ for every $x$ is`,
         difficulty: 5,
         skillTags: ["idempotent_functions", "function_counting"],
         choices: [L`$9$`, L`$10$`, L`$12$`, L`$15$`],
@@ -2549,7 +2549,7 @@ const topicSeeds: readonly TopicSeed[] = [
         ],
       },
       {
-        questionLatex: L`Let |A|=2 and |B|=3. The number of relations from A to B whose domain is A and whose range is B is`,
+        questionLatex: L`Let $|A|=2$ and $|B|=3$. The number of relations from $A$ to $B$ whose domain is $A$ and whose range is $B$ is`,
         difficulty: 5,
         skillTags: ["relation_counting", "domain_range_constraints"],
         choices: [L`$18$`, L`$24$`, L`$25$`, L`$27$`],
@@ -2584,7 +2584,7 @@ const topicSeeds: readonly TopicSeed[] = [
         ],
       },
       {
-        questionLatex: L`Let X be a 4-element set. The number of idempotent functions f:X\to X with |\operatorname{Range}(f)|=2 is`,
+        questionLatex: L`Let $X$ be a $4$-element set. The number of idempotent functions $f:X\to X$ with $|\operatorname{Range}(f)|=2$ is`,
         difficulty: 5,
         skillTags: ["idempotent_functions", "range_size_counting"],
         choices: [L`$12$`, L`$18$`, L`$24$`, L`$36$`],
@@ -2616,7 +2616,7 @@ const topicSeeds: readonly TopicSeed[] = [
         ],
       },
       {
-        questionLatex: L`Let U be a 7-element set. The number of ordered pairs (A,B) of subsets of U such that |A\triangle B|=3 is`,
+        questionLatex: L`Let $U$ be a $7$-element set. The number of ordered pairs $(A,B)$ of subsets of $U$ such that $|A\triangle B|=3$ is`,
         difficulty: 5,
         skillTags: ["symmetric_difference_counting", "set_pair_counting"],
         choices: [L`$1120$`, L`$2240$`, L`$4480$`, L`$8960$`],
@@ -2655,7 +2655,7 @@ const topicSeeds: readonly TopicSeed[] = [
         ],
       },
       {
-        questionLatex: L`For a 3-element set A and a 3-element set B, the number of relations from A to B with exactly two elements in the domain and exactly two elements in the range is`,
+        questionLatex: L`For a $3$-element set $A$ and a $3$-element set $B$, the number of relations from $A$ to $B$ with exactly two elements in the domain and exactly two elements in the range is`,
         difficulty: 5,
         skillTags: ["relation_counting", "exact_domain_range"],
         choices: [L`$54$`, L`$63$`, L`$72$`, L`$81$`],
@@ -2693,7 +2693,7 @@ const topicSeeds: readonly TopicSeed[] = [
     ],
     numeric: [
       {
-        questionLatex: L`For X=\{1,2,\ldots,8\}, find the number of ordered pairs (S,T) of subsets of X such that S\subseteq T and |T|=|S|+3.`,
+        questionLatex: L`For $X=\{1,2,\ldots,8\}$, find the number of ordered pairs $(S,T)$ of subsets of $X$ such that $S\subseteq T$ and $|T|=|S|+3$.`,
         difficulty: 5,
         skillTags: ["ordered_subset_pairs", "difference_size"],
         promptMarkdown: "Enter the number of ordered pairs.",
@@ -2715,7 +2715,7 @@ const topicSeeds: readonly TopicSeed[] = [
           "Choose the three elements of $T\\setminus S$ in $\\binom83=56$ ways. Each of the remaining five elements is either outside $T$ or in both $S$ and $T$, giving $2^5$ choices. Total $56\\cdot32=1792$.",
       },
       {
-        questionLatex: L`On X=\{1,2,\ldots,6\}, define xRy if and only if x-y is divisible by 2 or by 3. Find |R|.`,
+        questionLatex: L`On $X=\{1,2,\ldots,6\}$, define $xRy$ if and only if $x-y$ is divisible by $2$ or by $3$. Find $|R|$.`,
         difficulty: 5,
         skillTags: ["relation_cardinality", "inclusion_exclusion_on_relations"],
         promptMarkdown: "Enter the number of ordered pairs in $R$.",
@@ -2737,7 +2737,7 @@ const topicSeeds: readonly TopicSeed[] = [
           "Same parity gives $3^2+3^2=18$ ordered pairs. Same residue modulo 3 gives $2^2+2^2+2^2=12$ ordered pairs. Both conditions mean same residue modulo 6, giving the six diagonal pairs. Hence $|R|=18+12-6=24$.",
       },
       {
-        questionLatex: L`Find the number of functions f:\{1,2,3,4\}\to\{1,2,3,4,5\} whose range has exactly 3 elements.`,
+        questionLatex: L`Find the number of functions $f:\{1,2,3,4\}\to\{1,2,3,4,5\}$ whose range has exactly $3$ elements.`,
         difficulty: 4,
         skillTags: ["range_size_counting", "onto_to_chosen_subset"],
         promptMarkdown: "Enter the number of functions.",
@@ -2759,7 +2759,7 @@ const topicSeeds: readonly TopicSeed[] = [
           "Choose the range in $\\binom53=10$ ways. For a fixed 3-element range, the number of onto functions from 4 elements is $3^4-3\\cdot2^4+3=81-48+3=36$. Total $10\\cdot36=360$.",
       },
       {
-        questionLatex: L`Let f(x)=\dfrac{x-2}{x+1}. Find f(f(0)).`,
+        questionLatex: L`Let $f(x)=\dfrac{x-2}{x+1}$. Find $f(f(0))$.`,
         difficulty: 3,
         skillTags: ["composition_evaluation", "rational_function"],
         promptMarkdown: "Enter the value.",
@@ -2781,7 +2781,7 @@ const topicSeeds: readonly TopicSeed[] = [
           "$f(0)=\\frac{-2}{1}=-2$. Then $f(f(0))=f(-2)=\\frac{-2-2}{-2+1}=4$.",
       },
       {
-        questionLatex: L`Let |U|=12 and A\cup B=U. Find the number of ordered pairs (A,B) of subsets of U such that |A\cap B|=4.`,
+        questionLatex: L`Let $|U|=12$ and $A\cup B=U$. Find the number of ordered pairs $(A,B)$ of subsets of $U$ such that $|A\cap B|=4$.`,
         difficulty: 5,
         skillTags: ["set_pair_counting", "intersection_constraint"],
         promptMarkdown: "Enter the number of ordered pairs.",
