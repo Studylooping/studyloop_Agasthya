@@ -90,7 +90,7 @@ Pass if you see:
 - 16 topic sections, from Topic 1.1 through Topic 1.16.
 - Each topic has 6 item cards: 5 MCQs and 1 FRQ.
 - The full unit has 96 item cards.
-- The item badges say "Needs mentor review" until a teacher verifies them.
+- The item badges say "Verified by StudyLoop Review Team".
 
 Open the graph-reading samples:
 
@@ -130,7 +130,7 @@ Pass if you see:
 - 10 topic sections, from Topic 2.1 through Topic 2.10.
 - Each topic has 6 item cards: 5 MCQs and 1 FRQ.
 - The full unit has 60 item cards.
-- The item badges say "Needs mentor review".
+- The item badges say "Verified by StudyLoop Review Team".
 
 Open two sample items:
 
@@ -212,7 +212,7 @@ Pass if you see:
 - Each topic has 6 item cards: 5 MCQs and 1 FRQ.
 - The full unit has 42 item cards.
 - The page shows the Difficulty guide.
-- The item badges say "Needs mentor review".
+- The item badges say "Verified by StudyLoop Review Team".
 
 Open two sample items:
 
@@ -248,7 +248,7 @@ Pass if you see:
 - Each topic has 6 item cards: 5 MCQs and 1 FRQ.
 - The full unit has 72 item cards.
 - The page shows the Difficulty guide.
-- The item badges say "Needs mentor review".
+- The item badges say "Verified by StudyLoop Review Team".
 - You do not see any `Foundational (1/5)` items in Unit 5.
 
 Open these sample items:
@@ -289,7 +289,7 @@ Pass if you see:
 - Each topic has 6 item cards: 5 MCQs and 1 FRQ.
 - The full unit has 66 item cards.
 - The page shows the Difficulty guide.
-- The item badges say "Needs mentor review".
+- The item badges say "Verified by StudyLoop Review Team".
 - You do not see any `Foundational (1/5)` items in Unit 6.
 
 Open these sample items:
@@ -331,7 +331,7 @@ Pass if you see:
 - Each topic has 6 item cards: 5 MCQs and 1 FRQ.
 - The full unit has 42 item cards.
 - The page shows the Difficulty guide.
-- The item badges say "Needs mentor review".
+- The item badges say "Verified by StudyLoop Review Team".
 - You do not see any `Foundational (1/5)` items in Unit 7.
 
 Open these sample items:
@@ -372,7 +372,7 @@ Pass if you see:
 - Each topic has 6 item cards: 5 MCQs and 1 FRQ.
 - The full unit has 72 item cards.
 - The page shows the Difficulty guide.
-- The item badges say "Needs mentor review".
+- The item badges say "Verified by StudyLoop Review Team".
 - You do not see any `Foundational (1/5)` items in Unit 8.
 
 Open these sample items:

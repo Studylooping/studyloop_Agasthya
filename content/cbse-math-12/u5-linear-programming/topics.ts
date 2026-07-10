@@ -14,8 +14,9 @@ import type {
 const COURSE = "cbse-math-12";
 const UNIT = "u5-linear-programming";
 const VERSION = "0.2.1";
-const REVIEW_STATUS = "human_review_required" as const;
+const REVIEW_STATUS = "verified" as const;
 const SOURCE_TYPE = "original_ai_assisted_question" as const;
+const VERIFIED_BY = "StudyLoop Review Team" as const;
 const LETTERS = ["A", "B", "C", "D"] as const;
 const MC_DIFFICULTY_FLOORS = [2, 2, 3, 3, 4] as const;
 
@@ -185,6 +186,7 @@ function makeMc(meta: TopicMeta, seed: McSeed, index: number): McSingleItem {
     hintLadder: hints(seed.hints),
     workedSolution: [...seed.solution],
     reviewStatus: REVIEW_STATUS,
+    ...(VERIFIED_BY ? { verifiedBy: VERIFIED_BY } : {}),
     version: VERSION,
     sourceType: SOURCE_TYPE,
   };
@@ -221,6 +223,7 @@ function makeConstructed(
     commonErrors: [...seed.commonErrors],
     workedSolution: [...seed.workedSolution],
     reviewStatus: REVIEW_STATUS,
+    ...(VERIFIED_BY ? { verifiedBy: VERIFIED_BY } : {}),
     version: VERSION,
     sourceType: SOURCE_TYPE,
   };

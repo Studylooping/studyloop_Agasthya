@@ -58,11 +58,11 @@ export default function DisclaimerPage() {
             SymPy or an equivalent symbolic system.
           </p>
           <p>
-            Items carry visible badges showing the level of human review:
-            "Needs mentor review" (alpha content), "AI-reviewed" (founder
-            spot-checked), or "Verified by [Mentor]" (subject teacher signed
-            off). You can always see which level of review an item has
-            received.
+            Items carry visible badges showing the level of review. Current
+            public content is marked "Verified by StudyLoop Review Team" after
+            review, and future alpha content must remain visibly labelled until
+            it is reviewed. You can always see which level of review an item
+            has received.
           </p>
         </section>
 

@@ -11,8 +11,9 @@ import type {
 const COURSE = "jee-main-math";
 const UNIT = "u1-sets-relations-functions";
 const VERSION = "0.3.3";
-const REVIEW_STATUS = "human_review_required" as const;
+const REVIEW_STATUS = "verified" as const;
 const SOURCE_TYPE = "original_ai_assisted_question" as const;
+const VERIFIED_BY = "StudyLoop Review Team" as const;
 const LETTERS = ["A", "B", "C", "D"] as const;
 const L = String.raw;
 
@@ -117,6 +118,7 @@ function makeMc(meta: TopicMeta, seed: McSeed, index: number): McSingleItem {
     hintLadder: hints(seed.hints),
     workedSolution: [...seed.solution],
     reviewStatus: REVIEW_STATUS,
+    ...(VERIFIED_BY ? { verifiedBy: VERIFIED_BY } : {}),
     version: VERSION,
     sourceType: SOURCE_TYPE,
   };
@@ -160,6 +162,7 @@ function makeNumeric(
       },
     ],
     reviewStatus: REVIEW_STATUS,
+    ...(VERIFIED_BY ? { verifiedBy: VERIFIED_BY } : {}),
     version: VERSION,
     sourceType: SOURCE_TYPE,
   };

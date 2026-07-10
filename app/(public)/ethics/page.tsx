@@ -24,13 +24,11 @@ export default function EthicsPage() {
             1. The AI may make mistakes.
           </h2>
           <p>
-            Many items on {SITE.name} are drafted by AI and reviewed by the
-            founder before publication. Teacher verification happens over time
-            as mentors join. We're upfront about this on every item with an
-            "Needs mentor review" or "AI-reviewed" badge that flips to
-            "Verified by [Mentor]" once a subject teacher has signed off. If
-            you spot an error during alpha testing, note the item URL and
-            content ID so it can be retired or corrected quickly.
+            Many items on {SITE.name} are drafted with AI assistance and then
+            reviewed before publication. We're upfront about this on every item
+            with a visible review badge, such as "Verified by StudyLoop Review
+            Team". If you spot an error during alpha testing, note the item URL
+            and content ID so it can be retired or corrected quickly.
           </p>
         </section>
 

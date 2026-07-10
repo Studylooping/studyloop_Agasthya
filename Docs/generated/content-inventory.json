@@ -1,0 +1,80 @@
+{
+  "generatedAt": "2026-07-10T19:13:03.964Z",
+  "courses": {
+    "calc-ab": {
+      "units": 8,
+      "topics": 81,
+      "items": 486,
+      "figures": 76,
+      "byKind": {
+        "frq": 81,
+        "mc_single": 405
+      },
+      "byReviewStatus": {
+        "verified": 486
+      }
+    },
+    "cbse-math-11": {
+      "units": 5,
+      "topics": 29,
+      "items": 290,
+      "figures": 29,
+      "byKind": {
+        "frq": 145,
+        "mc_single": 145
+      },
+      "byReviewStatus": {
+        "verified": 290
+      }
+    },
+    "cbse-math-12": {
+      "units": 6,
+      "topics": 40,
+      "items": 400,
+      "figures": 98,
+      "byKind": {
+        "frq": 200,
+        "mc_single": 200
+      },
+      "byReviewStatus": {
+        "verified": 400
+      }
+    },
+    "jee-main-math": {
+      "units": 3,
+      "topics": 15,
+      "items": 225,
+      "figures": 3,
+      "byKind": {
+        "mc_single": 150,
+        "numeric": 75
+      },
+      "byReviewStatus": {
+        "verified": 225
+      }
+    }
+  },
+  "totals": {
+    "units": 22,
+    "topics": 165,
+    "items": 1401,
+    "figures": 206
+  },
+  "byKind": {
+    "frq": 426,
+    "mc_single": 900,
+    "numeric": 75
+  },
+  "byReviewStatus": {
+    "verified": 1401
+  },
+  "bySourceType": {
+    "original_ai_assisted_question": 1401
+  },
+  "byDifficulty": {
+    "2": 398,
+    "3": 530,
+    "4": 426,
+    "5": 47
+  }
+}

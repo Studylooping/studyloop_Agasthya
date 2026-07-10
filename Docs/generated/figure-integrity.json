@@ -1,0 +1,4039 @@
+{
+  "generatedAt": "2026-07-10T19:13:17.305Z",
+  "strict": false,
+  "figureItems": 206,
+  "reusedFigures": [
+    {
+      "svgHash": "d9b11afa5b92c71d",
+      "ids": [
+        "calc-ab.u5.t5-4.mc.003",
+        "calc-ab.u5.t5-8.mc.001",
+        "calc-ab.u5.t5-8.mc.002",
+        "calc-ab.u5.t5-8.frq.001"
+      ]
+    },
+    {
+      "svgHash": "a2e7262aa003a25e",
+      "ids": [
+        "calc-ab.u5.t5-10.mc.001",
+        "calc-ab.u5.t5-11.mc.001"
+      ]
+    },
+    {
+      "svgHash": "33335ab3238d4a9c",
+      "ids": [
+        "calc-ab.u5.t5-10.mc.002",
+        "calc-ab.u5.t5-11.mc.003",
+        "calc-ab.u5.t5-11.frq.001"
+      ]
+    },
+    {
+      "svgHash": "a075b5ccdbdb97ac",
+      "ids": [
+        "calc-ab.u5.t5-10.mc.003",
+        "calc-ab.u5.t5-11.mc.002"
+      ]
+    },
+    {
+      "svgHash": "f628f08f74332a76",
+      "ids": [
+        "calc-ab.u6.t6-5.mc.003",
+        "calc-ab.u6.t6-5.frq.001"
+      ]
+    },
+    {
+      "svgHash": "6c830c13fcdc7e79",
+      "ids": [
+        "calc-ab.u6.t6-5.mc.004",
+        "calc-ab.u6.t6-5.mc.005"
+      ]
+    },
+    {
+      "svgHash": "cbe54b24a899a07e",
+      "ids": [
+        "calc-ab.u7.t7-3.mc.003",
+        "calc-ab.u7.t7-3.mc.004",
+        "calc-ab.u7.t7-3.frq.001",
+        "calc-ab.u7.t7-4.mc.005"
+      ]
+    },
+    {
+      "svgHash": "1e18e96d00d12b6f",
+      "ids": [
+        "calc-ab.u7.t7-3.mc.005",
+        "calc-ab.u7.t7-4.mc.003"
+      ]
+    },
+    {
+      "svgHash": "9a4430ea92e63160",
+      "ids": [
+        "calc-ab.u8.t8-4.mc.001",
+        "calc-ab.u8.t8-4.mc.002",
+        "calc-ab.u8.t8-4.frq.001"
+      ]
+    },
+    {
+      "svgHash": "ce3b12c2502799f9",
+      "ids": [
+        "calc-ab.u8.t8-5.mc.001",
+        "calc-ab.u8.t8-5.frq.001"
+      ]
+    },
+    {
+      "svgHash": "06f3dd859abb8bcb",
+      "ids": [
+        "calc-ab.u8.t8-6.mc.001",
+        "calc-ab.u8.t8-6.mc.002",
+        "calc-ab.u8.t8-6.mc.003",
+        "calc-ab.u8.t8-6.frq.001"
+      ]
+    },
+    {
+      "svgHash": "3f31ebed8dceed9b",
+      "ids": [
+        "calc-ab.u8.t8-7.mc.001",
+        "calc-ab.u8.t8-7.mc.002",
+        "calc-ab.u8.t8-7.frq.001"
+      ]
+    },
+    {
+      "svgHash": "38ebbc9b50f14be5",
+      "ids": [
+        "calc-ab.u8.t8-8.mc.001",
+        "calc-ab.u8.t8-8.frq.001"
+      ]
+    },
+    {
+      "svgHash": "ce3724fbaf0d66b6",
+      "ids": [
+        "calc-ab.u8.t8-9.mc.001",
+        "calc-ab.u8.t8-9.mc.002",
+        "calc-ab.u8.t8-9.frq.001"
+      ]
+    },
+    {
+      "svgHash": "3679c6197710f57b",
+      "ids": [
+        "calc-ab.u8.t8-10.mc.001",
+        "calc-ab.u8.t8-10.mc.002",
+        "calc-ab.u8.t8-10.mc.005",
+        "calc-ab.u8.t8-10.frq.001"
+      ]
+    },
+    {
+      "svgHash": "1a74d1089e599d36",
+      "ids": [
+        "calc-ab.u8.t8-11.mc.001",
+        "calc-ab.u8.t8-11.mc.002",
+        "calc-ab.u8.t8-11.mc.005",
+        "calc-ab.u8.t8-11.frq.001"
+      ]
+    },
+    {
+      "svgHash": "5fa22e5c52bbd042",
+      "ids": [
+        "calc-ab.u8.t8-12.mc.001",
+        "calc-ab.u8.t8-12.mc.002",
+        "calc-ab.u8.t8-12.mc.005",
+        "calc-ab.u8.t8-12.frq.001"
+      ]
+    },
+    {
+      "svgHash": "ce3941263087b81f",
+      "ids": [
+        "cbse-math-11.u1.t1-2.mc.004",
+        "cbse-math-11.u1.t1-2.case.005"
+      ]
+    },
+    {
+      "svgHash": "6692b75bf35d5fe4",
+      "ids": [
+        "cbse-math-11.u1.t1-3.mc.004",
+        "cbse-math-11.u1.t1-3.case.005"
+      ]
+    },
+    {
+      "svgHash": "cc84bbe75ce4bb91",
+      "ids": [
+        "cbse-math-12.u2.t2-5.mc.003",
+        "cbse-math-12.u2.t2-5.vsaq.002",
+        "cbse-math-12.u2.t2-5.laq.004",
+        "cbse-math-12.u2.t2-5.case.005"
+      ]
+    },
+    {
+      "svgHash": "c891048b6076e2b6",
+      "ids": [
+        "cbse-math-12.u4.t4-5.mc.001",
+        "cbse-math-12.u4.t4-5.saq.003",
+        "cbse-math-12.u4.t4-7.mc.001",
+        "cbse-math-12.u4.t4-7.mc.005",
+        "cbse-math-12.u4.t4-7.vsaq.001",
+        "cbse-math-12.u4.t4-7.saq.003",
+        "cbse-math-12.u4.t4-7.laq.004",
+        "cbse-math-12.u4.t4-7.case.005"
+      ]
+    },
+    {
+      "svgHash": "30ec86bb13701c15",
+      "ids": [
+        "cbse-math-12.u4.t4-5.mc.002",
+        "cbse-math-12.u4.t4-5.mc.003",
+        "cbse-math-12.u4.t4-5.mc.004",
+        "cbse-math-12.u4.t4-5.mc.005",
+        "cbse-math-12.u4.t4-5.vsaq.001",
+        "cbse-math-12.u4.t4-5.vsaq.002",
+        "cbse-math-12.u4.t4-5.laq.004",
+        "cbse-math-12.u4.t4-7.mc.002",
+        "cbse-math-12.u4.t4-7.mc.003",
+        "cbse-math-12.u4.t4-7.mc.004",
+        "cbse-math-12.u4.t4-7.vsaq.002"
+      ]
+    },
+    {
+      "svgHash": "c8f095d1a1771796",
+      "ids": [
+        "cbse-math-12.u4.t4-6.mc.001",
+        "cbse-math-12.u4.t4-6.mc.002",
+        "cbse-math-12.u4.t4-6.vsaq.001",
+        "cbse-math-12.u4.t4-6.saq.003"
+      ]
+    },
+    {
+      "svgHash": "66804ba254b0cd1d",
+      "ids": [
+        "cbse-math-12.u4.t4-6.mc.003",
+        "cbse-math-12.u4.t4-6.vsaq.002"
+      ]
+    },
+    {
+      "svgHash": "161eac172b8dbd56",
+      "ids": [
+        "cbse-math-12.u4.t4-6.mc.004",
+        "cbse-math-12.u4.t4-6.mc.005",
+        "cbse-math-12.u4.t4-6.laq.004",
+        "cbse-math-12.u4.t4-6.case.005"
+      ]
+    },
+    {
+      "svgHash": "71e75764e48d4526",
+      "ids": [
+        "cbse-math-12.u5.t5-2.mc.003",
+        "cbse-math-12.u5.t5-2.mc.004",
+        "cbse-math-12.u5.t5-2.mc.005",
+        "cbse-math-12.u5.t5-2.saq.003",
+        "cbse-math-12.u5.t5-2.case.005",
+        "cbse-math-12.u5.t5-3.mc.003",
+        "cbse-math-12.u5.t5-3.mc.005",
+        "cbse-math-12.u5.t5-3.laq.004",
+        "cbse-math-12.u5.t5-3.case.005"
+      ]
+    },
+    {
+      "svgHash": "5ef342ef99eedf8a",
+      "ids": [
+        "cbse-math-12.u5.t5-3.mc.004",
+        "cbse-math-12.u5.t5-4.mc.003",
+        "cbse-math-12.u5.t5-4.vsaq.002",
+        "cbse-math-12.u5.t5-4.saq.003"
+      ]
+    },
+    {
+      "svgHash": "a507d77e19625bae",
+      "ids": [
+        "cbse-math-12.u5.t5-4.mc.002",
+        "cbse-math-12.u5.t5-4.mc.004",
+        "cbse-math-12.u5.t5-4.mc.005",
+        "cbse-math-12.u5.t5-4.laq.004",
+        "cbse-math-12.u5.t5-4.case.005"
+      ]
+    },
+    {
+      "svgHash": "97c57014f596d17d",
+      "ids": [
+        "cbse-math-12.u5.t5-5.mc.005",
+        "cbse-math-12.u5.t5-5.laq.004"
+      ]
+    },
+    {
+      "svgHash": "40b3fcdf346b2141",
+      "ids": [
+        "cbse-math-12.u6.t6-3.mc.003",
+        "cbse-math-12.u6.t6-3.case.005"
+      ]
+    },
+    {
+      "svgHash": "da37661a9f10febb",
+      "ids": [
+        "cbse-math-12.u6.t6-4.mc.003",
+        "cbse-math-12.u6.t6-5.mc.003",
+        "cbse-math-12.u6.t6-5.saq.003"
+      ]
+    },
+    {
+      "svgHash": "8dd758c12599300d",
+      "ids": [
+        "cbse-math-12.u6.t6-4.mc.005",
+        "cbse-math-12.u6.t6-4.laq.004",
+        "cbse-math-12.u6.t6-5.mc.001"
+      ]
+    }
+  ],
+  "records": [
+    {
+      "contentId": "calc-ab.u1.t1-2.mc.005",
+      "course": "calc-ab",
+      "unit": "u1-limits",
+      "topic": "1.2",
+      "route": "/calc-ab/u1-limits/t1-2-mc-005",
+      "figureTitle": "Graph with a removable point at x = 2",
+      "figureDescription": "The graph has two branches approaching an open circle at (2, 7) and a filled point at (2, 1).",
+      "svgHash": "b21dee713177b48b",
+      "tokenOverlap": [
+        "graph",
+        "point",
+        "graph",
+        "branches",
+        "open",
+        "circle",
+        "filled",
+        "point"
+      ]
+    },
+    {
+      "contentId": "calc-ab.u1.t1-3.mc.001",
+      "course": "calc-ab",
+      "unit": "u1-limits",
+      "topic": "1.3",
+      "route": "/calc-ab/u1-limits/t1-3-mc-001",
+      "figureTitle": "Two branches with a separate function value",
+      "figureDescription": "The left and right branches meet at an open circle at (1, 2), and a filled point is shown at (1, 5).",
+      "svgHash": "2183b79dbcad2c8c",
+      "tokenOverlap": [
+        "function",
+        "value",
+        "left",
+        "right",
+        "filled",
+        "point"
+      ]
+    },
+    {
+      "contentId": "calc-ab.u1.t1-3.mc.002",
+      "course": "calc-ab",
+      "unit": "u1-limits",
+      "topic": "1.3",
+      "route": "/calc-ab/u1-limits/t1-3-mc-002",
+      "figureTitle": "Graph with different one-sided behavior at x = -1",
+      "figureDescription": "The graph approaches y = 4 from the left of x = -1 and y = -2 from the right.",
+      "svgHash": "624f67ca1ca9ab44",
+      "tokenOverlap": [
+        "graph",
+        "different",
+        "sided",
+        "behavior",
+        "graph",
+        "left",
+        "right"
+      ]
+    },
+    {
+      "contentId": "calc-ab.u1.t1-3.mc.003",
+      "course": "calc-ab",
+      "unit": "u1-limits",
+      "topic": "1.3",
+      "route": "/calc-ab/u1-limits/t1-3-mc-003",
+      "figureTitle": "Graph with unbounded behavior near x = 3",
+      "figureDescription": "The graph rises without bound from both sides as x approaches 3.",
+      "svgHash": "eee3bcfca88e3d3a",
+      "tokenOverlap": [
+        "graph",
+        "behavior",
+        "graph",
+        "without",
+        "bound",
+        "both",
+        "sides"
+      ]
+    },
+    {
+      "contentId": "calc-ab.u1.t1-3.mc.004",
+      "course": "calc-ab",
+      "unit": "u1-limits",
+      "topic": "1.3",
+      "route": "/calc-ab/u1-limits/t1-3-mc-004",
+      "figureTitle": "Removable discontinuity graph",
+      "figureDescription": "The graph approaches the open circle at (-2, 6), while the filled point at (-2, -1) gives the actual value f(-2).",
+      "svgHash": "91fad1aff5e5a870",
+      "tokenOverlap": [
+        "removable",
+        "discontinuity",
+        "graph",
+        "graph",
+        "approaches",
+        "open",
+        "circle",
+        "filled",
+        "point",
+        "gives",
+        "value"
+      ]
+    },
+    {
+      "contentId": "calc-ab.u1.t1-3.mc.005",
+      "course": "calc-ab",
+      "unit": "u1-limits",
+      "topic": "1.3",
+      "route": "/calc-ab/u1-limits/t1-3-mc-005",
+      "figureTitle": "Graph with mismatched one-sided behavior at x = 0",
+      "figureDescription": "The graph approaches y = -3 from the left of x = 0 and y = -1 from the right, with a filled point at (0, -3).",
+      "svgHash": "884af6d83edc1f67",
+      "tokenOverlap": [
+        "graph",
+        "mismatched",
+        "sided",
+        "behavior",
+        "graph",
+        "left",
+        "right",
+        "filled",
+        "point"
+      ]
+    },
+    {
+      "contentId": "calc-ab.u1.t1-3.frq.001",
+      "course": "calc-ab",
+      "unit": "u1-limits",
+      "topic": "1.3",
+      "route": "/calc-ab/u1-limits/t1-3-frq-001",
+      "figureTitle": "Three discontinuities on one graph",
+      "figureDescription": "The figure shows a hole at (-1, 2), a jump at x = 1 with different one-sided limits, and a dashed vertical asymptote at x = 3.",
+      "svgHash": "cab7aa2e828219cd",
+      "tokenOverlap": [
+        "graph",
+        "hole",
+        "jump",
+        "different",
+        "sided",
+        "limits"
+      ]
+    },
+    {
+      "contentId": "calc-ab.u1.t1-9.mc.001",
+      "course": "calc-ab",
+      "unit": "u1-limits",
+      "topic": "1.9",
+      "route": "/calc-ab/u1-limits/t1-9-mc-001",
+      "figureTitle": "Graph with a hole at x = 3",
+      "figureDescription": "The graph follows a line near x = 3 and has an open circle at (3, 5).",
+      "svgHash": "d318513ffddeb645",
+      "tokenOverlap": [
+        "graph",
+        "hole",
+        "graph",
+        "near"
+      ]
+    },
+    {
+      "contentId": "calc-ab.u1.t1-9.mc.002",
+      "course": "calc-ab",
+      "unit": "u1-limits",
+      "topic": "1.9",
+      "route": "/calc-ab/u1-limits/t1-9-mc-002",
+      "figureTitle": "Graph with a jump at x = 2",
+      "figureDescription": "The graph approaches y = 1 from the left of x = 2 and y = 4 from the right.",
+      "svgHash": "6bd0bd16df87a186",
+      "tokenOverlap": [
+        "graph",
+        "jump",
+        "graph",
+        "left",
+        "right"
+      ]
+    },
+    {
+      "contentId": "calc-ab.u1.t1-9.mc.004",
+      "course": "calc-ab",
+      "unit": "u1-limits",
+      "topic": "1.9",
+      "route": "/calc-ab/u1-limits/t1-9-mc-004",
+      "figureTitle": "Graph with a hole at x = 2",
+      "figureDescription": "The graph follows a line near x = 2 and has an open circle at (2, 4).",
+      "svgHash": "448ea59e5e7ecda0",
+      "tokenOverlap": [
+        "graph",
+        "graph",
+        "near"
+      ]
+    },
+    {
+      "contentId": "calc-ab.u1.t1-10.frq.001",
+      "course": "calc-ab",
+      "unit": "u1-limits",
+      "topic": "1.10",
+      "route": "/calc-ab/u1-limits/t1-10-frq-001",
+      "figureTitle": "Graph with three discontinuities",
+      "figureDescription": "The graph has a removable point at x = -1, a jump at x = 0, and unbounded behavior near x = 4.",
+      "svgHash": "8a321df228bfa95d",
+      "tokenOverlap": [
+        "graph",
+        "discontinuities",
+        "graph",
+        "removable",
+        "jump",
+        "unbounded",
+        "behavior"
+      ]
+    },
+    {
+      "contentId": "calc-ab.u5.t5-1.mc.004",
+      "course": "calc-ab",
+      "unit": "u5-analytical-app",
+      "topic": "5.1",
+      "route": "/calc-ab/u5-analytical-app/t5-1-mc-004",
+      "figureTitle": "Secant and parallel tangent sketch",
+      "figureDescription": "A smooth curve on a closed interval with a secant line and a tangent line of matching slope.",
+      "svgHash": "bdf8f7c4dc57af37",
+      "tokenOverlap": [
+        "secant",
+        "parallel",
+        "tangent",
+        "curve",
+        "interval",
+        "secant",
+        "line",
+        "tangent",
+        "line",
+        "slope"
+      ]
+    },
+    {
+      "contentId": "calc-ab.u5.t5-3.mc.003",
+      "course": "calc-ab",
+      "unit": "u5-analytical-app",
+      "topic": "5.3",
+      "route": "/calc-ab/u5-analytical-app/t5-3-mc-003",
+      "figureTitle": "Graph of first derivative",
+      "figureDescription": "The graph of f prime crosses the x-axis at x=-2 and x=1.",
+      "svgHash": "f7137f6b1e23de32",
+      "tokenOverlap": [
+        "graph",
+        "derivative",
+        "graph",
+        "axis"
+      ]
+    },
+    {
+      "contentId": "calc-ab.u5.t5-4.mc.003",
+      "course": "calc-ab",
+      "unit": "u5-analytical-app",
+      "topic": "5.4",
+      "route": "/calc-ab/u5-analytical-app/t5-4-mc-003",
+      "figureTitle": "First derivative shape sketch",
+      "figureDescription": "A first derivative graph with a local maximum near x=0 and zeros at x=-2 and x=3.",
+      "svgHash": "d9b11afa5b92c71d",
+      "tokenOverlap": [
+        "first",
+        "derivative",
+        "first",
+        "derivative",
+        "graph",
+        "local",
+        "maximum"
+      ]
+    },
+    {
+      "contentId": "calc-ab.u5.t5-6.mc.003",
+      "course": "calc-ab",
+      "unit": "u5-analytical-app",
+      "topic": "5.6",
+      "route": "/calc-ab/u5-analytical-app/t5-6-mc-003",
+      "figureTitle": "Second derivative sign chart",
+      "figureDescription": "A sign chart for f double prime with sign changes at x=-2 and x=1.",
+      "svgHash": "e4347dd5aa282529",
+      "tokenOverlap": [
+        "derivative",
+        "sign",
+        "chart",
+        "sign",
+        "chart",
+        "sign",
+        "changes"
+      ]
+    },
+    {
+      "contentId": "calc-ab.u5.t5-8.mc.001",
+      "course": "calc-ab",
+      "unit": "u5-analytical-app",
+      "topic": "5.8",
+      "route": "/calc-ab/u5-analytical-app/t5-8-mc-001",
+      "figureTitle": "First derivative shape sketch",
+      "figureDescription": "A first derivative graph with a local maximum near x=0 and zeros at x=-2 and x=3.",
+      "svgHash": "d9b11afa5b92c71d",
+      "tokenOverlap": [
+        "derivative",
+        "derivative",
+        "graph",
+        "local"
+      ]
+    },
+    {
+      "contentId": "calc-ab.u5.t5-8.mc.002",
+      "course": "calc-ab",
+      "unit": "u5-analytical-app",
+      "topic": "5.8",
+      "route": "/calc-ab/u5-analytical-app/t5-8-mc-002",
+      "figureTitle": "First derivative shape sketch",
+      "figureDescription": "A first derivative graph with a local maximum near x=0 and zeros at x=-2 and x=3.",
+      "svgHash": "d9b11afa5b92c71d",
+      "tokenOverlap": [
+        "derivative",
+        "derivative",
+        "graph"
+      ]
+    },
+    {
+      "contentId": "calc-ab.u5.t5-8.frq.001",
+      "course": "calc-ab",
+      "unit": "u5-analytical-app",
+      "topic": "5.8",
+      "route": "/calc-ab/u5-analytical-app/t5-8-frq-001",
+      "figureTitle": "First derivative shape sketch",
+      "figureDescription": "A first derivative graph with a local maximum near x=0 and zeros at x=-2 and x=3.",
+      "svgHash": "d9b11afa5b92c71d",
+      "tokenOverlap": [
+        "derivative",
+        "sketch",
+        "derivative",
+        "graph",
+        "local",
+        "maximum",
+        "near",
+        "zeros"
+      ]
+    },
+    {
+      "contentId": "calc-ab.u5.t5-9.frq.001",
+      "course": "calc-ab",
+      "unit": "u5-analytical-app",
+      "topic": "5.9",
+      "route": "/calc-ab/u5-analytical-app/t5-9-frq-001",
+      "figureTitle": "Function, first derivative, and second derivative sketches",
+      "figureDescription": "Three aligned sketches show f, f prime, and f double prime on the same x-interval.",
+      "svgHash": "1d33ed6eb83c3f6b",
+      "tokenOverlap": [
+        "first",
+        "derivative",
+        "second",
+        "derivative",
+        "sketches",
+        "sketches",
+        "show",
+        "interval"
+      ]
+    },
+    {
+      "contentId": "calc-ab.u5.t5-10.mc.001",
+      "course": "calc-ab",
+      "unit": "u5-analytical-app",
+      "topic": "5.10",
+      "route": "/calc-ab/u5-analytical-app/t5-10-mc-001",
+      "figureTitle": "Rectangle optimization sketch",
+      "figureDescription": "A rectangle with width x and length 20 minus x for a fixed perimeter of 40.",
+      "svgHash": "a2e7262aa003a25e",
+      "tokenOverlap": [
+        "rectangle",
+        "optimization",
+        "rectangle",
+        "width",
+        "length",
+        "perimeter"
+      ]
+    },
+    {
+      "contentId": "calc-ab.u5.t5-10.mc.002",
+      "course": "calc-ab",
+      "unit": "u5-analytical-app",
+      "topic": "5.10",
+      "route": "/calc-ab/u5-analytical-app/t5-10-mc-002",
+      "figureTitle": "Open box cutout sketch",
+      "figureDescription": "A rectangular sheet with congruent x by x squares cut from each corner.",
+      "svgHash": "33335ab3238d4a9c",
+      "tokenOverlap": [
+        "open",
+        "sheet",
+        "squares",
+        "each",
+        "corner"
+      ]
+    },
+    {
+      "contentId": "calc-ab.u5.t5-10.mc.003",
+      "course": "calc-ab",
+      "unit": "u5-analytical-app",
+      "topic": "5.10",
+      "route": "/calc-ab/u5-analytical-app/t5-10-mc-003",
+      "figureTitle": "River fence optimization sketch",
+      "figureDescription": "A rectangular pen uses fencing on three sides and a river as the fourth side.",
+      "svgHash": "a075b5ccdbdb97ac",
+      "tokenOverlap": [
+        "river",
+        "optimization",
+        "rectangular",
+        "uses",
+        "fencing",
+        "three",
+        "sides",
+        "river",
+        "side"
+      ]
+    },
+    {
+      "contentId": "calc-ab.u5.t5-11.mc.001",
+      "course": "calc-ab",
+      "unit": "u5-analytical-app",
+      "topic": "5.11",
+      "route": "/calc-ab/u5-analytical-app/t5-11-mc-001",
+      "figureTitle": "Rectangle optimization sketch",
+      "figureDescription": "A rectangle with width x and length 20 minus x for a fixed perimeter of 40.",
+      "svgHash": "a2e7262aa003a25e",
+      "tokenOverlap": [
+        "rectangle",
+        "optimization",
+        "rectangle",
+        "perimeter"
+      ]
+    },
+    {
+      "contentId": "calc-ab.u5.t5-11.mc.002",
+      "course": "calc-ab",
+      "unit": "u5-analytical-app",
+      "topic": "5.11",
+      "route": "/calc-ab/u5-analytical-app/t5-11-mc-002",
+      "figureTitle": "River fence optimization sketch",
+      "figureDescription": "A rectangular pen uses fencing on three sides and a river as the fourth side.",
+      "svgHash": "a075b5ccdbdb97ac",
+      "tokenOverlap": [
+        "river",
+        "fence",
+        "optimization",
+        "rectangular",
+        "uses",
+        "fencing",
+        "three",
+        "sides",
+        "river",
+        "side"
+      ]
+    },
+    {
+      "contentId": "calc-ab.u5.t5-11.mc.003",
+      "course": "calc-ab",
+      "unit": "u5-analytical-app",
+      "topic": "5.11",
+      "route": "/calc-ab/u5-analytical-app/t5-11-mc-003",
+      "figureTitle": "Open box cutout sketch",
+      "figureDescription": "A rectangular sheet with congruent x by x squares cut from each corner.",
+      "svgHash": "33335ab3238d4a9c",
+      "tokenOverlap": [
+        "open",
+        "sheet",
+        "squares"
+      ]
+    },
+    {
+      "contentId": "calc-ab.u5.t5-11.frq.001",
+      "course": "calc-ab",
+      "unit": "u5-analytical-app",
+      "topic": "5.11",
+      "route": "/calc-ab/u5-analytical-app/t5-11-frq-001",
+      "figureTitle": "Open box cutout sketch",
+      "figureDescription": "A rectangular sheet with congruent x by x squares cut from each corner.",
+      "svgHash": "33335ab3238d4a9c",
+      "tokenOverlap": [
+        "open",
+        "sheet",
+        "squares",
+        "each",
+        "corner"
+      ]
+    },
+    {
+      "contentId": "calc-ab.u6.t6-1.mc.001",
+      "course": "calc-ab",
+      "unit": "u6-integration",
+      "topic": "6.1",
+      "route": "/calc-ab/u6-integration/t6-1-mc-001",
+      "figureTitle": "Rectangle area under a rate graph",
+      "figureDescription": "A constant positive graph forming a rectangle above the horizontal axis.",
+      "svgHash": "6954560f483a1f87",
+      "tokenOverlap": [
+        "rectangle",
+        "area",
+        "under",
+        "rate",
+        "graph",
+        "graph",
+        "rectangle",
+        "horizontal",
+        "axis"
+      ]
+    },
+    {
+      "contentId": "calc-ab.u6.t6-1.mc.002",
+      "course": "calc-ab",
+      "unit": "u6-integration",
+      "topic": "6.1",
+      "route": "/calc-ab/u6-integration/t6-1-mc-002",
+      "figureTitle": "Triangle area under a graph",
+      "figureDescription": "A line segment from the origin to a positive endpoint forming a triangle with the horizontal axis.",
+      "svgHash": "e8310937e4da0145",
+      "tokenOverlap": [
+        "triangle",
+        "area",
+        "graph",
+        "positive",
+        "triangle",
+        "horizontal",
+        "axis"
+      ]
+    },
+    {
+      "contentId": "calc-ab.u6.t6-1.mc.003",
+      "course": "calc-ab",
+      "unit": "u6-integration",
+      "topic": "6.1",
+      "route": "/calc-ab/u6-integration/t6-1-mc-003",
+      "figureTitle": "Semicircle area under a graph",
+      "figureDescription": "The upper half of a circle of radius 3 above the horizontal axis.",
+      "svgHash": "af245cc55f4d0eec",
+      "tokenOverlap": [
+        "semicircle",
+        "area",
+        "graph",
+        "upper",
+        "half",
+        "circle",
+        "radius",
+        "above",
+        "axis"
+      ]
+    },
+    {
+      "contentId": "calc-ab.u6.t6-1.mc.004",
+      "course": "calc-ab",
+      "unit": "u6-integration",
+      "topic": "6.1",
+      "route": "/calc-ab/u6-integration/t6-1-mc-004",
+      "figureTitle": "Trapezoid area under a graph",
+      "figureDescription": "A line segment above the horizontal axis forming a trapezoid.",
+      "svgHash": "15d57e248ea1b1bc",
+      "tokenOverlap": [
+        "trapezoid",
+        "area",
+        "graph",
+        "above",
+        "axis",
+        "trapezoid"
+      ]
+    },
+    {
+      "contentId": "calc-ab.u6.t6-1.mc.005",
+      "course": "calc-ab",
+      "unit": "u6-integration",
+      "topic": "6.1",
+      "route": "/calc-ab/u6-integration/t6-1-mc-005",
+      "figureTitle": "Signed area sketch",
+      "figureDescription": "A graph with one region above the x-axis and one region below the x-axis.",
+      "svgHash": "2dbb1fe35475d794",
+      "tokenOverlap": [
+        "signed",
+        "area",
+        "graph",
+        "region",
+        "above",
+        "axis",
+        "region",
+        "below",
+        "axis"
+      ]
+    },
+    {
+      "contentId": "calc-ab.u6.t6-1.frq.001",
+      "course": "calc-ab",
+      "unit": "u6-integration",
+      "topic": "6.1",
+      "route": "/calc-ab/u6-integration/t6-1-frq-001",
+      "figureTitle": "Composite signed area graph",
+      "figureDescription": "A graph made from a rectangle, a semicircle, and a triangle for signed area reasoning.",
+      "svgHash": "5b013f0ca5afd912",
+      "tokenOverlap": [
+        "signed",
+        "area",
+        "graph",
+        "graph",
+        "rectangle",
+        "semicircle",
+        "triangle",
+        "signed",
+        "area"
+      ]
+    },
+    {
+      "contentId": "calc-ab.u6.t6-2.mc.001",
+      "course": "calc-ab",
+      "unit": "u6-integration",
+      "topic": "6.2",
+      "route": "/calc-ab/u6-integration/t6-2-mc-001",
+      "figureTitle": "Riemann sum sketch",
+      "figureDescription": "A graph of f(x)=x squared on [0,4] with four left-endpoint rectangles.",
+      "svgHash": "111a73d8fb494273",
+      "tokenOverlap": [
+        "riemann",
+        "left",
+        "endpoint"
+      ]
+    },
+    {
+      "contentId": "calc-ab.u6.t6-5.mc.003",
+      "course": "calc-ab",
+      "unit": "u6-integration",
+      "topic": "6.5",
+      "route": "/calc-ab/u6-integration/t6-5-mc-003",
+      "figureTitle": "Accumulation, integrand, and derivative sketches",
+      "figureDescription": "Three aligned sketches show A, f, and f prime on the same interval with A prime equal to f and A double prime equal to f prime.",
+      "svgHash": "f628f08f74332a76",
+      "tokenOverlap": [
+        "accumulation",
+        "integrand",
+        "derivative",
+        "aligned",
+        "show",
+        "interval"
+      ]
+    },
+    {
+      "contentId": "calc-ab.u6.t6-5.mc.004",
+      "course": "calc-ab",
+      "unit": "u6-integration",
+      "topic": "6.5",
+      "route": "/calc-ab/u6-integration/t6-5-mc-004",
+      "figureTitle": "Graph for accumulation function",
+      "figureDescription": "A piecewise linear graph of f for reasoning about A(x) equals an initial value plus an integral of f.",
+      "svgHash": "6c830c13fcdc7e79",
+      "tokenOverlap": [
+        "graph",
+        "accumulation",
+        "graph",
+        "reasoning",
+        "initial",
+        "value",
+        "integral"
+      ]
+    },
+    {
+      "contentId": "calc-ab.u6.t6-5.mc.005",
+      "course": "calc-ab",
+      "unit": "u6-integration",
+      "topic": "6.5",
+      "route": "/calc-ab/u6-integration/t6-5-mc-005",
+      "figureTitle": "Graph for accumulation function",
+      "figureDescription": "A piecewise linear graph of f for reasoning about A(x) equals an initial value plus an integral of f.",
+      "svgHash": "6c830c13fcdc7e79",
+      "tokenOverlap": [
+        "graph",
+        "accumulation",
+        "function",
+        "graph",
+        "reasoning",
+        "integral"
+      ]
+    },
+    {
+      "contentId": "calc-ab.u6.t6-5.frq.001",
+      "course": "calc-ab",
+      "unit": "u6-integration",
+      "topic": "6.5",
+      "route": "/calc-ab/u6-integration/t6-5-frq-001",
+      "figureTitle": "Accumulation, integrand, and derivative sketches",
+      "figureDescription": "Three aligned sketches show A, f, and f prime on the same interval with A prime equal to f and A double prime equal to f prime.",
+      "svgHash": "f628f08f74332a76",
+      "tokenOverlap": [
+        "accumulation",
+        "derivative",
+        "aligned",
+        "show",
+        "equal",
+        "equal"
+      ]
+    },
+    {
+      "contentId": "calc-ab.u7.t7-3.mc.003",
+      "course": "calc-ab",
+      "unit": "u7-diff-eqs",
+      "topic": "7.3",
+      "route": "/calc-ab/u7-diff-eqs/t7-3-mc-003",
+      "figureTitle": "Slope field",
+      "figureDescription": "Slope field on a coordinate grid.",
+      "svgHash": "cbe54b24a899a07e",
+      "tokenOverlap": [
+        "slope",
+        "field",
+        "slope",
+        "field"
+      ]
+    },
+    {
+      "contentId": "calc-ab.u7.t7-3.mc.004",
+      "course": "calc-ab",
+      "unit": "u7-diff-eqs",
+      "topic": "7.3",
+      "route": "/calc-ab/u7-diff-eqs/t7-3-mc-004",
+      "figureTitle": "Slope field",
+      "figureDescription": "Slope field on a coordinate grid.",
+      "svgHash": "cbe54b24a899a07e",
+      "tokenOverlap": [
+        "slope",
+        "field",
+        "slope",
+        "field"
+      ]
+    },
+    {
+      "contentId": "calc-ab.u7.t7-3.mc.005",
+      "course": "calc-ab",
+      "unit": "u7-diff-eqs",
+      "topic": "7.3",
+      "route": "/calc-ab/u7-diff-eqs/t7-3-mc-005",
+      "figureTitle": "Slope field",
+      "figureDescription": "Slope field on a coordinate grid with horizontal bands.",
+      "svgHash": "1e18e96d00d12b6f",
+      "tokenOverlap": [
+        "slope",
+        "field",
+        "slope",
+        "field",
+        "horizontal",
+        "bands"
+      ]
+    },
+    {
+      "contentId": "calc-ab.u7.t7-3.frq.001",
+      "course": "calc-ab",
+      "unit": "u7-diff-eqs",
+      "topic": "7.3",
+      "route": "/calc-ab/u7-diff-eqs/t7-3-frq-001",
+      "figureTitle": "Slope field",
+      "figureDescription": "Slope field on a coordinate grid.",
+      "svgHash": "cbe54b24a899a07e",
+      "tokenOverlap": [
+        "slope",
+        "field",
+        "slope",
+        "field"
+      ]
+    },
+    {
+      "contentId": "calc-ab.u7.t7-4.mc.002",
+      "course": "calc-ab",
+      "unit": "u7-diff-eqs",
+      "topic": "7.4",
+      "route": "/calc-ab/u7-diff-eqs/t7-4-mc-002",
+      "figureTitle": "Slope field",
+      "figureDescription": "Slope field on a coordinate grid with slopes depending only on y.",
+      "svgHash": "52a63679ba6ac23a",
+      "tokenOverlap": [
+        "slope",
+        "field",
+        "slope",
+        "field"
+      ]
+    },
+    {
+      "contentId": "calc-ab.u7.t7-4.mc.003",
+      "course": "calc-ab",
+      "unit": "u7-diff-eqs",
+      "topic": "7.4",
+      "route": "/calc-ab/u7-diff-eqs/t7-4-mc-003",
+      "figureTitle": "Slope field",
+      "figureDescription": "Slope field on a coordinate grid with horizontal bands.",
+      "svgHash": "1e18e96d00d12b6f",
+      "tokenOverlap": [
+        "slope",
+        "field",
+        "slope",
+        "field"
+      ]
+    },
+    {
+      "contentId": "calc-ab.u7.t7-4.mc.005",
+      "course": "calc-ab",
+      "unit": "u7-diff-eqs",
+      "topic": "7.4",
+      "route": "/calc-ab/u7-diff-eqs/t7-4-mc-005",
+      "figureTitle": "Slope field",
+      "figureDescription": "Slope field on a coordinate grid.",
+      "svgHash": "cbe54b24a899a07e",
+      "tokenOverlap": [
+        "slope",
+        "field",
+        "slope",
+        "field"
+      ]
+    },
+    {
+      "contentId": "calc-ab.u7.t7-4.frq.001",
+      "course": "calc-ab",
+      "unit": "u7-diff-eqs",
+      "topic": "7.4",
+      "route": "/calc-ab/u7-diff-eqs/t7-4-frq-001",
+      "figureTitle": "Slope field",
+      "figureDescription": "Slope field on a coordinate grid with horizontal bands.",
+      "svgHash": "253a383768a6b36d",
+      "tokenOverlap": [
+        "slope",
+        "field",
+        "slope",
+        "field"
+      ]
+    },
+    {
+      "contentId": "calc-ab.u7.t7-7.frq.001",
+      "course": "calc-ab",
+      "unit": "u7-diff-eqs",
+      "topic": "7.7",
+      "route": "/calc-ab/u7-diff-eqs/t7-7-frq-001",
+      "figureTitle": "Slope field",
+      "figureDescription": "Slope field for dy/dx equals 2x over y on a positive-y grid.",
+      "svgHash": "9a7d67bd2a4ac87e",
+      "tokenOverlap": [
+        "slope",
+        "field",
+        "slope",
+        "field",
+        "positive"
+      ]
+    },
+    {
+      "contentId": "calc-ab.u8.t8-1.mc.003",
+      "course": "calc-ab",
+      "unit": "u8-app-integration",
+      "topic": "8.1",
+      "route": "/calc-ab/u8-app-integration/t8-1-mc-003",
+      "figureTitle": "Area under a rate graph",
+      "figureDescription": "Piecewise linear positive graph with vertices at (0,0), (2,3), (4,3), and (6,0).",
+      "svgHash": "7d83ddbf30229b6b",
+      "tokenOverlap": [
+        "area",
+        "under",
+        "graph",
+        "graph"
+      ]
+    },
+    {
+      "contentId": "calc-ab.u8.t8-4.mc.001",
+      "course": "calc-ab",
+      "unit": "u8-app-integration",
+      "topic": "8.4",
+      "route": "/calc-ab/u8-app-integration/t8-4-mc-001",
+      "figureTitle": "Area between curves with vertical slices",
+      "figureDescription": "Region bounded by y equals 4 minus x squared and y equals x plus 2 from x equals negative 2 to x equals 1.",
+      "svgHash": "9a4430ea92e63160",
+      "tokenOverlap": [
+        "area",
+        "between",
+        "curves",
+        "vertical",
+        "slices",
+        "region",
+        "bounded",
+        "minus"
+      ]
+    },
+    {
+      "contentId": "calc-ab.u8.t8-4.mc.002",
+      "course": "calc-ab",
+      "unit": "u8-app-integration",
+      "topic": "8.4",
+      "route": "/calc-ab/u8-app-integration/t8-4-mc-002",
+      "figureTitle": "Area between curves with vertical slices",
+      "figureDescription": "Region bounded by y equals 4 minus x squared and y equals x plus 2 from x equals negative 2 to x equals 1.",
+      "svgHash": "9a4430ea92e63160",
+      "tokenOverlap": [
+        "area",
+        "between",
+        "curves",
+        "vertical",
+        "slices",
+        "bounded",
+        "minus"
+      ]
+    },
+    {
+      "contentId": "calc-ab.u8.t8-4.frq.001",
+      "course": "calc-ab",
+      "unit": "u8-app-integration",
+      "topic": "8.4",
+      "route": "/calc-ab/u8-app-integration/t8-4-frq-001",
+      "figureTitle": "Area between curves with vertical slices",
+      "figureDescription": "Region bounded by y equals 4 minus x squared and y equals x plus 2 from x equals negative 2 to x equals 1.",
+      "svgHash": "9a4430ea92e63160",
+      "tokenOverlap": [
+        "area",
+        "between",
+        "curves",
+        "vertical",
+        "slices",
+        "region",
+        "bounded",
+        "equals",
+        "minus",
+        "equals",
+        "equals",
+        "equals"
+      ]
+    },
+    {
+      "contentId": "calc-ab.u8.t8-5.mc.001",
+      "course": "calc-ab",
+      "unit": "u8-app-integration",
+      "topic": "8.5",
+      "route": "/calc-ab/u8-app-integration/t8-5-mc-001",
+      "figureTitle": "Area between curves with horizontal slices",
+      "figureDescription": "Region bounded by x equals 4 minus y squared and x equals y plus 2 from y equals negative 2 to y equals 1.",
+      "svgHash": "ce3b12c2502799f9",
+      "tokenOverlap": [
+        "area",
+        "between",
+        "curves",
+        "horizontal",
+        "slices",
+        "region",
+        "bounded",
+        "minus"
+      ]
+    },
+    {
+      "contentId": "calc-ab.u8.t8-5.frq.001",
+      "course": "calc-ab",
+      "unit": "u8-app-integration",
+      "topic": "8.5",
+      "route": "/calc-ab/u8-app-integration/t8-5-frq-001",
+      "figureTitle": "Area between curves with horizontal slices",
+      "figureDescription": "Region bounded by x equals 4 minus y squared and x equals y plus 2 from y equals negative 2 to y equals 1.",
+      "svgHash": "ce3b12c2502799f9",
+      "tokenOverlap": [
+        "area",
+        "between",
+        "curves",
+        "horizontal",
+        "slices",
+        "region",
+        "bounded",
+        "minus"
+      ]
+    },
+    {
+      "contentId": "calc-ab.u8.t8-6.mc.001",
+      "course": "calc-ab",
+      "unit": "u8-app-integration",
+      "topic": "8.6",
+      "route": "/calc-ab/u8-app-integration/t8-6-mc-001",
+      "figureTitle": "Curves intersecting three times",
+      "figureDescription": "Curves y equals x cubed minus 3x and y equals x intersect at x equals negative 2, 0, and 2.",
+      "svgHash": "06f3dd859abb8bcb",
+      "tokenOverlap": [
+        "curves",
+        "curves",
+        "minus",
+        "intersect",
+        "negative"
+      ]
+    },
+    {
+      "contentId": "calc-ab.u8.t8-6.mc.002",
+      "course": "calc-ab",
+      "unit": "u8-app-integration",
+      "topic": "8.6",
+      "route": "/calc-ab/u8-app-integration/t8-6-mc-002",
+      "figureTitle": "Curves intersecting three times",
+      "figureDescription": "Curves y equals x cubed minus 3x and y equals x intersect at x equals negative 2, 0, and 2.",
+      "svgHash": "06f3dd859abb8bcb",
+      "tokenOverlap": [
+        "curves",
+        "curves",
+        "intersect"
+      ]
+    },
+    {
+      "contentId": "calc-ab.u8.t8-6.mc.003",
+      "course": "calc-ab",
+      "unit": "u8-app-integration",
+      "topic": "8.6",
+      "route": "/calc-ab/u8-app-integration/t8-6-mc-003",
+      "figureTitle": "Curves intersecting three times",
+      "figureDescription": "Curves y equals x cubed minus 3x and y equals x intersect at x equals negative 2, 0, and 2.",
+      "svgHash": "06f3dd859abb8bcb",
+      "tokenOverlap": [
+        "curves",
+        "curves",
+        "minus",
+        "intersect",
+        "negative"
+      ]
+    },
+    {
+      "contentId": "calc-ab.u8.t8-6.frq.001",
+      "course": "calc-ab",
+      "unit": "u8-app-integration",
+      "topic": "8.6",
+      "route": "/calc-ab/u8-app-integration/t8-6-frq-001",
+      "figureTitle": "Curves intersecting three times",
+      "figureDescription": "Curves y equals x cubed minus 3x and y equals x intersect at x equals negative 2, 0, and 2.",
+      "svgHash": "06f3dd859abb8bcb",
+      "tokenOverlap": [
+        "curves",
+        "curves",
+        "minus",
+        "intersect",
+        "negative"
+      ]
+    },
+    {
+      "contentId": "calc-ab.u8.t8-7.mc.001",
+      "course": "calc-ab",
+      "unit": "u8-app-integration",
+      "topic": "8.7",
+      "route": "/calc-ab/u8-app-integration/t8-7-mc-001",
+      "figureTitle": "Base region for square cross sections",
+      "figureDescription": "Base region under y equals square root of x from x equals 0 to x equals 4.",
+      "svgHash": "3f31ebed8dceed9b",
+      "tokenOverlap": [
+        "base",
+        "region",
+        "square",
+        "cross",
+        "sections",
+        "base",
+        "region",
+        "under",
+        "square"
+      ]
+    },
+    {
+      "contentId": "calc-ab.u8.t8-7.mc.002",
+      "course": "calc-ab",
+      "unit": "u8-app-integration",
+      "topic": "8.7",
+      "route": "/calc-ab/u8-app-integration/t8-7-mc-002",
+      "figureTitle": "Base region for square cross sections",
+      "figureDescription": "Base region under y equals square root of x from x equals 0 to x equals 4.",
+      "svgHash": "3f31ebed8dceed9b",
+      "tokenOverlap": [
+        "base",
+        "square",
+        "cross",
+        "sections",
+        "base",
+        "square"
+      ]
+    },
+    {
+      "contentId": "calc-ab.u8.t8-7.frq.001",
+      "course": "calc-ab",
+      "unit": "u8-app-integration",
+      "topic": "8.7",
+      "route": "/calc-ab/u8-app-integration/t8-7-frq-001",
+      "figureTitle": "Base region for square cross sections",
+      "figureDescription": "Base region under y equals square root of x from x equals 0 to x equals 4.",
+      "svgHash": "3f31ebed8dceed9b",
+      "tokenOverlap": [
+        "base",
+        "region",
+        "square",
+        "cross",
+        "sections",
+        "base",
+        "region",
+        "under",
+        "square"
+      ]
+    },
+    {
+      "contentId": "calc-ab.u8.t8-8.mc.001",
+      "course": "calc-ab",
+      "unit": "u8-app-integration",
+      "topic": "8.8",
+      "route": "/calc-ab/u8-app-integration/t8-8-mc-001",
+      "figureTitle": "Base region for semicircle cross sections",
+      "figureDescription": "Base region between y equals four minus x squared and the x-axis from x equals negative 2 to x equals 2.",
+      "svgHash": "38ebbc9b50f14be5",
+      "tokenOverlap": [
+        "base",
+        "semicircle",
+        "cross",
+        "sections",
+        "base",
+        "squared",
+        "axis"
+      ]
+    },
+    {
+      "contentId": "calc-ab.u8.t8-8.frq.001",
+      "course": "calc-ab",
+      "unit": "u8-app-integration",
+      "topic": "8.8",
+      "route": "/calc-ab/u8-app-integration/t8-8-frq-001",
+      "figureTitle": "Base region for semicircle cross sections",
+      "figureDescription": "Base region between y equals four minus x squared and the x-axis from x equals negative 2 to x equals 2.",
+      "svgHash": "38ebbc9b50f14be5",
+      "tokenOverlap": [
+        "base",
+        "semicircle",
+        "cross",
+        "sections",
+        "base",
+        "axis"
+      ]
+    },
+    {
+      "contentId": "calc-ab.u8.t8-9.mc.001",
+      "course": "calc-ab",
+      "unit": "u8-app-integration",
+      "topic": "8.9",
+      "route": "/calc-ab/u8-app-integration/t8-9-mc-001",
+      "figureTitle": "Disk method around the x-axis",
+      "figureDescription": "Region under y equals x plus 1 from x equals 0 to x equals 2 revolved around the x-axis.",
+      "svgHash": "ce3724fbaf0d66b6",
+      "tokenOverlap": [
+        "disk",
+        "method",
+        "around",
+        "axis",
+        "region",
+        "under",
+        "revolved",
+        "around",
+        "axis"
+      ]
+    },
+    {
+      "contentId": "calc-ab.u8.t8-9.mc.002",
+      "course": "calc-ab",
+      "unit": "u8-app-integration",
+      "topic": "8.9",
+      "route": "/calc-ab/u8-app-integration/t8-9-mc-002",
+      "figureTitle": "Disk method around the x-axis",
+      "figureDescription": "Region under y equals x plus 1 from x equals 0 to x equals 2 revolved around the x-axis.",
+      "svgHash": "ce3724fbaf0d66b6",
+      "tokenOverlap": [
+        "disk",
+        "method",
+        "axis",
+        "axis"
+      ]
+    },
+    {
+      "contentId": "calc-ab.u8.t8-9.frq.001",
+      "course": "calc-ab",
+      "unit": "u8-app-integration",
+      "topic": "8.9",
+      "route": "/calc-ab/u8-app-integration/t8-9-frq-001",
+      "figureTitle": "Disk method around the x-axis",
+      "figureDescription": "Region under y equals x plus 1 from x equals 0 to x equals 2 revolved around the x-axis.",
+      "svgHash": "ce3724fbaf0d66b6",
+      "tokenOverlap": [
+        "disk",
+        "method",
+        "axis",
+        "region",
+        "revolved",
+        "axis"
+      ]
+    },
+    {
+      "contentId": "calc-ab.u8.t8-10.mc.001",
+      "course": "calc-ab",
+      "unit": "u8-app-integration",
+      "topic": "8.10",
+      "route": "/calc-ab/u8-app-integration/t8-10-mc-001",
+      "figureTitle": "Disk method around another horizontal axis",
+      "figureDescription": "Region between y equals one and y equals x plus one from x equals 0 to x equals 2 revolved around y equals one.",
+      "svgHash": "3679c6197710f57b",
+      "tokenOverlap": [
+        "disk",
+        "method",
+        "axis",
+        "region",
+        "between",
+        "revolved"
+      ]
+    },
+    {
+      "contentId": "calc-ab.u8.t8-10.mc.002",
+      "course": "calc-ab",
+      "unit": "u8-app-integration",
+      "topic": "8.10",
+      "route": "/calc-ab/u8-app-integration/t8-10-mc-002",
+      "figureTitle": "Disk method around another horizontal axis",
+      "figureDescription": "Region between y equals one and y equals x plus one from x equals 0 to x equals 2 revolved around y equals one.",
+      "svgHash": "3679c6197710f57b",
+      "tokenOverlap": [
+        "disk",
+        "method",
+        "axis"
+      ]
+    },
+    {
+      "contentId": "calc-ab.u8.t8-10.mc.005",
+      "course": "calc-ab",
+      "unit": "u8-app-integration",
+      "topic": "8.10",
+      "route": "/calc-ab/u8-app-integration/t8-10-mc-005",
+      "figureTitle": "Disk method around another horizontal axis",
+      "figureDescription": "Region between y equals one and y equals x plus one from x equals 0 to x equals 2 revolved around y equals one.",
+      "svgHash": "3679c6197710f57b",
+      "tokenOverlap": [
+        "disk",
+        "method",
+        "axis",
+        "region"
+      ]
+    },
+    {
+      "contentId": "calc-ab.u8.t8-10.frq.001",
+      "course": "calc-ab",
+      "unit": "u8-app-integration",
+      "topic": "8.10",
+      "route": "/calc-ab/u8-app-integration/t8-10-frq-001",
+      "figureTitle": "Disk method around another horizontal axis",
+      "figureDescription": "Region between y equals one and y equals x plus one from x equals 0 to x equals 2 revolved around y equals one.",
+      "svgHash": "3679c6197710f57b",
+      "tokenOverlap": [
+        "disk",
+        "method",
+        "axis",
+        "region",
+        "revolved"
+      ]
+    },
+    {
+      "contentId": "calc-ab.u8.t8-11.mc.001",
+      "course": "calc-ab",
+      "unit": "u8-app-integration",
+      "topic": "8.11",
+      "route": "/calc-ab/u8-app-integration/t8-11-mc-001",
+      "figureTitle": "Washer method around the x-axis",
+      "figureDescription": "Region between y equals square root of x and y equals x over 2 from x equals 0 to x equals 4 revolved around the x-axis.",
+      "svgHash": "1a74d1089e599d36",
+      "tokenOverlap": [
+        "washer",
+        "method",
+        "axis",
+        "region",
+        "between",
+        "square",
+        "revolved",
+        "axis"
+      ]
+    },
+    {
+      "contentId": "calc-ab.u8.t8-11.mc.002",
+      "course": "calc-ab",
+      "unit": "u8-app-integration",
+      "topic": "8.11",
+      "route": "/calc-ab/u8-app-integration/t8-11-mc-002",
+      "figureTitle": "Washer method around the x-axis",
+      "figureDescription": "Region between y equals square root of x and y equals x over 2 from x equals 0 to x equals 4 revolved around the x-axis.",
+      "svgHash": "1a74d1089e599d36",
+      "tokenOverlap": [
+        "washer",
+        "method",
+        "axis",
+        "square",
+        "axis"
+      ]
+    },
+    {
+      "contentId": "calc-ab.u8.t8-11.mc.005",
+      "course": "calc-ab",
+      "unit": "u8-app-integration",
+      "topic": "8.11",
+      "route": "/calc-ab/u8-app-integration/t8-11-mc-005",
+      "figureTitle": "Washer method around the x-axis",
+      "figureDescription": "Region between y equals square root of x and y equals x over 2 from x equals 0 to x equals 4 revolved around the x-axis.",
+      "svgHash": "1a74d1089e599d36",
+      "tokenOverlap": [
+        "washer",
+        "method",
+        "axis",
+        "square",
+        "axis"
+      ]
+    },
+    {
+      "contentId": "calc-ab.u8.t8-11.frq.001",
+      "course": "calc-ab",
+      "unit": "u8-app-integration",
+      "topic": "8.11",
+      "route": "/calc-ab/u8-app-integration/t8-11-frq-001",
+      "figureTitle": "Washer method around the x-axis",
+      "figureDescription": "Region between y equals square root of x and y equals x over 2 from x equals 0 to x equals 4 revolved around the x-axis.",
+      "svgHash": "1a74d1089e599d36",
+      "tokenOverlap": [
+        "washer",
+        "method",
+        "axis",
+        "region",
+        "revolved",
+        "axis"
+      ]
+    },
+    {
+      "contentId": "calc-ab.u8.t8-12.mc.001",
+      "course": "calc-ab",
+      "unit": "u8-app-integration",
+      "topic": "8.12",
+      "route": "/calc-ab/u8-app-integration/t8-12-mc-001",
+      "figureTitle": "Washer method around y equals 2",
+      "figureDescription": "Region between y equals x and y equals x squared from x equals 0 to x equals 1 revolved around y equals 2.",
+      "svgHash": "5fa22e5c52bbd042",
+      "tokenOverlap": [
+        "washer",
+        "method",
+        "region",
+        "between",
+        "revolved"
+      ]
+    },
+    {
+      "contentId": "calc-ab.u8.t8-12.mc.002",
+      "course": "calc-ab",
+      "unit": "u8-app-integration",
+      "topic": "8.12",
+      "route": "/calc-ab/u8-app-integration/t8-12-mc-002",
+      "figureTitle": "Washer method around y equals 2",
+      "figureDescription": "Region between y equals x and y equals x squared from x equals 0 to x equals 1 revolved around y equals 2.",
+      "svgHash": "5fa22e5c52bbd042",
+      "tokenOverlap": [
+        "washer",
+        "method",
+        "around",
+        "around"
+      ]
+    },
+    {
+      "contentId": "calc-ab.u8.t8-12.mc.005",
+      "course": "calc-ab",
+      "unit": "u8-app-integration",
+      "topic": "8.12",
+      "route": "/calc-ab/u8-app-integration/t8-12-mc-005",
+      "figureTitle": "Washer method around y equals 2",
+      "figureDescription": "Region between y equals x and y equals x squared from x equals 0 to x equals 1 revolved around y equals 2.",
+      "svgHash": "5fa22e5c52bbd042",
+      "tokenOverlap": [
+        "washer",
+        "method"
+      ]
+    },
+    {
+      "contentId": "calc-ab.u8.t8-12.frq.001",
+      "course": "calc-ab",
+      "unit": "u8-app-integration",
+      "topic": "8.12",
+      "route": "/calc-ab/u8-app-integration/t8-12-frq-001",
+      "figureTitle": "Washer method around y equals 2",
+      "figureDescription": "Region between y equals x and y equals x squared from x equals 0 to x equals 1 revolved around y equals 2.",
+      "svgHash": "5fa22e5c52bbd042",
+      "tokenOverlap": [
+        "washer",
+        "method",
+        "around",
+        "region",
+        "between",
+        "squared",
+        "revolved",
+        "around"
+      ]
+    },
+    {
+      "contentId": "cbse-math-11.u1.t1-1.mc.004",
+      "course": "cbse-math-11",
+      "unit": "u1-sets-functions",
+      "topic": "1.1",
+      "route": "/cbse-math-11/u1-sets-functions/t1-1-mc-004",
+      "figureTitle": "Interval on the number line",
+      "figureDescription": "Closed dot at -2, open dot at 3, and a shaded segment between them.",
+      "svgHash": "2ea48fefa596d469",
+      "tokenOverlap": [
+        "interval",
+        "number",
+        "line",
+        "closed",
+        "open",
+        "shaded"
+      ]
+    },
+    {
+      "contentId": "cbse-math-11.u1.t1-2.mc.004",
+      "course": "cbse-math-11",
+      "unit": "u1-sets-functions",
+      "topic": "1.2",
+      "route": "/cbse-math-11/u1-sets-functions/t1-2-mc-004",
+      "figureTitle": "Two-set Venn diagram",
+      "figureDescription": "Universal set with two overlapping sets A and B labelled by region counts.",
+      "svgHash": "ce3941263087b81f",
+      "tokenOverlap": [
+        "venn",
+        "universal",
+        "sets",
+        "region",
+        "counts"
+      ]
+    },
+    {
+      "contentId": "cbse-math-11.u1.t1-2.case.005",
+      "course": "cbse-math-11",
+      "unit": "u1-sets-functions",
+      "topic": "1.2",
+      "route": "/cbse-math-11/u1-sets-functions/t1-2-case-005",
+      "figureTitle": "Two-set Venn diagram",
+      "figureDescription": "Universal set with two overlapping sets A and B labelled by region counts.",
+      "svgHash": "ce3941263087b81f",
+      "tokenOverlap": [
+        "venn",
+        "universal",
+        "sets",
+        "labelled",
+        "region"
+      ]
+    },
+    {
+      "contentId": "cbse-math-11.u1.t1-3.mc.004",
+      "course": "cbse-math-11",
+      "unit": "u1-sets-functions",
+      "topic": "1.3",
+      "route": "/cbse-math-11/u1-sets-functions/t1-3-mc-004",
+      "figureTitle": "Relation from A to B",
+      "figureDescription": "Arrow diagram for a relation from A = {1,2,3} to B = {a,b,c}.",
+      "svgHash": "6692b75bf35d5fe4",
+      "tokenOverlap": [
+        "relation",
+        "arrow",
+        "relation"
+      ]
+    },
+    {
+      "contentId": "cbse-math-11.u1.t1-3.case.005",
+      "course": "cbse-math-11",
+      "unit": "u1-sets-functions",
+      "topic": "1.3",
+      "route": "/cbse-math-11/u1-sets-functions/t1-3-case-005",
+      "figureTitle": "Relation from A to B",
+      "figureDescription": "Arrow diagram for a relation from A = {1,2,3} to B = {a,b,c}.",
+      "svgHash": "6692b75bf35d5fe4",
+      "tokenOverlap": [
+        "relation",
+        "arrow",
+        "relation"
+      ]
+    },
+    {
+      "contentId": "cbse-math-11.u1.t1-5.mc.001",
+      "course": "cbse-math-11",
+      "unit": "u1-sets-functions",
+      "topic": "1.5",
+      "route": "/cbse-math-11/u1-sets-functions/t1-5-mc-001",
+      "figureTitle": "V-shaped graph on coordinate axes",
+      "figureDescription": "A V-shaped graph with vertex at the origin and symmetry about the y-axis.",
+      "svgHash": "1a0309be4b78d693",
+      "tokenOverlap": [
+        "shaped",
+        "graph",
+        "shaped",
+        "graph",
+        "vertex",
+        "origin"
+      ]
+    },
+    {
+      "contentId": "cbse-math-11.u1.t1-6.mc.004",
+      "course": "cbse-math-11",
+      "unit": "u1-sets-functions",
+      "topic": "1.6",
+      "route": "/cbse-math-11/u1-sets-functions/t1-6-mc-004",
+      "figureTitle": "Unit-circle reference angle",
+      "figureDescription": "A unit circle with labelled axes, radius 1, reference points, an angle mark, and point P.",
+      "svgHash": "031b102e756aba2b",
+      "tokenOverlap": [
+        "unit",
+        "circle",
+        "angle",
+        "unit",
+        "circle",
+        "angle",
+        "point"
+      ]
+    },
+    {
+      "contentId": "cbse-math-11.u1.t1-7.mc.002",
+      "course": "cbse-math-11",
+      "unit": "u1-sets-functions",
+      "topic": "1.7",
+      "route": "/cbse-math-11/u1-sets-functions/t1-7-mc-002",
+      "figureTitle": "Periodic graph with vertical asymptotes",
+      "figureDescription": "A central branch passes through the origin, with repeated vertical dashed asymptotes.",
+      "svgHash": "46f30c2bcd48cb50",
+      "tokenOverlap": [
+        "graph",
+        "vertical",
+        "asymptotes",
+        "central",
+        "branch",
+        "vertical",
+        "dashed",
+        "asymptotes"
+      ]
+    },
+    {
+      "contentId": "cbse-math-11.u1.t1-7.mc.004",
+      "course": "cbse-math-11",
+      "unit": "u1-sets-functions",
+      "topic": "1.7",
+      "route": "/cbse-math-11/u1-sets-functions/t1-7-mc-004",
+      "figureTitle": "Two basic trigonometric graphs",
+      "figureDescription": "Two smooth periodic graphs on common axes; one starts at the origin and one starts at a maximum.",
+      "svgHash": "787299ebf303c56c",
+      "tokenOverlap": [
+        "basic",
+        "trigonometric",
+        "graphs",
+        "graphs",
+        "starts",
+        "origin",
+        "starts",
+        "maximum"
+      ]
+    },
+    {
+      "contentId": "cbse-math-11.u2.t2-1.mc.001",
+      "course": "cbse-math-11",
+      "unit": "u2-algebra-xi",
+      "topic": "2.1",
+      "route": "/cbse-math-11/u2-algebra-xi/t2-1-mc-001",
+      "figureTitle": "Argand plane with labelled points",
+      "figureDescription": "Four labelled points around the origin: P(2,3), Q(2,-3), R(-2,3), and S(-2,-3).",
+      "svgHash": "dcfbef8032dd924d",
+      "tokenOverlap": [
+        "argand",
+        "plane",
+        "labelled",
+        "labelled",
+        "origin"
+      ]
+    },
+    {
+      "contentId": "cbse-math-11.u2.t2-2.mc.002",
+      "course": "cbse-math-11",
+      "unit": "u2-algebra-xi",
+      "topic": "2.2",
+      "route": "/cbse-math-11/u2-algebra-xi/t2-2-mc-002",
+      "figureTitle": "Number-line solution set",
+      "figureDescription": "A shaded interval begins just to the right of -1 and ends at a closed point at 5.",
+      "svgHash": "9e72ef1f41f11428",
+      "tokenOverlap": [
+        "number",
+        "line",
+        "solution",
+        "shaded",
+        "interval",
+        "right",
+        "closed",
+        "point"
+      ]
+    },
+    {
+      "contentId": "cbse-math-11.u2.t2-3.mc.001",
+      "course": "cbse-math-11",
+      "unit": "u2-algebra-xi",
+      "topic": "2.3",
+      "route": "/cbse-math-11/u2-algebra-xi/t2-3-mc-001",
+      "figureTitle": "Code slots with choices",
+      "figureDescription": "A code has one letter slot with 3 choices, then two digit slots with 4 choices and 3 remaining choices.",
+      "svgHash": "cc7b9341687f6dc0",
+      "tokenOverlap": [
+        "code",
+        "slots",
+        "choices",
+        "code",
+        "letter",
+        "slot",
+        "choices",
+        "then",
+        "digit",
+        "slots",
+        "choices",
+        "choices"
+      ]
+    },
+    {
+      "contentId": "cbse-math-11.u2.t2-4.mc.001",
+      "course": "cbse-math-11",
+      "unit": "u2-algebra-xi",
+      "topic": "2.4",
+      "route": "/cbse-math-11/u2-algebra-xi/t2-4-mc-001",
+      "figureTitle": "Pascal triangle rows up to n = 5",
+      "figureDescription": "Rows for n = 0 to n = 5 are displayed.",
+      "svgHash": "8164d569afd93ab6",
+      "tokenOverlap": [
+        "pascal",
+        "triangle",
+        "displayed"
+      ]
+    },
+    {
+      "contentId": "cbse-math-11.u2.t2-5.mc.001",
+      "course": "cbse-math-11",
+      "unit": "u2-algebra-xi",
+      "topic": "2.5",
+      "route": "/cbse-math-11/u2-algebra-xi/t2-5-mc-001",
+      "figureTitle": "Geometric progression flow",
+      "figureDescription": "The first three boxes show 12, 6, and 3 with the same multiplier between terms.",
+      "svgHash": "7427ce6038d5cd42",
+      "tokenOverlap": [
+        "geometric",
+        "progression",
+        "first",
+        "three",
+        "terms"
+      ]
+    },
+    {
+      "contentId": "cbse-math-11.u3.t3-1.mc.001",
+      "course": "cbse-math-11",
+      "unit": "u3-coordinate-geometry",
+      "topic": "3.1",
+      "route": "/cbse-math-11/u3-coordinate-geometry/t3-1-mc-001",
+      "figureTitle": "Coordinate grid with three labelled points",
+      "figureDescription": "A coordinate grid shows A(1,2), B(5,4), and C(5,-1).",
+      "svgHash": "728b72bcd88b8673",
+      "tokenOverlap": [
+        "coordinate",
+        "grid",
+        "points",
+        "coordinate",
+        "grid"
+      ]
+    },
+    {
+      "contentId": "cbse-math-11.u3.t3-2.mc.002",
+      "course": "cbse-math-11",
+      "unit": "u3-coordinate-geometry",
+      "topic": "3.2",
+      "route": "/cbse-math-11/u3-coordinate-geometry/t3-2-mc-002",
+      "figureTitle": "Point and line for distance",
+      "figureDescription": "A point P(1,2) is shown near the line labelled 3x + 4y = 12.",
+      "svgHash": "f25ea557fefdf197",
+      "tokenOverlap": [
+        "point",
+        "line",
+        "distance",
+        "point",
+        "line"
+      ]
+    },
+    {
+      "contentId": "cbse-math-11.u3.t3-3.mc.002",
+      "course": "cbse-math-11",
+      "unit": "u3-coordinate-geometry",
+      "topic": "3.3",
+      "route": "/cbse-math-11/u3-coordinate-geometry/t3-3-mc-002",
+      "figureTitle": "Circle data on coordinate axes",
+      "figureDescription": "A circle has centre C(1,-2) and a point R(4,-2) on the circle.",
+      "svgHash": "7fa3cc395657eeba",
+      "tokenOverlap": [
+        "circle",
+        "data",
+        "coordinate",
+        "circle",
+        "centre",
+        "point",
+        "circle"
+      ]
+    },
+    {
+      "contentId": "cbse-math-11.u3.t3-4.mc.005",
+      "course": "cbse-math-11",
+      "unit": "u3-coordinate-geometry",
+      "topic": "3.4",
+      "route": "/cbse-math-11/u3-coordinate-geometry/t3-4-mc-005",
+      "figureTitle": "Ellipse with labelled vertices",
+      "figureDescription": "An ellipse centred at the origin has vertices at (-5,0) and (5,0), and co-vertices at (0,-3) and (0,3).",
+      "svgHash": "9fab940bf45f6292",
+      "tokenOverlap": [
+        "ellipse",
+        "labelled",
+        "vertices",
+        "ellipse",
+        "vertices",
+        "vertices"
+      ]
+    },
+    {
+      "contentId": "cbse-math-11.u3.t3-5.mc.005",
+      "course": "cbse-math-11",
+      "unit": "u3-coordinate-geometry",
+      "topic": "3.5",
+      "route": "/cbse-math-11/u3-coordinate-geometry/t3-5-mc-005",
+      "figureTitle": "Point in three-dimensional coordinates",
+      "figureDescription": "A 3D coordinate sketch shows point P(2,3,4) from the origin.",
+      "svgHash": "a273e9fbc7e66cc1",
+      "tokenOverlap": [
+        "point",
+        "three",
+        "dimensional",
+        "coordinates",
+        "coordinate",
+        "point",
+        "origin"
+      ]
+    },
+    {
+      "contentId": "cbse-math-11.u4.t4-1.mc.001",
+      "course": "cbse-math-11",
+      "unit": "u4-calculus-xi",
+      "topic": "4.1",
+      "route": "/cbse-math-11/u4-calculus-xi/t4-1-mc-001",
+      "figureTitle": "Limit graph with a removable break",
+      "figureDescription": "A smooth curve approaches the same height from both sides near x = 2, while the point at x = 2 is separately marked lower.",
+      "svgHash": "ca6f754445e3c0f9",
+      "tokenOverlap": [
+        "limit",
+        "graph",
+        "removable",
+        "break",
+        "curve",
+        "approaches",
+        "same",
+        "height",
+        "both",
+        "sides",
+        "near",
+        "while",
+        "point",
+        "lower"
+      ]
+    },
+    {
+      "contentId": "cbse-math-11.u4.t4-2.case.005",
+      "course": "cbse-math-11",
+      "unit": "u4-calculus-xi",
+      "topic": "4.2",
+      "route": "/cbse-math-11/u4-calculus-xi/t4-2-case-005",
+      "figureTitle": "Small angle arc and chord",
+      "figureDescription": "A unit-circle sector shows a small angle x, its chord, and a tangent segment for comparing small-angle ratios.",
+      "svgHash": "5513a1313501d4c3",
+      "tokenOverlap": [
+        "small",
+        "angle",
+        "chord",
+        "unit",
+        "circle",
+        "sector",
+        "small",
+        "angle",
+        "chord",
+        "small",
+        "angle"
+      ]
+    },
+    {
+      "contentId": "cbse-math-11.u4.t4-3.case.005",
+      "course": "cbse-math-11",
+      "unit": "u4-calculus-xi",
+      "topic": "4.3",
+      "route": "/cbse-math-11/u4-calculus-xi/t4-3-case-005",
+      "figureTitle": "Secant approaching tangent",
+      "figureDescription": "A curve has a point P and a nearby point Q, with a secant line and tangent direction shown.",
+      "svgHash": "e340df9e9c3cdf4c",
+      "tokenOverlap": [
+        "secant",
+        "tangent",
+        "curve",
+        "point",
+        "nearby",
+        "point",
+        "secant",
+        "tangent",
+        "direction"
+      ]
+    },
+    {
+      "contentId": "cbse-math-11.u4.t4-4.mc.003",
+      "course": "cbse-math-11",
+      "unit": "u4-calculus-xi",
+      "topic": "4.4",
+      "route": "/cbse-math-11/u4-calculus-xi/t4-4-mc-003",
+      "figureTitle": "Distance-time data near an instant",
+      "figureDescription": "A distance-time graph marks two times around t = 3 seconds for estimating an average rate.",
+      "svgHash": "fa1871372f963414",
+      "tokenOverlap": [
+        "distance",
+        "time",
+        "instant",
+        "distance",
+        "time",
+        "graph",
+        "times",
+        "average",
+        "rate"
+      ]
+    },
+    {
+      "contentId": "cbse-math-11.u4.t4-5.case.005",
+      "course": "cbse-math-11",
+      "unit": "u4-calculus-xi",
+      "topic": "4.5",
+      "route": "/cbse-math-11/u4-calculus-xi/t4-5-case-005",
+      "figureTitle": "Quotient model with changing output",
+      "figureDescription": "A schematic input x feeds two simpler functions u and v before forming the quotient u over v.",
+      "svgHash": "1a89476e1842d048",
+      "tokenOverlap": [
+        "quotient",
+        "model",
+        "simpler",
+        "functions",
+        "before",
+        "forming",
+        "quotient"
+      ]
+    },
+    {
+      "contentId": "cbse-math-11.u5.t5-1.mc.005",
+      "course": "cbse-math-11",
+      "unit": "u5-statistics-probability",
+      "topic": "5.1",
+      "route": "/cbse-math-11/u5-statistics-probability/t5-1-mc-005",
+      "figureTitle": "Two data sets with the same centre",
+      "figureDescription": "Two dot plots show one data set clustered near the centre and another spread farther away.",
+      "svgHash": "0e1b844d6c9e9fa1",
+      "tokenOverlap": [
+        "data",
+        "sets",
+        "centre",
+        "plots",
+        "data",
+        "clustered",
+        "near",
+        "centre",
+        "spread",
+        "farther"
+      ]
+    },
+    {
+      "contentId": "cbse-math-11.u5.t5-2.mc.003",
+      "course": "cbse-math-11",
+      "unit": "u5-statistics-probability",
+      "topic": "5.2",
+      "route": "/cbse-math-11/u5-statistics-probability/t5-2-mc-003",
+      "figureTitle": "Distances from the mean",
+      "figureDescription": "A number-line sketch marks four observations and their common mean for variance reasoning.",
+      "svgHash": "a9600e2b4c0f5bb3",
+      "tokenOverlap": [
+        "mean",
+        "mean",
+        "variance",
+        "reasoning"
+      ]
+    },
+    {
+      "contentId": "cbse-math-11.u5.t5-3.mc.003",
+      "course": "cbse-math-11",
+      "unit": "u5-statistics-probability",
+      "topic": "5.3",
+      "route": "/cbse-math-11/u5-statistics-probability/t5-3-mc-003",
+      "figureTitle": "Grouped frequency distribution",
+      "figureDescription": "A simple grouped-frequency sketch shows three adjacent class intervals with the middle interval having twice the frequency of each side interval.",
+      "svgHash": "7d636032d0f2eda6",
+      "tokenOverlap": [
+        "grouped",
+        "distribution",
+        "grouped",
+        "class"
+      ]
+    },
+    {
+      "contentId": "cbse-math-11.u5.t5-4.case.005",
+      "course": "cbse-math-11",
+      "unit": "u5-statistics-probability",
+      "topic": "5.4",
+      "route": "/cbse-math-11/u5-statistics-probability/t5-4-case-005",
+      "figureTitle": "Regions for two events",
+      "figureDescription": "A Venn diagram labels the regions for two overlapping events without giving numerical counts.",
+      "svgHash": "4fd2d6ca4397aaab",
+      "tokenOverlap": [
+        "events",
+        "events",
+        "without",
+        "counts"
+      ]
+    },
+    {
+      "contentId": "cbse-math-11.u5.t5-5.case.005",
+      "course": "cbse-math-11",
+      "unit": "u5-statistics-probability",
+      "topic": "5.5",
+      "route": "/cbse-math-11/u5-statistics-probability/t5-5-case-005",
+      "figureTitle": "Exhaustive partition with probabilities",
+      "figureDescription": "Four mutually exclusive categories form the whole set, with probabilities labelled using p.",
+      "svgHash": "d5093c7bf27bd6f7",
+      "tokenOverlap": [
+        "exhaustive",
+        "partition",
+        "probabilities",
+        "four",
+        "mutually",
+        "exclusive",
+        "probabilities"
+      ]
+    },
+    {
+      "contentId": "cbse-math-12.u1.t1-1.case.005",
+      "course": "cbse-math-12",
+      "unit": "u1-relations-functions",
+      "topic": "1.1",
+      "route": "/cbse-math-12/u1-relations-functions/t1-1-case-005",
+      "figureTitle": "Same-house relation",
+      "figureDescription": "Students 1, 3, and 5 are in one block, while students 2 and 4 are in another block.",
+      "svgHash": "cf4637fd11f8d3c8",
+      "tokenOverlap": [
+        "same",
+        "house",
+        "relation",
+        "students",
+        "students",
+        "another"
+      ]
+    },
+    {
+      "contentId": "cbse-math-12.u1.t1-2.case.005",
+      "course": "cbse-math-12",
+      "unit": "u1-relations-functions",
+      "topic": "1.2",
+      "route": "/cbse-math-12/u1-relations-functions/t1-2-case-005",
+      "figureTitle": "Remainder classes modulo 4",
+      "figureDescription": "The set is divided into blocks according to the same remainder when divided by 4.",
+      "svgHash": "35a55026c184a792",
+      "tokenOverlap": [
+        "remainder",
+        "classes",
+        "divided",
+        "blocks",
+        "same",
+        "remainder",
+        "when",
+        "divided"
+      ]
+    },
+    {
+      "contentId": "cbse-math-12.u1.t1-3.mc.004",
+      "course": "cbse-math-12",
+      "unit": "u1-relations-functions",
+      "topic": "1.3",
+      "route": "/cbse-math-12/u1-relations-functions/t1-3-mc-004",
+      "figureTitle": "Finite function that misses one codomain value",
+      "figureDescription": "A mapping from {1,2,3} to {a,b,c}; inputs 1 and 2 both map to a, and b is missed.",
+      "svgHash": "13f97fd8d5e3b7ff",
+      "tokenOverlap": [
+        "finite",
+        "function",
+        "codomain",
+        "inputs",
+        "both",
+        "missed"
+      ]
+    },
+    {
+      "contentId": "cbse-math-12.u1.t1-3.case.005",
+      "course": "cbse-math-12",
+      "unit": "u1-relations-functions",
+      "topic": "1.3",
+      "route": "/cbse-math-12/u1-relations-functions/t1-3-case-005",
+      "figureTitle": "Finite function",
+      "figureDescription": "The function f from A = {1, 2, 3, 4} to B = {3, 5, 7, 9}.",
+      "svgHash": "30c8854f11feb7cd",
+      "tokenOverlap": [
+        "finite",
+        "function",
+        "function"
+      ]
+    },
+    {
+      "contentId": "cbse-math-12.u1.t1-4.mc.004",
+      "course": "cbse-math-12",
+      "unit": "u1-relations-functions",
+      "topic": "1.4",
+      "route": "/cbse-math-12/u1-relations-functions/t1-4-mc-004",
+      "figureTitle": "Finite function with a repeated image",
+      "figureDescription": "A mapping from {1,2,3,4} to {a,b,c,d}; inputs 2 and 3 both map to c, and b is missed.",
+      "svgHash": "ac9c33c540eee889",
+      "tokenOverlap": [
+        "finite",
+        "function",
+        "image",
+        "inputs",
+        "both"
+      ]
+    },
+    {
+      "contentId": "cbse-math-12.u1.t1-4.case.005",
+      "course": "cbse-math-12",
+      "unit": "u1-relations-functions",
+      "topic": "1.4",
+      "route": "/cbse-math-12/u1-relations-functions/t1-4-case-005",
+      "figureTitle": "Badge-number function",
+      "figureDescription": "The function f from members 1 through 5 to badge numbers 10 through 60; badge 60 is not assigned.",
+      "svgHash": "4bf9d561cda5e3d8",
+      "tokenOverlap": [
+        "badge",
+        "number",
+        "function",
+        "function",
+        "members",
+        "badge",
+        "numbers",
+        "badge",
+        "assigned"
+      ]
+    },
+    {
+      "contentId": "cbse-math-12.u1.t1-5.mc.004",
+      "course": "cbse-math-12",
+      "unit": "u1-relations-functions",
+      "topic": "1.5",
+      "route": "/cbse-math-12/u1-relations-functions/t1-5-mc-004",
+      "figureTitle": "Graph of inverse sine",
+      "figureDescription": "The graph of y equals inverse sine x on the principal branch from x equals negative 1 to x equals 1.",
+      "svgHash": "64cb4e50b3d506eb",
+      "tokenOverlap": [
+        "graph",
+        "inverse",
+        "graph",
+        "inverse",
+        "principal"
+      ]
+    },
+    {
+      "contentId": "cbse-math-12.u1.t1-5.mc.005",
+      "course": "cbse-math-12",
+      "unit": "u1-relations-functions",
+      "topic": "1.5",
+      "route": "/cbse-math-12/u1-relations-functions/t1-5-mc-005",
+      "figureTitle": "Graph of inverse cosine",
+      "figureDescription": "The graph of y equals inverse cosine x on the principal branch from x equals negative 1 to x equals 1.",
+      "svgHash": "8b5071d986550d25",
+      "tokenOverlap": [
+        "graph",
+        "inverse",
+        "cosine",
+        "graph",
+        "inverse",
+        "cosine",
+        "principal"
+      ]
+    },
+    {
+      "contentId": "cbse-math-12.u2.t2-1.mc.003",
+      "course": "cbse-math-12",
+      "unit": "u2-algebra",
+      "topic": "2.1",
+      "route": "/cbse-math-12/u2-algebra/t2-1-mc-003",
+      "figureTitle": "Matrix product dimensions",
+      "figureDescription": "Dimension diagram showing a 3 by 2 matrix multiplied by a 2 by 4 matrix to produce a 3 by 4 matrix.",
+      "svgHash": "9f3c2ad2a0a79c4c",
+      "tokenOverlap": [
+        "matrix",
+        "product",
+        "dimensions",
+        "dimension",
+        "matrix",
+        "matrix",
+        "matrix"
+      ]
+    },
+    {
+      "contentId": "cbse-math-12.u2.t2-1.case.005",
+      "course": "cbse-math-12",
+      "unit": "u2-algebra",
+      "topic": "2.1",
+      "route": "/cbse-math-12/u2-algebra/t2-1-case-005",
+      "figureTitle": "Club enrollment matrix data",
+      "figureDescription": "Grouped bar chart for boys and girls in Debate, Science, and Art clubs.",
+      "svgHash": "fbb54e0b3e789e27",
+      "tokenOverlap": [
+        "club",
+        "matrix",
+        "boys",
+        "girls",
+        "debate",
+        "science",
+        "clubs"
+      ]
+    },
+    {
+      "contentId": "cbse-math-12.u2.t2-2.mc.003",
+      "course": "cbse-math-12",
+      "unit": "u2-algebra",
+      "topic": "2.2",
+      "route": "/cbse-math-12/u2-algebra/t2-2-mc-003",
+      "figureTitle": "Row-by-column product dimensions",
+      "figureDescription": "Dimension diagram showing a 2 by 3 matrix multiplied by a 3 by 2 matrix to produce a 2 by 2 matrix.",
+      "svgHash": "0b998329610df2e6",
+      "tokenOverlap": [
+        "column",
+        "dimensions",
+        "dimension",
+        "matrix",
+        "matrix",
+        "matrix"
+      ]
+    },
+    {
+      "contentId": "cbse-math-12.u2.t2-2.case.005",
+      "course": "cbse-math-12",
+      "unit": "u2-algebra",
+      "topic": "2.2",
+      "route": "/cbse-math-12/u2-algebra/t2-2-case-005",
+      "figureTitle": "Two-day sales matrix data",
+      "figureDescription": "Grouped bar chart comparing Monday and Tuesday sales for notebooks and pens in two branches.",
+      "svgHash": "ae9b7c070f740ac2",
+      "tokenOverlap": [
+        "sales",
+        "matrix",
+        "monday",
+        "tuesday",
+        "sales",
+        "notebooks",
+        "pens",
+        "branches"
+      ]
+    },
+    {
+      "contentId": "cbse-math-12.u2.t2-5.mc.003",
+      "course": "cbse-math-12",
+      "unit": "u2-algebra",
+      "topic": "2.5",
+      "route": "/cbse-math-12/u2-algebra/t2-5-mc-003",
+      "figureTitle": "Cofactor sign pattern",
+      "figureDescription": "The 3 by 3 cofactor sign checkerboard: plus minus plus, minus plus minus, plus minus plus.",
+      "svgHash": "cc84bbe75ce4bb91",
+      "tokenOverlap": [
+        "cofactor",
+        "sign",
+        "cofactor",
+        "sign"
+      ]
+    },
+    {
+      "contentId": "cbse-math-12.u2.t2-5.vsaq.002",
+      "course": "cbse-math-12",
+      "unit": "u2-algebra",
+      "topic": "2.5",
+      "route": "/cbse-math-12/u2-algebra/t2-5-vsaq-002",
+      "figureTitle": "Cofactor sign pattern",
+      "figureDescription": "The 3 by 3 cofactor sign checkerboard: plus minus plus, minus plus minus, plus minus plus.",
+      "svgHash": "cc84bbe75ce4bb91",
+      "tokenOverlap": [
+        "cofactor",
+        "sign",
+        "cofactor",
+        "sign"
+      ]
+    },
+    {
+      "contentId": "cbse-math-12.u2.t2-5.laq.004",
+      "course": "cbse-math-12",
+      "unit": "u2-algebra",
+      "topic": "2.5",
+      "route": "/cbse-math-12/u2-algebra/t2-5-laq-004",
+      "figureTitle": "Cofactor sign pattern",
+      "figureDescription": "The 3 by 3 cofactor sign checkerboard: plus minus plus, minus plus minus, plus minus plus.",
+      "svgHash": "cc84bbe75ce4bb91",
+      "tokenOverlap": [
+        "cofactor",
+        "sign",
+        "cofactor",
+        "sign"
+      ]
+    },
+    {
+      "contentId": "cbse-math-12.u2.t2-5.case.005",
+      "course": "cbse-math-12",
+      "unit": "u2-algebra",
+      "topic": "2.5",
+      "route": "/cbse-math-12/u2-algebra/t2-5-case-005",
+      "figureTitle": "Cofactor sign pattern",
+      "figureDescription": "The 3 by 3 cofactor sign checkerboard: plus minus plus, minus plus minus, plus minus plus.",
+      "svgHash": "cc84bbe75ce4bb91",
+      "tokenOverlap": [
+        "cofactor",
+        "sign",
+        "cofactor",
+        "sign"
+      ]
+    },
+    {
+      "contentId": "cbse-math-12.u2.t2-6.case.005",
+      "course": "cbse-math-12",
+      "unit": "u2-algebra",
+      "topic": "2.6",
+      "route": "/cbse-math-12/u2-algebra/t2-6-case-005",
+      "figureTitle": "Triangle from coordinate points",
+      "figureDescription": "Coordinate sketch of a triangle with vertices A(2,1), B(5,3), and C(-1,4).",
+      "svgHash": "59cb94807e7b091e",
+      "tokenOverlap": [
+        "triangle",
+        "coordinate",
+        "points",
+        "coordinate",
+        "triangle"
+      ]
+    },
+    {
+      "contentId": "cbse-math-12.u2.t2-7.mc.001",
+      "course": "cbse-math-12",
+      "unit": "u2-algebra",
+      "topic": "2.7",
+      "route": "/cbse-math-12/u2-algebra/t2-7-mc-001",
+      "figureTitle": "Coincident linear equations",
+      "figureDescription": "Graph sketch showing x plus y equals 3 and 2x plus 2y equals 6 as the same line.",
+      "svgHash": "70950fbd11d528ec",
+      "tokenOverlap": [
+        "equations",
+        "same",
+        "line"
+      ]
+    },
+    {
+      "contentId": "cbse-math-12.u2.t2-7.mc.003",
+      "course": "cbse-math-12",
+      "unit": "u2-algebra",
+      "topic": "2.7",
+      "route": "/cbse-math-12/u2-algebra/t2-7-mc-003",
+      "figureTitle": "Intersecting linear equations",
+      "figureDescription": "Graph sketch of two non-parallel lines meeting once, representing a unique solution.",
+      "svgHash": "9afbd1e3d220a16e",
+      "tokenOverlap": [
+        "linear",
+        "unique",
+        "solution"
+      ]
+    },
+    {
+      "contentId": "cbse-math-12.u3.t3-1.case.005",
+      "course": "cbse-math-12",
+      "unit": "u3-calculus",
+      "topic": "3.1",
+      "route": "/cbse-math-12/u3-calculus/t3-1-case-005",
+      "figureTitle": "Continuous graph with a corner",
+      "figureDescription": "Graph of a continuous piecewise function with two branches meeting at x equals 1.",
+      "svgHash": "8f96017af96f8ae6",
+      "tokenOverlap": [
+        "continuous",
+        "graph",
+        "corner",
+        "graph",
+        "continuous",
+        "function",
+        "branches",
+        "meeting"
+      ]
+    },
+    {
+      "contentId": "cbse-math-12.u3.t3-4.case.005",
+      "course": "cbse-math-12",
+      "unit": "u3-calculus",
+      "topic": "3.4",
+      "route": "/cbse-math-12/u3-calculus/t3-4-case-005",
+      "figureTitle": "Derivative sign chart",
+      "figureDescription": "Sign chart for f prime: positive before negative 1, negative between negative 1 and 2, and positive after 2.",
+      "svgHash": "cb79ae457fba163e",
+      "tokenOverlap": [
+        "derivative",
+        "sign",
+        "chart",
+        "sign",
+        "chart",
+        "positive",
+        "negative",
+        "negative",
+        "negative",
+        "positive"
+      ]
+    },
+    {
+      "contentId": "cbse-math-12.u3.t3-5.case.005",
+      "course": "cbse-math-12",
+      "unit": "u3-calculus",
+      "topic": "3.5",
+      "route": "/cbse-math-12/u3-calculus/t3-5-case-005",
+      "figureTitle": "Rectangle with fixed perimeter",
+      "figureDescription": "A rectangle labelled with length x and breadth 20 minus x for a fixed perimeter of 40 cm.",
+      "svgHash": "0bcec01d81b47cc3",
+      "tokenOverlap": [
+        "perimeter",
+        "length",
+        "breadth",
+        "perimeter"
+      ]
+    },
+    {
+      "contentId": "cbse-math-12.u3.t3-8.case.005",
+      "course": "cbse-math-12",
+      "unit": "u3-calculus",
+      "topic": "3.8",
+      "route": "/cbse-math-12/u3-calculus/t3-8-case-005",
+      "figureTitle": "Area under y equals x squared",
+      "figureDescription": "Graph of y equals x squared from x equals 0 to x equals 2 with the region under the curve shaded.",
+      "svgHash": "46ddedcf0cdf78f7",
+      "tokenOverlap": [
+        "area",
+        "under",
+        "region",
+        "under",
+        "curve",
+        "shaded"
+      ]
+    },
+    {
+      "contentId": "cbse-math-12.u3.t3-9.mc.004",
+      "course": "cbse-math-12",
+      "unit": "u3-calculus",
+      "topic": "3.9",
+      "route": "/cbse-math-12/u3-calculus/t3-9-mc-004",
+      "figureTitle": "Area bounded by a parabola and x-axis",
+      "figureDescription": "Graph of y equals 4 minus x squared crossing the x-axis at negative 2 and 2, with the bounded region shaded.",
+      "svgHash": "27b4524ed243bb3d",
+      "tokenOverlap": [
+        "area",
+        "bounded",
+        "axis",
+        "minus",
+        "axis",
+        "bounded"
+      ]
+    },
+    {
+      "contentId": "cbse-math-12.u3.t3-9.case.005",
+      "course": "cbse-math-12",
+      "unit": "u3-calculus",
+      "topic": "3.9",
+      "route": "/cbse-math-12/u3-calculus/t3-9-case-005",
+      "figureTitle": "Area between y equals x and y equals x squared",
+      "figureDescription": "Graph of y equals x and y equals x squared from 0 to 1 with the enclosed region shaded.",
+      "svgHash": "d935d6b10d0740c9",
+      "tokenOverlap": [
+        "area",
+        "between",
+        "region",
+        "shaded"
+      ]
+    },
+    {
+      "contentId": "cbse-math-12.u4.t4-1.case.005",
+      "course": "cbse-math-12",
+      "unit": "u4-vectors-3d",
+      "topic": "4.1",
+      "route": "/cbse-math-12/u4-vectors-3d/t4-1-case-005",
+      "figureTitle": "Vector with components in space",
+      "figureDescription": "A simple component sketch for displacement vector OP with components 4, 3, and 12.",
+      "svgHash": "0e8f956d429200a9",
+      "tokenOverlap": [
+        "vector",
+        "components",
+        "component",
+        "displacement",
+        "vector",
+        "components"
+      ]
+    },
+    {
+      "contentId": "cbse-math-12.u4.t4-2.case.005",
+      "course": "cbse-math-12",
+      "unit": "u4-vectors-3d",
+      "topic": "4.2",
+      "route": "/cbse-math-12/u4-vectors-3d/t4-2-case-005",
+      "figureTitle": "Head-to-tail vector addition",
+      "figureDescription": "Two horizontal-plane displacement vectors and their resultant.",
+      "svgHash": "9e76746b9ca3a6a8",
+      "tokenOverlap": [
+        "head",
+        "tail",
+        "vector",
+        "displacement",
+        "vectors",
+        "resultant"
+      ]
+    },
+    {
+      "contentId": "cbse-math-12.u4.t4-3.case.005",
+      "course": "cbse-math-12",
+      "unit": "u4-vectors-3d",
+      "topic": "4.3",
+      "route": "/cbse-math-12/u4-vectors-3d/t4-3-case-005",
+      "figureTitle": "Angle between force and displacement",
+      "figureDescription": "Two vectors from the same point showing the angle used in scalar product.",
+      "svgHash": "ae26190f375eee96",
+      "tokenOverlap": [
+        "angle",
+        "between",
+        "force",
+        "showing",
+        "angle",
+        "scalar",
+        "product"
+      ]
+    },
+    {
+      "contentId": "cbse-math-12.u4.t4-4.case.005",
+      "course": "cbse-math-12",
+      "unit": "u4-vectors-3d",
+      "topic": "4.4",
+      "route": "/cbse-math-12/u4-vectors-3d/t4-4-case-005",
+      "figureTitle": "Parallelogram and vector area",
+      "figureDescription": "A parallelogram formed by two adjacent vectors with a normal vector.",
+      "svgHash": "05f5087f571e1866",
+      "tokenOverlap": [
+        "parallelogram",
+        "vector",
+        "area",
+        "parallelogram",
+        "formed",
+        "adjacent",
+        "vector"
+      ]
+    },
+    {
+      "contentId": "cbse-math-12.u4.t4-5.mc.001",
+      "course": "cbse-math-12",
+      "unit": "u4-vectors-3d",
+      "topic": "4.5",
+      "route": "/cbse-math-12/u4-vectors-3d/t4-5-mc-001",
+      "figureTitle": "Line through two points",
+      "figureDescription": "A line in space passing through two marked points.",
+      "svgHash": "c891048b6076e2b6",
+      "tokenOverlap": [
+        "line",
+        "through",
+        "line",
+        "through"
+      ]
+    },
+    {
+      "contentId": "cbse-math-12.u4.t4-5.mc.002",
+      "course": "cbse-math-12",
+      "unit": "u4-vectors-3d",
+      "topic": "4.5",
+      "route": "/cbse-math-12/u4-vectors-3d/t4-5-mc-002",
+      "figureTitle": "Point-direction line model",
+      "figureDescription": "A point on a line and a direction vector used for vector, Cartesian, and parametric forms.",
+      "svgHash": "30ec86bb13701c15",
+      "tokenOverlap": [
+        "point",
+        "direction",
+        "line",
+        "point",
+        "line",
+        "direction",
+        "vector",
+        "vector",
+        "cartesian"
+      ]
+    },
+    {
+      "contentId": "cbse-math-12.u4.t4-5.mc.003",
+      "course": "cbse-math-12",
+      "unit": "u4-vectors-3d",
+      "topic": "4.5",
+      "route": "/cbse-math-12/u4-vectors-3d/t4-5-mc-003",
+      "figureTitle": "Point-direction line model",
+      "figureDescription": "A point on a line and a direction vector used for vector, Cartesian, and parametric forms.",
+      "svgHash": "30ec86bb13701c15",
+      "tokenOverlap": [
+        "point",
+        "direction",
+        "line",
+        "point",
+        "line",
+        "direction",
+        "vector",
+        "vector"
+      ]
+    },
+    {
+      "contentId": "cbse-math-12.u4.t4-5.mc.004",
+      "course": "cbse-math-12",
+      "unit": "u4-vectors-3d",
+      "topic": "4.5",
+      "route": "/cbse-math-12/u4-vectors-3d/t4-5-mc-004",
+      "figureTitle": "Point-direction line model",
+      "figureDescription": "A point on a line and a direction vector used for vector, Cartesian, and parametric forms.",
+      "svgHash": "30ec86bb13701c15",
+      "tokenOverlap": [
+        "direction",
+        "line",
+        "line",
+        "direction",
+        "vector",
+        "vector"
+      ]
+    },
+    {
+      "contentId": "cbse-math-12.u4.t4-5.mc.005",
+      "course": "cbse-math-12",
+      "unit": "u4-vectors-3d",
+      "topic": "4.5",
+      "route": "/cbse-math-12/u4-vectors-3d/t4-5-mc-005",
+      "figureTitle": "Point-direction line model",
+      "figureDescription": "A point on a line and a direction vector used for vector, Cartesian, and parametric forms.",
+      "svgHash": "30ec86bb13701c15",
+      "tokenOverlap": [
+        "point",
+        "direction",
+        "line",
+        "point",
+        "line",
+        "direction",
+        "vector",
+        "vector"
+      ]
+    },
+    {
+      "contentId": "cbse-math-12.u4.t4-5.vsaq.001",
+      "course": "cbse-math-12",
+      "unit": "u4-vectors-3d",
+      "topic": "4.5",
+      "route": "/cbse-math-12/u4-vectors-3d/t4-5-vsaq-001",
+      "figureTitle": "Point-direction line model",
+      "figureDescription": "A point on a line and a direction vector used for vector, Cartesian, and parametric forms.",
+      "svgHash": "30ec86bb13701c15",
+      "tokenOverlap": [
+        "point",
+        "direction",
+        "line",
+        "point",
+        "line",
+        "direction",
+        "vector",
+        "vector"
+      ]
+    },
+    {
+      "contentId": "cbse-math-12.u4.t4-5.vsaq.002",
+      "course": "cbse-math-12",
+      "unit": "u4-vectors-3d",
+      "topic": "4.5",
+      "route": "/cbse-math-12/u4-vectors-3d/t4-5-vsaq-002",
+      "figureTitle": "Point-direction line model",
+      "figureDescription": "A point on a line and a direction vector used for vector, Cartesian, and parametric forms.",
+      "svgHash": "30ec86bb13701c15",
+      "tokenOverlap": [
+        "direction",
+        "line",
+        "line",
+        "direction",
+        "vector",
+        "vector"
+      ]
+    },
+    {
+      "contentId": "cbse-math-12.u4.t4-5.saq.003",
+      "course": "cbse-math-12",
+      "unit": "u4-vectors-3d",
+      "topic": "4.5",
+      "route": "/cbse-math-12/u4-vectors-3d/t4-5-saq-003",
+      "figureTitle": "Line through two points",
+      "figureDescription": "A line in space passing through two marked points.",
+      "svgHash": "c891048b6076e2b6",
+      "tokenOverlap": [
+        "line",
+        "through",
+        "line",
+        "through"
+      ]
+    },
+    {
+      "contentId": "cbse-math-12.u4.t4-5.laq.004",
+      "course": "cbse-math-12",
+      "unit": "u4-vectors-3d",
+      "topic": "4.5",
+      "route": "/cbse-math-12/u4-vectors-3d/t4-5-laq-004",
+      "figureTitle": "Point-direction line model",
+      "figureDescription": "A point on a line and a direction vector used for vector, Cartesian, and parametric forms.",
+      "svgHash": "30ec86bb13701c15",
+      "tokenOverlap": [
+        "point",
+        "direction",
+        "line",
+        "point",
+        "line",
+        "direction",
+        "vector",
+        "vector",
+        "parametric"
+      ]
+    },
+    {
+      "contentId": "cbse-math-12.u4.t4-5.case.005",
+      "course": "cbse-math-12",
+      "unit": "u4-vectors-3d",
+      "topic": "4.5",
+      "route": "/cbse-math-12/u4-vectors-3d/t4-5-case-005",
+      "figureTitle": "Line in three-dimensional space",
+      "figureDescription": "A line through a point with a direction vector in a simple 3D coordinate sketch.",
+      "svgHash": "b2ac2d104e14a039",
+      "tokenOverlap": [
+        "line",
+        "space",
+        "line",
+        "point",
+        "direction",
+        "vector",
+        "coordinate"
+      ]
+    },
+    {
+      "contentId": "cbse-math-12.u4.t4-6.mc.001",
+      "course": "cbse-math-12",
+      "unit": "u4-vectors-3d",
+      "topic": "4.6",
+      "route": "/cbse-math-12/u4-vectors-3d/t4-6-mc-001",
+      "figureTitle": "Angle between two lines",
+      "figureDescription": "Two intersecting lines in space with the smaller angle marked.",
+      "svgHash": "c8f095d1a1771796",
+      "tokenOverlap": [
+        "angle",
+        "between",
+        "lines",
+        "lines",
+        "angle"
+      ]
+    },
+    {
+      "contentId": "cbse-math-12.u4.t4-6.mc.002",
+      "course": "cbse-math-12",
+      "unit": "u4-vectors-3d",
+      "topic": "4.6",
+      "route": "/cbse-math-12/u4-vectors-3d/t4-6-mc-002",
+      "figureTitle": "Angle between two lines",
+      "figureDescription": "Two intersecting lines in space with the smaller angle marked.",
+      "svgHash": "c8f095d1a1771796",
+      "tokenOverlap": [
+        "angle",
+        "between",
+        "lines",
+        "lines",
+        "angle"
+      ]
+    },
+    {
+      "contentId": "cbse-math-12.u4.t4-6.mc.003",
+      "course": "cbse-math-12",
+      "unit": "u4-vectors-3d",
+      "topic": "4.6",
+      "route": "/cbse-math-12/u4-vectors-3d/t4-6-mc-003",
+      "figureTitle": "Distance between parallel lines",
+      "figureDescription": "Two parallel lines in space with a perpendicular connector.",
+      "svgHash": "66804ba254b0cd1d",
+      "tokenOverlap": [
+        "distance",
+        "between",
+        "parallel",
+        "lines",
+        "parallel",
+        "lines"
+      ]
+    },
+    {
+      "contentId": "cbse-math-12.u4.t4-6.mc.004",
+      "course": "cbse-math-12",
+      "unit": "u4-vectors-3d",
+      "topic": "4.6",
+      "route": "/cbse-math-12/u4-vectors-3d/t4-6-mc-004",
+      "figureTitle": "Two skew lines",
+      "figureDescription": "Two non-parallel, non-intersecting lines in perspective. The back line has a gap where the front line passes, and the shortest-distance connector is separate from both lines.",
+      "svgHash": "161eac172b8dbd56",
+      "tokenOverlap": [
+        "skew",
+        "lines",
+        "parallel",
+        "intersecting",
+        "lines",
+        "line",
+        "line",
+        "lines"
+      ]
+    },
+    {
+      "contentId": "cbse-math-12.u4.t4-6.mc.005",
+      "course": "cbse-math-12",
+      "unit": "u4-vectors-3d",
+      "topic": "4.6",
+      "route": "/cbse-math-12/u4-vectors-3d/t4-6-mc-005",
+      "figureTitle": "Two skew lines",
+      "figureDescription": "Two non-parallel, non-intersecting lines in perspective. The back line has a gap where the front line passes, and the shortest-distance connector is separate from both lines.",
+      "svgHash": "161eac172b8dbd56",
+      "tokenOverlap": [
+        "skew",
+        "lines",
+        "lines",
+        "line",
+        "line",
+        "shortest",
+        "distance",
+        "lines"
+      ]
+    },
+    {
+      "contentId": "cbse-math-12.u4.t4-6.vsaq.001",
+      "course": "cbse-math-12",
+      "unit": "u4-vectors-3d",
+      "topic": "4.6",
+      "route": "/cbse-math-12/u4-vectors-3d/t4-6-vsaq-001",
+      "figureTitle": "Angle between two lines",
+      "figureDescription": "Two intersecting lines in space with the smaller angle marked.",
+      "svgHash": "c8f095d1a1771796",
+      "tokenOverlap": [
+        "angle",
+        "between",
+        "lines",
+        "lines",
+        "angle"
+      ]
+    },
+    {
+      "contentId": "cbse-math-12.u4.t4-6.vsaq.002",
+      "course": "cbse-math-12",
+      "unit": "u4-vectors-3d",
+      "topic": "4.6",
+      "route": "/cbse-math-12/u4-vectors-3d/t4-6-vsaq-002",
+      "figureTitle": "Distance between parallel lines",
+      "figureDescription": "Two parallel lines in space with a perpendicular connector.",
+      "svgHash": "66804ba254b0cd1d",
+      "tokenOverlap": [
+        "distance",
+        "between",
+        "parallel",
+        "lines",
+        "parallel",
+        "lines"
+      ]
+    },
+    {
+      "contentId": "cbse-math-12.u4.t4-6.saq.003",
+      "course": "cbse-math-12",
+      "unit": "u4-vectors-3d",
+      "topic": "4.6",
+      "route": "/cbse-math-12/u4-vectors-3d/t4-6-saq-003",
+      "figureTitle": "Angle between two lines",
+      "figureDescription": "Two intersecting lines in space with the smaller angle marked.",
+      "svgHash": "c8f095d1a1771796",
+      "tokenOverlap": [
+        "angle",
+        "between",
+        "lines",
+        "lines",
+        "angle"
+      ]
+    },
+    {
+      "contentId": "cbse-math-12.u4.t4-6.laq.004",
+      "course": "cbse-math-12",
+      "unit": "u4-vectors-3d",
+      "topic": "4.6",
+      "route": "/cbse-math-12/u4-vectors-3d/t4-6-laq-004",
+      "figureTitle": "Two skew lines",
+      "figureDescription": "Two non-parallel, non-intersecting lines in perspective. The back line has a gap where the front line passes, and the shortest-distance connector is separate from both lines.",
+      "svgHash": "161eac172b8dbd56",
+      "tokenOverlap": [
+        "skew",
+        "lines",
+        "parallel",
+        "intersecting",
+        "lines",
+        "line",
+        "line",
+        "shortest",
+        "distance",
+        "lines"
+      ]
+    },
+    {
+      "contentId": "cbse-math-12.u4.t4-6.case.005",
+      "course": "cbse-math-12",
+      "unit": "u4-vectors-3d",
+      "topic": "4.6",
+      "route": "/cbse-math-12/u4-vectors-3d/t4-6-case-005",
+      "figureTitle": "Two skew lines",
+      "figureDescription": "Two non-parallel, non-intersecting lines in perspective. The back line has a gap where the front line passes, and the shortest-distance connector is separate from both lines.",
+      "svgHash": "161eac172b8dbd56",
+      "tokenOverlap": [
+        "skew",
+        "lines",
+        "parallel",
+        "lines",
+        "line",
+        "line",
+        "shortest",
+        "distance",
+        "both",
+        "lines"
+      ]
+    },
+    {
+      "contentId": "cbse-math-12.u4.t4-7.mc.001",
+      "course": "cbse-math-12",
+      "unit": "u4-vectors-3d",
+      "topic": "4.7",
+      "route": "/cbse-math-12/u4-vectors-3d/t4-7-mc-001",
+      "figureTitle": "Line through two points",
+      "figureDescription": "A line in space passing through two marked points.",
+      "svgHash": "c891048b6076e2b6",
+      "tokenOverlap": [
+        "line",
+        "through",
+        "line",
+        "through"
+      ]
+    },
+    {
+      "contentId": "cbse-math-12.u4.t4-7.mc.002",
+      "course": "cbse-math-12",
+      "unit": "u4-vectors-3d",
+      "topic": "4.7",
+      "route": "/cbse-math-12/u4-vectors-3d/t4-7-mc-002",
+      "figureTitle": "Point-direction line model",
+      "figureDescription": "A point on a line and a direction vector used for vector, Cartesian, and parametric forms.",
+      "svgHash": "30ec86bb13701c15",
+      "tokenOverlap": [
+        "point",
+        "direction",
+        "line",
+        "point",
+        "line",
+        "direction",
+        "vector",
+        "vector",
+        "cartesian"
+      ]
+    },
+    {
+      "contentId": "cbse-math-12.u4.t4-7.mc.003",
+      "course": "cbse-math-12",
+      "unit": "u4-vectors-3d",
+      "topic": "4.7",
+      "route": "/cbse-math-12/u4-vectors-3d/t4-7-mc-003",
+      "figureTitle": "Point-direction line model",
+      "figureDescription": "A point on a line and a direction vector used for vector, Cartesian, and parametric forms.",
+      "svgHash": "30ec86bb13701c15",
+      "tokenOverlap": [
+        "point",
+        "direction",
+        "line",
+        "point",
+        "line",
+        "direction",
+        "vector",
+        "vector"
+      ]
+    },
+    {
+      "contentId": "cbse-math-12.u4.t4-7.mc.004",
+      "course": "cbse-math-12",
+      "unit": "u4-vectors-3d",
+      "topic": "4.7",
+      "route": "/cbse-math-12/u4-vectors-3d/t4-7-mc-004",
+      "figureTitle": "Point-direction line model",
+      "figureDescription": "A point on a line and a direction vector used for vector, Cartesian, and parametric forms.",
+      "svgHash": "30ec86bb13701c15",
+      "tokenOverlap": [
+        "point",
+        "direction",
+        "line",
+        "point",
+        "line",
+        "direction",
+        "vector",
+        "vector",
+        "parametric"
+      ]
+    },
+    {
+      "contentId": "cbse-math-12.u4.t4-7.mc.005",
+      "course": "cbse-math-12",
+      "unit": "u4-vectors-3d",
+      "topic": "4.7",
+      "route": "/cbse-math-12/u4-vectors-3d/t4-7-mc-005",
+      "figureTitle": "Line through two points",
+      "figureDescription": "A line in space passing through two marked points.",
+      "svgHash": "c891048b6076e2b6",
+      "tokenOverlap": [
+        "line",
+        "through",
+        "line",
+        "through"
+      ]
+    },
+    {
+      "contentId": "cbse-math-12.u4.t4-7.vsaq.001",
+      "course": "cbse-math-12",
+      "unit": "u4-vectors-3d",
+      "topic": "4.7",
+      "route": "/cbse-math-12/u4-vectors-3d/t4-7-vsaq-001",
+      "figureTitle": "Line through two points",
+      "figureDescription": "A line in space passing through two marked points.",
+      "svgHash": "c891048b6076e2b6",
+      "tokenOverlap": [
+        "line",
+        "through",
+        "line",
+        "through"
+      ]
+    },
+    {
+      "contentId": "cbse-math-12.u4.t4-7.vsaq.002",
+      "course": "cbse-math-12",
+      "unit": "u4-vectors-3d",
+      "topic": "4.7",
+      "route": "/cbse-math-12/u4-vectors-3d/t4-7-vsaq-002",
+      "figureTitle": "Point-direction line model",
+      "figureDescription": "A point on a line and a direction vector used for vector, Cartesian, and parametric forms.",
+      "svgHash": "30ec86bb13701c15",
+      "tokenOverlap": [
+        "point",
+        "direction",
+        "line",
+        "point",
+        "line",
+        "direction",
+        "vector",
+        "vector",
+        "cartesian"
+      ]
+    },
+    {
+      "contentId": "cbse-math-12.u4.t4-7.saq.003",
+      "course": "cbse-math-12",
+      "unit": "u4-vectors-3d",
+      "topic": "4.7",
+      "route": "/cbse-math-12/u4-vectors-3d/t4-7-saq-003",
+      "figureTitle": "Line through two points",
+      "figureDescription": "A line in space passing through two marked points.",
+      "svgHash": "c891048b6076e2b6",
+      "tokenOverlap": [
+        "line",
+        "through",
+        "line",
+        "through"
+      ]
+    },
+    {
+      "contentId": "cbse-math-12.u4.t4-7.laq.004",
+      "course": "cbse-math-12",
+      "unit": "u4-vectors-3d",
+      "topic": "4.7",
+      "route": "/cbse-math-12/u4-vectors-3d/t4-7-laq-004",
+      "figureTitle": "Line through two points",
+      "figureDescription": "A line in space passing through two marked points.",
+      "svgHash": "c891048b6076e2b6",
+      "tokenOverlap": [
+        "line",
+        "through",
+        "line",
+        "through"
+      ]
+    },
+    {
+      "contentId": "cbse-math-12.u4.t4-7.case.005",
+      "course": "cbse-math-12",
+      "unit": "u4-vectors-3d",
+      "topic": "4.7",
+      "route": "/cbse-math-12/u4-vectors-3d/t4-7-case-005",
+      "figureTitle": "Line through two points",
+      "figureDescription": "A line in space passing through two marked points.",
+      "svgHash": "c891048b6076e2b6",
+      "tokenOverlap": [
+        "line",
+        "line",
+        "space"
+      ]
+    },
+    {
+      "contentId": "cbse-math-12.u5.t5-1.mc.001",
+      "course": "cbse-math-12",
+      "unit": "u5-linear-programming",
+      "topic": "5.1",
+      "route": "/cbse-math-12/u5-linear-programming/t5-1-mc-001",
+      "figureTitle": "Vocabulary map for an LPP",
+      "figureDescription": "A sample feasible region with labels connecting decision variables, constraints, objective function, and optimal solution.",
+      "svgHash": "b5d36d296ff97f4d",
+      "tokenOverlap": [
+        "feasible",
+        "region",
+        "decision",
+        "variables",
+        "constraints",
+        "objective",
+        "function"
+      ]
+    },
+    {
+      "contentId": "cbse-math-12.u5.t5-2.mc.001",
+      "course": "cbse-math-12",
+      "unit": "u5-linear-programming",
+      "topic": "5.2",
+      "route": "/cbse-math-12/u5-linear-programming/t5-2-mc-001",
+      "figureTitle": "Half-plane for a linear constraint",
+      "figureDescription": "The boundary line x plus y equals 6 with the feasible side below the line in the first quadrant.",
+      "svgHash": "c1462f20eadf2c0a",
+      "tokenOverlap": [
+        "plane",
+        "constraint",
+        "boundary",
+        "line",
+        "feasible",
+        "side",
+        "line",
+        "first",
+        "quadrant"
+      ]
+    },
+    {
+      "contentId": "cbse-math-12.u5.t5-2.mc.003",
+      "course": "cbse-math-12",
+      "unit": "u5-linear-programming",
+      "topic": "5.2",
+      "route": "/cbse-math-12/u5-linear-programming/t5-2-mc-003",
+      "figureTitle": "Bounded feasible region",
+      "figureDescription": "Feasible region for x plus y at most 6, x plus 2y at most 8, and non-negative variables.",
+      "svgHash": "71e75764e48d4526",
+      "tokenOverlap": [
+        "feasible",
+        "region",
+        "feasible",
+        "region",
+        "negative"
+      ]
+    },
+    {
+      "contentId": "cbse-math-12.u5.t5-2.mc.004",
+      "course": "cbse-math-12",
+      "unit": "u5-linear-programming",
+      "topic": "5.2",
+      "route": "/cbse-math-12/u5-linear-programming/t5-2-mc-004",
+      "figureTitle": "Bounded feasible region",
+      "figureDescription": "Feasible region for x plus y at most 6, x plus 2y at most 8, and non-negative variables.",
+      "svgHash": "71e75764e48d4526",
+      "tokenOverlap": [
+        "feasible",
+        "region",
+        "feasible",
+        "region",
+        "negative"
+      ]
+    },
+    {
+      "contentId": "cbse-math-12.u5.t5-2.mc.005",
+      "course": "cbse-math-12",
+      "unit": "u5-linear-programming",
+      "topic": "5.2",
+      "route": "/cbse-math-12/u5-linear-programming/t5-2-mc-005",
+      "figureTitle": "Bounded feasible region",
+      "figureDescription": "Feasible region for x plus y at most 6, x plus 2y at most 8, and non-negative variables.",
+      "svgHash": "71e75764e48d4526",
+      "tokenOverlap": [
+        "feasible",
+        "region",
+        "feasible",
+        "region",
+        "negative"
+      ]
+    },
+    {
+      "contentId": "cbse-math-12.u5.t5-2.saq.003",
+      "course": "cbse-math-12",
+      "unit": "u5-linear-programming",
+      "topic": "5.2",
+      "route": "/cbse-math-12/u5-linear-programming/t5-2-saq-003",
+      "figureTitle": "Bounded feasible region",
+      "figureDescription": "Feasible region for x plus y at most 6, x plus 2y at most 8, and non-negative variables.",
+      "svgHash": "71e75764e48d4526",
+      "tokenOverlap": [
+        "feasible",
+        "region",
+        "feasible",
+        "region"
+      ]
+    },
+    {
+      "contentId": "cbse-math-12.u5.t5-2.laq.004",
+      "course": "cbse-math-12",
+      "unit": "u5-linear-programming",
+      "topic": "5.2",
+      "route": "/cbse-math-12/u5-linear-programming/t5-2-laq-004",
+      "figureTitle": "Two constraint lines",
+      "figureDescription": "Feasible region for 2x plus y at most 8, x plus 2y at most 8, and non-negative variables.",
+      "svgHash": "66394f8811546785",
+      "tokenOverlap": [
+        "constraint",
+        "lines",
+        "feasible",
+        "region",
+        "negative"
+      ]
+    },
+    {
+      "contentId": "cbse-math-12.u5.t5-2.case.005",
+      "course": "cbse-math-12",
+      "unit": "u5-linear-programming",
+      "topic": "5.2",
+      "route": "/cbse-math-12/u5-linear-programming/t5-2-case-005",
+      "figureTitle": "Bounded feasible region",
+      "figureDescription": "Feasible region for x plus y at most 6, x plus 2y at most 8, and non-negative variables.",
+      "svgHash": "71e75764e48d4526",
+      "tokenOverlap": [
+        "bounded",
+        "feasible",
+        "region",
+        "feasible",
+        "region"
+      ]
+    },
+    {
+      "contentId": "cbse-math-12.u5.t5-3.mc.003",
+      "course": "cbse-math-12",
+      "unit": "u5-linear-programming",
+      "topic": "5.3",
+      "route": "/cbse-math-12/u5-linear-programming/t5-3-mc-003",
+      "figureTitle": "Bounded feasible region",
+      "figureDescription": "Feasible region for x plus y at most 6, x plus 2y at most 8, and non-negative variables.",
+      "svgHash": "71e75764e48d4526",
+      "tokenOverlap": [
+        "feasible",
+        "region",
+        "feasible",
+        "region"
+      ]
+    },
+    {
+      "contentId": "cbse-math-12.u5.t5-3.mc.004",
+      "course": "cbse-math-12",
+      "unit": "u5-linear-programming",
+      "topic": "5.3",
+      "route": "/cbse-math-12/u5-linear-programming/t5-3-mc-004",
+      "figureTitle": "Multiple optimum along an edge",
+      "figureDescription": "Triangular feasible region where the objective line is parallel to an optimal boundary edge.",
+      "svgHash": "5ef342ef99eedf8a",
+      "tokenOverlap": [
+        "multiple",
+        "optimum",
+        "along",
+        "edge",
+        "feasible",
+        "region",
+        "objective",
+        "line",
+        "parallel",
+        "optimal",
+        "edge"
+      ]
+    },
+    {
+      "contentId": "cbse-math-12.u5.t5-3.mc.005",
+      "course": "cbse-math-12",
+      "unit": "u5-linear-programming",
+      "topic": "5.3",
+      "route": "/cbse-math-12/u5-linear-programming/t5-3-mc-005",
+      "figureTitle": "Bounded feasible region",
+      "figureDescription": "Feasible region for x plus y at most 6, x plus 2y at most 8, and non-negative variables.",
+      "svgHash": "71e75764e48d4526",
+      "tokenOverlap": [
+        "feasible",
+        "region",
+        "feasible",
+        "region"
+      ]
+    },
+    {
+      "contentId": "cbse-math-12.u5.t5-3.laq.004",
+      "course": "cbse-math-12",
+      "unit": "u5-linear-programming",
+      "topic": "5.3",
+      "route": "/cbse-math-12/u5-linear-programming/t5-3-laq-004",
+      "figureTitle": "Bounded feasible region",
+      "figureDescription": "Feasible region for x plus y at most 6, x plus 2y at most 8, and non-negative variables.",
+      "svgHash": "71e75764e48d4526",
+      "tokenOverlap": [
+        "feasible",
+        "region",
+        "feasible",
+        "region"
+      ]
+    },
+    {
+      "contentId": "cbse-math-12.u5.t5-3.case.005",
+      "course": "cbse-math-12",
+      "unit": "u5-linear-programming",
+      "topic": "5.3",
+      "route": "/cbse-math-12/u5-linear-programming/t5-3-case-005",
+      "figureTitle": "Bounded feasible region",
+      "figureDescription": "Feasible region for x plus y at most 6, x plus 2y at most 8, and non-negative variables.",
+      "svgHash": "71e75764e48d4526",
+      "tokenOverlap": [
+        "feasible",
+        "region",
+        "feasible",
+        "region"
+      ]
+    },
+    {
+      "contentId": "cbse-math-12.u5.t5-4.mc.002",
+      "course": "cbse-math-12",
+      "unit": "u5-linear-programming",
+      "topic": "5.4",
+      "route": "/cbse-math-12/u5-linear-programming/t5-4-mc-002",
+      "figureTitle": "Unbounded feasible region",
+      "figureDescription": "Unbounded feasible region for x plus y at least 4 with non-negative variables.",
+      "svgHash": "a507d77e19625bae",
+      "tokenOverlap": [
+        "unbounded",
+        "feasible",
+        "region",
+        "unbounded",
+        "feasible",
+        "region",
+        "negative"
+      ]
+    },
+    {
+      "contentId": "cbse-math-12.u5.t5-4.mc.003",
+      "course": "cbse-math-12",
+      "unit": "u5-linear-programming",
+      "topic": "5.4",
+      "route": "/cbse-math-12/u5-linear-programming/t5-4-mc-003",
+      "figureTitle": "Multiple optimum along an edge",
+      "figureDescription": "Triangular feasible region where the objective line is parallel to an optimal boundary edge.",
+      "svgHash": "5ef342ef99eedf8a",
+      "tokenOverlap": [
+        "multiple",
+        "optimum",
+        "edge",
+        "feasible",
+        "region",
+        "where",
+        "objective",
+        "parallel",
+        "optimal",
+        "boundary",
+        "edge"
+      ]
+    },
+    {
+      "contentId": "cbse-math-12.u5.t5-4.mc.004",
+      "course": "cbse-math-12",
+      "unit": "u5-linear-programming",
+      "topic": "5.4",
+      "route": "/cbse-math-12/u5-linear-programming/t5-4-mc-004",
+      "figureTitle": "Unbounded feasible region",
+      "figureDescription": "Unbounded feasible region for x plus y at least 4 with non-negative variables.",
+      "svgHash": "a507d77e19625bae",
+      "tokenOverlap": [
+        "unbounded",
+        "feasible",
+        "region",
+        "unbounded",
+        "feasible",
+        "region"
+      ]
+    },
+    {
+      "contentId": "cbse-math-12.u5.t5-4.mc.005",
+      "course": "cbse-math-12",
+      "unit": "u5-linear-programming",
+      "topic": "5.4",
+      "route": "/cbse-math-12/u5-linear-programming/t5-4-mc-005",
+      "figureTitle": "Unbounded feasible region",
+      "figureDescription": "Unbounded feasible region for x plus y at least 4 with non-negative variables.",
+      "svgHash": "a507d77e19625bae",
+      "tokenOverlap": [
+        "unbounded",
+        "feasible",
+        "region",
+        "unbounded",
+        "feasible",
+        "region"
+      ]
+    },
+    {
+      "contentId": "cbse-math-12.u5.t5-4.vsaq.002",
+      "course": "cbse-math-12",
+      "unit": "u5-linear-programming",
+      "topic": "5.4",
+      "route": "/cbse-math-12/u5-linear-programming/t5-4-vsaq-002",
+      "figureTitle": "Multiple optimum along an edge",
+      "figureDescription": "Triangular feasible region where the objective line is parallel to an optimal boundary edge.",
+      "svgHash": "5ef342ef99eedf8a",
+      "tokenOverlap": [
+        "multiple",
+        "edge",
+        "objective",
+        "line",
+        "parallel",
+        "optimal",
+        "edge"
+      ]
+    },
+    {
+      "contentId": "cbse-math-12.u5.t5-4.saq.003",
+      "course": "cbse-math-12",
+      "unit": "u5-linear-programming",
+      "topic": "5.4",
+      "route": "/cbse-math-12/u5-linear-programming/t5-4-saq-003",
+      "figureTitle": "Multiple optimum along an edge",
+      "figureDescription": "Triangular feasible region where the objective line is parallel to an optimal boundary edge.",
+      "svgHash": "5ef342ef99eedf8a",
+      "tokenOverlap": [
+        "feasible",
+        "region"
+      ]
+    },
+    {
+      "contentId": "cbse-math-12.u5.t5-4.laq.004",
+      "course": "cbse-math-12",
+      "unit": "u5-linear-programming",
+      "topic": "5.4",
+      "route": "/cbse-math-12/u5-linear-programming/t5-4-laq-004",
+      "figureTitle": "Unbounded feasible region",
+      "figureDescription": "Unbounded feasible region for x plus y at least 4 with non-negative variables.",
+      "svgHash": "a507d77e19625bae",
+      "tokenOverlap": [
+        "unbounded",
+        "feasible",
+        "region",
+        "unbounded",
+        "feasible",
+        "region"
+      ]
+    },
+    {
+      "contentId": "cbse-math-12.u5.t5-4.case.005",
+      "course": "cbse-math-12",
+      "unit": "u5-linear-programming",
+      "topic": "5.4",
+      "route": "/cbse-math-12/u5-linear-programming/t5-4-case-005",
+      "figureTitle": "Unbounded feasible region",
+      "figureDescription": "Unbounded feasible region for x plus y at least 4 with non-negative variables.",
+      "svgHash": "a507d77e19625bae",
+      "tokenOverlap": [
+        "unbounded",
+        "feasible",
+        "region",
+        "unbounded",
+        "feasible",
+        "region"
+      ]
+    },
+    {
+      "contentId": "cbse-math-12.u5.t5-5.mc.001",
+      "course": "cbse-math-12",
+      "unit": "u5-linear-programming",
+      "topic": "5.5",
+      "route": "/cbse-math-12/u5-linear-programming/t5-5-mc-001",
+      "figureTitle": "Factory profit feasible region",
+      "figureDescription": "Feasible region for 2x plus y at most 100, x plus y at most 80, and non-negative variables.",
+      "svgHash": "4e044fda4c4c8c95",
+      "tokenOverlap": [
+        "factory",
+        "profit",
+        "feasible",
+        "region",
+        "feasible",
+        "region"
+      ]
+    },
+    {
+      "contentId": "cbse-math-12.u5.t5-5.mc.002",
+      "course": "cbse-math-12",
+      "unit": "u5-linear-programming",
+      "topic": "5.5",
+      "route": "/cbse-math-12/u5-linear-programming/t5-5-mc-002",
+      "figureTitle": "Minimum-cost feasible region",
+      "figureDescription": "Unbounded feasible region for x plus y at least 5, 2x plus y at least 8, and non-negative variables.",
+      "svgHash": "639efdc2c3c24da0",
+      "tokenOverlap": [
+        "minimum",
+        "cost",
+        "feasible",
+        "region",
+        "feasible",
+        "region"
+      ]
+    },
+    {
+      "contentId": "cbse-math-12.u5.t5-5.mc.004",
+      "course": "cbse-math-12",
+      "unit": "u5-linear-programming",
+      "topic": "5.5",
+      "route": "/cbse-math-12/u5-linear-programming/t5-5-mc-004",
+      "figureTitle": "Machine-hour constraint",
+      "figureDescription": "Two products with machine-hour use and a total machine-hour availability.",
+      "svgHash": "5d5518a574c443c6",
+      "tokenOverlap": [
+        "machine",
+        "hour",
+        "constraint",
+        "machine",
+        "hour",
+        "total",
+        "machine",
+        "hour"
+      ]
+    },
+    {
+      "contentId": "cbse-math-12.u5.t5-5.mc.005",
+      "course": "cbse-math-12",
+      "unit": "u5-linear-programming",
+      "topic": "5.5",
+      "route": "/cbse-math-12/u5-linear-programming/t5-5-mc-005",
+      "figureTitle": "Production feasible region",
+      "figureDescription": "Feasible region for a production problem with constraints x plus y at most 50 and 2x plus 3y at most 120.",
+      "svgHash": "97c57014f596d17d",
+      "tokenOverlap": [
+        "feasible",
+        "region",
+        "feasible",
+        "region"
+      ]
+    },
+    {
+      "contentId": "cbse-math-12.u5.t5-5.saq.003",
+      "course": "cbse-math-12",
+      "unit": "u5-linear-programming",
+      "topic": "5.5",
+      "route": "/cbse-math-12/u5-linear-programming/t5-5-saq-003",
+      "figureTitle": "Application feasible region",
+      "figureDescription": "Feasible region for x plus y at most 10, x plus 2y at most 14, and non-negative variables.",
+      "svgHash": "6f4388cf1e432bf4",
+      "tokenOverlap": [
+        "application"
+      ]
+    },
+    {
+      "contentId": "cbse-math-12.u5.t5-5.laq.004",
+      "course": "cbse-math-12",
+      "unit": "u5-linear-programming",
+      "topic": "5.5",
+      "route": "/cbse-math-12/u5-linear-programming/t5-5-laq-004",
+      "figureTitle": "Production feasible region",
+      "figureDescription": "Feasible region for a production problem with constraints x plus y at most 50 and 2x plus 3y at most 120.",
+      "svgHash": "97c57014f596d17d",
+      "tokenOverlap": [
+        "production",
+        "feasible",
+        "region",
+        "feasible",
+        "region",
+        "production",
+        "constraints",
+        "most",
+        "most"
+      ]
+    },
+    {
+      "contentId": "cbse-math-12.u5.t5-5.case.005",
+      "course": "cbse-math-12",
+      "unit": "u5-linear-programming",
+      "topic": "5.5",
+      "route": "/cbse-math-12/u5-linear-programming/t5-5-case-005",
+      "figureTitle": "Diet data table",
+      "figureDescription": "A diet table showing nutrient units and cost for two foods.",
+      "svgHash": "233d087c4ec68e42",
+      "tokenOverlap": [
+        "diet",
+        "table",
+        "diet",
+        "table",
+        "nutrient",
+        "units",
+        "cost",
+        "foods"
+      ]
+    },
+    {
+      "contentId": "cbse-math-12.u6.t6-1.mc.003",
+      "course": "cbse-math-12",
+      "unit": "u6-probability",
+      "topic": "6.1",
+      "route": "/cbse-math-12/u6-probability/t6-1-mc-003",
+      "figureTitle": "Activity survey Venn diagram",
+      "figureDescription": "A 200-student survey with 90 in seminar M, 70 in chess C, 40 in both, and 80 in neither.",
+      "svgHash": "371ca7f1a7a4b4c7",
+      "tokenOverlap": [
+        "survey",
+        "venn",
+        "student",
+        "survey",
+        "seminar",
+        "chess"
+      ]
+    },
+    {
+      "contentId": "cbse-math-12.u6.t6-2.mc.002",
+      "course": "cbse-math-12",
+      "unit": "u6-probability",
+      "topic": "6.2",
+      "route": "/cbse-math-12/u6-probability/t6-2-mc-002",
+      "figureTitle": "Without-replacement draw tree",
+      "figureDescription": "A two-stage draw from a pouch with 5 blue and 4 white slips, showing how counts change after the first draw.",
+      "svgHash": "0e81c0c7381bd887",
+      "tokenOverlap": [
+        "without",
+        "replacement",
+        "draw",
+        "stage",
+        "draw",
+        "blue",
+        "white",
+        "slips",
+        "counts",
+        "change",
+        "after",
+        "first",
+        "draw"
+      ]
+    },
+    {
+      "contentId": "cbse-math-12.u6.t6-3.mc.003",
+      "course": "cbse-math-12",
+      "unit": "u6-probability",
+      "topic": "6.3",
+      "route": "/cbse-math-12/u6-probability/t6-3-mc-003",
+      "figureTitle": "Two-way table for independence",
+      "figureDescription": "A 200-student table with Sports S and Music M counts: 36 both, 44 only Sports, 54 only Music, 66 neither.",
+      "svgHash": "40b3fcdf346b2141",
+      "tokenOverlap": [
+        "table",
+        "student",
+        "table",
+        "sports",
+        "music",
+        "both",
+        "sports",
+        "music",
+        "neither"
+      ]
+    },
+    {
+      "contentId": "cbse-math-12.u6.t6-3.case.005",
+      "course": "cbse-math-12",
+      "unit": "u6-probability",
+      "topic": "6.3",
+      "route": "/cbse-math-12/u6-probability/t6-3-case-005",
+      "figureTitle": "Two-way table for independence",
+      "figureDescription": "A 200-student table with Sports S and Music M counts: 36 both, 44 only Sports, 54 only Music, 66 neither.",
+      "svgHash": "40b3fcdf346b2141",
+      "tokenOverlap": [
+        "table",
+        "student",
+        "table",
+        "sports",
+        "music",
+        "counts",
+        "sports",
+        "music"
+      ]
+    },
+    {
+      "contentId": "cbse-math-12.u6.t6-4.mc.003",
+      "course": "cbse-math-12",
+      "unit": "u6-probability",
+      "topic": "6.4",
+      "route": "/cbse-math-12/u6-probability/t6-4-mc-003",
+      "figureTitle": "Route and late-arrival tree",
+      "figureDescription": "Three routes with probabilities 1/2, 1/3, and 1/6, followed by late-arrival probabilities 0.10, 0.15, and 0.30.",
+      "svgHash": "da37661a9f10febb",
+      "tokenOverlap": [
+        "route",
+        "late",
+        "arrival",
+        "tree",
+        "three",
+        "routes",
+        "probabilities",
+        "late",
+        "arrival",
+        "probabilities"
+      ]
+    },
+    {
+      "contentId": "cbse-math-12.u6.t6-4.mc.005",
+      "course": "cbse-math-12",
+      "unit": "u6-probability",
+      "topic": "6.4",
+      "route": "/cbse-math-12/u6-probability/t6-4-mc-005",
+      "figureTitle": "Supplier quality table",
+      "figureDescription": "Three suppliers with prior supply shares and conditional defect rates.",
+      "svgHash": "8dd758c12599300d",
+      "tokenOverlap": [
+        "supplier",
+        "table",
+        "three",
+        "suppliers",
+        "conditional",
+        "defect"
+      ]
+    },
+    {
+      "contentId": "cbse-math-12.u6.t6-4.laq.004",
+      "course": "cbse-math-12",
+      "unit": "u6-probability",
+      "topic": "6.4",
+      "route": "/cbse-math-12/u6-probability/t6-4-laq-004",
+      "figureTitle": "Supplier quality table",
+      "figureDescription": "Three suppliers with prior supply shares and conditional defect rates.",
+      "svgHash": "8dd758c12599300d",
+      "tokenOverlap": [
+        "supplier",
+        "table",
+        "three",
+        "suppliers",
+        "shares",
+        "defect",
+        "rates"
+      ]
+    },
+    {
+      "contentId": "cbse-math-12.u6.t6-5.mc.001",
+      "course": "cbse-math-12",
+      "unit": "u6-probability",
+      "topic": "6.5",
+      "route": "/cbse-math-12/u6-probability/t6-5-mc-001",
+      "figureTitle": "Supplier quality table",
+      "figureDescription": "Three suppliers with prior supply shares and conditional defect rates.",
+      "svgHash": "8dd758c12599300d",
+      "tokenOverlap": [
+        "supplier",
+        "table",
+        "prior",
+        "conditional",
+        "defect"
+      ]
+    },
+    {
+      "contentId": "cbse-math-12.u6.t6-5.mc.003",
+      "course": "cbse-math-12",
+      "unit": "u6-probability",
+      "topic": "6.5",
+      "route": "/cbse-math-12/u6-probability/t6-5-mc-003",
+      "figureTitle": "Route and late-arrival tree",
+      "figureDescription": "Three routes with probabilities 1/2, 1/3, and 1/6, followed by late-arrival probabilities 0.10, 0.15, and 0.30.",
+      "svgHash": "da37661a9f10febb",
+      "tokenOverlap": [
+        "route",
+        "late",
+        "tree",
+        "late"
+      ]
+    },
+    {
+      "contentId": "cbse-math-12.u6.t6-5.saq.003",
+      "course": "cbse-math-12",
+      "unit": "u6-probability",
+      "topic": "6.5",
+      "route": "/cbse-math-12/u6-probability/t6-5-saq-003",
+      "figureTitle": "Route and late-arrival tree",
+      "figureDescription": "Three routes with probabilities 1/2, 1/3, and 1/6, followed by late-arrival probabilities 0.10, 0.15, and 0.30.",
+      "svgHash": "da37661a9f10febb",
+      "tokenOverlap": [
+        "route",
+        "late",
+        "arrival",
+        "tree",
+        "three",
+        "probabilities",
+        "late",
+        "arrival",
+        "probabilities"
+      ]
+    },
+    {
+      "contentId": "cbse-math-12.u6.t6-5.case.005",
+      "course": "cbse-math-12",
+      "unit": "u6-probability",
+      "topic": "6.5",
+      "route": "/cbse-math-12/u6-probability/t6-5-case-005",
+      "figureTitle": "Diagnostic screening data",
+      "figureDescription": "Disease prevalence 0.05, sensitivity 0.92, and false-positive probability 0.06.",
+      "svgHash": "d73424af452f2b64",
+      "tokenOverlap": [
+        "diagnostic",
+        "screening",
+        "data",
+        "disease",
+        "sensitivity",
+        "false",
+        "positive",
+        "probability"
+      ]
+    },
+    {
+      "contentId": "jee-main-math.u1.t1-2.num.003",
+      "course": "jee-main-math",
+      "unit": "u1-sets-relations-functions",
+      "topic": "1.2",
+      "route": "/jee-main-math/u1-sets-relations-functions/t1-2-num-003",
+      "figureTitle": "Relation graph",
+      "figureDescription": "A graph of the relation pairs stated in the question.",
+      "svgHash": "9ca31350a030af84",
+      "tokenOverlap": [
+        "relation",
+        "relation",
+        "pairs"
+      ]
+    },
+    {
+      "contentId": "jee-main-math.u1.t1-3.mc.005",
+      "course": "jee-main-math",
+      "unit": "u1-sets-relations-functions",
+      "topic": "1.3",
+      "route": "/jee-main-math/u1-sets-relations-functions/t1-3-mc-005",
+      "figureTitle": "Function domain and codomain",
+      "figureDescription": "Five domain nodes and three codomain nodes without arrows or counting hints.",
+      "svgHash": "b7e6f6d7920542a7",
+      "tokenOverlap": [
+        "function",
+        "domain",
+        "domain",
+        "three",
+        "without",
+        "counting"
+      ]
+    },
+    {
+      "contentId": "jee-main-math.u1.t1-4.mc.002",
+      "course": "jee-main-math",
+      "unit": "u1-sets-relations-functions",
+      "topic": "1.4",
+      "route": "/jee-main-math/u1-sets-relations-functions/t1-4-mc-002",
+      "figureTitle": "Composition flow",
+      "figureDescription": "A neutral flow diagram for a composition expression.",
+      "svgHash": "162035eb47df6922",
+      "tokenOverlap": [
+        "composition",
+        "composition"
+      ]
+    }
+  ],
+  "warnings": [],
+  "failures": []
+}

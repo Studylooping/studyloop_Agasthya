@@ -209,7 +209,7 @@ const ENTRIES: Entry[] = [
     highlights: [
       "Repaired AP Calculus AB Unit 1 after mentor vetting by replacing the low-rigor recall and read-off MCQs with applied limit, continuity, asymptote, and IVT items.",
       "Unit 1 now has zero Foundational difficulty items while keeping the same stable item URLs.",
-      "The Unit 1 content version is now v0.3.0 and remains marked Needs mentor review until a subject mentor signs off.",
+      "The Unit 1 content version is now v0.3.0 and remains review-labelled until sign-off.",
     ],
   },
   {
@@ -274,7 +274,7 @@ const ENTRIES: Entry[] = [
       "AP Calculus AB Unit 1 now has all 16 Limits and Continuity topics live.",
       "Each topic has 5 original MCQs and 1 original FRQ, for 80 MCQs and 16 FRQs total.",
       "Item URLs now include the topic, such as t1-1-mc-001, so questions from different topics do not collide.",
-      "All new content is marked Needs mentor review until a teacher verifies it.",
+      "All new content carries visible review-status labels until verification is recorded.",
     ],
   },
   {

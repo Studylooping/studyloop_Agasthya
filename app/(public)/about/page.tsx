@@ -68,9 +68,8 @@ export default function AboutPage() {
           whether your answer is right. Multiple-choice answers are checked by
           deterministic code, free-response items use self-grading rubrics, and
           future symbolic math should be checked by a real algebra system such
-          as SymPy. Until teacher mentors verify each item, alpha items can
-          carry a "Needs mentor review" badge so you know the level of review
-          behind them.
+          as SymPy. Items carry visible review badges so students, parents, and
+          schools can see the level of review behind each question.
         </p>
 
         <h2 className="pt-6 text-2xl font-semibold tracking-tight">Contact</h2>

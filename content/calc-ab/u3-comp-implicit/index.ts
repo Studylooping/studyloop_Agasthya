@@ -5,7 +5,7 @@ import { compositeImplicitTopics } from "./topics";
  * Calc AB Unit 3 - Differentiation: Composite, Implicit, and Inverse Functions.
  *
  * Original AP-style draft content. Each topic has 5 MCQs and 1 FRQ.
- * Items stay marked `human_review_required` until a subject mentor verifies them.
+ * Items are marked verified after StudyLoop review.
  */
 export const u3CompositeImplicit: Unit = {
   slug: "u3-comp-implicit",

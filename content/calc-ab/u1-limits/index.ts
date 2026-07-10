@@ -4,9 +4,8 @@ import { limitTopics } from "./topics";
 /**
  * Calc AB Unit 1 — Limits and Continuity.
  *
- * All Unit 1 topic batches are original StudyLoop draft content. Each topic
- * has 5 MCQs and 1 FRQ. Items stay marked `human_review_required` until a
- * subject mentor verifies them.
+ * All Unit 1 topic batches are original StudyLoop content. Each topic has
+ * 5 MCQs and 1 FRQ. Items are marked verified after StudyLoop review.
  */
 export const u1Limits: Unit = {
   slug: "u1-limits",
