@@ -91,15 +91,58 @@ export function FeedbackDialog({
   );
   const [submissionState, setSubmissionState] =
     React.useState<SubmissionState>("idle");
+  const [isOpen, setIsOpen] = React.useState(false);
+  const [showValidation, setShowValidation] = React.useState(false);
+
+  React.useEffect(() => {
+    if (!isOpen) return;
+    const root = document.documentElement;
+    const rootOverflow = root.style.overflow;
+    const bodyOverflow = document.body.style.overflow;
+    root.style.overflow = "hidden";
+    document.body.style.overflow = "hidden";
+    return () => {
+      root.style.overflow = rootOverflow;
+      document.body.style.overflow = bodyOverflow;
+    };
+  }, [isOpen]);
 
   const isQuestion = kind === "question";
   const options = getFeedbackOptions(kind);
-  const canSubmit =
-    categories.length > 0 &&
-    (!videoSuggestion ||
-      (!!canonicalYouTubeLink(videoUrl) && videoTopics.trim().length > 0)) &&
-    (isQuestion || details.trim().length >= 3) &&
-    submissionState !== "sending";
+  const submissionCategories: FeedbackCode[] = videoSuggestion
+    ? ["suggestion"]
+    : categories;
+  const errors = {
+    categories: submissionCategories.length ? "" : "Choose a feedback type.",
+    videoUrl:
+      videoSuggestion && !canonicalYouTubeLink(videoUrl)
+        ? "Enter a link to a single YouTube video, not a playlist or channel."
+        : "",
+    videoTopics:
+      videoSuggestion && !videoTopics.trim()
+        ? "Enter the topic or concept."
+        : "",
+    details:
+      !isQuestion && details.trim().length < 3
+        ? "Add a short description of at least 3 characters."
+        : "",
+    contactEmail:
+      contactEmail.trim() &&
+      !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(contactEmail.trim())
+        ? "Enter a valid email address, or leave this optional field blank."
+        : "",
+  };
+
+  function fieldError(field: keyof typeof errors) {
+    return showValidation && errors[field] ? (
+      <p
+        id={`${titleId}-${field}-error`}
+        className="mt-1 text-sm text-destructive"
+      >
+        {errors[field]}
+      </p>
+    ) : null;
+  }
 
   function openDialog() {
     setCategories(videoSuggestion ? ["suggestion"] : []);
@@ -112,7 +155,9 @@ export function FeedbackDialog({
     setOpenedAt(Date.now());
     setFallbackMailtoHref(`mailto:${SITE.feedbackEmail}`);
     setSubmissionState("idle");
+    setShowValidation(false);
     dialogRef.current?.showModal();
+    setIsOpen(true);
   }
 
   function closeDialog() {
@@ -129,12 +174,22 @@ export function FeedbackDialog({
 
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    if (!canSubmit) return;
+    if (submissionState === "sending") return;
+    setShowValidation(true);
+    const firstInvalid = Object.entries(errors).find(
+      ([, message]) => message,
+    )?.[0];
+    if (firstInvalid) {
+      event.currentTarget
+        .querySelector<HTMLElement>(`[name="${firstInvalid}"]`)
+        ?.focus();
+      return;
+    }
 
     setSubmissionState("sending");
     const payload: FeedbackSubmission = {
       kind,
-      categories,
+      categories: submissionCategories,
       details: videoSuggestion
         ? `Video suggestion\n${videoSuggestion.context.slice(0, 600)}\nTopics: ${videoTopics.trim()}\nSuggested video: ${canonicalYouTubeLink(videoUrl)}\nTeaching language: ${videoLanguage === "hi" ? "Hindi / Hinglish" : "English"}\nWhy this lesson: ${details.trim()}`
         : details.trim(),
@@ -145,7 +200,7 @@ export function FeedbackDialog({
       openedAt,
       website,
     };
-    const categoryLabels = categories.flatMap((code) => {
+    const categoryLabels = submissionCategories.flatMap((code) => {
       const label = options.find((option) => option.code === code)?.label;
       return label ? [label] : [];
     });
@@ -203,13 +258,11 @@ export function FeedbackDialog({
         ref={dialogRef}
         aria-labelledby={titleId}
         aria-describedby={descriptionId}
-        className="m-auto max-h-[calc(100dvh-2rem)] w-[calc(100%-2rem)] max-w-lg overflow-y-auto rounded-lg border border-border bg-background p-0 text-foreground shadow-2xl backdrop:bg-foreground/40 backdrop:backdrop-blur-[2px]"
-        onMouseDown={(event) => {
-          if (event.target === event.currentTarget) closeDialog();
-        }}
+        className="m-auto max-h-[calc(100dvh-2rem)] w-[calc(100%-2rem)] max-w-lg overflow-hidden rounded-lg border border-border bg-background p-0 text-foreground shadow-2xl backdrop:bg-foreground/40 backdrop:backdrop-blur-[2px]"
+        onClose={() => setIsOpen(false)}
       >
         {submissionState === "sent" ? (
-          <div className="p-6">
+          <div className="max-h-[calc(100dvh-2rem-2px)] overflow-y-auto p-6">
             <div className="flex items-start gap-3">
               <CheckCircle2
                 className="mt-0.5 h-5 w-5 shrink-0 text-success"
@@ -234,8 +287,12 @@ export function FeedbackDialog({
             </div>
           </div>
         ) : (
-          <form onSubmit={handleSubmit}>
-            <div className="sticky top-0 z-10 flex items-start justify-between gap-4 border-b border-border bg-background px-5 py-4">
+          <form
+            noValidate
+            onSubmit={handleSubmit}
+            className="flex max-h-[calc(100dvh-2rem-2px)] flex-col"
+          >
+            <div className="flex shrink-0 items-start justify-between gap-4 border-b border-border bg-background px-5 py-4">
               <div>
                 <h2 id={titleId} className="font-semibold">
                   {videoSuggestion
@@ -267,7 +324,10 @@ export function FeedbackDialog({
               </Button>
             </div>
 
-            <div className="space-y-5 px-5 py-5">
+            <div
+              data-testid="feedback-fields"
+              className="min-h-0 space-y-5 overflow-y-auto overscroll-contain px-5 py-5"
+            >
               {context ? (
                 <p className="font-mono text-xs text-muted-foreground">
                   {context.contentId}
@@ -275,7 +335,13 @@ export function FeedbackDialog({
               ) : null}
 
               {!videoSuggestion && (
-                <fieldset>
+                <fieldset
+                  aria-describedby={
+                    showValidation && errors.categories
+                      ? `${titleId}-categories-error`
+                      : undefined
+                  }
+                >
                   <legend className="text-sm font-medium">
                     {isQuestion ? "Issue type" : "Feedback type"}
                   </legend>
@@ -287,6 +353,7 @@ export function FeedbackDialog({
                       >
                         <input
                           type="checkbox"
+                          name="categories"
                           checked={categories.includes(option.code)}
                           onChange={() => toggleCategory(option.code)}
                           className="mt-0.5 h-4 w-4 shrink-0 accent-primary"
@@ -295,6 +362,7 @@ export function FeedbackDialog({
                       </label>
                     ))}
                   </div>
+                  {fieldError("categories")}
                 </fieldset>
               )}
 
@@ -309,23 +377,28 @@ export function FeedbackDialog({
                     </label>
                     <input
                       id={`${titleId}-video-url`}
-                      type="url"
+                      type="text"
+                      name="videoUrl"
+                      inputMode="url"
+                      autoCapitalize="none"
+                      autoCorrect="off"
+                      spellCheck={false}
                       required
                       maxLength={500}
                       value={videoUrl}
                       onChange={(event) => setVideoUrl(event.target.value)}
                       placeholder="https://www.youtube.com/watch?v=..."
-                      aria-describedby={`${titleId}-video-url-note`}
+                      aria-invalid={showValidation && !!errors.videoUrl}
+                      aria-describedby={`${titleId}-video-url-note${showValidation && errors.videoUrl ? ` ${titleId}-videoUrl-error` : ""}`}
                       className="mt-2 h-10 w-full rounded-md border border-input bg-background px-3 text-sm"
                     />
                     <p
                       id={`${titleId}-video-url-note`}
                       className="mt-1 text-xs text-muted-foreground"
                     >
-                      {videoUrl && !canonicalYouTubeLink(videoUrl)
-                        ? "Enter a valid HTTPS YouTube video or youtu.be link."
-                        : "Only the link is sent; the suggested video is not loaded."}
+                      Only the link is sent; the suggested video is not loaded.
                     </p>
+                    {fieldError("videoUrl")}
                   </div>
                   <div>
                     <label
@@ -336,12 +409,20 @@ export function FeedbackDialog({
                     </label>
                     <input
                       id={`${titleId}-video-topics`}
+                      name="videoTopics"
                       required
                       maxLength={150}
                       value={videoTopics}
                       onChange={(event) => setVideoTopics(event.target.value)}
+                      aria-invalid={showValidation && !!errors.videoTopics}
+                      aria-describedby={
+                        showValidation && errors.videoTopics
+                          ? `${titleId}-videoTopics-error`
+                          : undefined
+                      }
                       className="mt-2 h-10 w-full rounded-md border border-input bg-background px-3 text-sm"
                     />
+                    {fieldError("videoTopics")}
                   </div>
                   <div>
                     <label
@@ -375,11 +456,18 @@ export function FeedbackDialog({
                 </label>
                 <textarea
                   id={`${titleId}-details`}
+                  name="details"
                   value={details}
                   onChange={(event) => setDetails(event.target.value)}
                   rows={4}
                   maxLength={videoSuggestion ? 900 : 2000}
                   required={!isQuestion}
+                  aria-invalid={showValidation && !!errors.details}
+                  aria-describedby={
+                    showValidation && errors.details
+                      ? `${titleId}-details-error`
+                      : undefined
+                  }
                   placeholder={
                     isQuestion
                       ? "Add anything that will help us verify the issue."
@@ -387,6 +475,7 @@ export function FeedbackDialog({
                   }
                   className="mt-2 w-full resize-y rounded-md border border-input bg-background px-3 py-2 text-sm placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
                 />
+                {fieldError("details")}
               </div>
 
               <div>
@@ -399,14 +488,22 @@ export function FeedbackDialog({
                 </label>
                 <input
                   id={`${titleId}-email`}
+                  name="contactEmail"
                   type="email"
                   value={contactEmail}
                   onChange={(event) => setContactEmail(event.target.value)}
                   maxLength={254}
                   autoComplete="email"
+                  aria-invalid={showValidation && !!errors.contactEmail}
+                  aria-describedby={
+                    showValidation && errors.contactEmail
+                      ? `${titleId}-contactEmail-error`
+                      : undefined
+                  }
                   placeholder="Only if you would like a reply"
                   className="mt-2 h-10 w-full rounded-md border border-input bg-background px-3 text-sm placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
                 />
+                {fieldError("contactEmail")}
               </div>
 
               <div hidden aria-hidden="true">
@@ -427,12 +524,11 @@ export function FeedbackDialog({
                 type, and any details or email you enter are sent with this
                 report. Your StudyLoop profile and answers are not sent.
               </p>
+            </div>
 
+            <div className="shrink-0 border-t border-border bg-background px-5 py-4">
               {submissionState === "error" ? (
-                <div
-                  role="alert"
-                  className="space-y-3 rounded-md border border-destructive/30 bg-destructive/5 p-3 text-sm"
-                >
+                <div role="alert" className="mb-3 space-y-2 text-sm">
                   <p className="text-destructive">
                     We could not send this automatically right now.
                   </p>
@@ -444,16 +540,24 @@ export function FeedbackDialog({
                   </Button>
                 </div>
               ) : null}
-            </div>
-
-            <div className="sticky bottom-0 z-10 flex items-center justify-end gap-2 border-t border-border bg-background px-5 py-4">
-              <Button type="button" variant="ghost" onClick={closeDialog}>
-                Cancel
-              </Button>
-              <Button type="submit" disabled={!canSubmit}>
-                <Send className="h-4 w-4" aria-hidden="true" />
-                {submissionState === "sending" ? "Sending..." : "Send feedback"}
-              </Button>
+              {showValidation && Object.values(errors).some(Boolean) && (
+                <p role="alert" className="mb-2 text-sm text-destructive">
+                  Check the highlighted fields.
+                </p>
+              )}
+              <div className="flex items-center justify-end gap-2">
+                <Button type="button" variant="ghost" onClick={closeDialog}>
+                  Cancel
+                </Button>
+                <Button type="submit" disabled={submissionState === "sending"}>
+                  <Send className="h-4 w-4" aria-hidden="true" />
+                  {submissionState === "sending"
+                    ? "Sending..."
+                    : videoSuggestion
+                      ? "Send suggestion"
+                      : "Send feedback"}
+                </Button>
+              </div>
             </div>
           </form>
         )}

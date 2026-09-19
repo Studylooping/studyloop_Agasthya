@@ -179,11 +179,15 @@ try {
     await suggestion
       .getByLabel("Why is this lesson useful?", { exact: true })
       .fill("Clear worked concentration examples.");
+    await suggestion
+      .getByRole("button", { name: "Send suggestion", exact: true })
+      .click();
+    assert.equal(sentSuggestions.length, 0);
     assert.equal(
       await suggestion
-        .getByRole("button", { name: "Send feedback", exact: true })
-        .isEnabled(),
-      false,
+        .getByText(/Enter a link to a single YouTube video/)
+        .isVisible(),
+      true,
     );
     const beforeSuggestion = requests.length;
     await suggestion
@@ -193,7 +197,7 @@ try {
       path: `${output}/suggestion-${viewport.width}.png`,
     });
     await suggestion
-      .getByRole("button", { name: "Send feedback", exact: true })
+      .getByRole("button", { name: "Send suggestion", exact: true })
       .click();
     await suggestion
       .getByRole("heading", { name: "Feedback sent", exact: true })

@@ -41,6 +41,11 @@ test("suggestions accept YouTube videos without retaining tracking parameters", 
     "https://youtu.be/O_nyEj_hZzg?si=tracking",
     "https://www.youtube.com/watch?v=O_nyEj_hZzg&t=30",
     "https://m.youtube.com/live/O_nyEj_hZzg",
+    "  youtu.be/O_nyEj_hZzg?si=tracking  ",
+    "www.youtube.com/watch?v=O_nyEj_hZzg",
+    "https://youtube.com/shorts/O_nyEj_hZzg",
+    "http://youtu.be/O_nyEj_hZzg",
+    "music.youtube.com/watch?v=O_nyEj_hZzg",
   ])
     assert.equal(
       canonicalYouTubeLink(url),
@@ -48,7 +53,8 @@ test("suggestions accept YouTube videos without retaining tracking parameters", 
     );
   for (const url of [
     "javascript:alert(1)",
-    "http://youtu.be/O_nyEj_hZzg",
+    "ftp://youtu.be/O_nyEj_hZzg",
+    "https://youtu.be:8080/O_nyEj_hZzg",
     "https://youtube.com.evil.test/watch?v=O_nyEj_hZzg",
     "https://evil.test@youtube.com/watch?v=O_nyEj_hZzg",
     "https://youtube.com/playlist?list=x",

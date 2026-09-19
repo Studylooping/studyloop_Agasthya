@@ -21,14 +21,31 @@ export type VideoLesson = VideoSelection & VideoMetadata;
 
 export function canonicalYouTubeLink(value: string): string | null {
   try {
-    const url = new URL(value.trim());
-    if (url.protocol !== "https:" || url.username || url.password || url.port)
+    const input = value.trim();
+    const url = new URL(
+      /^(?:(?:www|m|music)\.)?youtube\.com\/|^youtu\.be\//i.test(input)
+        ? `https://${input}`
+        : input,
+    );
+    if (
+      !["https:", "http:"].includes(url.protocol) ||
+      url.username ||
+      url.password ||
+      url.port
+    )
       return null;
     const host = url.hostname.toLowerCase();
     const parts = url.pathname.split("/").filter(Boolean);
     let id: string | null = null;
     if (host === "youtu.be" && parts.length === 1) id = parts[0];
-    if (["youtube.com", "www.youtube.com", "m.youtube.com"].includes(host)) {
+    if (
+      [
+        "youtube.com",
+        "www.youtube.com",
+        "m.youtube.com",
+        "music.youtube.com",
+      ].includes(host)
+    ) {
       if (url.pathname === "/watch") id = url.searchParams.get("v");
       if (["shorts", "live", "embed"].includes(parts[0]) && parts.length === 2)
         id = parts[1];
