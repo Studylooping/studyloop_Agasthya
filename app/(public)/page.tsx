@@ -109,7 +109,8 @@ export default function LandingPage() {
         <div className="container max-w-content px-4 py-10">
           <div className="mx-auto max-w-prose-narrow text-center text-sm text-muted-foreground">
             <p className="text-base font-medium text-foreground">
-              Free forever. No ads. No tracking. No selling your data.
+              Free forever. No StudyLoop ads or behavioural tracking. No selling your
+              data.
             </p>
             <p className="mt-2">
               Every track follows the same rule: original content, visible

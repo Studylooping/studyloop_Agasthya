@@ -24,7 +24,10 @@
     "upload:cloudflare": "opennextjs-cloudflare upload",
     "deploy:pages": "node scripts/build-pages.mjs && wrangler pages deploy out --project-name=studyloop2",
     "deploy:feedback": "wrangler deploy --config wrangler.feedback.jsonc",
-    "cf-typegen": "wrangler types --env-interface CloudflareEnv cloudflare-env.d.ts"
+    "cf-typegen": "wrangler types --env-interface CloudflareEnv cloudflare-env.d.ts",
+    "videos:audit": "node scripts/check-video-lessons.mjs && node --test scripts/video-lessons.test.mjs scripts/video-feedback.test.mjs",
+    "videos:coverage": "node scripts/check-video-lessons.mjs --coverage --require-complete",
+    "videos:check-links": "node --use-system-ca scripts/check-video-lessons.mjs --network"
   },
   "dependencies": {
     "@opennextjs/cloudflare": "^1.20.1",

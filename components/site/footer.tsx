@@ -34,8 +34,19 @@ export function Footer() {
           </nav>
 
           <div className="space-y-2 text-sm text-muted-foreground">
-            <p>Free forever. No ads. No tracking.</p>
-            <p>Public source repository link will appear after GitHub publish.</p>
+            <p>Free forever. No StudyLoop ads or behavioural tracking.</p>
+            <p className="mt-2">Optional YouTube lessons may show ads and process playback data.</p>
+            <p>
+              Source code:{" "}
+              <a
+                href="https://github.com/Studylooping/studyloop_Agasthya"
+                rel="noopener noreferrer"
+                target="_blank"
+                className="underline underline-offset-4 hover:text-foreground"
+              >
+                Studylooping/studyloop_Agasthya
+              </a>
+            </p>
           </div>
         </div>
 

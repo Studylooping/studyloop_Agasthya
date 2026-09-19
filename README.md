@@ -3,11 +3,12 @@
 Free STEM practice for school, exams, and deep understanding at
 **[studyloop.in](https://studyloop.in)**.
 
-A privacy-first study companion with live practice for AP Calculus AB, CBSE
-Class 11 Mathematics, CBSE Class 12 Mathematics, and JEE Main Mathematics.
-Original practice questions, hint ladders, deterministic grading,
-browser-local nickname profiles, and issue reporting are the core product
-pattern. No ads. No tracking.
+A privacy-first study companion with live practice for AP Calculus AB and CBSE
+school subjects. Original practice questions, hint ladders, deterministic
+grading, browser-local nickname profiles, and issue reporting are the core
+product pattern. No StudyLoop ads or behavioural tracking. Optional, opt-in
+YouTube lessons use privacy-enhanced embeds but may show ads and process playback
+data; questions remain usable without loading them.
 
 This repository is the deployable StudyLoop application and its original
 question banks.
@@ -221,6 +222,33 @@ Target: WCAG 2.2 AA. Verified before launch with axe DevTools.
 - All fonts load via `next/font` (no FOUT, no layout shift)
 
 ---
+
+## Optional video preparation
+
+Chapter pages provide topic-filtered English and Hindi/Hinglish lesson selections.
+Each selection records its actual concept coverage and whether it is a chapter
+lesson, revision or a focused refresher. These are supplements, not guarantees of
+complete syllabus coverage or objective popularity rankings.
+
+YouTube's privacy-enhanced player loads only after an explicit click and notice
+about ads and playback data. No YouTube thumbnail, iframe or script loads on the
+initial page. Changing topic, lesson or language clears playback consent.
+
+Students can use **Suggest a better video** to submit a YouTube link, topic,
+language and reason. The existing feedback worker targets `hello@studyloop.in`;
+suggestions are not published automatically. The latest live check returned a
+permanent delivery failure for that mailbox, so automatic notification is not
+currently verified. Failed submissions offer an email-draft fallback. Local UI
+tests stub delivery rather than emailing the founder.
+
+Run `pnpm videos:audit` for mapping integrity, coverage reporting and privacy tests;
+`pnpm videos:coverage` is the stricter zero-gap check and currently fails for 15
+AP Calculus Hindi topic gaps. All CBSE topics have both language options; every
+AP topic has English support. Do not describe the catalogue as fully bilingual.
+Run `pnpm videos:check-links` for current YouTube availability. Refresh stored
+titles/channels with `node --use-system-ca scripts/check-video-lessons.mjs --refresh`.
+An availability check is not an academic review or a guarantee of regional playback.
+Research notes are kept in the local `review-packages/videos-*.md` files.
 
 ## What's not in this alpha yet
 

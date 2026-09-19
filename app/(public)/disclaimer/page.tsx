@@ -36,12 +36,12 @@ export default function DisclaimerPage() {
             Original content
           </h2>
           <p>
-            Every question, lesson, and worked example on {SITE.name} should
-            be original. Nothing should be copied, paraphrased, or adapted
-            from College Board released items, AP Classroom, CBSE/NCERT
-            materials, SAT materials, textbooks, or commercial prep platforms.
-            If an item resembles copyrighted material, it should be retired
-            and rewritten after confirmation.
+            Every StudyLoop-authored question, lesson, and worked example should be
+            original. Nothing should be copied, paraphrased, or adapted from
+            College Board released items, AP Classroom, CBSE/NCERT materials,
+            textbooks, or commercial prep platforms. If an item resembles
+            copyrighted material, it should be retired and rewritten after
+            confirmation.
           </p>
         </section>
 
@@ -84,9 +84,36 @@ export default function DisclaimerPage() {
           </h2>
           <p>
             {SITE.name} is a study companion. It does not replace classroom
-            instruction, a laboratory science requirement, or the guidance of
-            a qualified teacher. Use it alongside your school's curriculum,
-            not in place of it.
+            instruction, a laboratory science requirement, or the guidance of a
+            qualified teacher. Use it alongside your school's curriculum, not in
+            place of it.
+          </p>
+        </section>
+
+        <section className="space-y-3">
+          <h2 className="text-2xl font-semibold tracking-tight">Optional YouTube lessons</h2>
+          <p>
+            These recordings belong to their named creators, are played through
+            YouTube, and are not StudyLoop-authored or endorsed by CBSE. Selections
+            are matched to the stated concepts, not an objective ranking of all
+            videos. Older recordings may include extra topics or different exam
+            formats. Follow your teacher's current assessment syllabus.
+          </p>
+          <p>
+            Loading a video connects to Google/YouTube. Privacy-enhanced mode does
+            not prevent all data processing or ads. Google can receive your IP
+            address, device information and playback activity; videos may also
+            contain creator promotions. StudyLoop does not send your nickname,
+            answers or saved practice history to the player. Consent is not saved
+            across lessons or visits. Closing the player stops further playback
+            but cannot undo data already sent to Google.
+          </p>
+          <p>
+            You can skip videos and use every practice activity. Families and
+            schools should decide whether third-party playback is appropriate
+            for their students. Google's <a href="https://policies.google.com/privacy"
+              target="_blank" rel="noopener noreferrer" className="text-primary underline underline-offset-4">privacy policy</a> and
+            YouTube's terms apply when you use the player.
           </p>
         </section>
 

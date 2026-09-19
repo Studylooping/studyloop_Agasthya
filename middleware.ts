@@ -20,8 +20,9 @@ function buildContentSecurityPolicy(isDev: boolean): string {
     "style-src 'self' 'unsafe-inline'",
     "img-src 'self' data: blob: https://*.supabase.co",
     "font-src 'self' data:",
+    "frame-src https://www.youtube-nocookie.com",
     [
-      "connect-src 'self' https://*.supabase.co https://api.anthropic.com",
+      "connect-src 'self' https://*.supabase.co https://api.anthropic.com https://studyloop-feedback.mute-king-ecc6.workers.dev",
       isDev
         ? "ws://localhost:* ws://127.0.0.1:* http://localhost:* http://127.0.0.1:*"
         : "",
@@ -35,11 +36,11 @@ function buildContentSecurityPolicy(isDev: boolean): string {
 }
 
 const SECURITY_HEADERS: Record<string, string> = {
-  "Strict-Transport-Security":
-    "max-age=63072000; includeSubDomains; preload",
+  "Strict-Transport-Security": "max-age=63072000; includeSubDomains; preload",
   "X-Content-Type-Options": "nosniff",
   "X-Frame-Options": "DENY",
   "Referrer-Policy": "strict-origin-when-cross-origin",
+  "X-DNS-Prefetch-Control": "off",
   "Permissions-Policy":
     "camera=(), microphone=(), geolocation=(), interest-cohort=()",
 };
@@ -52,10 +53,7 @@ export function middleware(req: NextRequest) {
   for (const [name, value] of Object.entries(SECURITY_HEADERS)) {
     res.headers.set(name, value);
   }
-  res.headers.set(
-    "Content-Security-Policy",
-    buildContentSecurityPolicy(isDev),
-  );
+  res.headers.set("Content-Security-Policy", buildContentSecurityPolicy(isDev));
 
   // 2. Rate limit on API routes only (skip for SSG pages)
   if (req.nextUrl.pathname.startsWith("/api/")) {

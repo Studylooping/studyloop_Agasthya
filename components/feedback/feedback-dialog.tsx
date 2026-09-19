@@ -11,21 +11,69 @@ import {
   type QuestionFeedbackContext,
 } from "@/lib/feedback";
 import { cn, SITE } from "@/lib/utils";
+import { canonicalYouTubeLink } from "@/lib/video-lessons";
 
 interface FeedbackDialogProps {
   kind: FeedbackKind;
   context?: QuestionFeedbackContext;
   compact?: boolean;
   className?: string;
+  triggerText?: string;
+  initialDetails?: string;
+  videoSuggestion?: { context: string; language: "en" | "hi"; topics: string };
 }
 
 type SubmissionState = "idle" | "sending" | "sent" | "error";
+
+function getSubjectTarget(payload: FeedbackSubmission) {
+  if (payload.context?.contentId) return payload.context.contentId;
+
+  try {
+    return new URL(payload.pageUrl).hostname;
+  } catch {
+    return "studyloop.in";
+  }
+}
+
+function buildFeedbackMailtoHref(
+  payload: FeedbackSubmission,
+  categoryLabels: string[],
+) {
+  const reportTitle =
+    payload.kind === "question" ? "Question report" : "Site feedback";
+  const subject = `[StudyLoop ${reportTitle}] ${
+    categoryLabels[0] ?? "Feedback"
+  } - ${getSubjectTarget(payload)}`;
+  const body = [
+    reportTitle,
+    "",
+    `Categories: ${categoryLabels.join(", ") || "Not provided"}`,
+    payload.context ? `Content ID: ${payload.context.contentId}` : null,
+    payload.context ? `Course: ${payload.context.course}` : null,
+    payload.context ? `Unit: ${payload.context.unit}` : null,
+    payload.context ? `Topic: ${payload.context.topic}` : null,
+    payload.context ? `Question: ${payload.context.question}` : null,
+    `Details: ${payload.details || "Not provided"}`,
+    `Contact: ${payload.contactEmail || "Not provided"}`,
+    `Page: ${payload.pageUrl}`,
+    `Viewport: ${payload.viewport || "Unknown"}`,
+  ]
+    .filter((line): line is string => line !== null)
+    .join("\n");
+
+  return `mailto:${SITE.feedbackEmail}?subject=${encodeURIComponent(
+    subject,
+  )}&body=${encodeURIComponent(body)}`;
+}
 
 export function FeedbackDialog({
   kind,
   context,
   compact = false,
   className,
+  triggerText,
+  initialDetails = "",
+  videoSuggestion,
 }: FeedbackDialogProps) {
   const dialogRef = React.useRef<HTMLDialogElement>(null);
   const titleId = React.useId();
@@ -35,6 +83,12 @@ export function FeedbackDialog({
   const [contactEmail, setContactEmail] = React.useState("");
   const [website, setWebsite] = React.useState("");
   const [openedAt, setOpenedAt] = React.useState(0);
+  const [videoUrl, setVideoUrl] = React.useState("");
+  const [videoLanguage, setVideoLanguage] = React.useState("en");
+  const [videoTopics, setVideoTopics] = React.useState("");
+  const [fallbackMailtoHref, setFallbackMailtoHref] = React.useState(
+    `mailto:${SITE.feedbackEmail}`,
+  );
   const [submissionState, setSubmissionState] =
     React.useState<SubmissionState>("idle");
 
@@ -42,15 +96,21 @@ export function FeedbackDialog({
   const options = getFeedbackOptions(kind);
   const canSubmit =
     categories.length > 0 &&
+    (!videoSuggestion ||
+      (!!canonicalYouTubeLink(videoUrl) && videoTopics.trim().length > 0)) &&
     (isQuestion || details.trim().length >= 3) &&
     submissionState !== "sending";
 
   function openDialog() {
-    setCategories([]);
-    setDetails("");
+    setCategories(videoSuggestion ? ["suggestion"] : []);
+    setDetails(videoSuggestion ? "" : initialDetails);
+    setVideoUrl("");
+    setVideoLanguage(videoSuggestion?.language ?? "en");
+    setVideoTopics(videoSuggestion?.topics ?? "");
     setContactEmail("");
     setWebsite("");
     setOpenedAt(Date.now());
+    setFallbackMailtoHref(`mailto:${SITE.feedbackEmail}`);
     setSubmissionState("idle");
     dialogRef.current?.showModal();
   }
@@ -75,7 +135,9 @@ export function FeedbackDialog({
     const payload: FeedbackSubmission = {
       kind,
       categories,
-      details: details.trim(),
+      details: videoSuggestion
+        ? `Video suggestion\n${videoSuggestion.context.slice(0, 600)}\nTopics: ${videoTopics.trim()}\nSuggested video: ${canonicalYouTubeLink(videoUrl)}\nTeaching language: ${videoLanguage === "hi" ? "Hindi / Hinglish" : "English"}\nWhy this lesson: ${details.trim()}`
+        : details.trim(),
       contactEmail: contactEmail.trim(),
       pageUrl: window.location.href,
       viewport: `${window.innerWidth}x${window.innerHeight}`,
@@ -83,16 +145,18 @@ export function FeedbackDialog({
       openedAt,
       website,
     };
+    const categoryLabels = categories.flatMap((code) => {
+      const label = options.find((option) => option.code === code)?.label;
+      return label ? [label] : [];
+    });
+    setFallbackMailtoHref(buildFeedbackMailtoHref(payload, categoryLabels));
 
     try {
-      const response = await fetch(
-        process.env.NEXT_PUBLIC_FEEDBACK_ENDPOINT ?? "/api/feedback",
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(payload),
-        },
-      );
+      const response = await fetch(SITE.feedbackEndpoint, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
 
       if (!response.ok) throw new Error("Feedback delivery failed");
       setSubmissionState("sent");
@@ -102,11 +166,9 @@ export function FeedbackDialog({
   }
 
   const TriggerIcon = isQuestion ? Flag : MessageSquarePlus;
-  const triggerLabel = isQuestion
-    ? compact
-      ? "Flag"
-      : "Flag this question"
-    : "Feedback";
+  const triggerLabel =
+    triggerText ??
+    (isQuestion ? (compact ? "Flag" : "Flag this question") : "Feedback");
 
   return (
     <>
@@ -122,12 +184,17 @@ export function FeedbackDialog({
         )}
         aria-haspopup="dialog"
         aria-label={
-          !isQuestion ? "Feedback" : compact ? "Flag this question" : undefined
+          triggerText ??
+          (!isQuestion
+            ? "Feedback"
+            : compact
+              ? "Flag this question"
+              : undefined)
         }
         title={compact ? "Flag this question" : undefined}
       >
         <TriggerIcon className="h-4 w-4" aria-hidden="true" />
-        <span className={cn(!isQuestion && "hidden sm:inline")}>
+        <span className={cn(!isQuestion && !triggerText && "hidden sm:inline")}>
           {triggerLabel}
         </span>
       </Button>
@@ -171,17 +238,21 @@ export function FeedbackDialog({
             <div className="sticky top-0 z-10 flex items-start justify-between gap-4 border-b border-border bg-background px-5 py-4">
               <div>
                 <h2 id={titleId} className="font-semibold">
-                  {isQuestion
-                    ? "Flag this question"
-                    : "Please provide feedback"}
+                  {videoSuggestion
+                    ? "Suggest a better video"
+                    : isQuestion
+                      ? "Flag this question"
+                      : "Please provide feedback"}
                 </h2>
                 <p
                   id={descriptionId}
                   className="mt-1 text-sm text-muted-foreground"
                 >
-                  {isQuestion
-                    ? "What should we review?"
-                    : "Tell us what would make StudyLoop better."}
+                  {videoSuggestion
+                    ? `Send a lesson recommendation to ${SITE.feedbackEmail}. Suggestions are reviewed before publication.`
+                    : isQuestion
+                      ? "What should we review?"
+                      : "Tell us what would make StudyLoop better."}
                 </p>
               </div>
               <Button
@@ -203,34 +274,101 @@ export function FeedbackDialog({
                 </p>
               ) : null}
 
-              <fieldset>
-                <legend className="text-sm font-medium">
-                  {isQuestion ? "Issue type" : "Feedback type"}
-                </legend>
-                <div className="mt-2 grid gap-x-4 gap-y-1 sm:grid-cols-2">
-                  {options.map((option) => (
+              {!videoSuggestion && (
+                <fieldset>
+                  <legend className="text-sm font-medium">
+                    {isQuestion ? "Issue type" : "Feedback type"}
+                  </legend>
+                  <div className="mt-2 grid gap-x-4 gap-y-1 sm:grid-cols-2">
+                    {options.map((option) => (
+                      <label
+                        key={option.code}
+                        className="flex cursor-pointer items-start gap-2 rounded-md px-2 py-2 text-sm hover:bg-muted"
+                      >
+                        <input
+                          type="checkbox"
+                          checked={categories.includes(option.code)}
+                          onChange={() => toggleCategory(option.code)}
+                          className="mt-0.5 h-4 w-4 shrink-0 accent-primary"
+                        />
+                        <span>{option.label}</span>
+                      </label>
+                    ))}
+                  </div>
+                </fieldset>
+              )}
+
+              {videoSuggestion && (
+                <>
+                  <div>
                     <label
-                      key={option.code}
-                      className="flex cursor-pointer items-start gap-2 rounded-md px-2 py-2 text-sm hover:bg-muted"
+                      htmlFor={`${titleId}-video-url`}
+                      className="text-sm font-medium"
                     >
-                      <input
-                        type="checkbox"
-                        checked={categories.includes(option.code)}
-                        onChange={() => toggleCategory(option.code)}
-                        className="mt-0.5 h-4 w-4 shrink-0 accent-primary"
-                      />
-                      <span>{option.label}</span>
+                      YouTube video link
                     </label>
-                  ))}
-                </div>
-              </fieldset>
+                    <input
+                      id={`${titleId}-video-url`}
+                      type="url"
+                      required
+                      maxLength={500}
+                      value={videoUrl}
+                      onChange={(event) => setVideoUrl(event.target.value)}
+                      placeholder="https://www.youtube.com/watch?v=..."
+                      aria-describedby={`${titleId}-video-url-note`}
+                      className="mt-2 h-10 w-full rounded-md border border-input bg-background px-3 text-sm"
+                    />
+                    <p
+                      id={`${titleId}-video-url-note`}
+                      className="mt-1 text-xs text-muted-foreground"
+                    >
+                      {videoUrl && !canonicalYouTubeLink(videoUrl)
+                        ? "Enter a valid HTTPS YouTube video or youtu.be link."
+                        : "Only the link is sent; the suggested video is not loaded."}
+                    </p>
+                  </div>
+                  <div>
+                    <label
+                      htmlFor={`${titleId}-video-topics`}
+                      className="text-sm font-medium"
+                    >
+                      Topic or concept
+                    </label>
+                    <input
+                      id={`${titleId}-video-topics`}
+                      required
+                      maxLength={150}
+                      value={videoTopics}
+                      onChange={(event) => setVideoTopics(event.target.value)}
+                      className="mt-2 h-10 w-full rounded-md border border-input bg-background px-3 text-sm"
+                    />
+                  </div>
+                  <div>
+                    <label
+                      htmlFor={`${titleId}-video-language`}
+                      className="text-sm font-medium"
+                    >
+                      Teaching language
+                    </label>
+                    <select
+                      id={`${titleId}-video-language`}
+                      value={videoLanguage}
+                      onChange={(event) => setVideoLanguage(event.target.value)}
+                      className="mt-2 h-10 w-full rounded-md border border-input bg-background px-3 text-sm"
+                    >
+                      <option value="en">English</option>
+                      <option value="hi">Hindi / Hinglish</option>
+                    </select>
+                  </div>
+                </>
+              )}
 
               <div>
                 <label
                   htmlFor={`${titleId}-details`}
                   className="text-sm font-medium"
                 >
-                  Details{" "}
+                  {videoSuggestion ? "Why is this lesson useful?" : "Details"}{" "}
                   {isQuestion ? (
                     <span className="text-muted-foreground">(optional)</span>
                   ) : null}
@@ -240,7 +378,7 @@ export function FeedbackDialog({
                   value={details}
                   onChange={(event) => setDetails(event.target.value)}
                   rows={4}
-                  maxLength={2000}
+                  maxLength={videoSuggestion ? 900 : 2000}
                   required={!isQuestion}
                   placeholder={
                     isQuestion
@@ -285,21 +423,26 @@ export function FeedbackDialog({
               </div>
 
               <p className="text-xs leading-relaxed text-muted-foreground">
-                The current page address and technical context are included with
-                your message. Your StudyLoop profile and answers are not sent.
+                The current page address, technical context, selected issue
+                type, and any details or email you enter are sent with this
+                report. Your StudyLoop profile and answers are not sent.
               </p>
 
               {submissionState === "error" ? (
-                <p role="alert" className="text-sm text-destructive">
-                  We could not send this right now. Please email{" "}
-                  <a
-                    className="font-medium underline underline-offset-4"
-                    href={`mailto:${SITE.feedbackEmail}`}
-                  >
-                    {SITE.feedbackEmail}
-                  </a>
-                  .
-                </p>
+                <div
+                  role="alert"
+                  className="space-y-3 rounded-md border border-destructive/30 bg-destructive/5 p-3 text-sm"
+                >
+                  <p className="text-destructive">
+                    We could not send this automatically right now.
+                  </p>
+                  <Button asChild variant="outline" size="sm">
+                    <a href={fallbackMailtoHref}>
+                      <Send className="h-4 w-4" aria-hidden="true" />
+                      Open email draft
+                    </a>
+                  </Button>
+                </div>
               ) : null}
             </div>
 

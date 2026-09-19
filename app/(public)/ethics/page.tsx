@@ -80,12 +80,22 @@ export default function EthicsPage() {
             4. We minimize what we collect, and we never sell anything about you.
           </h2>
           <p>
-            You can use the entire site without a server account. We do not
-            show advertisements. We do not run trackers, pixels, or third-party
+            You can practise without a server account. StudyLoop does not place
+            advertisements. We do not run trackers, pixels, or third-party
             analytics that build a profile of you. If you choose a nickname
-            profile, your practice progress, saved errors, and review status
-            are stored only in this browser's local storage so you can resume
-            later. Use a nickname, not your real name.
+            profile, your practice progress, saved errors, and review status are
+            stored only in this browser's local storage so you can resume later.
+            Use a nickname, not your real name.
+          </p>
+          <p id="optional-videos">
+            Optional YouTube lessons are a separate, third-party service. No
+            YouTube player, thumbnail or script loads until you explicitly
+            choose to load a video. We use YouTube's privacy-enhanced player,
+            but Google may still process device and playback data, show ads,
+            and include recommendations. Recordings may contain creator
+            promotions. This is not anonymous or guaranteed ad-free viewing.
+            Choosing another lesson requires a fresh choice to load it; closing
+            the video removes the player. Watching is never required for practice.
           </p>
         </section>
 
@@ -97,7 +107,9 @@ export default function EthicsPage() {
           </h2>
           <ul className="space-y-2 pl-5 [&>li]:list-disc">
             <li>Run targeted advertising — to anyone, especially minors.</li>
-            <li>Sell, rent, or share your data with third parties.</li>
+            <li>
+              Sell or rent your data, or share your practice records with advertisers or data brokers.
+            </li>
             <li>
               Behaviorally profile you to predict your study patterns or push
               you toward paid features.

@@ -34,6 +34,9 @@ export const SITE = {
   name: "StudyLoop",
   domain: "studyloop.in",
   url: process.env.NEXT_PUBLIC_SITE_URL ?? "https://studyloop.in",
+  feedbackEndpoint:
+    process.env.NEXT_PUBLIC_FEEDBACK_ENDPOINT ??
+    "https://studyloop-feedback.mute-king-ecc6.workers.dev",
   feedbackEmail: "hello@studyloop.in",
   tagline: "Free STEM practice for school, exams, and deep understanding.",
   description:

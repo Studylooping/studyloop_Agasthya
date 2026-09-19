@@ -10,6 +10,8 @@ import {
   getDifficultyLabel,
 } from "@/components/learn/difficulty-guide";
 import { ItemStatusBadge } from "@/components/learn/item-status-badge";
+import { VideoPreparation } from "@/components/learn/video-preparation";
+import { getVideoLessons } from "@/content/video-lessons";
 import { findCourse, findUnit, COURSES, itemSlug } from "@/content/courses";
 import { cn } from "@/lib/utils";
 import type { Item } from "@/lib/content/types";
@@ -85,6 +87,15 @@ export default async function UnitPage({
         )}
       </header>
 
+      <VideoPreparation
+        key={`${courseSlug}/${unitSlug}`}
+        lessons={getVideoLessons(courseSlug, unitSlug)}
+        topics={unit.topics.map(({ topicCode, title }) => ({
+          topicCode,
+          title,
+        }))}
+      />
+
       {(() => {
         const mcCount = unit.topics
           .flatMap((t) => t.items)
@@ -122,7 +133,11 @@ export default async function UnitPage({
           const itemId = itemSlug;
 
           return (
-            <section key={topic.topicCode} className="mt-12">
+            <section
+              key={topic.topicCode}
+              id={`topic-${topic.topicCode}`}
+              className="mt-12 scroll-mt-28"
+            >
               <header className="mb-6">
                 <p className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
                   Topic {topic.topicCode}
