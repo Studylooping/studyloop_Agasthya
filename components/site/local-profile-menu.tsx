@@ -7,13 +7,8 @@ import { cn } from "@/lib/utils";
 import { useLocalProfile } from "@/lib/local-memory";
 
 export function LocalProfileMenu() {
-  const {
-    activeProfile,
-    createProfile,
-    hydrated,
-    profiles,
-    setActiveProfile,
-  } = useLocalProfile();
+  const { activeProfile, createProfile, hydrated, profiles, setActiveProfile } =
+    useLocalProfile();
   const [open, setOpen] = React.useState(false);
   const [nickname, setNickname] = React.useState("");
   const [error, setError] = React.useState<string | null>(null);

@@ -35,6 +35,9 @@ interface Props {
   unitCode: string;
   unitTitle: string;
   items: McSingleItem[];
+  sessionId?: string;
+  mode?: "learn" | "independent";
+  onConfigure?: () => void;
 }
 
 interface AnswerRecord {
@@ -69,6 +72,9 @@ export function PracticeSession({
   unitCode,
   unitTitle,
   items,
+  sessionId = "all",
+  mode = "learn",
+  onConfigure,
 }: Props) {
   const total = items.length;
   const [index, setIndex] = React.useState(0);
@@ -101,9 +107,9 @@ export function PracticeSession({
       makeLocalStorageKey(
         "practice-session",
         profileStorageId,
-        `${courseSlug}.${unitSlug}`,
+        `${courseSlug}.${unitSlug}.${sessionId}`,
       ),
-    [courseSlug, profileStorageId, unitSlug],
+    [courseSlug, profileStorageId, unitSlug, sessionId],
   );
 
   const result =
@@ -270,10 +276,11 @@ export function PracticeSession({
           <Button variant="outline" asChild>
             <Link href={unitHref}>Back to unit</Link>
           </Button>
+          {onConfigure && <Button variant="outline" onClick={onConfigure}>Choose another set</Button>}
         </div>
 
         <p className="mt-8 text-center text-xs text-muted-foreground">
-          Want free-response practice? Open the FRQ items on the{" "}
+          For written-answer practice, open the short answers, long answers or case studies on the{" "}
           <Link href={unitHref} className="underline underline-offset-4">
             unit page
           </Link>
@@ -384,7 +391,7 @@ export function PracticeSession({
                   <span className="font-semibold text-foreground">
                     {displayLetter}.
                   </span>
-                  <MixedMath text={choice.text} className="flex-1" />
+                  <MixedMath text={choice.text} className="min-w-0 flex-1" />
                   {submitted && isCorrectChoice && (
                     <CheckCircle2 className="h-5 w-5 shrink-0 text-success" />
                   )}
@@ -397,7 +404,7 @@ export function PracticeSession({
           </fieldset>
 
           {/* Hint ladder — quiet until invoked */}
-          {!submitted && (
+          {!submitted && mode === "learn" && current.hintLadder.length > 0 && (
             <div>
               {hintsShown === 0 ? (
                 <button
@@ -475,7 +482,7 @@ export function PracticeSession({
                         <span className="shrink-0 font-semibold text-muted-foreground">
                           {step.step}.
                         </span>
-                        <div className="space-y-1.5">
+                        <div className="min-w-0 space-y-1.5">
                           <p>
                             <MixedMath text={step.explanation} />
                           </p>

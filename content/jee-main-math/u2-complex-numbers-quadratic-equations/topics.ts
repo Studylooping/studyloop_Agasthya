@@ -85,10 +85,10 @@ function makeMc(meta: TopicMeta, seed: McSeed, index: number): McSingleItem {
       isCorrect,
       rationaleIfWrong: isCorrect
         ? null
-        : seed.rationales[letter] ?? fallbackWrongRationale(seed, letter),
+        : (seed.rationales[letter] ?? fallbackWrongRationale(seed, letter)),
       misconceptionTag: isCorrect
         ? null
-        : seed.misconceptionTags?.[letter] ?? "jee_unit2_algebra_trap",
+        : (seed.misconceptionTags?.[letter] ?? "jee_unit2_algebra_trap"),
     };
   }) as McChoice[];
 
@@ -115,7 +115,11 @@ function makeMc(meta: TopicMeta, seed: McSeed, index: number): McSingleItem {
   };
 }
 
-function makeNumeric(meta: TopicMeta, seed: NumericSeed, index: number): NumericItem {
+function makeNumeric(
+  meta: TopicMeta,
+  seed: NumericSeed,
+  index: number,
+): NumericItem {
   return {
     contentId: `${COURSE}.u2.t${topicSlug(meta.topicCode)}.num.${String(index + 1).padStart(3, "0")}`,
     kind: "numeric",
@@ -360,7 +364,7 @@ const topicSeeds: readonly TopicSeed[] = [
         correctLetter: "A",
         rationales: {
           B: "That would make the quotient generally real, not purely imaginary.",
-          C: "The real axis is not the full angle-$90^\circ$ locus.",
+          C: "The real axis is not the full angle-$90^\\circ$ locus.",
           D: "This centers the circle at $2$ instead of using the segment endpoints $-2$ and $2$.",
         },
         misconceptionTags: {
@@ -408,7 +412,12 @@ const topicSeeds: readonly TopicSeed[] = [
         questionLatex: L`For real $a$, $z=\dfrac{a+i}{1+ai}$ always satisfies`,
         difficulty: 3,
         skillTags: ["unit_modulus", "parameter_complex_number"],
-        choices: [L`$|z|=1$`, L`$\operatorname{Re}z=0$`, L`$\operatorname{Im}z=0$`, L`$z=1$`],
+        choices: [
+          L`$|z|=1$`,
+          L`$\operatorname{Re}z=0$`,
+          L`$\operatorname{Im}z=0$`,
+          L`$z=1$`,
+        ],
         correctLetter: "A",
         rationales: {
           B: "The quotient is not always purely imaginary; for $a=1$ it equals $1$.",
@@ -451,8 +460,7 @@ const topicSeeds: readonly TopicSeed[] = [
           "Returning $\\sqrt{50}$ instead of $50$.",
           "Multiplying real and imaginary parts separately.",
         ],
-        solution:
-          "$|z|^2=|1+2i|^2|3-i|^2=(1^2+2^2)(3^2+1^2)=5\\cdot10=50$.",
+        solution: "$|z|^2=|1+2i|^2|3-i|^2=(1^2+2^2)(3^2+1^2)=5\\cdot10=50$.",
       },
       {
         questionLatex: L`If $z+\bar z=6$ and $z\bar z=25$, find $(\operatorname{Im}z)^2$.`,
@@ -460,11 +468,7 @@ const topicSeeds: readonly TopicSeed[] = [
         skillTags: ["conjugate_conditions", "imaginary_part"],
         promptMarkdown: "Enter the value of the square.",
         numericAnswer: 16,
-        hints: [
-          "Let $z=x+iy$.",
-          "$z+\\bar z=2x$.",
-          "$z\\bar z=x^2+y^2$.",
-        ],
+        hints: ["Let $z=x+iy$.", "$z+\\bar z=2x$.", "$z\\bar z=x^2+y^2$."],
         rubric: [
           "Finds the real part from the conjugate sum.",
           "Uses the modulus squared condition to find $y^2$.",
@@ -554,7 +558,12 @@ const topicSeeds: readonly TopicSeed[] = [
         questionLatex: L`If $z$ satisfies $|z-1|=|z+i|$ and $\operatorname{Re}z>0$, then $\arg z$ is`,
         difficulty: 4,
         skillTags: ["argand_locus", "argument"],
-        choices: [L`$\dfrac{\pi}{4}$`, L`$-\dfrac{\pi}{4}$`, L`$\dfrac{3\pi}{4}$`, L`$-\dfrac{3\pi}{4}$`],
+        choices: [
+          L`$\dfrac{\pi}{4}$`,
+          L`$-\dfrac{\pi}{4}$`,
+          L`$\dfrac{3\pi}{4}$`,
+          L`$-\dfrac{3\pi}{4}$`,
+        ],
         correctLetter: "B",
         rationales: {
           A: "This uses the line $y=x$, but the perpendicular bisector here is $y=-x$.",
@@ -606,7 +615,12 @@ const topicSeeds: readonly TopicSeed[] = [
         questionLatex: L`The locus $|z-2|+|z+2|=6$ is an ellipse whose eccentricity is`,
         difficulty: 4,
         skillTags: ["ellipse_locus", "complex_geometry"],
-        choices: [L`$\dfrac13$`, L`$\dfrac12$`, L`$\dfrac23$`, L`$\dfrac{\sqrt5}{3}$`],
+        choices: [
+          L`$\dfrac13$`,
+          L`$\dfrac12$`,
+          L`$\dfrac23$`,
+          L`$\dfrac{\sqrt5}{3}$`,
+        ],
         correctLetter: "C",
         rationales: {
           A: "This uses $c=1$ instead of the focus distance $c=2$.",
@@ -632,7 +646,12 @@ const topicSeeds: readonly TopicSeed[] = [
         questionLatex: L`If $|z|=1$ and $z\ne-1$, then $w=\dfrac{1-z}{1+z}$ is always`,
         difficulty: 4,
         skillTags: ["unit_circle_transform", "purely_imaginary"],
-        choices: [L`real`, L`purely imaginary`, L`of modulus $1$`, L`equal to $z$`],
+        choices: [
+          L`real`,
+          L`purely imaginary`,
+          L`of modulus $1$`,
+          L`equal to $z$`,
+        ],
         correctLetter: "B",
         rationales: {
           A: "The real part cancels for unit-modulus $z$; it is not generally real.",
@@ -677,7 +696,7 @@ const topicSeeds: readonly TopicSeed[] = [
         },
         hints: [
           "The quotient compares the directions of $z-1$ and $z+1$.",
-          "The angle subtended by the segment from $-1$ to $1$ is $90^\circ$.",
+          "The angle subtended by the segment from $-1$ to $1$ is $90^\\circ$.",
           "Test $z=i$ to choose the correct semicircle.",
         ],
         solution: solution(
@@ -689,7 +708,12 @@ const topicSeeds: readonly TopicSeed[] = [
         questionLatex: L`If the principal argument of $z$ is $\dfrac{3\pi}{4}$, then the principal argument of $z^2$ is`,
         difficulty: 3,
         skillTags: ["principal_argument", "powers"],
-        choices: [L`$\dfrac{3\pi}{2}$`, L`$-\dfrac{\pi}{2}$`, L`$\dfrac{\pi}{2}$`, L`$-\dfrac{3\pi}{4}$`],
+        choices: [
+          L`$\dfrac{3\pi}{2}$`,
+          L`$-\dfrac{\pi}{2}$`,
+          L`$\dfrac{\pi}{2}$`,
+          L`$-\dfrac{3\pi}{4}$`,
+        ],
         correctLetter: "B",
         rationales: {
           A: "This is the doubled angle before reducing to the principal range.",
@@ -741,7 +765,12 @@ const topicSeeds: readonly TopicSeed[] = [
         questionLatex: L`If $z=r(\cos\theta+i\sin\theta)$, $r>0$ and $\dfrac{2\pi}{3}<\theta<\pi$, then the principal argument of $\dfrac{z}{(\bar z)^2}$ is`,
         difficulty: 3,
         skillTags: ["principal_argument", "conjugate_argument", "polar_form"],
-        choices: [L`$3\theta-2\pi$`, L`$3\theta$`, L`$2\pi-3\theta$`, L`$\pi-3\theta$`],
+        choices: [
+          L`$3\theta-2\pi$`,
+          L`$3\theta$`,
+          L`$2\pi-3\theta$`,
+          L`$\pi-3\theta$`,
+        ],
         correctLetter: "A",
         rationales: {
           B: "This finds the unreduced argument but does not bring it back to the principal range.",
@@ -798,7 +827,12 @@ const topicSeeds: readonly TopicSeed[] = [
         questionLatex: L`If $z$ lies in the second quadrant and $|z|=2$, then the principal argument of $-iz$ lies in`,
         difficulty: 4,
         skillTags: ["argument_rotation", "quadrant"],
-        choices: [L`first quadrant`, L`second quadrant`, L`third quadrant`, L`fourth quadrant`],
+        choices: [
+          L`first quadrant`,
+          L`second quadrant`,
+          L`third quadrant`,
+          L`fourth quadrant`,
+        ],
         correctLetter: "A",
         rationales: {
           B: "Multiplication by $-i$ rotates by $-\\pi/2$, so the quadrant changes.",
@@ -841,8 +875,7 @@ const topicSeeds: readonly TopicSeed[] = [
           "Using the midpoint $1$ instead of $-1$.",
           "Returning a circle equation instead of the value of $x$.",
         ],
-        solution:
-          "$(x-2)^2+y^2=(x+4)^2+y^2$ gives $x=-1$.",
+        solution: "$(x-2)^2+y^2=(x+4)^2+y^2$ gives $x=-1$.",
       },
       {
         questionLatex: L`Find the number of Gaussian integers $z=x+iy$ such that $|z|=\sqrt{13}$ and $0<\arg z<\dfrac{\pi}{2}$.`,
@@ -885,8 +918,7 @@ const topicSeeds: readonly TopicSeed[] = [
           "Cubing the angle but not the modulus.",
           "Using $\\cos(2\\pi/3)$ instead of $\\cos(2\\pi)$.",
         ],
-        solution:
-          "$z^3=8(\\cos2\\pi+i\\sin2\\pi)=8$, so the real part is $8$.",
+        solution: "$z^3=8(\\cos2\\pi+i\\sin2\\pi)=8$, so the real part is $8$.",
       },
       {
         questionLatex: L`For the ellipse $|z-1|+|z+1|=4$, find $b^2$, where $b$ is the semi-minor axis.`,
@@ -918,7 +950,7 @@ const topicSeeds: readonly TopicSeed[] = [
         numericAnswer: 1,
         hints: [
           "The fixed points are $i$ and $-i$.",
-          "The angle subtended by the segment between them is $90^\circ$.",
+          "The angle subtended by the segment between them is $90^\\circ$.",
           "A right angle subtended by a segment lies on the circle with that segment as diameter.",
         ],
         rubric: [
@@ -1123,7 +1155,7 @@ const topicSeeds: readonly TopicSeed[] = [
           "Use $z+z^2=-1$.",
         ],
         solution: solution(
-          "Since $z^3=1$, $2026\equiv1$ and $2027\equiv2$ modulo $3$. Thus the expression is $z+z^2=-1$.",
+          "Since $z^3=1$, $2026\\equiv1$ and $2027\\equiv2$ modulo $3$. Thus the expression is $z+z^2=-1$.",
           L`-1`,
         ),
       },
@@ -1355,7 +1387,12 @@ const topicSeeds: readonly TopicSeed[] = [
         questionLatex: L`The equation $x^2+2(a+1)x+9a-5=0$ has equal roots when`,
         difficulty: 4,
         skillTags: ["equal_roots", "parameter_quadratic"],
-        choices: [L`$a=1$ only`, L`$a=6$ only`, L`$a=1$ or $6$`, L`$a=-1$ or $5$`],
+        choices: [
+          L`$a=1$ only`,
+          L`$a=6$ only`,
+          L`$a=1$ or $6$`,
+          L`$a=-1$ or $5$`,
+        ],
         correctLetter: "C",
         rationales: {
           A: "This keeps only one zero of the discriminant factorization.",
@@ -1407,7 +1444,12 @@ const topicSeeds: readonly TopicSeed[] = [
         questionLatex: L`For real $k$, the equation $(k+1)x^2-2(k-1)x+k+1=0$ has real reciprocal roots when`,
         difficulty: 5,
         skillTags: ["reciprocal_roots", "discriminant_parameter"],
-        choices: [L`$k\le0,\ k\ne-1$`, L`$k<0$ only`, L`$k\ge0$`, L`$k=-1$ only`],
+        choices: [
+          L`$k\le0,\ k\ne-1$`,
+          L`$k<0$ only`,
+          L`$k\ge0$`,
+          L`$k=-1$ only`,
+        ],
         correctLetter: "A",
         rationales: {
           B: "This wrongly excludes $k=0$, which gives real reciprocal roots.",
@@ -1537,7 +1579,12 @@ const topicSeeds: readonly TopicSeed[] = [
         questionLatex: L`If $\alpha,\beta$ are roots of $x^2-3x+1=0$, then the equation whose roots are $\alpha/\beta$ and $\beta/\alpha$ is`,
         difficulty: 5,
         skillTags: ["transformed_roots", "vieta"],
-        choices: [L`$x^2-7x+1=0$`, L`$x^2+7x+1=0$`, L`$x^2-5x+1=0$`, L`$x^2-7x-1=0$`],
+        choices: [
+          L`$x^2-7x+1=0$`,
+          L`$x^2+7x+1=0$`,
+          L`$x^2-5x+1=0$`,
+          L`$x^2-7x-1=0$`,
+        ],
         correctLetter: "A",
         rationales: {
           B: "The transformed-root sum is positive $7$, so the coefficient of $x$ is $-7$.",
@@ -1563,7 +1610,12 @@ const topicSeeds: readonly TopicSeed[] = [
         questionLatex: L`For which values of $p$ can $x^2+px+12=0$ have both roots as positive integers?`,
         difficulty: 4,
         skillTags: ["integer_roots", "vieta"],
-        choices: [L`$p\in\{-13,-8,-7\}$`, L`$p\in\{7,8,13\}$`, L`$p\in\{-12,-6,-4\}$`, L`$p=-7$ only`],
+        choices: [
+          L`$p\in\{-13,-8,-7\}$`,
+          L`$p\in\{7,8,13\}$`,
+          L`$p\in\{-12,-6,-4\}$`,
+          L`$p=-7$ only`,
+        ],
         correctLetter: "A",
         rationales: {
           B: "If the roots are positive, their sum is positive, so $p=-(\\text{sum})$ is negative.",
@@ -1788,7 +1840,12 @@ const topicSeeds: readonly TopicSeed[] = [
         questionLatex: L`For a complex number $z$, the quadratic $x^2-2\operatorname{Re}(z)x+|z|^2=0$ has equal roots if and only if`,
         difficulty: 5,
         skillTags: ["complex_quadratic_bridge", "discriminant"],
-        choices: [L`$z$ is real`, L`$z$ is purely imaginary`, L`$|z|=1$`, L`$\operatorname{Re}(z)=0$`],
+        choices: [
+          L`$z$ is real`,
+          L`$z$ is purely imaginary`,
+          L`$|z|=1$`,
+          L`$\operatorname{Re}(z)=0$`,
+        ],
         correctLetter: "A",
         rationales: {
           B: "A nonzero purely imaginary $z$ gives negative discriminant, not equal real roots.",
@@ -1857,16 +1914,18 @@ const topicSeeds: readonly TopicSeed[] = [
           "For the quadratic, $\\alpha+\\beta=-1$ and $\\alpha\\beta=1$.",
           "Do not take modulus unless asked.",
         ],
-        solution: solution(
-          "$(\\alpha-\\beta)^2=(-1)^2-4(1)=-3$.",
-          L`-3`,
-        ),
+        solution: solution("$(\\alpha-\\beta)^2=(-1)^2-4(1)=-3$.", L`-3`),
       },
       {
         questionLatex: L`The monic quadratic with real coefficients having $3-2i$ as one root is`,
         difficulty: 3,
         skillTags: ["conjugate_roots", "quadratic_formation"],
-        choices: [L`$x^2-6x+13=0$`, L`$x^2+6x+13=0$`, L`$x^2-3x+13=0$`, L`$x^2-6x-13=0$`],
+        choices: [
+          L`$x^2-6x+13=0$`,
+          L`$x^2+6x+13=0$`,
+          L`$x^2-3x+13=0$`,
+          L`$x^2-6x-13=0$`,
+        ],
         correctLetter: "A",
         rationales: {
           B: "The root sum is $6$, so the coefficient of $x$ is $-6$.",
@@ -2023,10 +2082,7 @@ const topicSeeds: readonly TopicSeed[] = [
           "Use $\\alpha^2+\\beta^2=(\\alpha+\\beta)^2-2\\alpha\\beta$.",
           "Do not solve the roots unless necessary.",
         ],
-        rubric: [
-          "Applies Vieta correctly.",
-          "Uses the square-sum identity.",
-        ],
+        rubric: ["Applies Vieta correctly.", "Uses the square-sum identity."],
         commonErrors: [
           "Using $+2\\alpha\\beta$ instead of $-2\\alpha\\beta$.",
           "Assuming a square sum must be positive over complex roots.",

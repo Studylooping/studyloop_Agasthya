@@ -12,7 +12,7 @@ import type {
 
 const COURSE = "calc-ab";
 const UNIT = "u3-comp-implicit";
-const VERSION = "0.4.0";
+const VERSION = "0.4.1";
 const REVIEW_STATUS = "human_review_required" as const;
 const SOURCE_TYPE = "original_ai_assisted_question" as const;
 const LETTERS = ["A", "B", "C", "D"] as const;
@@ -78,11 +78,12 @@ function makeMc(meta: TopicMeta, seed: McSeed, index: number): McSingleItem {
       isCorrect,
       rationaleIfWrong: isCorrect
         ? null
-        : seed.rationales?.[letter] ??
-          "This answer comes from using an incomplete derivative rule or evaluating at the wrong input.",
+        : (seed.rationales?.[letter] ??
+          "This answer comes from using an incomplete derivative rule or evaluating at the wrong input."),
       misconceptionTag: isCorrect
         ? null
-        : seed.misconceptionTags?.[letter] ?? "incorrect_derivative_procedure",
+        : (seed.misconceptionTags?.[letter] ??
+          "incorrect_derivative_procedure"),
     };
   }) as McChoice[];
 
@@ -199,10 +200,10 @@ const topicSeeds: readonly TopicSeed[] = [
           "\\text{Let }H(x)=f(g(x)).\\text{ If }g(2)=5,\\ g'(2)=-3,\\text{ and }f'(5)=4,\\text{ then }H'(2)=",
         difficulty: 2,
         skillTags: ["chain_rule", "table_values"],
-        choices: ["$-12$", "$1$", "$4$", "$20$"],
-        correctLetter: "A",
+        choices: ["$1$", "$-12$", "$4$", "$20$"],
+        correctLetter: "B",
         rationales: {
-          B: "This adds the derivative values instead of multiplying them through the chain rule.",
+          A: "This adds the derivative values instead of multiplying them through the chain rule.",
           C: "This uses only the outer derivative.",
           D: "This multiplies $f'(5)$ by $g(2)$ instead of $g'(2)$.",
         },
@@ -220,15 +221,14 @@ const topicSeeds: readonly TopicSeed[] = [
         ],
       },
       {
-        questionLatex:
-          "\\text{If }F(x)=\\sin(2x^2-1),\\text{ then }F'(1)=",
+        questionLatex: "\\text{If }F(x)=\\sin(2x^2-1),\\text{ then }F'(1)=",
         difficulty: 3,
         skillTags: ["chain_rule", "trig_derivative", "evaluate_derivative"],
-        choices: ["$4\\cos1$", "$2\\cos1$", "$\\cos1$", "$4\\cos(2)$"],
-        correctLetter: "A",
+        choices: ["$2\\cos1$", "$\\cos1$", "$4\\cos1$", "$4\\cos(2)$"],
+        correctLetter: "C",
         rationales: {
-          B: "The derivative of $2x^2-1$ is $4x$, not 2.",
-          C: "This omits the inner derivative.",
+          A: "The derivative of $2x^2-1$ is $4x$, not 2.",
+          B: "This omits the inner derivative.",
           D: "The inner value at x=1 is 1, not 2.",
         },
         hints: [
@@ -250,16 +250,16 @@ const topicSeeds: readonly TopicSeed[] = [
         difficulty: 3,
         skillTags: ["chain_rule", "exponential_derivative", "error_analysis"],
         choices: [
-          "\\text{Use }y'=3x^2e^{x^3}",
           "\\text{Use }y'=e^{3x^2}",
           "\\text{Use }y'=x^3e^{3x^2}",
           "\\text{Use }y'=e^{x^3}",
+          "\\text{Use }y'=3x^2e^{x^3}",
         ],
-        correctLetter: "A",
+        correctLetter: "D",
         rationales: {
-          B: "This omits the inner derivative and changes the exponential input.",
-          C: "The multiplier should be the derivative of $x^3$, not $x^3$ itself.",
-          D: "This differentiates $e^u$ but omits $u'$.",
+          A: "This omits the inner derivative and changes the exponential input.",
+          B: "The multiplier should be the derivative of $x^3$, not $x^3$ itself.",
+          C: "This differentiates $e^u$ but omits $u'$.",
         },
         hints: [
           "The derivative of $e^u$ is $e^u u'$.",
@@ -275,8 +275,7 @@ const topicSeeds: readonly TopicSeed[] = [
         ],
       },
       {
-        questionLatex:
-          "\\text{Let }F(x)=x^2(1-x^3)^5.\\text{ What is }F'(-1)?",
+        questionLatex: "\\text{Let }F(x)=x^2(1-x^3)^5.\\text{ What is }F'(-1)?",
         difficulty: 4,
         skillTags: ["product_rule", "chain_rule", "evaluate_derivative"],
         choices: ["$-304$", "$-64$", "$176$", "$304$"],
@@ -306,10 +305,14 @@ const topicSeeds: readonly TopicSeed[] = [
       },
     ],
     frq: {
-      questionLatex:
-        "\\text{Let }F(x)=e^{x^2-1}\\sin(3x).",
+      questionLatex: "\\text{Let }F(x)=e^{x^2-1}\\sin(3x).",
       difficulty: 4,
-      skillTags: ["chain_rule", "product_rule", "tangent_line", "error_analysis"],
+      skillTags: [
+        "chain_rule",
+        "product_rule",
+        "tangent_line",
+        "error_analysis",
+      ],
       parts: [
         {
           letter: "a",
@@ -336,12 +339,40 @@ const topicSeeds: readonly TopicSeed[] = [
       rubric: {
         maxPoints: 6,
         criteria: [
-          { part: "a", points: 1, description: "Uses product rule with two terms." },
-          { part: "a", points: 1, description: "Correctly differentiates $e^{x^2-1}$ as $2xe^{x^2-1}$." },
-          { part: "a", points: 1, description: "Correctly differentiates $\\sin(3x)$ as $3\\cos(3x)$." },
-          { part: "b", points: 1, description: "Finds $F(0)=0$ and $F'(0)=3/e$." },
-          { part: "b", points: 1, description: "Writes the tangent line $y=\\frac3e x$ or equivalent." },
-          { part: "c", points: 1, description: "Identifies a missing term or factor from product or chain rule." },
+          {
+            part: "a",
+            points: 1,
+            description: "Uses product rule with two terms.",
+          },
+          {
+            part: "a",
+            points: 1,
+            description:
+              "Correctly differentiates $e^{x^2-1}$ as $2xe^{x^2-1}$.",
+          },
+          {
+            part: "a",
+            points: 1,
+            description:
+              "Correctly differentiates $\\sin(3x)$ as $3\\cos(3x)$.",
+          },
+          {
+            part: "b",
+            points: 1,
+            description: "Finds $F(0)=0$ and $F'(0)=3/e$.",
+          },
+          {
+            part: "b",
+            points: 1,
+            description:
+              "Writes the tangent line $y=\\frac3e x$ or equivalent.",
+          },
+          {
+            part: "c",
+            points: 1,
+            description:
+              "Identifies a missing term or factor from product or chain rule.",
+          },
         ],
       },
       commonErrors: [
@@ -352,8 +383,7 @@ const topicSeeds: readonly TopicSeed[] = [
       workedSolution: [
         {
           part: "a",
-          explanation:
-            "$F'(x)=2xe^{x^2-1}\\sin(3x)+3e^{x^2-1}\\cos(3x)$.",
+          explanation: "$F'(x)=2xe^{x^2-1}\\sin(3x)+3e^{x^2-1}\\cos(3x)$.",
         },
         {
           part: "b",
@@ -379,10 +409,10 @@ const topicSeeds: readonly TopicSeed[] = [
           "\\text{For }x^2+xy+y^2=7,\\text{ what is }\\frac{dy}{dx}\\text{ at }(1,2)?",
         difficulty: 3,
         skillTags: ["implicit_differentiation", "evaluate_derivative"],
-        choices: ["$-\\frac45$", "$-\\frac54$", "$\\frac45$", "$-4$"],
-        correctLetter: "A",
+        choices: ["$-\\frac54$", "$-\\frac45$", "$\\frac45$", "$-4$"],
+        correctLetter: "B",
         rationales: {
-          B: "This reverses the denominator and numerator after solving for $y'$.",
+          A: "This reverses the denominator and numerator after solving for $y'$.",
           C: "The sign should be negative.",
           D: "This omits the $x+2y$ denominator.",
         },
@@ -410,15 +440,15 @@ const topicSeeds: readonly TopicSeed[] = [
         difficulty: 2,
         skillTags: ["implicit_differentiation", "tangent_line"],
         choices: [
-          "$y-4=-\\frac34(x-3)$",
           "$y-4=\\frac34(x-3)$",
           "$y-3=-\\frac43(x-4)$",
+          "$y-4=-\\frac34(x-3)$",
           "$y-4=-\\frac43(x-3)$",
         ],
-        correctLetter: "A",
+        correctLetter: "C",
         rationales: {
-          B: "The slope has the wrong sign.",
-          C: "This swaps x- and y-coordinates in the point-slope form.",
+          A: "The slope has the wrong sign.",
+          B: "This swaps x- and y-coordinates in the point-slope form.",
           D: "This reverses the ratio of x and y in the slope.",
         },
         hints: [
@@ -445,16 +475,16 @@ const topicSeeds: readonly TopicSeed[] = [
         difficulty: 3,
         skillTags: ["implicit_differentiation", "chain_rule"],
         choices: [
-          "$-\\frac{2xy}{\\cos y+x^2}$",
           "$-\\frac{2x}{\\cos y+x^2}$",
           "$-\\frac{2xy}{-\\sin y+x^2}$",
           "$-\\frac{\\cos y+x^2}{2xy}$",
+          "$-\\frac{2xy}{\\cos y+x^2}$",
         ],
-        correctLetter: "A",
+        correctLetter: "D",
         rationales: {
-          B: "This omits the y factor from differentiating $x^2y$.",
-          C: "The derivative of $\\sin y$ with respect to x is $\\cos y\\,y'$.",
-          D: "This solves the equation for $y'$ upside down.",
+          A: "This omits the y factor from differentiating $x^2y$.",
+          B: "The derivative of $\\sin y$ with respect to x is $\\cos y\\,y'$.",
+          C: "This solves the equation for $y'$ upside down.",
         },
         hints: [
           "Every y-term needs a factor of $y'$ when differentiating with respect to x.",
@@ -509,10 +539,10 @@ const topicSeeds: readonly TopicSeed[] = [
           "\\text{For }xe^y+y=2,\\text{ what is }\\frac{dy}{dx}\\text{ at }(1,0)?",
         difficulty: 3,
         skillTags: ["implicit_differentiation", "exponential_derivative"],
-        choices: ["$-\\frac12$", "$-1$", "$\\frac12$", "$-2$"],
-        correctLetter: "A",
+        choices: ["$-1$", "$-\\frac12$", "$\\frac12$", "$-2$"],
+        correctLetter: "B",
         rationales: {
-          B: "This differentiates $xe^y$ without the $x e^y y'$ term.",
+          A: "This differentiates $xe^y$ without the $x e^y y'$ term.",
           C: "The sign should be negative after moving $e^y$ to the other side.",
           D: "This solves for $y'$ incorrectly.",
         },
@@ -536,10 +566,14 @@ const topicSeeds: readonly TopicSeed[] = [
       },
     ],
     frq: {
-      questionLatex:
-        "\\text{Consider the curve }x^2+2xy+3y^2=12.",
+      questionLatex: "\\text{Consider the curve }x^2+2xy+3y^2=12.",
       difficulty: 4,
-      skillTags: ["implicit_differentiation", "tangent_line", "horizontal_tangent", "vertical_tangent"],
+      skillTags: [
+        "implicit_differentiation",
+        "tangent_line",
+        "horizontal_tangent",
+        "vertical_tangent",
+      ],
       parts: [
         {
           letter: "a",
@@ -566,12 +600,37 @@ const topicSeeds: readonly TopicSeed[] = [
       rubric: {
         maxPoints: 6,
         criteria: [
-          { part: "a", points: 1, description: "Correctly differentiates all implicit terms." },
-          { part: "a", points: 1, description: "Solves for $dy/dx=-(x+y)/(x+3y)$." },
-          { part: "b", points: 1, description: "Finds slope $-1/3$ at $(0,2)$." },
-          { part: "b", points: 1, description: "Writes a correct tangent line equation." },
-          { part: "c", points: 1, description: "Sets $x+y=0$ and substitutes into the original equation." },
-          { part: "c", points: 1, description: "Finds both horizontal tangent points." },
+          {
+            part: "a",
+            points: 1,
+            description: "Correctly differentiates all implicit terms.",
+          },
+          {
+            part: "a",
+            points: 1,
+            description: "Solves for $dy/dx=-(x+y)/(x+3y)$.",
+          },
+          {
+            part: "b",
+            points: 1,
+            description: "Finds slope $-1/3$ at $(0,2)$.",
+          },
+          {
+            part: "b",
+            points: 1,
+            description: "Writes a correct tangent line equation.",
+          },
+          {
+            part: "c",
+            points: 1,
+            description:
+              "Sets $x+y=0$ and substitutes into the original equation.",
+          },
+          {
+            part: "c",
+            points: 1,
+            description: "Finds both horizontal tangent points.",
+          },
         ],
       },
       commonErrors: [
@@ -609,11 +668,11 @@ const topicSeeds: readonly TopicSeed[] = [
           "\\text{Let }g=f^{-1}.\\text{ If }f(2)=5\\text{ and }f'(2)=3,\\text{ then }g'(5)=",
         difficulty: 2,
         skillTags: ["inverse_function_derivative"],
-        choices: ["$\\frac13$", "$3$", "$\\frac15$", "$5$"],
-        correctLetter: "A",
+        choices: ["$3$", "$\\frac15$", "$\\frac13$", "$5$"],
+        correctLetter: "C",
         rationales: {
-          B: "The inverse derivative is the reciprocal of $f'$ at the corresponding input.",
-          C: "This uses the output value 5 instead of $f'(2)$.",
+          A: "The inverse derivative is the reciprocal of $f'$ at the corresponding input.",
+          B: "This uses the output value 5 instead of $f'(2)$.",
           D: "This uses $g(5)$ as if it were the derivative.",
         },
         hints: [
@@ -634,12 +693,12 @@ const topicSeeds: readonly TopicSeed[] = [
           "\\begin{array}{c|ccc}x&1&3&5\\\\\\hline f(x)&2&4&9\\\\ f'(x)&6&-2&5\\end{array}\\quad \\text{If }g=f^{-1},\\text{ then }g'(4)=",
         difficulty: 3,
         skillTags: ["inverse_function_derivative", "table_values"],
-        choices: ["$-\\frac12$", "$-2$", "$\\frac14$", "$3$"],
-        correctLetter: "A",
+        choices: ["$-2$", "$\\frac14$", "$3$", "$-\\frac12$"],
+        correctLetter: "D",
         rationales: {
-          B: "This uses $f'(3)$ instead of its reciprocal.",
-          C: "This uses the inverse input 4 as if it were a derivative value.",
-          D: "This gives $g(4)$, not $g'(4)$.",
+          A: "This uses $f'(3)$ instead of its reciprocal.",
+          B: "This uses the inverse input 4 as if it were a derivative value.",
+          C: "This gives $g(4)$, not $g'(4)$.",
         },
         hints: [
           "Find the x-value where $f(x)=4$.",
@@ -649,7 +708,8 @@ const topicSeeds: readonly TopicSeed[] = [
         solution: [
           {
             step: 1,
-            explanation: "Identify the corresponding input and take the reciprocal derivative.",
+            explanation:
+              "Identify the corresponding input and take the reciprocal derivative.",
             math: "f(3)=4\\Rightarrow g'(4)=\\frac{1}{f'(3)}=-\\frac12",
           },
         ],
@@ -690,14 +750,14 @@ const topicSeeds: readonly TopicSeed[] = [
         difficulty: 3,
         skillTags: ["inverse_function_derivative", "tangent_line"],
         choices: [
-          "$y-3=-\\frac12(x-7)$",
           "$y-7=-2(x-3)$",
+          "$y-3=-\\frac12(x-7)$",
           "$y-3=-2(x-7)$",
           "$y-7=-\\frac12(x-3)$",
         ],
-        correctLetter: "A",
+        correctLetter: "B",
         rationales: {
-          B: "This uses the original function point, not the inverse point.",
+          A: "This uses the original function point, not the inverse point.",
           C: "This uses $f'(3)$ instead of the reciprocal inverse slope.",
           D: "This swaps the inverse point coordinates.",
         },
@@ -725,15 +785,15 @@ const topicSeeds: readonly TopicSeed[] = [
         difficulty: 3,
         skillTags: ["inverse_function_derivative", "conceptual_reasoning"],
         choices: [
-          "\\text{It is not defined by the formula because the denominator is }0",
           "$0$",
           "$1$",
+          "\\text{It is not defined by the formula because the denominator is }0",
           "$4$",
         ],
-        correctLetter: "A",
+        correctLetter: "C",
         rationales: {
-          B: "The reciprocal of 0 is not 0.",
-          C: "There is no reason for the inverse slope to be 1.",
+          A: "The reciprocal of 0 is not 0.",
+          B: "There is no reason for the inverse slope to be 1.",
           D: "The output value 4 is not the derivative.",
         },
         hints: [
@@ -744,7 +804,8 @@ const topicSeeds: readonly TopicSeed[] = [
         solution: [
           {
             step: 1,
-            explanation: "Apply the condition for the inverse derivative formula.",
+            explanation:
+              "Apply the condition for the inverse derivative formula.",
             math: "(f^{-1})'(4)=\\frac1{f'(1)}=\\frac10\\text{, which is undefined}",
           },
         ],
@@ -754,7 +815,12 @@ const topicSeeds: readonly TopicSeed[] = [
       questionLatex:
         "\\begin{array}{c|cccc}x&0&1&2&3\\\\\\hline f(x)&1&4&5&9\\\\ f'(x)&2&3&4&5\\end{array}\\quad \\text{Let }g=f^{-1}.",
       difficulty: 4,
-      skillTags: ["inverse_function_derivative", "chain_rule", "tangent_line", "table_values"],
+      skillTags: [
+        "inverse_function_derivative",
+        "chain_rule",
+        "tangent_line",
+        "table_values",
+      ],
       parts: [
         {
           letter: "a",
@@ -782,10 +848,22 @@ const topicSeeds: readonly TopicSeed[] = [
         criteria: [
           { part: "a", points: 1, description: "Identifies that $f(2)=5$." },
           { part: "a", points: 1, description: "Computes $g'(5)=1/4$." },
-          { part: "b", points: 1, description: "Applies chain rule to $g(x^2+1)$." },
+          {
+            part: "b",
+            points: 1,
+            description: "Applies chain rule to $g(x^2+1)$.",
+          },
           { part: "b", points: 1, description: "Finds $H'(2)=1$." },
-          { part: "c", points: 1, description: "Uses point $(5,2)$ and slope $1/4$." },
-          { part: "c", points: 1, description: "Writes a correct tangent line equation." },
+          {
+            part: "c",
+            points: 1,
+            description: "Uses point $(5,2)$ and slope $1/4$.",
+          },
+          {
+            part: "c",
+            points: 1,
+            description: "Writes a correct tangent line equation.",
+          },
         ],
       },
       commonErrors: [
@@ -796,8 +874,7 @@ const topicSeeds: readonly TopicSeed[] = [
       workedSolution: [
         {
           part: "a",
-          explanation:
-            "Since $f(2)=5$, $g'(5)=\\frac1{f'(2)}=\\frac14$.",
+          explanation: "Since $f(2)=5$, $g'(5)=\\frac1{f'(2)}=\\frac14$.",
         },
         {
           part: "b",
@@ -819,16 +896,15 @@ const topicSeeds: readonly TopicSeed[] = [
       "Using inverse trigonometric derivative rules in direct, chain, product, and tangent-line contexts",
     mc: [
       {
-        questionLatex:
-          "\\text{If }f(x)=\\arctan(3x),\\text{ then }f'(1)=",
+        questionLatex: "\\text{If }f(x)=\\arctan(3x),\\text{ then }f'(1)=",
         difficulty: 3,
         skillTags: ["inverse_trig_derivatives", "chain_rule"],
-        choices: ["$\\frac3{10}$", "$\\frac1{10}$", "$\\frac34$", "$3$"],
-        correctLetter: "A",
+        choices: ["$\\frac1{10}$", "$\\frac34$", "$3$", "$\\frac3{10}$"],
+        correctLetter: "D",
         rationales: {
-          B: "This omits the derivative of the inside function $3x$.",
-          C: "This uses $1+3$ instead of $1+(3x)^2$ at x=1.",
-          D: "This omits the denominator from the arctangent derivative.",
+          A: "This omits the derivative of the inside function $3x$.",
+          B: "This uses $1+3$ instead of $1+(3x)^2$ at x=1.",
+          C: "This omits the denominator from the arctangent derivative.",
         },
         hints: [
           "$\\frac{d}{dx}\\arctan u=\\frac{u'}{1+u^2}$.",
@@ -844,8 +920,7 @@ const topicSeeds: readonly TopicSeed[] = [
         ],
       },
       {
-        questionLatex:
-          "\\frac{d}{dx}\\left[\\arcsin(x^2)\\right]=",
+        questionLatex: "\\frac{d}{dx}\\left[\\arcsin(x^2)\\right]=",
         difficulty: 3,
         skillTags: ["inverse_trig_derivatives", "chain_rule"],
         choices: [
@@ -879,14 +954,14 @@ const topicSeeds: readonly TopicSeed[] = [
         difficulty: 3,
         skillTags: ["inverse_trig_derivatives", "tangent_line"],
         choices: [
-          "$y-\\frac\\pi6=\\frac2{\\sqrt3}\\left(x-\\frac12\\right)$",
           "$y-\\frac\\pi6=\\frac{\\sqrt3}{2}\\left(x-\\frac12\\right)$",
+          "$y-\\frac\\pi6=\\frac2{\\sqrt3}\\left(x-\\frac12\\right)$",
           "$y-\\frac12=\\frac2{\\sqrt3}\\left(x-\\frac\\pi6\\right)$",
           "$y-\\frac\\pi3=\\frac2{\\sqrt3}\\left(x-\\frac12\\right)$",
         ],
-        correctLetter: "A",
+        correctLetter: "B",
         rationales: {
-          B: "This uses the reciprocal of the correct derivative value.",
+          A: "This uses the reciprocal of the correct derivative value.",
           C: "This swaps the x-value and y-value of the point.",
           D: "The value $\\arcsin(1/2)$ is $\\pi/6$, not $\\pi/3$.",
         },
@@ -909,20 +984,23 @@ const topicSeeds: readonly TopicSeed[] = [
         ],
       },
       {
-        questionLatex:
-          "\\text{If }F(x)=x\\arctan x,\\text{ then }F'(1)=",
+        questionLatex: "\\text{If }F(x)=x\\arctan x,\\text{ then }F'(1)=",
         difficulty: 3,
-        skillTags: ["inverse_trig_derivatives", "product_rule", "evaluate_derivative"],
+        skillTags: [
+          "inverse_trig_derivatives",
+          "product_rule",
+          "evaluate_derivative",
+        ],
         choices: [
-          "$\\frac\\pi4+\\frac12$",
           "$\\frac\\pi4+1$",
           "$\\frac12$",
+          "$\\frac\\pi4+\\frac12$",
           "$\\frac\\pi2$",
         ],
-        correctLetter: "A",
+        correctLetter: "C",
         rationales: {
-          B: "This uses the derivative of arctangent as 1 instead of $1/(1+x^2)$ at x=1.",
-          C: "This omits the derivative of the x factor.",
+          A: "This uses the derivative of arctangent as 1 instead of $1/(1+x^2)$ at x=1.",
+          B: "This omits the derivative of the x factor.",
           D: "This does not apply the product rule.",
         },
         hints: [
@@ -942,13 +1020,22 @@ const topicSeeds: readonly TopicSeed[] = [
         questionLatex:
           "\\text{If }g(x)=\\arccos\\left(\\frac{x}{2}\\right),\\text{ then }g'(1)=",
         difficulty: 3,
-        skillTags: ["inverse_trig_derivatives", "chain_rule", "evaluate_derivative"],
-        choices: ["$-\\frac1{\\sqrt3}$", "$\\frac1{\\sqrt3}$", "$-\\frac2{\\sqrt3}$", "$-\\frac12$"],
-        correctLetter: "A",
+        skillTags: [
+          "inverse_trig_derivatives",
+          "chain_rule",
+          "evaluate_derivative",
+        ],
+        choices: [
+          "$\\frac1{\\sqrt3}$",
+          "$-\\frac2{\\sqrt3}$",
+          "$-\\frac12$",
+          "$-\\frac1{\\sqrt3}$",
+        ],
+        correctLetter: "D",
         rationales: {
-          B: "The derivative of arccosine is negative.",
-          C: "This misses the inner derivative factor of $1/2$.",
-          D: "This omits the square-root denominator.",
+          A: "The derivative of arccosine is negative.",
+          B: "This misses the inner derivative factor of $1/2$.",
+          C: "This omits the square-root denominator.",
         },
         hints: [
           "$\\frac{d}{dx}\\arccos u=-\\frac{u'}{\\sqrt{1-u^2}}$.",
@@ -994,11 +1081,31 @@ const topicSeeds: readonly TopicSeed[] = [
       rubric: {
         maxPoints: 6,
         criteria: [
-          { part: "a", points: 1, description: "Correctly differentiates $\\arctan(x^2)$." },
-          { part: "a", points: 1, description: "Correctly differentiates $\\arcsin(x/2)$." },
-          { part: "a", points: 1, description: "Combines terms into a valid expression for $f'(x)$." },
-          { part: "b", points: 1, description: "Finds $f(0)=0$ and $f'(0)=1/2$." },
-          { part: "b", points: 1, description: "Writes the tangent line $y=x/2$." },
+          {
+            part: "a",
+            points: 1,
+            description: "Correctly differentiates $\\arctan(x^2)$.",
+          },
+          {
+            part: "a",
+            points: 1,
+            description: "Correctly differentiates $\\arcsin(x/2)$.",
+          },
+          {
+            part: "a",
+            points: 1,
+            description: "Combines terms into a valid expression for $f'(x)$.",
+          },
+          {
+            part: "b",
+            points: 1,
+            description: "Finds $f(0)=0$ and $f'(0)=1/2$.",
+          },
+          {
+            part: "b",
+            points: 1,
+            description: "Writes the tangent line $y=x/2$.",
+          },
           { part: "c", points: 1, description: "Finds $f'(1)=1+1/\\sqrt3$." },
         ],
       },
@@ -1010,8 +1117,7 @@ const topicSeeds: readonly TopicSeed[] = [
       workedSolution: [
         {
           part: "a",
-          explanation:
-            "$f'(x)=\\frac{2x}{1+x^4}+\\frac{1}{\\sqrt{4-x^2}}$.",
+          explanation: "$f'(x)=\\frac{2x}{1+x^4}+\\frac{1}{\\sqrt{4-x^2}}$.",
         },
         {
           part: "b",
@@ -1033,10 +1139,14 @@ const topicSeeds: readonly TopicSeed[] = [
       "Choosing and combining product, quotient, chain, implicit, and inverse-function derivative procedures",
     mc: [
       {
-        questionLatex:
-          "\\frac{d}{dx}\\left(e^{x^2}\\ln x\\right)=",
+        questionLatex: "\\frac{d}{dx}\\left(e^{x^2}\\ln x\\right)=",
         difficulty: 3,
-        skillTags: ["selecting_derivative_procedures", "product_rule", "chain_rule", "log_derivative"],
+        skillTags: [
+          "selecting_derivative_procedures",
+          "product_rule",
+          "chain_rule",
+          "log_derivative",
+        ],
         choices: [
           "$2xe^{x^2}\\ln x+\\frac{e^{x^2}}{x}$",
           "$e^{x^2}\\ln x+\\frac1x$",
@@ -1066,16 +1176,20 @@ const topicSeeds: readonly TopicSeed[] = [
         questionLatex:
           "\\text{For }y=\\frac{\\sin(x^2)}{x+1},\\text{ which setup correctly begins the derivative?}",
         difficulty: 3,
-        skillTags: ["selecting_derivative_procedures", "quotient_rule", "chain_rule"],
+        skillTags: [
+          "selecting_derivative_procedures",
+          "quotient_rule",
+          "chain_rule",
+        ],
         choices: [
-          "$y'=\\frac{(2x\\cos(x^2))(x+1)-\\sin(x^2)}{(x+1)^2}$",
           "$y'=\\frac{\\cos(x^2)(x+1)-\\sin(x^2)}{(x+1)^2}$",
+          "$y'=\\frac{(2x\\cos(x^2))(x+1)-\\sin(x^2)}{(x+1)^2}$",
           "$y'=\\frac{2x\\cos(x^2)}{1}$",
           "$y'=\\frac{\\sin(x^2)}{(x+1)^2}$",
         ],
-        correctLetter: "A",
+        correctLetter: "B",
         rationales: {
-          B: "This uses quotient rule but omits the chain-rule factor $2x$.",
+          A: "This uses quotient rule but omits the chain-rule factor $2x$.",
           C: "This differentiates only the numerator.",
           D: "This is not the quotient rule.",
         },
@@ -1087,7 +1201,8 @@ const topicSeeds: readonly TopicSeed[] = [
         solution: [
           {
             step: 1,
-            explanation: "Use quotient rule with chain rule in the numerator derivative.",
+            explanation:
+              "Use quotient rule with chain rule in the numerator derivative.",
             math: "y'=\\frac{(2x\\cos(x^2))(x+1)-\\sin(x^2)}{(x+1)^2}",
           },
         ],
@@ -1096,12 +1211,17 @@ const topicSeeds: readonly TopicSeed[] = [
         questionLatex:
           "\\text{Let }H(x)=\\frac{f(g(x))}{x}.\\text{ If }g(2)=3,\\ g'(2)=4,\\ f(3)=10,\\text{ and }f'(3)=-1,\\text{ then }H'(2)=",
         difficulty: 4,
-        skillTags: ["selecting_derivative_procedures", "chain_rule", "quotient_rule", "table_values"],
-        choices: ["$-\\frac92$", "$-2$", "$-7$", "$3$"],
-        correctLetter: "A",
+        skillTags: [
+          "selecting_derivative_procedures",
+          "chain_rule",
+          "quotient_rule",
+          "table_values",
+        ],
+        choices: ["$-2$", "$-7$", "$-\\frac92$", "$3$"],
+        correctLetter: "C",
         rationales: {
-          B: "This finds only the derivative of the numerator.",
-          C: "This subtracts values without dividing by $x^2$.",
+          A: "This finds only the derivative of the numerator.",
+          B: "This subtracts values without dividing by $x^2$.",
           D: "This uses $f(3)$ and $g'(2)$ with the wrong quotient-rule structure.",
         },
         hints: [
@@ -1123,21 +1243,24 @@ const topicSeeds: readonly TopicSeed[] = [
         ],
       },
       {
-        questionLatex:
-          "\\frac{d}{dx}\\left[(\\ln x)^3\\right]=",
+        questionLatex: "\\frac{d}{dx}\\left[(\\ln x)^3\\right]=",
         difficulty: 2,
-        skillTags: ["selecting_derivative_procedures", "chain_rule", "log_derivative"],
+        skillTags: [
+          "selecting_derivative_procedures",
+          "chain_rule",
+          "log_derivative",
+        ],
         choices: [
-          "$\\frac{3(\\ln x)^2}{x}$",
           "$3(\\ln x)^2$",
           "$\\frac{1}{x^3}$",
           "$\\frac{3\\ln x}{x^2}$",
+          "$\\frac{3(\\ln x)^2}{x}$",
         ],
-        correctLetter: "A",
+        correctLetter: "D",
         rationales: {
-          B: "This omits the derivative of $\\ln x$.",
-          C: "This treats $\\ln x$ as if it were x.",
-          D: "This applies an incorrect power and log combination.",
+          A: "This omits the derivative of $\\ln x$.",
+          B: "This treats $\\ln x$ as if it were x.",
+          C: "This applies an incorrect power and log combination.",
         },
         hints: [
           "The outside function is cubing.",
@@ -1147,7 +1270,8 @@ const topicSeeds: readonly TopicSeed[] = [
         solution: [
           {
             step: 1,
-            explanation: "Differentiate the outside and multiply by the inside derivative.",
+            explanation:
+              "Differentiate the outside and multiply by the inside derivative.",
             math: "3(\\ln x)^2\\cdot\\frac1x=\\frac{3(\\ln x)^2}{x}",
           },
         ],
@@ -1156,7 +1280,11 @@ const topicSeeds: readonly TopicSeed[] = [
         questionLatex:
           "\\text{To find }\\frac{dy}{dx}\\text{ from }x^2+y^2=\\sin y,\\text{ which procedures are needed?}",
         difficulty: 2,
-        skillTags: ["selecting_derivative_procedures", "implicit_differentiation", "chain_rule"],
+        skillTags: [
+          "selecting_derivative_procedures",
+          "implicit_differentiation",
+          "chain_rule",
+        ],
         choices: [
           "\\text{Implicit differentiation and chain rule}",
           "\\text{Quotient rule only}",
@@ -1184,10 +1312,14 @@ const topicSeeds: readonly TopicSeed[] = [
       },
     ],
     frq: {
-      questionLatex:
-        "\\text{Let }F(x)=\\frac{e^{x^2}\\sin x}{1+x}.",
+      questionLatex: "\\text{Let }F(x)=\\frac{e^{x^2}\\sin x}{1+x}.",
       difficulty: 4,
-      skillTags: ["selecting_derivative_procedures", "product_rule", "quotient_rule", "chain_rule"],
+      skillTags: [
+        "selecting_derivative_procedures",
+        "product_rule",
+        "quotient_rule",
+        "chain_rule",
+      ],
       parts: [
         {
           letter: "a",
@@ -1214,11 +1346,32 @@ const topicSeeds: readonly TopicSeed[] = [
       rubric: {
         maxPoints: 6,
         criteria: [
-          { part: "a", points: 1, description: "Identifies quotient rule for the whole expression." },
-          { part: "a", points: 1, description: "Identifies product rule and chain rule in the numerator." },
-          { part: "b", points: 1, description: "Correctly differentiates the numerator." },
-          { part: "b", points: 1, description: "Correctly applies quotient rule." },
-          { part: "b", points: 1, description: "Writes a complete expression for $F'(x)$." },
+          {
+            part: "a",
+            points: 1,
+            description: "Identifies quotient rule for the whole expression.",
+          },
+          {
+            part: "a",
+            points: 1,
+            description:
+              "Identifies product rule and chain rule in the numerator.",
+          },
+          {
+            part: "b",
+            points: 1,
+            description: "Correctly differentiates the numerator.",
+          },
+          {
+            part: "b",
+            points: 1,
+            description: "Correctly applies quotient rule.",
+          },
+          {
+            part: "b",
+            points: 1,
+            description: "Writes a complete expression for $F'(x)$.",
+          },
           { part: "c", points: 1, description: "Computes $F'(0)=1$." },
         ],
       },
@@ -1256,11 +1409,15 @@ const topicSeeds: readonly TopicSeed[] = [
         questionLatex:
           "\\text{If }y=\\sin(3x),\\text{ then }y''\\left(\\frac\\pi6\\right)=",
         difficulty: 2,
-        skillTags: ["higher_order_derivatives", "chain_rule", "trig_derivative"],
-        choices: ["$-9$", "$9$", "$-3$", "$0$"],
-        correctLetter: "A",
+        skillTags: [
+          "higher_order_derivatives",
+          "chain_rule",
+          "trig_derivative",
+        ],
+        choices: ["$9$", "$-9$", "$-3$", "$0$"],
+        correctLetter: "B",
         rationales: {
-          B: "The second derivative has a negative sign at this point.",
+          A: "The second derivative has a negative sign at this point.",
           C: "This omits one factor of 3 from differentiating twice.",
           D: "$\\sin(\\pi/2)$ is not 0.",
         },
@@ -1282,11 +1439,11 @@ const topicSeeds: readonly TopicSeed[] = [
           "\\text{A particle has position }s(t)=t^4-2t^3.\\text{ What is its acceleration at }t=1?",
         difficulty: 2,
         skillTags: ["higher_order_derivatives", "motion", "acceleration"],
-        choices: ["$0$", "$-2$", "$4$", "$12$"],
-        correctLetter: "A",
+        choices: ["$-2$", "$4$", "$0$", "$12$"],
+        correctLetter: "C",
         rationales: {
-          B: "This is the position value at t=1, not acceleration.",
-          C: "This is related to the first derivative term but not the second derivative value.",
+          A: "This is the position value at t=1, not acceleration.",
+          B: "This is related to the first derivative term but not the second derivative value.",
           D: "This differentiates only $t^4$ twice.",
         },
         hints: [
@@ -1303,16 +1460,19 @@ const topicSeeds: readonly TopicSeed[] = [
         ],
       },
       {
-        questionLatex:
-          "\\text{If }f(x)=e^{2x},\\text{ then }f'''(0)=",
+        questionLatex: "\\text{If }f(x)=e^{2x},\\text{ then }f'''(0)=",
         difficulty: 2,
-        skillTags: ["higher_order_derivatives", "exponential_derivative", "chain_rule"],
-        choices: ["$8$", "$4$", "$2$", "$1$"],
-        correctLetter: "A",
+        skillTags: [
+          "higher_order_derivatives",
+          "exponential_derivative",
+          "chain_rule",
+        ],
+        choices: ["$4$", "$2$", "$1$", "$8$"],
+        correctLetter: "D",
         rationales: {
-          B: "This is the second derivative value at 0.",
-          C: "This is the first derivative value at 0.",
-          D: "This is the original function value at 0.",
+          A: "This is the second derivative value at 0.",
+          B: "This is the first derivative value at 0.",
+          C: "This is the original function value at 0.",
         },
         hints: [
           "Each derivative of $e^{2x}$ brings out another factor of 2.",
@@ -1332,7 +1492,12 @@ const topicSeeds: readonly TopicSeed[] = [
           "\\text{For }x^2+y^2=25,\\text{ what is }\\frac{d^2y}{dx^2}\\text{ at }(3,4)?",
         difficulty: 4,
         skillTags: ["higher_order_derivatives", "implicit_differentiation"],
-        choices: ["$-\\frac{25}{64}$", "$-\\frac34$", "$\\frac{25}{64}$", "$-\\frac{3}{16}$"],
+        choices: [
+          "$-\\frac{25}{64}$",
+          "$-\\frac34$",
+          "$\\frac{25}{64}$",
+          "$-\\frac{3}{16}$",
+        ],
         correctLetter: "A",
         rationales: {
           B: "This is the first derivative at the point.",
@@ -1366,11 +1531,15 @@ const topicSeeds: readonly TopicSeed[] = [
         questionLatex:
           "\\text{If }f(x)=x^2\\ln x\\text{ for }x>0,\\text{ then }f''(1)=",
         difficulty: 3,
-        skillTags: ["higher_order_derivatives", "product_rule", "log_derivative"],
-        choices: ["$3$", "$2$", "$1$", "$0$"],
-        correctLetter: "A",
+        skillTags: [
+          "higher_order_derivatives",
+          "product_rule",
+          "log_derivative",
+        ],
+        choices: ["$2$", "$3$", "$1$", "$0$"],
+        correctLetter: "B",
         rationales: {
-          B: "This omits the derivative of the $x$ term after the first derivative.",
+          A: "This omits the derivative of the $x$ term after the first derivative.",
           C: "This differentiates $\\ln x$ but omits product-rule contributions.",
           D: "Although $\\ln1=0$, the second derivative is not 0.",
         },
@@ -1397,7 +1566,12 @@ const topicSeeds: readonly TopicSeed[] = [
       questionLatex:
         "\\text{A particle moves on a line with position }s(t)=e^{-t}(t^2+1)\\text{ for }t\\ge0.",
       difficulty: 4,
-      skillTags: ["higher_order_derivatives", "motion", "product_rule", "chain_rule"],
+      skillTags: [
+        "higher_order_derivatives",
+        "motion",
+        "product_rule",
+        "chain_rule",
+      ],
       parts: [
         {
           letter: "a",
@@ -1425,11 +1599,32 @@ const topicSeeds: readonly TopicSeed[] = [
         maxPoints: 6,
         criteria: [
           { part: "a", points: 1, description: "Uses product rule correctly." },
-          { part: "a", points: 1, description: "Finds $v(t)=e^{-t}(-t^2+2t-1)$ or equivalent." },
-          { part: "b", points: 1, description: "Differentiates velocity correctly." },
-          { part: "b", points: 1, description: "Finds $a(t)=e^{-t}(t-1)(t-3)$ or equivalent." },
-          { part: "c", points: 1, description: "Evaluates signs of velocity and acceleration at t=2." },
-          { part: "c", points: 1, description: "Correctly concludes speed is increasing because signs match." },
+          {
+            part: "a",
+            points: 1,
+            description: "Finds $v(t)=e^{-t}(-t^2+2t-1)$ or equivalent.",
+          },
+          {
+            part: "b",
+            points: 1,
+            description: "Differentiates velocity correctly.",
+          },
+          {
+            part: "b",
+            points: 1,
+            description: "Finds $a(t)=e^{-t}(t-1)(t-3)$ or equivalent.",
+          },
+          {
+            part: "c",
+            points: 1,
+            description: "Evaluates signs of velocity and acceleration at t=2.",
+          },
+          {
+            part: "c",
+            points: 1,
+            description:
+              "Correctly concludes speed is increasing because signs match.",
+          },
         ],
       },
       commonErrors: [

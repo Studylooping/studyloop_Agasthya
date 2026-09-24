@@ -7,7 +7,6 @@ import {
   type QuestionFeedbackContext,
 } from "@/lib/feedback";
 
-export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
 const FOUNDER_EMAIL = "hello@studyloop.in";
@@ -94,6 +93,17 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Request too large" }, { status: 413 });
   }
 
+  let raw: Partial<FeedbackSubmission>;
+  try {
+    raw = (await request.json()) as Partial<FeedbackSubmission>;
+  } catch {
+    return NextResponse.json({ error: "Invalid request" }, { status: 400 });
+  }
+
+  if (cleanText(raw.website, 200)) {
+    return NextResponse.json({ ok: true });
+  }
+
   const ip =
     request.headers.get("cf-connecting-ip") ??
     request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ??
@@ -103,18 +113,6 @@ export async function POST(request: Request) {
       { error: "Please wait before sending more feedback." },
       { status: 429 },
     );
-  }
-
-  let raw: Partial<FeedbackSubmission>;
-  try {
-    raw = (await request.json()) as Partial<FeedbackSubmission>;
-  } catch {
-    return NextResponse.json({ error: "Invalid request" }, { status: 400 });
-  }
-
-  // Quietly accept bot submissions so the honeypot is not discoverable.
-  if (cleanText(raw.website, 200)) {
-    return NextResponse.json({ ok: true });
   }
 
   const kind: FeedbackKind | null =
@@ -172,6 +170,11 @@ export async function POST(request: Request) {
     .filter((line): line is string => line !== null)
     .join("\n");
 
+  if (process.env.NODE_ENV === "development") {
+    console.info("[StudyLoop development feedback]\n" + text);
+    return NextResponse.json({ ok: true, delivery: "development-log" });
+  }
+
   const htmlRows = [
     ["Categories", categoryLabels.join(", ")],
     context ? ["Content ID", context.contentId] : null,
@@ -193,11 +196,6 @@ export async function POST(request: Request) {
     )
     .join("");
   const html = `<h1 style="font-size:20px">${escapeHtml(reportTitle)}</h1><table>${htmlRows}</table>`;
-
-  if (process.env.NODE_ENV === "development") {
-    console.info("[StudyLoop development feedback]\n" + text);
-    return NextResponse.json({ ok: true, delivery: "development-log" });
-  }
 
   try {
     const { getCloudflareContext } = await import("@opennextjs/cloudflare");

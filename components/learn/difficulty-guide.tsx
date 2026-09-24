@@ -1,4 +1,3 @@
-import { Card } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 
 export const DIFFICULTY_LEVELS = [
@@ -10,7 +9,8 @@ export const DIFFICULTY_LEVELS = [
   {
     value: 2,
     label: "Routine exam skill",
-    description: "Normal syllabus skill; usually one main rule or interpretation.",
+    description:
+      "Normal syllabus skill; usually one main rule or interpretation.",
   },
   {
     value: 3,
@@ -38,11 +38,9 @@ export function getDifficultyLabel(value: number) {
 
 export function DifficultyGuide({ className }: { className?: string }) {
   return (
-    <Card className={cn("p-5", className)}>
-      <div className="flex flex-col gap-1 sm:flex-row sm:items-baseline sm:justify-between">
-        <h2 className="text-base font-semibold tracking-tight">
-          Difficulty guide
-        </h2>
+    <details className={cn("border-y border-border py-3", className)}>
+      <summary className="cursor-pointer text-sm font-medium">Difficulty guide</summary>
+      <div className="mt-3">
         <p className="text-sm text-muted-foreground">
           The label describes the problem, not your ability.
         </p>
@@ -62,6 +60,6 @@ export function DifficultyGuide({ className }: { className?: string }) {
           </div>
         ))}
       </div>
-    </Card>
+    </details>
   );
 }

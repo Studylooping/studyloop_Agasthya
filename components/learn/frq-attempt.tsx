@@ -4,6 +4,7 @@ import * as React from "react";
 import { ScrollText, Eye } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import { HintLadder } from "@/components/learn/hint-ladder";
 import { MixedMath } from "@/components/math/math";
 import { getItemFingerprint } from "@/lib/content/item-fingerprint";
 import {
@@ -132,6 +133,8 @@ export function FrqAttempt({ item }: { item: FrqItem }) {
         ))}
       </div>
 
+      {!revealed && <HintLadder key={item.contentId} hints={item.hintLadder} />}
+
       {/* ── Response area ────────────────────────────────────────────── */}
       <div>
         <label
@@ -171,6 +174,11 @@ export function FrqAttempt({ item }: { item: FrqItem }) {
                   <p className="text-sm text-muted-foreground">
                     <MixedMath text={part.explanation} />
                   </p>
+                  {part.math ? (
+                    <div className="rounded-md bg-muted/50 p-3 text-sm">
+                      <MixedMath text={`$${part.math}$`} />
+                    </div>
+                  ) : null}
                 </div>
               ))}
             </div>

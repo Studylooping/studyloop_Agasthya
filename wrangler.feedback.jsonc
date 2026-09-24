@@ -3,6 +3,7 @@
   "name": "studyloop-feedback",
   "main": "workers/feedback.ts",
   "compatibility_date": "2026-06-27",
+  "workers_dev": true,
   "send_email": [
     {
       "name": "FEEDBACK_EMAIL",

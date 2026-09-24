@@ -14,6 +14,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { QuestionReportButton } from "@/components/feedback/question-report-button";
 import { Card } from "@/components/ui/card";
+import { ItemFigure } from "@/components/learn/item-figure";
 import { MixedMath, QuestionStem, Tex } from "@/components/math/math";
 import {
   getDisplayLetterForOriginal,
@@ -100,6 +101,7 @@ export function ReviewNotebook({ entries }: Props) {
   if (practiceIds && practiceEntry?.item.kind === "mc_single") {
     return (
       <ReviewPractice
+        key={`${profileStorageId}:${practiceEntry.contentId}`}
         entry={practiceEntry as ReviewContentEntry & { item: McSingleItem }}
         number={practiceIndex + 1}
         onNext={() => {
@@ -116,6 +118,14 @@ export function ReviewNotebook({ entries }: Props) {
         }}
         profileStorageId={profileStorageId}
         total={practiceIds.length}
+        followUp={entries.find((candidate) =>
+          candidate.item.kind === "mc_single" &&
+          candidate.item.course === practiceEntry.item.course &&
+          candidate.item.unit === practiceEntry.item.unit &&
+          candidate.item.topic === practiceEntry.item.topic &&
+          candidate.contentId !== practiceEntry.contentId &&
+          !notebook.records[candidate.contentId]
+        )}
       />
     );
   }
@@ -137,8 +147,8 @@ export function ReviewNotebook({ entries }: Props) {
       <div className="mt-8 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
         <Stat label="Needs review" value={dueEntries.length} />
         <Stat label="MCQ practice" value={dueMcEntries.length} />
-        <Stat label="FRQ review" value={dueFrqEntries.length} />
-        <Stat label="Mastered" value={masteredEntries.length} />
+        <Stat label="Written-answer review" value={dueFrqEntries.length} />
+        <Stat label="Reviewed" value={masteredEntries.length} />
       </div>
 
       <div className="mt-8 flex flex-wrap gap-3">
@@ -153,7 +163,7 @@ export function ReviewNotebook({ entries }: Props) {
           Practice MCQ errors
         </Button>
         <Button variant="outline" asChild>
-          <Link href="/calc-ab">Back to Calc AB</Link>
+          <Link href="/">Go home</Link>
         </Button>
       </div>
 
@@ -163,7 +173,7 @@ export function ReviewNotebook({ entries }: Props) {
           <Card className="mt-4 p-6">
             <p className="font-medium">No saved errors for {activeLabel}.</p>
             <p className="mt-1 text-sm text-muted-foreground">
-              Missed MCQs and unfinished FRQ rubric points will appear here.
+              Missed MCQs and unfinished written-answer rubric points will appear here.
             </p>
           </Card>
         ) : (
@@ -195,7 +205,11 @@ export function ReviewNotebook({ entries }: Props) {
 
       {masteredEntries.length > 0 && (
         <section className="mt-12">
-          <h2 className="text-2xl font-semibold tracking-tight">Mastered</h2>
+          <h2 className="text-2xl font-semibold tracking-tight">Reviewed</h2>
+          <p className="mt-2 text-sm text-muted-foreground">
+            A corrected retry or self-check is progress. Try a different problem
+            later to check your understanding independently.
+          </p>
           <div className="mt-4 grid gap-4 lg:grid-cols-2">
             {masteredEntries.slice(0, 8).map(({ entry, record }) => (
               <ReviewCard
@@ -259,7 +273,7 @@ function ReviewCard({
             {entry.topicCode}
           </p>
           <h3 className="mt-1 font-semibold tracking-tight">
-            {entry.item.kind === "frq" ? "FRQ" : "MCQ"}: {entry.topicTitle}
+            {entry.item.kind === "frq" ? "Written answer" : "MCQ"}: {entry.topicTitle}
           </h3>
         </div>
         <span
@@ -270,7 +284,7 @@ function ReviewCard({
               : "bg-warning/10 text-warning",
           )}
         >
-          {record.status === "mastered" ? "Mastered" : "Needs review"}
+          {record.status === "mastered" ? "Reviewed" : "Needs review"}
         </span>
       </div>
 
@@ -307,7 +321,7 @@ function ReviewCard({
         {onMastered && (
           <Button variant="ghost" size="sm" onClick={onMastered}>
             <CheckCircle2 className="h-4 w-4" />
-            Mark mastered
+            Mark reviewed
           </Button>
         )}
         {onReset && (
@@ -325,13 +339,14 @@ function ReviewCard({
   );
 }
 
-function ReviewPractice({
+export function ReviewPractice({
   entry,
   number,
   onNext,
   onStop,
   profileStorageId,
   total,
+  followUp,
 }: {
   entry: ReviewContentEntry & { item: McSingleItem };
   number: number;
@@ -339,6 +354,7 @@ function ReviewPractice({
   onStop: () => void;
   profileStorageId: string;
   total: number;
+  followUp?: ReviewContentEntry;
 }) {
   const [selected, setSelected] = React.useState<string | null>(null);
   const [submitted, setSubmitted] = React.useState(false);
@@ -410,6 +426,12 @@ function ReviewPractice({
               text={entry.item.questionLatex}
               className="mt-3 text-xl"
             />
+            {entry.item.figure && (
+              <ItemFigure figure={entry.item.figure} className="mt-5" />
+            )}
+            <Link href={entry.href} className="mt-3 inline-block text-sm text-primary underline">
+              Open full question
+            </Link>
           </div>
 
           <fieldset disabled={submitted} className="space-y-2.5">
@@ -447,7 +469,7 @@ function ReviewPractice({
                   <span className="font-semibold text-foreground">
                     {displayLetter}.
                   </span>
-                  <MixedMath text={choice.text} className="flex-1" />
+                  <MixedMath text={choice.text} className="min-w-0 flex-1" />
                   {submitted && isCorrectChoice && (
                     <CheckCircle2 className="h-5 w-5 shrink-0 text-success" />
                   )}
@@ -474,9 +496,9 @@ function ReviewPractice({
                 ) : (
                   <XCircle className="mt-0.5 h-5 w-5 shrink-0 text-destructive" />
                 )}
-                <div className="flex-1">
+                <div className="min-w-0 flex-1">
                   <p className="font-semibold">
-                    {result.isCorrect ? "Marked mastered" : "Still in review"}
+                    {result.isCorrect ? "Solved on retry" : "Still in review"}
                   </p>
                   {!result.isCorrect && result.studentChoiceRationale && (
                     <div className="mt-3 rounded-md bg-background/70 p-3 text-sm">
@@ -501,6 +523,11 @@ function ReviewPractice({
                       <ArrowRight className="h-4 w-4" />
                     </Button>
                   </div>
+                  {followUp && (
+                    <Link href={followUp.href} className="mt-4 inline-block text-sm text-primary underline">
+                      Try a different question on this topic
+                    </Link>
+                  )}
                 </div>
               </div>
             </Card>
@@ -517,7 +544,7 @@ function ReviewPractice({
                     <span className="shrink-0 font-semibold text-muted-foreground">
                       {step.step}.
                     </span>
-                    <div className="space-y-1.5">
+                    <div className="min-w-0 space-y-1.5">
                       <p>
                         <MixedMath text={step.explanation} />
                       </p>

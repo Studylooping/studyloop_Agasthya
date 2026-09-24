@@ -10,6 +10,7 @@ const NAV = [
   { href: "/about", label: "About" },
   { href: "/ethics", label: "Ethics" },
   { href: "/changelog", label: "Changelog" },
+  { href: "/schools", label: "For teachers" },
 ] as const;
 
 export function Header() {
@@ -56,6 +57,14 @@ export function Header() {
           <ThemeToggle />
         </div>
       </div>
+      <nav aria-label="Mobile" className="flex flex-wrap justify-center gap-x-6 gap-y-2 border-t border-border/60 px-4 py-2 text-sm md:hidden">
+        <Link href="/#subjects">Subjects</Link>
+        <Link href="/review" className="inline-flex items-center gap-1.5">
+          <BookOpenCheck className="h-4 w-4" aria-hidden="true" />
+          Review mistakes
+        </Link>
+        <Link href="/schools">For teachers</Link>
+      </nav>
     </header>
   );
 }

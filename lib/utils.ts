@@ -1,5 +1,6 @@
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
+import { SITE_ORIGIN } from "./site-origin";
 
 /**
  * Merge Tailwind class names safely.
@@ -33,12 +34,12 @@ export function formatDate(iso: string, locale: string = "en-IN"): string {
 export const SITE = {
   name: "StudyLoop",
   domain: "studyloop.in",
-  url: process.env.NEXT_PUBLIC_SITE_URL ?? "https://studyloop.in",
+  url: SITE_ORIGIN,
   feedbackEndpoint:
     process.env.NEXT_PUBLIC_FEEDBACK_ENDPOINT ??
     "https://studyloop-feedback.mute-king-ecc6.workers.dev",
   feedbackEmail: "hello@studyloop.in",
   tagline: "Free STEM practice for school, exams, and deep understanding.",
   description:
-    "Free guided STEM practice for CBSE Classes 9-12, AP, SAT, and IIT-JEE preparation. Original questions, hint ladders, deterministic grading, and a privacy-first learning loop.",
+    "Free guided AP Calculus AB and CBSE STEM practice with original questions, hint ladders, deterministic grading, and local review memory.",
 } as const;

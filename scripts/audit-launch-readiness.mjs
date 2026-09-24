@@ -10,6 +10,7 @@ import { basename, dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import katex from "katex";
 import ts from "typescript";
+import { calibrateCbsePhysicsDifficulty } from "../lib/content/difficulty-calibration.mjs";
 
 const root = dirname(dirname(fileURLToPath(import.meta.url)));
 const LETTERS = ["A", "B", "C", "D", "E"];
@@ -150,35 +151,686 @@ const unitConfigs = [
     ],
   },
   {
-    courseSlug: "jee-main-math",
-    slug: "u1-sets-relations-functions",
-    exportName: "jeeSetsRelationsFunctionsTopics",
+    courseSlug: "cbse-math-10",
+    slug: "u1-number-systems",
+    exportName: "numberSystemsXTopics",
+    sourceParts: ["content", "cbse-math-10", "u1-number-systems", "topics.ts"],
+  },
+  {
+    courseSlug: "cbse-math-10",
+    slug: "u2-algebra-x",
+    exportName: "algebraXTopics",
+    sourceParts: ["content", "cbse-math-10", "u2-algebra-x", "topics.ts"],
+  },
+  {
+    courseSlug: "cbse-math-10",
+    slug: "u3-coordinate-geometry",
+    exportName: "coordinateGeometryXTopics",
     sourceParts: [
       "content",
-      "jee-main-math",
-      "u1-sets-relations-functions",
+      "cbse-math-10",
+      "u3-coordinate-geometry",
       "topics.ts",
     ],
   },
   {
-    courseSlug: "jee-main-math",
-    slug: "u2-complex-numbers-quadratic-equations",
-    exportName: "jeeComplexQuadraticTopics",
+    courseSlug: "cbse-math-10",
+    slug: "u4-geometry",
+    exportName: "geometryXTopics",
+    sourceParts: ["content", "cbse-math-10", "u4-geometry", "topics.ts"],
+  },
+  {
+    courseSlug: "cbse-math-10",
+    slug: "u5-trigonometry",
+    exportName: "trigonometryXTopics",
+    sourceParts: ["content", "cbse-math-10", "u5-trigonometry", "topics.ts"],
+  },
+  {
+    courseSlug: "cbse-math-10",
+    slug: "u6-mensuration",
+    exportName: "mensurationXTopics",
+    sourceParts: ["content", "cbse-math-10", "u6-mensuration", "topics.ts"],
+  },
+  {
+    courseSlug: "cbse-math-9",
+    slug: "u1-number-system",
+    exportName: "numberSystemTopics",
+    sourceParts: ["content", "cbse-math-9", "u1-number-system", "topics.ts"],
+  },
+  {
+    courseSlug: "cbse-math-9",
+    slug: "u2-algebra-ix",
+    exportName: "algebraTopics",
+    sourceParts: ["content", "cbse-math-9", "u2-algebra", "topics.ts"],
+  },
+  {
+    courseSlug: "cbse-math-9",
+    slug: "u3-coordinate-geometry-ix",
+    exportName: "coordinateGeometryIxTopics",
     sourceParts: [
       "content",
-      "jee-main-math",
-      "u2-complex-numbers-quadratic-equations",
+      "cbse-math-9",
+      "u3-coordinate-geometry",
       "topics.ts",
     ],
   },
   {
-    courseSlug: "jee-main-math",
-    slug: "u3-matrices-determinants",
-    exportName: "jeeMatricesDeterminantsTopics",
+    courseSlug: "cbse-math-9",
+    slug: "u4-geometry",
+    exportName: "geometryIxTopics",
+    sourceParts: ["content", "cbse-math-9", "u4-geometry", "topics.ts"],
+  },
+  {
+    courseSlug: "cbse-math-9",
+    slug: "u5-mensuration",
+    exportName: "mensurationIxTopics",
+    sourceParts: ["content", "cbse-math-9", "u5-mensuration", "topics.ts"],
+  },
+  {
+    courseSlug: "cbse-math-9",
+    slug: "u6-statistics-probability",
+    exportName: "statisticsProbabilityIxTopics",
     sourceParts: [
       "content",
-      "jee-main-math",
-      "u3-matrices-determinants",
+      "cbse-math-9",
+      "u6-statistics-probability",
+      "topics.ts",
+    ],
+  },
+  {
+    courseSlug: "cbse-science-9",
+    slug: "u1-world-of-living",
+    exportName: "worldOfLivingTopics",
+    sourceParts: [
+      "content",
+      "cbse-science-9",
+      "u1-world-of-living",
+      "topics.ts",
+    ],
+  },
+  {
+    courseSlug: "cbse-science-9",
+    slug: "u2-matter-nature-behaviour",
+    exportName: "matterNatureBehaviourTopics",
+    sourceParts: [
+      "content",
+      "cbse-science-9",
+      "u2-matter-nature-behaviour",
+      "topics.ts",
+    ],
+  },
+  {
+    courseSlug: "cbse-science-9",
+    slug: "u3-motion-force-work-sound",
+    exportName: "motionForceWorkSoundTopics",
+    sourceParts: [
+      "content",
+      "cbse-science-9",
+      "u3-motion-force-work-sound",
+      "topics.ts",
+    ],
+  },
+  {
+    courseSlug: "cbse-science-9",
+    slug: "u4-earth-as-a-system",
+    exportName: "earthAsSystemTopics",
+    sourceParts: [
+      "content",
+      "cbse-science-9",
+      "u4-earth-as-a-system",
+      "topics.ts",
+    ],
+  },
+  {
+    courseSlug: "cbse-science-9",
+    slug: "internal-assessment-practicals",
+    exportName: "scienceIaTopics",
+    sourceParts: [
+      "content",
+      "cbse-science-9",
+      "internal-assessment-practicals",
+      "topics.ts",
+    ],
+  },
+  {
+    courseSlug: "cbse-science-10",
+    slug: "u1-chemical-substances-nature-behaviour",
+    exportName: "chemicalSubstancesNatureBehaviourTopics",
+    sourceParts: [
+      "content",
+      "cbse-science-10",
+      "u1-chemical-substances-nature-behaviour",
+      "topics.ts",
+    ],
+  },
+  {
+    courseSlug: "cbse-science-10",
+    slug: "u2-world-of-living",
+    exportName: "worldOfLivingXTopics",
+    sourceParts: [
+      "content",
+      "cbse-science-10",
+      "u2-world-of-living",
+      "topics.ts",
+    ],
+  },
+  {
+    courseSlug: "cbse-science-10",
+    slug: "u3-natural-phenomena",
+    exportName: "naturalPhenomenaXTopics",
+    sourceParts: [
+      "content",
+      "cbse-science-10",
+      "u3-natural-phenomena",
+      "topics.ts",
+    ],
+  },
+  {
+    courseSlug: "cbse-science-10",
+    slug: "u5-natural-resources",
+    exportName: "naturalResourcesXTopics",
+    sourceParts: [
+      "content",
+      "cbse-science-10",
+      "u5-natural-resources",
+      "topics.ts",
+    ],
+  },
+  {
+    courseSlug: "cbse-science-10",
+    slug: "u4-effects-of-current",
+    exportName: "effectsOfCurrentXTopics",
+    sourceParts: [
+      "content",
+      "cbse-science-10",
+      "u4-effects-of-current",
+      "topics.ts",
+    ],
+  },
+  {
+    courseSlug: "cbse-science-10",
+    slug: "formative-reinforcement",
+    exportName: "science10FormativeReinforcementTopics",
+    sourceParts: [
+      "content",
+      "cbse-science-10",
+      "formative-reinforcement",
+      "topics.ts",
+    ],
+  },
+  {
+    courseSlug: "cbse-science-10",
+    slug: "internal-assessment-practicals",
+    exportName: "science10PracticalsTopics",
+    sourceParts: [
+      "content",
+      "cbse-science-10",
+      "internal-assessment-practicals",
+      "topics.ts",
+    ],
+  },
+  {
+    courseSlug: "cbse-physics-11",
+    slug: "u1-physical-world-measurement",
+    exportName: "physicalWorldMeasurementTopics",
+    sourceParts: [
+      "content",
+      "cbse-physics-11",
+      "u1-physical-world-measurement",
+      "topics.ts",
+    ],
+  },
+  {
+    courseSlug: "cbse-physics-11",
+    slug: "u2-kinematics",
+    exportName: "kinematicsTopics",
+    sourceParts: ["content", "cbse-physics-11", "u2-kinematics", "topics.ts"],
+  },
+  {
+    courseSlug: "cbse-physics-11",
+    slug: "u3-laws-of-motion",
+    exportName: "lawsOfMotionTopics",
+    sourceParts: [
+      "content",
+      "cbse-physics-11",
+      "u3-laws-of-motion",
+      "topics.ts",
+    ],
+  },
+  {
+    courseSlug: "cbse-physics-11",
+    slug: "u4-work-energy-power",
+    exportName: "workEnergyPowerTopics",
+    sourceParts: [
+      "content",
+      "cbse-physics-11",
+      "u4-work-energy-power",
+      "topics.ts",
+    ],
+  },
+  {
+    courseSlug: "cbse-physics-11",
+    slug: "u5-system-particles-rigid-body",
+    exportName: "systemParticlesRigidBodyTopics",
+    sourceParts: [
+      "content",
+      "cbse-physics-11",
+      "u5-system-particles-rigid-body",
+      "topics.ts",
+    ],
+  },
+  {
+    courseSlug: "cbse-physics-11",
+    slug: "u6-gravitation",
+    exportName: "gravitationTopics",
+    sourceParts: ["content", "cbse-physics-11", "u6-gravitation", "topics.ts"],
+  },
+  {
+    courseSlug: "cbse-physics-11",
+    slug: "u7-properties-bulk-matter",
+    exportName: "propertiesBulkMatterTopics",
+    sourceParts: [
+      "content",
+      "cbse-physics-11",
+      "u7-properties-bulk-matter",
+      "topics.ts",
+    ],
+  },
+  {
+    courseSlug: "cbse-physics-11",
+    slug: "u8-thermodynamics",
+    exportName: "thermodynamicsTopics",
+    sourceParts: [
+      "content",
+      "cbse-physics-11",
+      "u8-thermodynamics",
+      "topics.ts",
+    ],
+  },
+  {
+    courseSlug: "cbse-physics-11",
+    slug: "u9-kinetic-theory",
+    exportName: "kineticTheoryTopics",
+    sourceParts: [
+      "content",
+      "cbse-physics-11",
+      "u9-kinetic-theory",
+      "topics.ts",
+    ],
+  },
+  {
+    courseSlug: "cbse-physics-11",
+    slug: "u10-oscillations-waves",
+    exportName: "oscillationsWavesTopics",
+    sourceParts: [
+      "content",
+      "cbse-physics-11",
+      "u10-oscillations-waves",
+      "topics.ts",
+    ],
+  },
+  {
+    courseSlug: "cbse-physics-11",
+    slug: "practicals-activities",
+    exportName: "practicalsActivitiesTopics",
+    sourceParts: [
+      "content",
+      "cbse-physics-11",
+      "practicals-activities",
+      "topics.ts",
+    ],
+  },
+  {
+    courseSlug: "cbse-physics-12",
+    slug: "u1-electrostatics",
+    exportName: "electrostaticsTopics",
+    sourceParts: [
+      "content",
+      "cbse-physics-12",
+      "u1-electrostatics",
+      "topics.ts",
+    ],
+  },
+  {
+    courseSlug: "cbse-physics-12",
+    slug: "u2-current-electricity",
+    exportName: "currentElectricityTopics",
+    sourceParts: [
+      "content",
+      "cbse-physics-12",
+      "u2-current-electricity",
+      "topics.ts",
+    ],
+  },
+  {
+    courseSlug: "cbse-physics-12",
+    slug: "u3-magnetic-effects-current-magnetism",
+    exportName: "magneticEffectsCurrentMagnetismTopics",
+    sourceParts: [
+      "content",
+      "cbse-physics-12",
+      "u3-magnetic-effects-current-magnetism",
+      "topics.ts",
+    ],
+  },
+  {
+    courseSlug: "cbse-physics-12",
+    slug: "u4-electromagnetic-induction-alternating-currents",
+    exportName: "electromagneticInductionAlternatingCurrentsTopics",
+    sourceParts: [
+      "content",
+      "cbse-physics-12",
+      "u4-electromagnetic-induction-alternating-currents",
+      "topics.ts",
+    ],
+  },
+  {
+    courseSlug: "cbse-physics-12",
+    slug: "u5-electromagnetic-waves",
+    exportName: "electromagneticWavesTopics",
+    sourceParts: [
+      "content",
+      "cbse-physics-12",
+      "u5-electromagnetic-waves",
+      "topics.ts",
+    ],
+  },
+  {
+    courseSlug: "cbse-physics-12",
+    slug: "u6-optics",
+    exportName: "opticsTopics",
+    sourceParts: ["content", "cbse-physics-12", "u6-optics", "topics.ts"],
+  },
+  {
+    courseSlug: "cbse-physics-12",
+    slug: "u7-dual-nature-radiation-matter",
+    exportName: "dualNatureRadiationMatterTopics",
+    sourceParts: [
+      "content",
+      "cbse-physics-12",
+      "u7-dual-nature-radiation-matter",
+      "topics.ts",
+    ],
+  },
+  {
+    courseSlug: "cbse-chemistry-11",
+    slug: "u1-some-basic-concepts",
+    exportName: "someBasicConceptsTopics",
+    sourceParts: [
+      "content",
+      "cbse-chemistry-11",
+      "u1-some-basic-concepts",
+      "topics.ts",
+    ],
+  },
+  {
+    courseSlug: "cbse-chemistry-11",
+    slug: "u2-structure-of-atom",
+    exportName: "structureOfAtomTopics",
+    sourceParts: [
+      "content",
+      "cbse-chemistry-11",
+      "u2-structure-of-atom",
+      "topics.ts",
+    ],
+  },
+  {
+    courseSlug: "cbse-chemistry-11",
+    slug: "u3-classification-periodicity",
+    exportName: "classificationPeriodicityTopics",
+    sourceParts: [
+      "content",
+      "cbse-chemistry-11",
+      "u3-classification-periodicity",
+      "topics.ts",
+    ],
+  },
+  {
+    courseSlug: "cbse-chemistry-11",
+    slug: "u4-chemical-bonding-molecular-structure",
+    exportName: "chemicalBondingTopics",
+    sourceParts: [
+      "content",
+      "cbse-chemistry-11",
+      "u4-chemical-bonding-molecular-structure",
+      "topics.ts",
+    ],
+  },
+  {
+    courseSlug: "cbse-chemistry-11",
+    slug: "u5-chemical-thermodynamics",
+    exportName: "chemicalThermodynamicsTopics",
+    sourceParts: [
+      "content",
+      "cbse-chemistry-11",
+      "u5-chemical-thermodynamics",
+      "topics.ts",
+    ],
+  },
+  {
+    courseSlug: "cbse-chemistry-11",
+    slug: "u6-equilibrium",
+    exportName: "equilibriumTopics",
+    sourceParts: [
+      "content",
+      "cbse-chemistry-11",
+      "u6-equilibrium",
+      "topics.ts",
+    ],
+  },
+  {
+    courseSlug: "cbse-chemistry-11",
+    slug: "u7-redox-reactions",
+    exportName: "redoxReactionsTopics",
+    sourceParts: [
+      "content",
+      "cbse-chemistry-11",
+      "u7-redox-reactions",
+      "topics.ts",
+    ],
+  },
+  {
+    courseSlug: "cbse-chemistry-11",
+    slug: "u8-organic-chemistry-basic-principles-techniques",
+    exportName: "organicChemistryBasicsTopics",
+    sourceParts: [
+      "content",
+      "cbse-chemistry-11",
+      "u8-organic-chemistry-basic-principles-techniques",
+      "topics.ts",
+    ],
+  },
+  {
+    courseSlug: "cbse-chemistry-11",
+    slug: "u9-hydrocarbons",
+    exportName: "hydrocarbonsTopics",
+    sourceParts: [
+      "content",
+      "cbse-chemistry-11",
+      "u9-hydrocarbons",
+      "topics.ts",
+    ],
+  },
+  {
+    courseSlug: "cbse-chemistry-11",
+    slug: "formative-reinforcement",
+    exportName: "chemistry11FormativeReinforcementTopics",
+    sourceParts: [
+      "content",
+      "cbse-chemistry-11",
+      "formative-reinforcement",
+      "topics.ts",
+    ],
+  },
+  {
+    courseSlug: "cbse-chemistry-12",
+    slug: "u1-solutions",
+    exportName: "solutionsTopics",
+    sourceParts: ["content", "cbse-chemistry-12", "u1-solutions", "topics.ts"],
+  },
+  {
+    courseSlug: "cbse-chemistry-12",
+    slug: "u2-electrochemistry",
+    exportName: "electrochemistryTopics",
+    sourceParts: [
+      "content",
+      "cbse-chemistry-12",
+      "u2-electrochemistry",
+      "topics.ts",
+    ],
+  },
+  {
+    courseSlug: "cbse-chemistry-12",
+    slug: "u3-chemical-kinetics",
+    exportName: "chemicalKineticsTopics",
+    sourceParts: [
+      "content",
+      "cbse-chemistry-12",
+      "u3-chemical-kinetics",
+      "topics.ts",
+    ],
+  },
+  {
+    courseSlug: "cbse-chemistry-12",
+    slug: "u4-d-and-f-block-elements",
+    exportName: "dAndFBlockElementsTopics",
+    sourceParts: [
+      "content",
+      "cbse-chemistry-12",
+      "u4-d-and-f-block-elements",
+      "topics.ts",
+    ],
+  },
+  {
+    courseSlug: "cbse-chemistry-12",
+    slug: "u5-coordination-compounds",
+    exportName: "coordinationCompoundsTopics",
+    sourceParts: [
+      "content",
+      "cbse-chemistry-12",
+      "u5-coordination-compounds",
+      "topics.ts",
+    ],
+  },
+  {
+    courseSlug: "cbse-chemistry-12",
+    slug: "u6-haloalkanes-haloarenes",
+    exportName: "haloalkanesHaloarenesTopics",
+    sourceParts: [
+      "content",
+      "cbse-chemistry-12",
+      "u6-haloalkanes-haloarenes",
+      "topics.ts",
+    ],
+  },
+  {
+    courseSlug: "cbse-chemistry-12",
+    slug: "u7-alcohols-phenols-ethers",
+    exportName: "alcoholsPhenolsEthersTopics",
+    sourceParts: [
+      "content",
+      "cbse-chemistry-12",
+      "u7-alcohols-phenols-ethers",
+      "topics.ts",
+    ],
+  },
+  {
+    courseSlug: "cbse-chemistry-12",
+    slug: "u8-aldehydes-ketones-carboxylic-acids",
+    exportName: "aldehydesKetonesCarboxylicAcidsTopics",
+    sourceParts: [
+      "content",
+      "cbse-chemistry-12",
+      "u8-aldehydes-ketones-carboxylic-acids",
+      "topics.ts",
+    ],
+  },
+  {
+    courseSlug: "cbse-chemistry-12",
+    slug: "u9-amines",
+    exportName: "aminesTopics",
+    sourceParts: ["content", "cbse-chemistry-12", "u9-amines", "topics.ts"],
+  },
+  {
+    courseSlug: "cbse-chemistry-12",
+    slug: "u10-biomolecules",
+    exportName: "biomoleculesTopics",
+    sourceParts: [
+      "content",
+      "cbse-chemistry-12",
+      "u10-biomolecules",
+      "topics.ts",
+    ],
+  },
+  {
+    courseSlug: "cbse-chemistry-12",
+    slug: "formative-reinforcement",
+    exportName: "chemistry12FormativeReinforcementTopics",
+    sourceParts: [
+      "content",
+      "cbse-chemistry-12",
+      "formative-reinforcement",
+      "topics.ts",
+    ],
+  },
+  {
+    courseSlug: "cbse-chemistry-12",
+    slug: "practicals-projects",
+    exportName: "chemistry12PracticalsProjectsTopics",
+    sourceParts: [
+      "content",
+      "cbse-chemistry-12",
+      "practicals-projects",
+      "topics.ts",
+    ],
+  },
+  {
+    courseSlug: "cbse-math-11",
+    slug: "challenge-practice",
+    exportName: "math11ChallengePracticeTopics",
+    sourceParts: [
+      "content",
+      "cbse-math-11",
+      "challenge-practice",
+      "topics.ts",
+    ],
+  },
+  {
+    courseSlug: "cbse-math-12",
+    slug: "challenge-practice",
+    exportName: "math12ChallengePracticeTopics",
+    sourceParts: [
+      "content",
+      "cbse-math-12",
+      "challenge-practice",
+      "topics.ts",
+    ],
+  },
+  {
+    courseSlug: "cbse-physics-12",
+    slug: "u8-atoms-nuclei",
+    exportName: "atomsNucleiTopics",
+    sourceParts: ["content", "cbse-physics-12", "u8-atoms-nuclei", "topics.ts"],
+  },
+  {
+    courseSlug: "cbse-physics-12",
+    slug: "u9-electronic-devices",
+    exportName: "electronicDevicesTopics",
+    sourceParts: [
+      "content",
+      "cbse-physics-12",
+      "u9-electronic-devices",
+      "topics.ts",
+    ],
+  },
+  {
+    courseSlug: "cbse-physics-12",
+    slug: "practicals-projects",
+    exportName: "physics12PracticalsProjectsTopics",
+    sourceParts: [
+      "content",
+      "cbse-physics-12",
+      "practicals-projects",
       "topics.ts",
     ],
   },
@@ -211,8 +863,62 @@ function readStagedSource(filePath) {
   }
 }
 
-function loadTopics(config) {
-  const sourcePath = join(root, ...config.sourceParts);
+function calibrateCbseChemistryDifficulty({
+  difficulty,
+  kind,
+  questionLatex,
+  responseType,
+}) {
+  const prose = questionLatex
+    .replace(/\$[^$]*\$/g, " ")
+    .replace(/\\[a-zA-Z]+/g, " ")
+    .replace(/[{}_^]/g, " ")
+    .replace(/\s+/g, " ")
+    .trim()
+    .toLowerCase();
+  const numericCount = (questionLatex.match(/\d+(?:\.\d+)?/g) ?? []).length;
+  const quantitative =
+    numericCount >= 3 ||
+    /\b(calculate|estimate|find|mass|molarity|molality|osmotic|nernst|emf|conductance|enthalpy|entropy|gibbs|equilibrium constant|solubility product|limiting|empirical formula|combustion|buffer|ph|activation energy|rate constant|half-life|balanced|balance)\b/i.test(
+      questionLatex,
+    );
+  const organicSynthesis =
+    /\b(plan|identify|distinguish|account for|explain why|justify|multi[- ]?clue|isomeric|route|sequence|suitable reactants)\b/i.test(
+      questionLatex,
+    ) &&
+    /\b(alcohol|phenol|ether|anisole|haloalkane|haloarene|aldehyde|ketone|carboxylic|amine|grignard|williamson|lucas|iodoform|dichromate|oxidation|cumene|diazonium|reimer|kolbe)\b/i.test(
+      questionLatex,
+    );
+  const highEnd = quantitative || organicSynthesis;
+
+  if (difficulty <= 3) return difficulty;
+  let calibrated = difficulty === 5 ? (highEnd ? 4 : 3) : difficulty;
+  if (responseType === "vsaq") return Math.min(calibrated, 2);
+  if (
+    kind === "mc_single" &&
+    calibrated === 4 &&
+    (/\b(which statement|which species|which reaction|which compound|which element|primarily|mainly|because|belongs to|identify|arrange|correct iupac name|molecularity|oxidation number|number of sigma|gives mainly|is respectively)\b/i.test(
+      prose,
+    ) ||
+      !highEnd)
+  ) {
+    return 3;
+  }
+  if (
+    ["saq", "case", "laq"].includes(responseType ?? "") &&
+    calibrated === 4 &&
+    !highEnd
+  ) {
+    return 3;
+  }
+  return calibrated;
+}
+
+const moduleCache = new Map();
+
+function loadSourceModule(sourcePath) {
+  if (moduleCache.has(sourcePath)) return moduleCache.get(sourcePath);
+
   const source = readStagedSource(sourcePath);
   if (source.includes("\0")) fail(sourcePath, "contains NUL bytes");
 
@@ -225,14 +931,30 @@ function loadTopics(config) {
   }).outputText;
 
   const mod = { exports: {} };
+  moduleCache.set(sourcePath, mod.exports);
+
   const requireShim = (id) => {
     if (id === "@/lib/content/types") return {};
+    if (id.includes("difficulty-calibration")) {
+      return {
+        calibrateCbseChemistryDifficulty,
+        calibrateCbsePhysicsDifficulty,
+      };
+    }
+    if (id.startsWith(".")) {
+      return loadSourceModule(join(dirname(sourcePath), `${id}.ts`));
+    }
     throw new Error(`Unexpected import while auditing launch readiness: ${id}`);
   };
 
   const runner = new Function("require", "exports", "module", output);
   runner(requireShim, mod.exports, mod);
-  return mod.exports[config.exportName];
+  return mod.exports;
+}
+
+function loadTopics(config) {
+  const sourcePath = join(root, ...config.sourceParts);
+  return loadSourceModule(sourcePath)[config.exportName];
 }
 
 function itemSlug(contentId) {

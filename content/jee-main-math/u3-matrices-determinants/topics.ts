@@ -85,10 +85,10 @@ function makeMc(meta: TopicMeta, seed: McSeed, index: number): McSingleItem {
       isCorrect,
       rationaleIfWrong: isCorrect
         ? null
-        : seed.rationales[letter] ?? fallbackWrongRationale(seed, letter),
+        : (seed.rationales[letter] ?? fallbackWrongRationale(seed, letter)),
       misconceptionTag: isCorrect
         ? null
-        : seed.misconceptionTags?.[letter] ?? "jee_unit3_matrix_trap",
+        : (seed.misconceptionTags?.[letter] ?? "jee_unit3_matrix_trap"),
     };
   }) as McChoice[];
 
@@ -115,7 +115,11 @@ function makeMc(meta: TopicMeta, seed: McSeed, index: number): McSingleItem {
   };
 }
 
-function makeNumeric(meta: TopicMeta, seed: NumericSeed, index: number): NumericItem {
+function makeNumeric(
+  meta: TopicMeta,
+  seed: NumericSeed,
+  index: number,
+): NumericItem {
   return {
     contentId: `${COURSE}.u3.t${topicSlug(meta.topicCode)}.num.${String(index + 1).padStart(3, "0")}`,
     kind: "numeric",
@@ -314,12 +318,7 @@ const topicSeeds: readonly TopicSeed[] = [
         questionLatex: L`For $A=\begin{pmatrix}0&1\\-1&0\end{pmatrix}$, $A^{2026}$ equals`,
         difficulty: 3,
         skillTags: ["matrix_powers", "periodicity"],
-        choices: [
-          L`$I$`,
-          L`$-I$`,
-          L`$A$`,
-          L`$-A$`,
-        ],
+        choices: [L`$I$`, L`$-I$`, L`$A$`, L`$-A$`],
         correctLetter: "B",
         rationales: {
           A: "This uses the period but reduces $2026$ as $0$ modulo $4$ instead of $2$.",
@@ -471,8 +470,7 @@ const topicSeeds: readonly TopicSeed[] = [
           "Using upper-right entry $8$ instead of $16$.",
           "Raising each entry independently.",
         ],
-        solution:
-          L`Since $A=I+N$ with $N^2=0$, $A^8=I+8N=\begin{pmatrix}1&16\\0&1\end{pmatrix}$. The sum of entries is $18$.`,
+        solution: L`Since $A=I+N$ with $N^2=0$, $A^8=I+8N=\begin{pmatrix}1&16\\0&1\end{pmatrix}$. The sum of entries is $18$.`,
       },
       {
         questionLatex: L`Find the number of $2\times2$ matrices with entries from $\{0,1\}$ that are symmetric and have trace $1$.`,
@@ -493,8 +491,7 @@ const topicSeeds: readonly TopicSeed[] = [
           "Choosing both off-diagonal entries independently.",
           "Forgetting one diagonal can be the $1$.",
         ],
-        solution:
-          L`The diagonal can be $(1,0)$ or $(0,1)$, and the common off-diagonal entry can be $0$ or $1$. Hence the count is $2\cdot2=4$.`,
+        solution: L`The diagonal can be $(1,0)$ or $(0,1)$, and the common off-diagonal entry can be $0$ or $1$. Hence the count is $2\cdot2=4$.`,
       },
       {
         questionLatex: L`For $A=\begin{pmatrix}2&1\\0&2\end{pmatrix}$, find the $(1,2)$ entry of $A^5$.`,
@@ -515,8 +512,7 @@ const topicSeeds: readonly TopicSeed[] = [
           "Returning $5$ from only the binomial coefficient.",
           "Using $2^5$ instead of $5\\cdot2^4$ for the off-diagonal entry.",
         ],
-        solution:
-          L`With $N=\begin{pmatrix}0&1\\0&0\end{pmatrix}$, $A=2I+N$ and $N^2=0$. Thus $A^5=32I+80N$, so the required entry is $80$.`,
+        solution: L`With $N=\begin{pmatrix}0&1\\0&0\end{pmatrix}$, $A=2I+N$ and $N^2=0$. Thus $A^5=32I+80N$, so the required entry is $80$.`,
       },
       {
         questionLatex: L`A real $2\times2$ skew-symmetric matrix $K$ has integer entries and is not the zero matrix. If $\det K\le25$, find the number of possible matrices.`,
@@ -537,8 +533,7 @@ const topicSeeds: readonly TopicSeed[] = [
           "Including the zero matrix.",
           "Counting only positive $t$.",
         ],
-        solution:
-          L`The matrix is $\begin{pmatrix}0&t\\-t&0\end{pmatrix}$ with $t\in\mathbb Z\setminus\{0\}$ and $t^2\le25$. Thus $t=\pm1,\pm2,\pm3,\pm4,\pm5$, giving $10$ matrices.`,
+        solution: L`The matrix is $\begin{pmatrix}0&t\\-t&0\end{pmatrix}$ with $t\in\mathbb Z\setminus\{0\}$ and $t^2\le25$. Thus $t=\pm1,\pm2,\pm3,\pm4,\pm5$, giving $10$ matrices.`,
       },
       {
         questionLatex: L`If $A^2=3A-2I$, and $A^5=mA+nI$, find $m+n$.`,
@@ -559,8 +554,7 @@ const topicSeeds: readonly TopicSeed[] = [
           "Substituting scalar roots directly for $A$.",
           "Stopping at $A^3$ and extrapolating linearly.",
         ],
-        solution:
-          L`Using $A^k=(2^k-1)A+(2-2^k)I$, we get $A^5=31A-30I$. Hence $m+n=31-30=1$.`,
+        solution: L`Using $A^k=(2^k-1)A+(2-2^k)I$, we get $A^5=31A-30I$. Hence $m+n=31-30=1$.`,
       },
     ],
   },
@@ -622,10 +616,7 @@ const topicSeeds: readonly TopicSeed[] = [
           "For a $3\\times3$ matrix, $\\det(2M)=2^3\\det M$.",
           "Combine both facts.",
         ],
-        solution: solution(
-          L`$\det(2A^{-1})=2^3\det(A^{-1})=8/3$.`,
-          L`\frac83`,
-        ),
+        solution: solution(L`$\det(2A^{-1})=2^3\det(A^{-1})=8/3$.`, L`\frac83`),
       },
       {
         questionLatex: L`If $A$ is a $3\times3$ matrix with $\det A=2$, then $\det(A\,\operatorname{adj}A)$ is`,
@@ -726,10 +717,7 @@ const topicSeeds: readonly TopicSeed[] = [
           "For order $3$, $\\det(2A)=2^3\\det A$.",
           "Keep the sign of $\\det A$.",
         ],
-        solution: solution(
-          L`$\det(2A)=2^3\det A=8(-3)=-24$.`,
-          L`-24`,
-        ),
+        solution: solution(L`$\det(2A)=2^3\det A=8(-3)=-24$.`, L`-24`),
       },
       {
         questionLatex: L`If $A$ is a $3\times3$ matrix with $\det A=5$, then $\det(\operatorname{adj}(\operatorname{adj}A))$ is`,
@@ -813,7 +801,12 @@ const topicSeeds: readonly TopicSeed[] = [
         questionLatex: L`If $A$ is a real $3\times3$ skew-symmetric matrix, then $\det A$ is necessarily`,
         difficulty: 4,
         skillTags: ["skew_symmetric_matrix", "determinant_transpose"],
-        choices: [L`$-1$`, L`$0$`, L`$1$`, L`$\operatorname{tr}A$ only when $A$ is diagonal`],
+        choices: [
+          L`$-1$`,
+          L`$0$`,
+          L`$1$`,
+          L`$\operatorname{tr}A$ only when $A$ is diagonal`,
+        ],
         correctLetter: "B",
         rationales: {
           A: "The determinant is forced to be zero, not a fixed negative number.",
@@ -856,8 +849,7 @@ const topicSeeds: readonly TopicSeed[] = [
           "Using the negative Vandermonde order.",
           "Squaring the differences.",
         ],
-        solution:
-          L`The determinant is $(3-1)(4-1)(4-3)=2\cdot3\cdot1=6$.`,
+        solution: L`The determinant is $(3-1)(4-1)(4-3)=2\cdot3\cdot1=6$.`,
       },
       {
         questionLatex: L`If $A$ is a $3\times3$ matrix with $\det A=-2$, find $\det(3\operatorname{adj}A)$.`,
@@ -878,8 +870,7 @@ const topicSeeds: readonly TopicSeed[] = [
           "Keeping the negative sign after squaring $\\det A$.",
           "Multiplying by $3$ instead of $27$.",
         ],
-        solution:
-          L`$\det(\operatorname{adj}A)=(-2)^2=4$, so $\det(3\operatorname{adj}A)=3^3\cdot4=108$.`,
+        solution: L`$\det(\operatorname{adj}A)=(-2)^2=4$, so $\det(3\operatorname{adj}A)=3^3\cdot4=108$.`,
       },
       {
         questionLatex: L`Find the number of integer values of $x$ for which $\begin{vmatrix}x&1&1\\1&x&1\\1&1&x\end{vmatrix}=0$.`,
@@ -900,8 +891,7 @@ const topicSeeds: readonly TopicSeed[] = [
           "Counting $x=1$ twice because it is a repeated root.",
           "Missing $x=-2$.",
         ],
-        solution:
-          L`The determinant is $(x-1)^2(x+2)$. Thus $x=1$ or $x=-2$, giving $2$ integer values.`,
+        solution: L`The determinant is $(x-1)^2(x+2)$. Thus $x=1$ or $x=-2$, giving $2$ integer values.`,
       },
       {
         questionLatex: L`Find the sum of all real values of $k$ for which $\begin{vmatrix}k&1&0\\1&k&1\\0&1&k\end{vmatrix}=0$.`,
@@ -922,8 +912,7 @@ const topicSeeds: readonly TopicSeed[] = [
           "Missing the root $k=0$.",
           "Dropping one of the two irrational roots.",
         ],
-        solution:
-          L`The determinant is $k(k^2-1)-k=k(k^2-2)$. The real roots are $0,\sqrt2,-\sqrt2$, whose sum is $0$.`,
+        solution: L`The determinant is $k(k^2-1)-k=k(k^2-2)$. The real roots are $0,\sqrt2,-\sqrt2$, whose sum is $0$.`,
       },
       {
         questionLatex: L`Find $\begin{vmatrix}2&1&3\\0&-1&4\\1&2&0\end{vmatrix}$.`,
@@ -944,8 +933,7 @@ const topicSeeds: readonly TopicSeed[] = [
           "Using all positive signs in the expansion.",
           "Dropping the contribution from the third entry.",
         ],
-        solution:
-          L`Expanding along the first row gives $2(-8)-1(-4)+3(1)=-16+4+3=-9$.`,
+        solution: L`Expanding along the first row gives $2(-8)-1(-4)+3(1)=-16+4+3=-9$.`,
       },
     ],
   },
@@ -990,12 +978,7 @@ const topicSeeds: readonly TopicSeed[] = [
         questionLatex: L`If $\begin{pmatrix}1&2\\2&5\end{pmatrix}\begin{pmatrix}x\\y\end{pmatrix}=\begin{pmatrix}3\\7\end{pmatrix}$, then $(x,y)$ is`,
         difficulty: 3,
         skillTags: ["matrix_equation", "linear_system"],
-        choices: [
-          L`$(1,1)$`,
-          L`$(2,1)$`,
-          L`$(1,2)$`,
-          L`$(-1,2)$`,
-        ],
+        choices: [L`$(1,1)$`, L`$(2,1)$`, L`$(1,2)$`, L`$(-1,2)$`],
         correctLetter: "A",
         rationales: {
           B: "This satisfies the second equation incorrectly: $4+5\\ne7$.",
@@ -1266,8 +1249,7 @@ const topicSeeds: readonly TopicSeed[] = [
           "Forgetting the negative signs.",
           "Summing entries of $A$ instead of $A^{-1}$.",
         ],
-        solution:
-          L`$A^{-1}=\begin{pmatrix}1&-1\\-1&2\end{pmatrix}$, so the sum of entries is $1-1-1+2=1$.`,
+        solution: L`$A^{-1}=\begin{pmatrix}1&-1\\-1&2\end{pmatrix}$, so the sum of entries is $1-1-1+2=1$.`,
       },
       {
         questionLatex: L`Let $A=\begin{pmatrix}1&1\\0&1\end{pmatrix}$. If $AX=I+A$, find the sum of all entries of $X$.`,
@@ -1288,8 +1270,7 @@ const topicSeeds: readonly TopicSeed[] = [
           "Multiplying on the wrong side.",
           "Using $A^{-1}+A$ instead of $A^{-1}(I+A)$.",
         ],
-        solution:
-          L`$X=A^{-1}(I+A)=\begin{pmatrix}1&-1\\0&1\end{pmatrix}\begin{pmatrix}2&1\\0&2\end{pmatrix}=\begin{pmatrix}2&-1\\0&2\end{pmatrix}$. The entry sum is $3$.`,
+        solution: L`$X=A^{-1}(I+A)=\begin{pmatrix}1&-1\\0&1\end{pmatrix}\begin{pmatrix}2&1\\0&2\end{pmatrix}=\begin{pmatrix}2&-1\\0&2\end{pmatrix}$. The entry sum is $3$.`,
       },
       {
         questionLatex: L`If $A^2-5A+6I=0$ and $A^{-1}=pA+qI$, find $6(p+q)$.`,
@@ -1310,8 +1291,7 @@ const topicSeeds: readonly TopicSeed[] = [
           "Returning $p+q$ instead of $6(p+q)$.",
           "Reversing the signs of $p$ and $q$.",
         ],
-        solution:
-          L`Multiplying by $A^{-1}$ gives $A-5I+6A^{-1}=0$, so $A^{-1}=(-A+5I)/6$. Thus $p=-1/6$, $q=5/6$, and $6(p+q)=4$.`,
+        solution: L`Multiplying by $A^{-1}$ gives $A-5I+6A^{-1}=0$, so $A^{-1}=(-A+5I)/6$. Thus $p=-1/6$, $q=5/6$, and $6(p+q)=4$.`,
       },
       {
         questionLatex: L`Find the number of integers $k$ with $-5\le k\le5$ for which $\begin{pmatrix}k&1\\1&k\end{pmatrix}$ is invertible.`,
@@ -1332,8 +1312,7 @@ const topicSeeds: readonly TopicSeed[] = [
           "Forgetting one of $\\pm1$.",
           "Counting only positive integers.",
         ],
-        solution:
-          L`The determinant is $k^2-1$, so the matrix is singular only for $k=\pm1$. From $11$ integers in $[-5,5]$, exclude $2$, giving $9$.`,
+        solution: L`The determinant is $k^2-1$, so the matrix is singular only for $k=\pm1$. From $11$ integers in $[-5,5]$, exclude $2$, giving $9$.`,
       },
       {
         questionLatex: L`If $A$ is a $3\times3$ matrix with $\det A=2$, find $\det(\operatorname{adj}(2A))$.`,
@@ -1354,8 +1333,7 @@ const topicSeeds: readonly TopicSeed[] = [
           "Using $\\det(2A)=4$ instead of $16$.",
           "Using $\\det(\\operatorname{adj}M)=\\det M$ as if order were $2$.",
         ],
-        solution:
-          L`$\det(2A)=2^3\cdot2=16$. Therefore $\det(\operatorname{adj}(2A))=16^2=256$.`,
+        solution: L`$\det(2A)=2^3\cdot2=16$. Therefore $\det(\operatorname{adj}(2A))=16^2=256$.`,
       },
     ],
   },
@@ -1452,12 +1430,7 @@ const topicSeeds: readonly TopicSeed[] = [
         questionLatex: L`The system $x+ay=1,\ ax+y=1$ has a unique solution if and only if`,
         difficulty: 3,
         skillTags: ["two_variable_system", "determinant_condition"],
-        choices: [
-          L`$a\ne1$`,
-          L`$a\ne-1$`,
-          L`$a\ne\pm1$`,
-          L`$a=0$ only`,
-        ],
+        choices: [L`$a\ne1$`, L`$a\ne-1$`, L`$a\ne\pm1$`, L`$a=0$ only`],
         correctLetter: "C",
         rationales: {
           A: "This misses singularity at $a=-1$.",
@@ -1566,12 +1539,7 @@ const topicSeeds: readonly TopicSeed[] = [
         questionLatex: L`For $x+y+z=1,\ x+2y+3z=4,\ x+4y+pz=10$, the system has a unique solution when`,
         difficulty: 4,
         skillTags: ["linear_system_parameter", "unique_solution"],
-        choices: [
-          L`$p\ne7$`,
-          L`$p=7$`,
-          L`$p\ne6$`,
-          L`$p=6$`,
-        ],
+        choices: [L`$p\ne7$`, L`$p=7$`, L`$p\ne6$`, L`$p=6$`],
         correctLetter: "A",
         rationales: {
           B: "At $p=7$, the coefficient determinant is zero.",
@@ -1628,12 +1596,7 @@ const topicSeeds: readonly TopicSeed[] = [
         questionLatex: L`If $AX=B$ represents three linear equations in three unknowns and $A^{-1}$ exists, then $X$ equals`,
         difficulty: 3,
         skillTags: ["matrix_solution", "inverse_method"],
-        choices: [
-          L`$A^{-1}B$`,
-          L`$BA^{-1}$`,
-          L`$AB^{-1}$`,
-          L`$A^{-1}B^{-1}$`,
-        ],
+        choices: [L`$A^{-1}B$`, L`$BA^{-1}$`, L`$AB^{-1}$`, L`$A^{-1}B^{-1}$`],
         correctLetter: "A",
         rationales: {
           B: "The multiplication order is wrong; $B$ is a column matrix in this setup.",
@@ -1676,8 +1639,7 @@ const topicSeeds: readonly TopicSeed[] = [
           "Using only determinant zero without checking constants.",
           "Adding constants incorrectly.",
         ],
-        solution:
-          L`Adding the first two equations gives $2x+3y+4z=13$. Thus the third equation matches when $a=4$.`,
+        solution: L`Adding the first two equations gives $2x+3y+4z=13$. Thus the third equation matches when $a=4$.`,
       },
       {
         questionLatex: L`If $(x,y,z)$ solves $2x+y-z=6,\ x-y+2z=1,\ 3x+2y+z=13$, find $x+y-z$.`,
@@ -1698,8 +1660,7 @@ const topicSeeds: readonly TopicSeed[] = [
           "Returning $z$ only.",
           "Using a reused $(1,2,3)$ system from another item.",
         ],
-        solution:
-          L`Solving the system gives $(x,y,z)=(2,3,1)$. Hence $x+y-z=2+3-1=4$.`,
+        solution: L`Solving the system gives $(x,y,z)=(2,3,1)$. Hence $x+y-z=2+3-1=4$.`,
       },
       {
         questionLatex: L`Find the number of integers $a$ with $-3\le a\le3$ for which $x+y=1,\ ax+y=2$ has a unique solution.`,
@@ -1720,8 +1681,7 @@ const topicSeeds: readonly TopicSeed[] = [
           "Excluding $a=-1$ unnecessarily.",
           "Counting only nonnegative values.",
         ],
-        solution:
-          L`The determinant is $1-a$, so uniqueness fails only at $a=1$. There are $7$ integers from $-3$ to $3$, so the count is $6$.`,
+        solution: L`The determinant is $1-a$, so uniqueness fails only at $a=1$. There are $7$ integers from $-3$ to $3$, so the count is $6$.`,
       },
       {
         questionLatex: L`For the homogeneous system with coefficient matrix $\begin{pmatrix}1&1&1\\2&3&5\\1&4&k\end{pmatrix}$, find $k$ for which a non-trivial solution exists.`,
@@ -1742,8 +1702,7 @@ const topicSeeds: readonly TopicSeed[] = [
           "Solving the system as non-homogeneous.",
           "Using determinant nonzero as the condition.",
         ],
-        solution:
-          L`The determinant is $(3k-20)-(2k-5)+(8-3)=k-10$. Setting it to zero gives $k=10$.`,
+        solution: L`The determinant is $(3k-20)-(2k-5)+(8-3)=k-10$. Setting it to zero gives $k=10$.`,
       },
       {
         questionLatex: L`If $(x,y,z)$ solves $x+2y+z=8,\ 2x+y-z=7,\ x-y+3z=9$, find $100x+10y+z$.`,
@@ -1764,8 +1723,7 @@ const topicSeeds: readonly TopicSeed[] = [
           "Reusing the older $(1,2,3)$ solution.",
           "Encoding the variables in the wrong order.",
         ],
-        solution:
-          L`Solving gives $x=4$, $y=1$, and $z=2$. Therefore $100x+10y+z=412$.`,
+        solution: L`Solving gives $x=4$, $y=1$, and $z=2$. Therefore $100x+10y+z=412$.`,
       },
     ],
   },
@@ -1779,12 +1737,7 @@ const topicSeeds: readonly TopicSeed[] = [
         questionLatex: L`The area of the triangle with vertices $(1,2)$, $(3,4)$, and $(5,k)$ is $6$. The possible values of $k$ are`,
         difficulty: 4,
         skillTags: ["area_by_determinant", "absolute_value_parameter"],
-        choices: [
-          L`$0,12$`,
-          L`$-6,6$`,
-          L`$6,12$`,
-          L`$0,6$`,
-        ],
+        choices: [L`$0,12$`, L`$-6,6$`, L`$6,12$`, L`$0,6$`],
         correctLetter: "A",
         rationales: {
           B: "This centers the absolute value at $0$ instead of at $6$.",
@@ -1924,12 +1877,7 @@ const topicSeeds: readonly TopicSeed[] = [
         questionLatex: L`If $\begin{vmatrix}x&y&1\\2&3&1\\4&7&1\end{vmatrix}=0$, then the point $(x,y)$ lies on`,
         difficulty: 4,
         skillTags: ["collinearity_determinant", "line_equation"],
-        choices: [
-          L`$y=2x-1$`,
-          L`$y=x+1$`,
-          L`$y=3x-3$`,
-          L`$x+2y=8$`,
-        ],
+        choices: [L`$y=2x-1$`, L`$y=x+1$`, L`$y=3x-3$`, L`$x+2y=8$`],
         correctLetter: "A",
         rationales: {
           B: "This fits $(2,3)$ but not $(4,7)$.",
@@ -2024,10 +1972,7 @@ const topicSeeds: readonly TopicSeed[] = [
           "Area uses absolute value.",
           "Then divide by $2$.",
         ],
-        solution: solution(
-          L`Area $=\frac12|-18|=9$.`,
-          L`9`,
-        ),
+        solution: solution(L`Area $=\frac12|-18|=9$.`, L`9`),
       },
       {
         questionLatex: L`If $P(0,0)$, $Q(a,3)$, and $R(4,1)$ form a triangle of area $5$, then the sum of all possible values of $a$ is`,
@@ -2076,8 +2021,7 @@ const topicSeeds: readonly TopicSeed[] = [
           "Returning the area instead of twice the area.",
           "Keeping the signed determinant without absolute value.",
         ],
-        solution:
-          L`Twice the area is $|-1(0-5)+3(5-2)+4(2-0)|=|5+9+8|=22$.`,
+        solution: L`Twice the area is $|-1(0-5)+3(5-2)+4(2-0)|=|5+9+8|=22$.`,
       },
       {
         questionLatex: L`Find $a$ if $(a,1)$, $(2,3)$, and $(4,7)$ are collinear.`,
@@ -2098,8 +2042,7 @@ const topicSeeds: readonly TopicSeed[] = [
           "Using reciprocal slope.",
           "Substituting the x-coordinate as the y-coordinate.",
         ],
-        solution:
-          L`The line through $(2,3)$ and $(4,7)$ is $y-3=2(x-2)$. For $y=1$, $1-3=2(a-2)$, so $a=1$.`,
+        solution: L`The line through $(2,3)$ and $(4,7)$ is $y-3=2(x-2)$. For $y=1$, $1-3=2(a-2)$, so $a=1$.`,
       },
       {
         questionLatex: L`If $(0,0)$, $(a,4)$, and $(5,1)$ form a triangle of area $6$, find the sum of all possible values of $a$.`,
@@ -2120,8 +2063,7 @@ const topicSeeds: readonly TopicSeed[] = [
           "Taking only the positive branch.",
           "Returning one value instead of the sum.",
         ],
-        solution:
-          L`Area $=\frac12|a-20|=6$, so $|a-20|=12$. Thus $a=8$ or $32$, and the sum is $40$.`,
+        solution: L`Area $=\frac12|a-20|=6$, so $|a-20|=12$. Thus $a=8$ or $32$, and the sum is $40$.`,
       },
       {
         questionLatex: L`Find the area of the image of the unit square under the matrix $\begin{pmatrix}3&1\\2&4\end{pmatrix}$.`,
@@ -2142,8 +2084,7 @@ const topicSeeds: readonly TopicSeed[] = [
           "Adding entries instead of computing determinant.",
           "Using the trace as the area scale.",
         ],
-        solution:
-          L`The determinant is $3\cdot4-1\cdot2=10$, so the image area is $10$.`,
+        solution: L`The determinant is $3\cdot4-1\cdot2=10$, so the image area is $10$.`,
       },
       {
         questionLatex: L`A triangle of area $7$ is mapped by the matrix $\begin{pmatrix}2&-1\\1&3\end{pmatrix}$. Find the area of its image.`,
@@ -2164,8 +2105,7 @@ const topicSeeds: readonly TopicSeed[] = [
           "Using the trace as the scale factor.",
           "Forgetting the original area is already $7$.",
         ],
-        solution:
-          L`The determinant is $2\cdot3-(-1)(1)=7$, so the image area is $7\cdot7=49$.`,
+        solution: L`The determinant is $2\cdot3-(-1)(1)=7$, so the image area is $7\cdot7=49$.`,
       },
     ],
   },

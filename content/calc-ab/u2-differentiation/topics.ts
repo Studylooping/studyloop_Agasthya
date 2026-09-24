@@ -78,11 +78,12 @@ function makeMc(meta: TopicMeta, seed: McSeed, index: number): McSingleItem {
       isCorrect,
       rationaleIfWrong: isCorrect
         ? null
-        : seed.rationales?.[letter] ??
-          "This answer comes from applying an incorrect derivative definition, rule, or point value.",
+        : (seed.rationales?.[letter] ??
+          "This answer comes from applying an incorrect derivative definition, rule, or point value."),
       misconceptionTag: isCorrect
         ? null
-        : seed.misconceptionTags?.[letter] ?? "incorrect_derivative_reasoning",
+        : (seed.misconceptionTags?.[letter] ??
+          "incorrect_derivative_reasoning"),
     };
   }) as McChoice[];
 
@@ -222,7 +223,11 @@ const topicSeeds: readonly TopicSeed[] = [
         questionLatex:
           "\\begin{array}{c|ccccc}h&-0.5&-0.1&-0.01&0.01&0.1\\\\\\hline \\frac{s(4+h)-s(4)}{h}&-3.50&-3.10&-3.01&-2.99&-2.90\\end{array}\\quad \\text{Which statement is best supported?}",
         difficulty: 3,
-        skillTags: ["instantaneous_rate", "limit_interpretation", "table_reasoning"],
+        skillTags: [
+          "instantaneous_rate",
+          "limit_interpretation",
+          "table_reasoning",
+        ],
         choices: [
           "$s'(4)\\approx -3\\text{, so position is decreasing at }t=4$",
           "$s'(4)\\approx 3\\text{, so position is increasing at }t=4$",
@@ -313,7 +318,11 @@ const topicSeeds: readonly TopicSeed[] = [
       questionLatex:
         "\\text{A particle moving on a line has position }p(t)=t^3-6t^2+12t+5\\text{ meters at time }t\\text{ seconds.}",
       difficulty: 3,
-      skillTags: ["average_rate_of_change", "instantaneous_rate", "interpretation"],
+      skillTags: [
+        "average_rate_of_change",
+        "instantaneous_rate",
+        "interpretation",
+      ],
       parts: [
         {
           letter: "a",
@@ -342,12 +351,37 @@ const topicSeeds: readonly TopicSeed[] = [
       rubric: {
         maxPoints: 6,
         criteria: [
-          { part: "a", points: 1, description: "Computes $p(1)$ and $p(3)$ correctly." },
-          { part: "a", points: 1, description: "Finds the average velocity as $1$ meter per second." },
-          { part: "b", points: 1, description: "Sets up the correct difference quotient at $t=2$." },
-          { part: "b", points: 1, description: "Simplifies the quotient to $h^2$." },
-          { part: "b", points: 1, description: "Takes the limit and obtains $p'(2)=0$." },
-          { part: "c", points: 1, description: "Interprets average and instantaneous velocity with correct units." },
+          {
+            part: "a",
+            points: 1,
+            description: "Computes $p(1)$ and $p(3)$ correctly.",
+          },
+          {
+            part: "a",
+            points: 1,
+            description: "Finds the average velocity as $1$ meter per second.",
+          },
+          {
+            part: "b",
+            points: 1,
+            description: "Sets up the correct difference quotient at $t=2$.",
+          },
+          {
+            part: "b",
+            points: 1,
+            description: "Simplifies the quotient to $h^2$.",
+          },
+          {
+            part: "b",
+            points: 1,
+            description: "Takes the limit and obtains $p'(2)=0$.",
+          },
+          {
+            part: "c",
+            points: 1,
+            description:
+              "Interprets average and instantaneous velocity with correct units.",
+          },
         ],
       },
       commonErrors: [
@@ -376,7 +410,8 @@ const topicSeeds: readonly TopicSeed[] = [
   },
   {
     topicCode: "2.2",
-    title: "Defining the Derivative of a Function and Using Derivative Notation",
+    title:
+      "Defining the Derivative of a Function and Using Derivative Notation",
     subtopic:
       "Connecting derivative notation with the limit definition of the derivative",
     mc: [
@@ -501,8 +536,7 @@ const topicSeeds: readonly TopicSeed[] = [
         ],
       },
       {
-        questionLatex:
-          "\\text{For }f(x)=|x-1|,\\text{ what is }f'(1)?",
+        questionLatex: "\\text{For }f(x)=|x-1|,\\text{ what is }f'(1)?",
         difficulty: 3,
         skillTags: ["derivative_definition", "one_sided_limits"],
         choices: ["$-1$", "$0$", "$1$", "\\text{Does not exist}"],
@@ -525,7 +559,8 @@ const topicSeeds: readonly TopicSeed[] = [
           },
           {
             step: 2,
-            explanation: "The one-sided limits differ, so the derivative does not exist.",
+            explanation:
+              "The one-sided limits differ, so the derivative does not exist.",
             math: "f'(1)\\text{ does not exist}",
           },
         ],
@@ -549,7 +584,8 @@ const topicSeeds: readonly TopicSeed[] = [
         },
         {
           letter: "c",
-          promptMarkdown: "Find an equation of the tangent line to $y=f(x)$ at $x=1$.",
+          promptMarkdown:
+            "Find an equation of the tangent line to $y=f(x)$ at $x=1$.",
           points: 2,
         },
       ],
@@ -561,12 +597,33 @@ const topicSeeds: readonly TopicSeed[] = [
       rubric: {
         maxPoints: 6,
         criteria: [
-          { part: "a", points: 1, description: "Writes the correct h-form derivative definition for $f'(a)$." },
+          {
+            part: "a",
+            points: 1,
+            description:
+              "Writes the correct h-form derivative definition for $f'(a)$.",
+          },
           { part: "b", points: 1, description: "Correctly expands $f(a+h)$." },
-          { part: "b", points: 1, description: "Simplifies the difference quotient to $2a+h+4$." },
-          { part: "b", points: 1, description: "Takes the limit to obtain $f'(a)=2a+4$." },
-          { part: "c", points: 1, description: "Finds $f(1)=5$ and $f'(1)=6$." },
-          { part: "c", points: 1, description: "Writes a correct tangent line equation." },
+          {
+            part: "b",
+            points: 1,
+            description: "Simplifies the difference quotient to $2a+h+4$.",
+          },
+          {
+            part: "b",
+            points: 1,
+            description: "Takes the limit to obtain $f'(a)=2a+4$.",
+          },
+          {
+            part: "c",
+            points: 1,
+            description: "Finds $f(1)=5$ and $f'(1)=6$.",
+          },
+          {
+            part: "c",
+            points: 1,
+            description: "Writes a correct tangent line equation.",
+          },
         ],
       },
       commonErrors: [
@@ -577,8 +634,7 @@ const topicSeeds: readonly TopicSeed[] = [
       workedSolution: [
         {
           part: "a",
-          explanation:
-            "$f'(a)=\\lim_{h\\to0}\\frac{f(a+h)-f(a)}{h}$.",
+          explanation: "$f'(a)=\\lim_{h\\to0}\\frac{f(a+h)-f(a)}{h}$.",
         },
         {
           part: "b",
@@ -734,12 +790,15 @@ const topicSeeds: readonly TopicSeed[] = [
       questionLatex:
         "\\begin{array}{c|ccccc}x&1.8&1.9&2.0&2.1&2.2\\\\\\hline f(x)&4.24&4.61&5.00&5.41&5.84\\end{array}",
       difficulty: 3,
-      skillTags: ["table_estimate", "symmetric_difference", "reasoning_from_data"],
+      skillTags: [
+        "table_estimate",
+        "symmetric_difference",
+        "reasoning_from_data",
+      ],
       parts: [
         {
           letter: "a",
-          promptMarkdown:
-            "Use the closest symmetric data to estimate $f'(2)$.",
+          promptMarkdown: "Use the closest symmetric data to estimate $f'(2)$.",
           points: 2,
         },
         {
@@ -763,12 +822,34 @@ const topicSeeds: readonly TopicSeed[] = [
       rubric: {
         maxPoints: 6,
         criteria: [
-          { part: "a", points: 1, description: "Uses the symmetric difference quotient with x=1.9 and x=2.1." },
+          {
+            part: "a",
+            points: 1,
+            description:
+              "Uses the symmetric difference quotient with x=1.9 and x=2.1.",
+          },
           { part: "a", points: 1, description: "Obtains the estimate $4$." },
-          { part: "b", points: 1, description: "Uses the endpoint average rate over [1.8,2.2]." },
-          { part: "b", points: 1, description: "Obtains the average rate $4$." },
-          { part: "c", points: 1, description: "Computes or references increasing adjacent slopes." },
-          { part: "c", points: 1, description: "Gives a reasonable interpretation of what the trend suggests about local slope near x=2." },
+          {
+            part: "b",
+            points: 1,
+            description: "Uses the endpoint average rate over [1.8,2.2].",
+          },
+          {
+            part: "b",
+            points: 1,
+            description: "Obtains the average rate $4$.",
+          },
+          {
+            part: "c",
+            points: 1,
+            description: "Computes or references increasing adjacent slopes.",
+          },
+          {
+            part: "c",
+            points: 1,
+            description:
+              "Gives a reasonable interpretation of what the trend suggests about local slope near x=2.",
+          },
         ],
       },
       commonErrors: [
@@ -806,7 +887,10 @@ const topicSeeds: readonly TopicSeed[] = [
         questionLatex:
           "\\text{If }f\\text{ is differentiable at }x=a\\text{, }f(a)=5\\text{, and }f'(a)=-2,\\text{ which conclusion must follow?}",
         difficulty: 2,
-        skillTags: ["differentiability_implies_continuity", "conceptual_reasoning"],
+        skillTags: [
+          "differentiability_implies_continuity",
+          "conceptual_reasoning",
+        ],
         choices: [
           "$\\lim_{x\\to a}f(x)=5$",
           "$f\\text{ has a local maximum at }a$",
@@ -827,7 +911,8 @@ const topicSeeds: readonly TopicSeed[] = [
         solution: [
           {
             step: 1,
-            explanation: "Use differentiability to infer continuity at the same point.",
+            explanation:
+              "Use differentiability to infer continuity at the same point.",
             math: "f\\text{ differentiable at }a\\Rightarrow \\lim_{x\\to a}f(x)=f(a)=5",
           },
         ],
@@ -862,7 +947,8 @@ const topicSeeds: readonly TopicSeed[] = [
           },
           {
             step: 2,
-            explanation: "Because they are unequal, the derivative does not exist.",
+            explanation:
+              "Because they are unequal, the derivative does not exist.",
             math: "f'(3)\\text{ does not exist}",
           },
         ],
@@ -872,7 +958,12 @@ const topicSeeds: readonly TopicSeed[] = [
           "f(x)=\\begin{cases}x^2,&x<1\\\\mx+b,&x\\ge1\\end{cases}\\quad \\text{For }f\\text{ to be differentiable at }x=1,\\text{ which pair works?}",
         difficulty: 3,
         skillTags: ["piecewise_differentiability", "continuity"],
-        choices: ["$m=1,\\ b=0$", "$m=2,\\ b=-1$", "$m=2,\\ b=1$", "$m=0,\\ b=1$"],
+        choices: [
+          "$m=1,\\ b=0$",
+          "$m=2,\\ b=-1$",
+          "$m=2,\\ b=1$",
+          "$m=0,\\ b=1$",
+        ],
         correctLetter: "B",
         rationales: {
           A: "This makes the function continuous, but the slopes do not match.",
@@ -902,7 +993,12 @@ const topicSeeds: readonly TopicSeed[] = [
           "\\text{The function }g(x)=\\sqrt[3]{x}\\text{ is continuous at }0.\\text{ What is true about }g'(0)?",
         difficulty: 3,
         skillTags: ["vertical_tangent", "continuity_vs_differentiability"],
-        choices: ["$g'(0)=0$", "$g'(0)=1$", "$g'(0)\\text{ does not exist as a finite derivative}$", "$g\\text{ is not continuous at }0$"],
+        choices: [
+          "$g'(0)=0$",
+          "$g'(0)=1$",
+          "$g'(0)\\text{ does not exist as a finite derivative}$",
+          "$g\\text{ is not continuous at }0$",
+        ],
         correctLetter: "C",
         rationales: {
           A: "A horizontal tangent would have finite slope 0, but the slope becomes unbounded.",
@@ -922,7 +1018,8 @@ const topicSeeds: readonly TopicSeed[] = [
           },
           {
             step: 2,
-            explanation: "The quotient is unbounded near 0, so there is no finite derivative.",
+            explanation:
+              "The quotient is unbounded near 0, so there is no finite derivative.",
             math: "g'(0)\\text{ does not exist as a finite derivative}",
           },
         ],
@@ -952,7 +1049,8 @@ const topicSeeds: readonly TopicSeed[] = [
         solution: [
           {
             step: 1,
-            explanation: "A corner can occur on a continuous graph but has no single tangent slope.",
+            explanation:
+              "A corner can occur on a continuous graph but has no single tangent slope.",
             math: "f'_-(a)\\ne f'_+(a)",
           },
         ],
@@ -962,7 +1060,11 @@ const topicSeeds: readonly TopicSeed[] = [
       questionLatex:
         "f(x)=\\begin{cases}x^2+k,&x<1\\\\mx+2,&x\\ge1\\end{cases}",
       difficulty: 4,
-      skillTags: ["piecewise_continuity", "piecewise_differentiability", "justification"],
+      skillTags: [
+        "piecewise_continuity",
+        "piecewise_differentiability",
+        "justification",
+      ],
       parts: [
         {
           letter: "a",
@@ -991,12 +1093,38 @@ const topicSeeds: readonly TopicSeed[] = [
       rubric: {
         maxPoints: 6,
         criteria: [
-          { part: "a", points: 1, description: "Correctly evaluates the left and right values at x=1." },
-          { part: "a", points: 1, description: "Obtains $m=k-1$ or an equivalent relationship." },
-          { part: "b", points: 1, description: "Finds the left derivative at x=1 as 2." },
-          { part: "b", points: 1, description: "Sets $m=2$ from derivative matching." },
-          { part: "b", points: 1, description: "Uses continuity to find $k=3$." },
-          { part: "c", points: 1, description: "Explains that equal function values do not force equal one-sided slopes." },
+          {
+            part: "a",
+            points: 1,
+            description:
+              "Correctly evaluates the left and right values at x=1.",
+          },
+          {
+            part: "a",
+            points: 1,
+            description: "Obtains $m=k-1$ or an equivalent relationship.",
+          },
+          {
+            part: "b",
+            points: 1,
+            description: "Finds the left derivative at x=1 as 2.",
+          },
+          {
+            part: "b",
+            points: 1,
+            description: "Sets $m=2$ from derivative matching.",
+          },
+          {
+            part: "b",
+            points: 1,
+            description: "Uses continuity to find $k=3$.",
+          },
+          {
+            part: "c",
+            points: 1,
+            description:
+              "Explains that equal function values do not force equal one-sided slopes.",
+          },
         ],
       },
       commonErrors: [
@@ -1007,8 +1135,7 @@ const topicSeeds: readonly TopicSeed[] = [
       workedSolution: [
         {
           part: "a",
-          explanation:
-            "Continuity at x=1 requires $1+k=m+2$, so $m=k-1$.",
+          explanation: "Continuity at x=1 requires $1+k=m+2$, so $m=k-1$.",
         },
         {
           part: "b",
@@ -1034,12 +1161,7 @@ const topicSeeds: readonly TopicSeed[] = [
           "\\text{Which equation gives the tangent line to }y=x^7\\text{ at }x=1?",
         difficulty: 2,
         skillTags: ["power_rule", "tangent_line"],
-        choices: [
-          "$y-1=7(x-1)$",
-          "$y-1=x-1$",
-          "$y-7=1(x-1)$",
-          "$y=7x^6$",
-        ],
+        choices: ["$y-1=7(x-1)$", "$y-1=x-1$", "$y-7=1(x-1)$", "$y=7x^6$"],
         correctLetter: "A",
         rationales: {
           B: "This uses the point correctly but misses the tangent slope of 7.",
@@ -1081,14 +1203,23 @@ const topicSeeds: readonly TopicSeed[] = [
           "Subtract 1 from -2 to get -3.",
         ],
         solution: [
-          { step: 1, explanation: "Apply the power rule with a negative exponent.", math: "5(-2)x^{-3}=-10x^{-3}" },
+          {
+            step: 1,
+            explanation: "Apply the power rule with a negative exponent.",
+            math: "5(-2)x^{-3}=-10x^{-3}",
+          },
         ],
       },
       {
         questionLatex: "\\frac{d}{dx}\\left(\\sqrt{x}\\right)=",
         difficulty: 2,
         skillTags: ["power_rule", "fractional_exponents"],
-        choices: ["$\\sqrt{x}$", "$\\frac{1}{2\\sqrt{x}}$", "$2\\sqrt{x}$", "$\\frac{1}{x^2}$"],
+        choices: [
+          "$\\sqrt{x}$",
+          "$\\frac{1}{2\\sqrt{x}}$",
+          "$2\\sqrt{x}$",
+          "$\\frac{1}{x^2}$",
+        ],
         correctLetter: "B",
         rationales: {
           A: "This leaves the function unchanged.",
@@ -1101,12 +1232,15 @@ const topicSeeds: readonly TopicSeed[] = [
           "$\\frac12 x^{-1/2}=\\frac{1}{2\\sqrt{x}}$.",
         ],
         solution: [
-          { step: 1, explanation: "Rewrite and differentiate.", math: "\\frac{d}{dx}x^{1/2}=\\frac12x^{-1/2}=\\frac{1}{2\\sqrt{x}}" },
+          {
+            step: 1,
+            explanation: "Rewrite and differentiate.",
+            math: "\\frac{d}{dx}x^{1/2}=\\frac12x^{-1/2}=\\frac{1}{2\\sqrt{x}}",
+          },
         ],
       },
       {
-        questionLatex:
-          "\\text{If }f(x)=x^{3/2},\\text{ then }f'(4)=",
+        questionLatex: "\\text{If }f(x)=x^{3/2},\\text{ then }f'(4)=",
         difficulty: 2,
         skillTags: ["power_rule", "evaluate_derivative"],
         choices: ["$2$", "$3$", "$6$", "$8$"],
@@ -1122,14 +1256,23 @@ const topicSeeds: readonly TopicSeed[] = [
           "Evaluate at x=4.",
         ],
         solution: [
-          { step: 1, explanation: "Differentiate and evaluate.", math: "f'(4)=\\frac32\\sqrt{4}=3" },
+          {
+            step: 1,
+            explanation: "Differentiate and evaluate.",
+            math: "f'(4)=\\frac32\\sqrt{4}=3",
+          },
         ],
       },
       {
         questionLatex: "\\frac{d}{dx}\\left(\\frac{4}{x^3}\\right)=",
         difficulty: 2,
         skillTags: ["power_rule", "negative_exponents"],
-        choices: ["$\\frac{12}{x^2}$", "$-\\frac{12}{x^4}$", "$\\frac{4}{3x^2}$", "$-\\frac{4}{x^4}$"],
+        choices: [
+          "$\\frac{12}{x^2}$",
+          "$-\\frac{12}{x^4}$",
+          "$\\frac{4}{3x^2}$",
+          "$-\\frac{4}{x^4}$",
+        ],
         correctLetter: "B",
         rationales: {
           A: "The sign should be negative and the exponent should increase in the denominator.",
@@ -1142,7 +1285,11 @@ const topicSeeds: readonly TopicSeed[] = [
           "$4(-3)x^{-4}=-12x^{-4}$.",
         ],
         solution: [
-          { step: 1, explanation: "Use a negative exponent.", math: "\\frac{d}{dx}(4x^{-3})=-12x^{-4}=-\\frac{12}{x^4}" },
+          {
+            step: 1,
+            explanation: "Use a negative exponent.",
+            math: "\\frac{d}{dx}(4x^{-3})=-12x^{-4}=-\\frac{12}{x^4}",
+          },
         ],
       },
     ],
@@ -1164,7 +1311,8 @@ const topicSeeds: readonly TopicSeed[] = [
         },
         {
           letter: "c",
-          promptMarkdown: "Find an equation of the tangent line to $y=p(x)$ at $x=1$.",
+          promptMarkdown:
+            "Find an equation of the tangent line to $y=p(x)$ at $x=1$.",
           points: 2,
         },
       ],
@@ -1176,12 +1324,36 @@ const topicSeeds: readonly TopicSeed[] = [
       rubric: {
         maxPoints: 6,
         criteria: [
-          { part: "a", points: 1, description: "Rewrites radical and reciprocal terms as powers." },
-          { part: "b", points: 1, description: "Correctly differentiates polynomial terms." },
-          { part: "b", points: 1, description: "Correctly differentiates $4x^{1/2}$." },
-          { part: "b", points: 1, description: "Correctly differentiates $-6x^{-1}$." },
-          { part: "c", points: 1, description: "Finds $p(1)=-3$ and $p'(1)=9$." },
-          { part: "c", points: 1, description: "Writes a correct tangent line equation." },
+          {
+            part: "a",
+            points: 1,
+            description: "Rewrites radical and reciprocal terms as powers.",
+          },
+          {
+            part: "b",
+            points: 1,
+            description: "Correctly differentiates polynomial terms.",
+          },
+          {
+            part: "b",
+            points: 1,
+            description: "Correctly differentiates $4x^{1/2}$.",
+          },
+          {
+            part: "b",
+            points: 1,
+            description: "Correctly differentiates $-6x^{-1}$.",
+          },
+          {
+            part: "c",
+            points: 1,
+            description: "Finds $p(1)=-3$ and $p'(1)=9$.",
+          },
+          {
+            part: "c",
+            points: 1,
+            description: "Writes a correct tangent line equation.",
+          },
         ],
       },
       commonErrors: [
@@ -1192,8 +1364,7 @@ const topicSeeds: readonly TopicSeed[] = [
       workedSolution: [
         {
           part: "a",
-          explanation:
-            "$p(x)=2x^5-3x^3+4x^{1/2}-6x^{-1}$.",
+          explanation: "$p(x)=2x^5-3x^3+4x^{1/2}-6x^{-1}$.",
         },
         {
           part: "b",
@@ -1202,8 +1373,7 @@ const topicSeeds: readonly TopicSeed[] = [
         },
         {
           part: "c",
-          explanation:
-            "$p(1)=-3$ and $p'(1)=10-9+2+6=9$, so $y+3=9(x-1)$.",
+          explanation: "$p(1)=-3$ and $p'(1)=10-9+2+6=9$, so $y+3=9(x-1)$.",
         },
       ],
     },
@@ -1218,7 +1388,11 @@ const topicSeeds: readonly TopicSeed[] = [
         questionLatex:
           "\\text{If }h(x)=3f(x)-7\\text{ and }f'(2)=-4,\\text{ what is }h'(2)?",
         difficulty: 2,
-        skillTags: ["constant_rule", "constant_multiple_rule", "derivative_values"],
+        skillTags: [
+          "constant_rule",
+          "constant_multiple_rule",
+          "derivative_values",
+        ],
         choices: ["$-19$", "$-12$", "$5$", "$0$"],
         correctLetter: "B",
         rationales: {
@@ -1244,12 +1418,7 @@ const topicSeeds: readonly TopicSeed[] = [
           "\\text{Which equation gives the tangent line to }y=3x^4-5x+8\\text{ at }x=1?",
         difficulty: 3,
         skillTags: ["sum_rule", "constant_multiple_rule", "tangent_line"],
-        choices: [
-          "$y-6=7(x-1)$",
-          "$y-6=6(x-1)$",
-          "$y-7=6(x-1)$",
-          "$y=7x+8$",
-        ],
+        choices: ["$y-6=7(x-1)$", "$y-6=6(x-1)$", "$y-7=6(x-1)$", "$y=7x+8$"],
         correctLetter: "A",
         rationales: {
           B: "This uses the function value as the slope.",
@@ -1292,15 +1461,23 @@ const topicSeeds: readonly TopicSeed[] = [
           "Substitute $f'(2)=3$ and $g'(2)=-4$.",
         ],
         solution: [
-          { step: 1, explanation: "Apply the linearity rules.", math: "5f'(2)-2g'(2)=5(3)-2(-4)=23" },
+          {
+            step: 1,
+            explanation: "Apply the linearity rules.",
+            math: "5f'(2)-2g'(2)=5(3)-2(-4)=23",
+          },
         ],
       },
       {
-        questionLatex:
-          "\\frac{d}{dx}\\left[(x^3-2x^2+x)-(4x^2-1)\\right]=",
+        questionLatex: "\\frac{d}{dx}\\left[(x^3-2x^2+x)-(4x^2-1)\\right]=",
         difficulty: 3,
         skillTags: ["difference_rule", "polynomial_derivative"],
-        choices: ["$3x^2-12x+1$", "$3x^2+4x+1$", "$3x^2-4x+1$", "$x^3-6x^2+x-1$"],
+        choices: [
+          "$3x^2-12x+1$",
+          "$3x^2+4x+1$",
+          "$3x^2-4x+1$",
+          "$x^3-6x^2+x-1$",
+        ],
         correctLetter: "A",
         rationales: {
           B: "The derivative of the subtracted $4x^2$ term should subtract $8x$.",
@@ -1313,7 +1490,11 @@ const topicSeeds: readonly TopicSeed[] = [
           "Then subtract the derivative $8x$.",
         ],
         solution: [
-          { step: 1, explanation: "Differentiate both groups.", math: "(3x^2-4x+1)-8x=3x^2-12x+1" },
+          {
+            step: 1,
+            explanation: "Differentiate both groups.",
+            math: "(3x^2-4x+1)-8x=3x^2-12x+1",
+          },
         ],
       },
       {
@@ -1334,7 +1515,11 @@ const topicSeeds: readonly TopicSeed[] = [
           "Evaluate at x=-1.",
         ],
         solution: [
-          { step: 1, explanation: "Differentiate and evaluate.", math: "y'(-1)=6(-1)^2-3=3" },
+          {
+            step: 1,
+            explanation: "Differentiate and evaluate.",
+            math: "y'(-1)=6(-1)^2-3=3",
+          },
         ],
       },
     ],
@@ -1342,7 +1527,11 @@ const topicSeeds: readonly TopicSeed[] = [
       questionLatex:
         "\\text{Let }h(x)=4f(x)-3g(x)+7.\\text{ Suppose }f(1)=2,\\ g(1)=-1,\\ f'(1)=5,\\text{ and }g'(1)=-2.",
       difficulty: 3,
-      skillTags: ["linear_combination", "tangent_line", "derivative_interpretation"],
+      skillTags: [
+        "linear_combination",
+        "tangent_line",
+        "derivative_interpretation",
+      ],
       parts: [
         {
           letter: "a",
@@ -1375,11 +1564,28 @@ const topicSeeds: readonly TopicSeed[] = [
         maxPoints: 6,
         criteria: [
           { part: "a", points: 1, description: "Computes $h(1)=18$." },
-          { part: "b", points: 1, description: "Differentiates the linear combination correctly." },
+          {
+            part: "b",
+            points: 1,
+            description: "Differentiates the linear combination correctly.",
+          },
           { part: "b", points: 1, description: "Computes $h'(1)=26$." },
-          { part: "c", points: 1, description: "Uses point $(1,18)$ and slope 26." },
-          { part: "c", points: 1, description: "Writes a correct tangent line equation." },
-          { part: "d", points: 1, description: "Explains that $k'(1)=0$, so the tangent line is horizontal." },
+          {
+            part: "c",
+            points: 1,
+            description: "Uses point $(1,18)$ and slope 26.",
+          },
+          {
+            part: "c",
+            points: 1,
+            description: "Writes a correct tangent line equation.",
+          },
+          {
+            part: "d",
+            points: 1,
+            description:
+              "Explains that $k'(1)=0$, so the tangent line is horizontal.",
+          },
         ],
       },
       commonErrors: [
@@ -1390,13 +1596,11 @@ const topicSeeds: readonly TopicSeed[] = [
       workedSolution: [
         {
           part: "a",
-          explanation:
-            "$h(1)=4(2)-3(-1)+7=18$.",
+          explanation: "$h(1)=4(2)-3(-1)+7=18$.",
         },
         {
           part: "b",
-          explanation:
-            "$h'(x)=4f'(x)-3g'(x)$, so $h'(1)=4(5)-3(-2)=26$.",
+          explanation: "$h'(x)=4f'(x)-3g'(x)$, so $h'(1)=4(5)-3(-2)=26$.",
         },
         {
           part: "c",
@@ -1414,8 +1618,7 @@ const topicSeeds: readonly TopicSeed[] = [
   {
     topicCode: "2.7",
     title: "Derivatives of cos x, sin x, e^x, and ln x",
-    subtopic:
-      "Using core transcendental derivative rules without chain rule",
+    subtopic: "Using core transcendental derivative rules without chain rule",
     mc: [
       {
         questionLatex:
@@ -1451,7 +1654,11 @@ const topicSeeds: readonly TopicSeed[] = [
         questionLatex:
           "\\text{The slope of the tangent line to }y=e^x-\\ln x\\text{ at }x=1\\text{ is}",
         difficulty: 2,
-        skillTags: ["exponential_log_derivatives", "difference_rule", "tangent_slope"],
+        skillTags: [
+          "exponential_log_derivatives",
+          "difference_rule",
+          "tangent_slope",
+        ],
         choices: ["$e-1$", "$e+1$", "$1-e$", "$e$"],
         correctLetter: "A",
         rationales: {
@@ -1490,7 +1697,11 @@ const topicSeeds: readonly TopicSeed[] = [
           "$\\cos(\\pi/2)=0$.",
         ],
         solution: [
-          { step: 1, explanation: "Differentiate and evaluate.", math: "f'\\left(\\frac\\pi2\\right)=\\cos\\left(\\frac\\pi2\\right)+e^{\\pi/2}=e^{\\pi/2}" },
+          {
+            step: 1,
+            explanation: "Differentiate and evaluate.",
+            math: "f'\\left(\\frac\\pi2\\right)=\\cos\\left(\\frac\\pi2\\right)+e^{\\pi/2}=e^{\\pi/2}",
+          },
         ],
       },
       {
@@ -1511,14 +1722,22 @@ const topicSeeds: readonly TopicSeed[] = [
           "Evaluate $\\frac1x+1$ at x=1.",
         ],
         solution: [
-          { step: 1, explanation: "Find the derivative and evaluate.", math: "y'=\\frac1x+1,\\quad y'(1)=2" },
+          {
+            step: 1,
+            explanation: "Find the derivative and evaluate.",
+            math: "y'=\\frac1x+1,\\quad y'(1)=2",
+          },
         ],
       },
       {
         questionLatex:
           "\\frac{d}{dx}\\left(\\cos x-3\\sin x+2e^x+\\ln x\\right)=",
         difficulty: 3,
-        skillTags: ["trig_derivatives", "exponential_log_derivatives", "linear_combination"],
+        skillTags: [
+          "trig_derivatives",
+          "exponential_log_derivatives",
+          "linear_combination",
+        ],
         choices: [
           "$-\\sin x-3\\cos x+2e^x+\\frac1x$",
           "$\\sin x-3\\cos x+2e^x+\\frac1x$",
@@ -1537,13 +1756,16 @@ const topicSeeds: readonly TopicSeed[] = [
           "The derivative of $\\ln x$ is $1/x$.",
         ],
         solution: [
-          { step: 1, explanation: "Apply the basic derivative rules.", math: "-\\sin x-3\\cos x+2e^x+\\frac1x" },
+          {
+            step: 1,
+            explanation: "Apply the basic derivative rules.",
+            math: "-\\sin x-3\\cos x+2e^x+\\frac1x",
+          },
         ],
       },
     ],
     frq: {
-      questionLatex:
-        "\\text{Let }f(x)=\\sin x+\\cos x+e^x.",
+      questionLatex: "\\text{Let }f(x)=\\sin x+\\cos x+e^x.",
       difficulty: 3,
       skillTags: ["trig_derivatives", "exponential_derivative", "tangent_line"],
       parts: [
@@ -1572,12 +1794,29 @@ const topicSeeds: readonly TopicSeed[] = [
       rubric: {
         maxPoints: 6,
         criteria: [
-          { part: "a", points: 1, description: "Correctly differentiates sine and cosine terms." },
-          { part: "a", points: 1, description: "Correctly differentiates $e^x$." },
+          {
+            part: "a",
+            points: 1,
+            description: "Correctly differentiates sine and cosine terms.",
+          },
+          {
+            part: "a",
+            points: 1,
+            description: "Correctly differentiates $e^x$.",
+          },
           { part: "b", points: 1, description: "Finds $f(0)=2$." },
           { part: "b", points: 1, description: "Finds $f'(0)=2$." },
-          { part: "b", points: 1, description: "Writes a correct tangent line equation." },
-          { part: "c", points: 1, description: "Finds $f'(\\pi/2)=e^{\\pi/2}-1$ and interprets it as slope." },
+          {
+            part: "b",
+            points: 1,
+            description: "Writes a correct tangent line equation.",
+          },
+          {
+            part: "c",
+            points: 1,
+            description:
+              "Finds $f'(\\pi/2)=e^{\\pi/2}-1$ and interprets it as slope.",
+          },
         ],
       },
       commonErrors: [
@@ -1588,8 +1827,7 @@ const topicSeeds: readonly TopicSeed[] = [
       workedSolution: [
         {
           part: "a",
-          explanation:
-            "$f'(x)=\\cos x-\\sin x+e^x$.",
+          explanation: "$f'(x)=\\cos x-\\sin x+e^x$.",
         },
         {
           part: "b",
@@ -1627,12 +1865,15 @@ const topicSeeds: readonly TopicSeed[] = [
           "The two terms are $2xe^x+x^2e^x$.",
         ],
         solution: [
-          { step: 1, explanation: "Apply the product rule.", math: "2xe^x+x^2e^x=e^x(x^2+2x)" },
+          {
+            step: 1,
+            explanation: "Apply the product rule.",
+            math: "2xe^x+x^2e^x=e^x(x^2+2x)",
+          },
         ],
       },
       {
-        questionLatex:
-          "\\frac{d}{dx}\\left[(x^2+1)(x^3-2)\\right]=",
+        questionLatex: "\\frac{d}{dx}\\left[(x^2+1)(x^3-2)\\right]=",
         difficulty: 3,
         skillTags: ["product_rule", "polynomial_derivative"],
         choices: [
@@ -1653,12 +1894,15 @@ const topicSeeds: readonly TopicSeed[] = [
           "$u'=2x$ and $v'=3x^2$.",
         ],
         solution: [
-          { step: 1, explanation: "Apply the product rule.", math: "2x(x^3-2)+(x^2+1)(3x^2)" },
+          {
+            step: 1,
+            explanation: "Apply the product rule.",
+            math: "2x(x^3-2)+(x^2+1)(3x^2)",
+          },
         ],
       },
       {
-        questionLatex:
-          "\\text{If }f(x)=x\\sin x,\\text{ then }f'(0)=",
+        questionLatex: "\\text{If }f(x)=x\\sin x,\\text{ then }f'(0)=",
         difficulty: 2,
         skillTags: ["product_rule", "trig_derivative", "evaluate_derivative"],
         choices: ["$0$", "$1$", "$-1$", "\\text{Does not exist}"],
@@ -1674,7 +1918,11 @@ const topicSeeds: readonly TopicSeed[] = [
           "Evaluate at x=0.",
         ],
         solution: [
-          { step: 1, explanation: "Differentiate and evaluate.", math: "f'(0)=\\sin0+0\\cos0=0" },
+          {
+            step: 1,
+            explanation: "Differentiate and evaluate.",
+            math: "f'(0)=\\sin0+0\\cos0=0",
+          },
         ],
       },
       {
@@ -1682,12 +1930,7 @@ const topicSeeds: readonly TopicSeed[] = [
           "\\text{A student differentiates }F(x)=(x^2+1)e^x\\text{ and writes }F'(x)=2xe^x.\\ \\text{Which term is missing?}",
         difficulty: 3,
         skillTags: ["product_rule", "error_analysis"],
-        choices: [
-          "$(x^2+1)e^x$",
-          "$2x$",
-          "$e^x$",
-          "$2x(x^2+1)$",
-        ],
+        choices: ["$(x^2+1)e^x$", "$2x$", "$e^x$", "$2x(x^2+1)$"],
         correctLetter: "A",
         rationales: {
           B: "The missing term must include the unchanged first factor and the derivative of $e^x$.",
@@ -1702,14 +1945,14 @@ const topicSeeds: readonly TopicSeed[] = [
         solution: [
           {
             step: 1,
-            explanation: "Apply the product rule and identify the missing term.",
+            explanation:
+              "Apply the product rule and identify the missing term.",
             math: "F'(x)=2xe^x+(x^2+1)e^x",
           },
         ],
       },
       {
-        questionLatex:
-          "\\text{If }F(x)=(x^2+3)\\ln x,\\text{ then }F'(1)=",
+        questionLatex: "\\text{If }F(x)=(x^2+3)\\ln x,\\text{ then }F'(1)=",
         difficulty: 3,
         skillTags: ["product_rule", "log_derivative", "evaluate_derivative"],
         choices: ["$0$", "$2$", "$4$", "$6$"],
@@ -1725,15 +1968,23 @@ const topicSeeds: readonly TopicSeed[] = [
           "Evaluate using $\\ln1=0$.",
         ],
         solution: [
-          { step: 1, explanation: "Apply the product rule and evaluate.", math: "F'(1)=2(1)\\ln1+\\frac{1^2+3}{1}=4" },
+          {
+            step: 1,
+            explanation: "Apply the product rule and evaluate.",
+            math: "F'(1)=2(1)\\ln1+\\frac{1^2+3}{1}=4",
+          },
         ],
       },
     ],
     frq: {
-      questionLatex:
-        "\\text{Let }H(x)=(x^2+1)(\\sin x+e^x).",
+      questionLatex: "\\text{Let }H(x)=(x^2+1)(\\sin x+e^x).",
       difficulty: 4,
-      skillTags: ["product_rule", "trig_derivative", "exponential_derivative", "error_analysis"],
+      skillTags: [
+        "product_rule",
+        "trig_derivative",
+        "exponential_derivative",
+        "error_analysis",
+      ],
       parts: [
         {
           letter: "a",
@@ -1760,12 +2011,38 @@ const topicSeeds: readonly TopicSeed[] = [
       rubric: {
         maxPoints: 6,
         criteria: [
-          { part: "a", points: 1, description: "Identifies the product rule structure." },
-          { part: "a", points: 1, description: "Correctly differentiates each factor." },
-          { part: "a", points: 1, description: "Writes $H'(x)=2x(\\sin x+e^x)+(x^2+1)(\\cos x+e^x)$ or equivalent." },
-          { part: "b", points: 1, description: "Finds $H(0)=1$ and $H'(0)=2$." },
-          { part: "b", points: 1, description: "Writes a correct tangent line equation." },
-          { part: "c", points: 1, description: "Explains that the student multiplied derivatives instead of using two product-rule terms." },
+          {
+            part: "a",
+            points: 1,
+            description: "Identifies the product rule structure.",
+          },
+          {
+            part: "a",
+            points: 1,
+            description: "Correctly differentiates each factor.",
+          },
+          {
+            part: "a",
+            points: 1,
+            description:
+              "Writes $H'(x)=2x(\\sin x+e^x)+(x^2+1)(\\cos x+e^x)$ or equivalent.",
+          },
+          {
+            part: "b",
+            points: 1,
+            description: "Finds $H(0)=1$ and $H'(0)=2$.",
+          },
+          {
+            part: "b",
+            points: 1,
+            description: "Writes a correct tangent line equation.",
+          },
+          {
+            part: "c",
+            points: 1,
+            description:
+              "Explains that the student multiplied derivatives instead of using two product-rule terms.",
+          },
         ],
       },
       commonErrors: [
@@ -1776,13 +2053,11 @@ const topicSeeds: readonly TopicSeed[] = [
       workedSolution: [
         {
           part: "a",
-          explanation:
-            "$H'(x)=2x(\\sin x+e^x)+(x^2+1)(\\cos x+e^x)$.",
+          explanation: "$H'(x)=2x(\\sin x+e^x)+(x^2+1)(\\cos x+e^x)$.",
         },
         {
           part: "b",
-          explanation:
-            "$H(0)=1(0+1)=1$ and $H'(0)=0+1(1+1)=2$, so $y-1=2x$.",
+          explanation: "$H(0)=1(0+1)=1$ and $H'(0)=0+1(1+1)=2$, so $y-1=2x$.",
         },
         {
           part: "c",
@@ -1799,8 +2074,7 @@ const topicSeeds: readonly TopicSeed[] = [
       "Differentiating ratios of functions and reasoning about tangent slopes",
     mc: [
       {
-        questionLatex:
-          "\\frac{d}{dx}\\left(\\frac{x^2+1}{x-1}\\right)=",
+        questionLatex: "\\frac{d}{dx}\\left(\\frac{x^2+1}{x-1}\\right)=",
         difficulty: 3,
         skillTags: ["quotient_rule", "polynomial_derivative"],
         choices: [
@@ -1821,14 +2095,23 @@ const topicSeeds: readonly TopicSeed[] = [
           "Simplify $2x(x-1)-(x^2+1)$.",
         ],
         solution: [
-          { step: 1, explanation: "Apply the quotient rule.", math: "\\frac{2x(x-1)-(x^2+1)}{(x-1)^2}=\\frac{x^2-2x-1}{(x-1)^2}" },
+          {
+            step: 1,
+            explanation: "Apply the quotient rule.",
+            math: "\\frac{2x(x-1)-(x^2+1)}{(x-1)^2}=\\frac{x^2-2x-1}{(x-1)^2}",
+          },
         ],
       },
       {
         questionLatex: "\\frac{d}{dx}\\left(\\frac{x}{e^x}\\right)=",
         difficulty: 3,
         skillTags: ["quotient_rule", "exponential_derivative"],
-        choices: ["$\\frac{1-x}{e^x}$", "$\\frac{x-1}{e^x}$", "$\\frac{1}{e^x}$", "$\\frac{x}{e^x}$"],
+        choices: [
+          "$\\frac{1-x}{e^x}$",
+          "$\\frac{x-1}{e^x}$",
+          "$\\frac{1}{e^x}$",
+          "$\\frac{x}{e^x}$",
+        ],
         correctLetter: "A",
         rationales: {
           B: "The subtraction order in the quotient rule is reversed.",
@@ -1841,7 +2124,11 @@ const topicSeeds: readonly TopicSeed[] = [
           "The numerator is $e^x-xe^x$.",
         ],
         solution: [
-          { step: 1, explanation: "Apply and simplify.", math: "\\frac{e^x-xe^x}{e^{2x}}=\\frac{1-x}{e^x}" },
+          {
+            step: 1,
+            explanation: "Apply and simplify.",
+            math: "\\frac{e^x-xe^x}{e^{2x}}=\\frac{1-x}{e^x}",
+          },
         ],
       },
       {
@@ -1866,7 +2153,11 @@ const topicSeeds: readonly TopicSeed[] = [
           "$u'=\\cos x$ and $v'=1$.",
         ],
         solution: [
-          { step: 1, explanation: "Apply the quotient rule.", math: "\\frac{x\\cos x-\\sin x}{x^2}" },
+          {
+            step: 1,
+            explanation: "Apply the quotient rule.",
+            math: "\\frac{x\\cos x-\\sin x}{x^2}",
+          },
         ],
       },
       {
@@ -1891,7 +2182,11 @@ const topicSeeds: readonly TopicSeed[] = [
           "Factor x in the numerator and simplify with $x^4$.",
         ],
         solution: [
-          { step: 1, explanation: "Apply the quotient rule.", math: "\\frac{x-2x\\ln x}{x^4}=\\frac{1-2\\ln x}{x^3}" },
+          {
+            step: 1,
+            explanation: "Apply the quotient rule.",
+            math: "\\frac{x-2x\\ln x}{x^4}=\\frac{1-2\\ln x}{x^3}",
+          },
         ],
       },
       {
@@ -1912,13 +2207,16 @@ const topicSeeds: readonly TopicSeed[] = [
           "Evaluate the numerator and denominator at x=1.",
         ],
         solution: [
-          { step: 1, explanation: "Differentiate and evaluate.", math: "q'(1)=\\frac{2(1)(2)-(2)}{2^2}=\\frac12" },
+          {
+            step: 1,
+            explanation: "Differentiate and evaluate.",
+            math: "q'(1)=\\frac{2(1)(2)-(2)}{2^2}=\\frac12",
+          },
         ],
       },
     ],
     frq: {
-      questionLatex:
-        "\\text{Let }q(x)=\\frac{x^2+1}{x+1},\\quad x\\ne -1.",
+      questionLatex: "\\text{Let }q(x)=\\frac{x^2+1}{x+1},\\quad x\\ne -1.",
       difficulty: 4,
       skillTags: ["quotient_rule", "tangent_line", "horizontal_tangent"],
       parts: [
@@ -1934,7 +2232,8 @@ const topicSeeds: readonly TopicSeed[] = [
         },
         {
           letter: "c",
-          promptMarkdown: "Find all x-values where $q$ has a horizontal tangent.",
+          promptMarkdown:
+            "Find all x-values where $q$ has a horizontal tangent.",
           points: 1,
         },
       ],
@@ -1946,12 +2245,37 @@ const topicSeeds: readonly TopicSeed[] = [
       rubric: {
         maxPoints: 6,
         criteria: [
-          { part: "a", points: 1, description: "Applies the quotient rule with correct subtraction order." },
-          { part: "a", points: 1, description: "Obtains denominator $(x+1)^2$." },
-          { part: "a", points: 1, description: "Simplifies numerator to $x^2+2x-1$." },
-          { part: "b", points: 1, description: "Finds $q(1)=1$ and $q'(1)=1/2$." },
-          { part: "b", points: 1, description: "Writes a correct tangent line equation." },
-          { part: "c", points: 1, description: "Solves $x^2+2x-1=0$ to get $x=-1\\pm\\sqrt2$." },
+          {
+            part: "a",
+            points: 1,
+            description:
+              "Applies the quotient rule with correct subtraction order.",
+          },
+          {
+            part: "a",
+            points: 1,
+            description: "Obtains denominator $(x+1)^2$.",
+          },
+          {
+            part: "a",
+            points: 1,
+            description: "Simplifies numerator to $x^2+2x-1$.",
+          },
+          {
+            part: "b",
+            points: 1,
+            description: "Finds $q(1)=1$ and $q'(1)=1/2$.",
+          },
+          {
+            part: "b",
+            points: 1,
+            description: "Writes a correct tangent line equation.",
+          },
+          {
+            part: "c",
+            points: 1,
+            description: "Solves $x^2+2x-1=0$ to get $x=-1\\pm\\sqrt2$.",
+          },
         ],
       },
       commonErrors: [
@@ -2039,7 +2363,11 @@ const topicSeeds: readonly TopicSeed[] = [
         questionLatex:
           "\\text{If }h(x)=\\sec x,\\text{ then }h'\\left(\\frac\\pi3\\right)=",
         difficulty: 3,
-        skillTags: ["trig_derivatives", "sec_derivative", "evaluate_derivative"],
+        skillTags: [
+          "trig_derivatives",
+          "sec_derivative",
+          "evaluate_derivative",
+        ],
         choices: ["$2\\sqrt3$", "$\\sqrt3$", "$4$", "$-2\\sqrt3$"],
         correctLetter: "A",
         rationales: {
@@ -2078,7 +2406,11 @@ const topicSeeds: readonly TopicSeed[] = [
           "At $\\pi/2$, $\\csc x=1$ and $\\cot x=0$.",
         ],
         solution: [
-          { step: 1, explanation: "Differentiate and evaluate.", math: "r'(x)=-\\csc x\\cot x+\\csc^2x,\\quad r'\\left(\\frac\\pi2\\right)=0+1=1" },
+          {
+            step: 1,
+            explanation: "Differentiate and evaluate.",
+            math: "r'(x)=-\\csc x\\cot x+\\csc^2x,\\quad r'\\left(\\frac\\pi2\\right)=0+1=1",
+          },
         ],
       },
       {
@@ -2099,7 +2431,11 @@ const topicSeeds: readonly TopicSeed[] = [
           "Add the two derivative contributions.",
         ],
         solution: [
-          { step: 1, explanation: "Differentiate and evaluate.", math: "s'\\left(\\frac\\pi4\\right)=2+\\sqrt2" },
+          {
+            step: 1,
+            explanation: "Differentiate and evaluate.",
+            math: "s'\\left(\\frac\\pi4\\right)=2+\\sqrt2",
+          },
         ],
       },
     ],
@@ -2135,11 +2471,27 @@ const topicSeeds: readonly TopicSeed[] = [
       rubric: {
         maxPoints: 6,
         criteria: [
-          { part: "a", points: 1, description: "Correctly differentiates tan x." },
-          { part: "a", points: 1, description: "Correctly differentiates sec x." },
+          {
+            part: "a",
+            points: 1,
+            description: "Correctly differentiates tan x.",
+          },
+          {
+            part: "a",
+            points: 1,
+            description: "Correctly differentiates sec x.",
+          },
           { part: "b", points: 1, description: "Finds $s(\\pi/4)=1+\\sqrt2$." },
-          { part: "b", points: 1, description: "Finds $s'(\\pi/4)=2+\\sqrt2$." },
-          { part: "b", points: 1, description: "Writes a correct tangent line equation." },
+          {
+            part: "b",
+            points: 1,
+            description: "Finds $s'(\\pi/4)=2+\\sqrt2$.",
+          },
+          {
+            part: "b",
+            points: 1,
+            description: "Writes a correct tangent line equation.",
+          },
           { part: "c", points: 1, description: "Finds $r'(\\pi/2)=1$." },
         ],
       },
@@ -2151,8 +2503,7 @@ const topicSeeds: readonly TopicSeed[] = [
       workedSolution: [
         {
           part: "a",
-          explanation:
-            "$s'(x)=\\sec^2x+\\sec x\\tan x$.",
+          explanation: "$s'(x)=\\sec^2x+\\sec x\\tan x$.",
         },
         {
           part: "b",

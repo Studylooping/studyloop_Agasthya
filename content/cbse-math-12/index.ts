@@ -5,6 +5,7 @@ import { u3Calculus } from "./u3-calculus";
 import { u4Vectors3d } from "./u4-vectors-3d";
 import { u5LinearProgramming } from "./u5-linear-programming";
 import { u6Probability } from "./u6-probability";
+import { math12ChallengePractice } from "./challenge-practice";
 
 export const cbseMath12: Course = {
   slug: "cbse-math-12",
@@ -17,5 +18,13 @@ export const cbseMath12: Course = {
   status: "live",
   description:
     "Board-syllabus aligned Class 12 Mathematics practice with worked solutions, hints, and local progress memory.",
-  units: [u1RelationsFunctions, u2Algebra, u3Calculus, u4Vectors3d, u5LinearProgramming, u6Probability],
+  units: [
+    u1RelationsFunctions,
+    u2Algebra,
+    u3Calculus,
+    u4Vectors3d,
+    u5LinearProgramming,
+    u6Probability,
+    math12ChallengePractice,
+  ],
 };

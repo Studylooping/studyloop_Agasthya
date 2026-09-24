@@ -1,10 +1,11 @@
 import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/seo";
 import { SITE } from "@/lib/utils";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata("/disclaimer", {
   title: "Disclaimer",
   description: `Trademark, content, and AI disclosures for ${SITE.name}.`,
-};
+});
 
 export default function DisclaimerPage() {
   return (
@@ -19,15 +20,21 @@ export default function DisclaimerPage() {
       <div className="space-y-8 text-base leading-relaxed">
         <section className="space-y-3">
           <h2 className="text-2xl font-semibold tracking-tight">
-            Trademark notice
+            Exam-board and trademark notice
           </h2>
           <p>
             AP&reg; is a trademark registered by the College Board. {SITE.name}{" "}
             is an independent, student-led educational project. We are not
             affiliated with, sponsored by, or endorsed by the College Board.
-            References to AP course frameworks on this site are descriptive
-            and used in good faith to help students find the right material
-            for their exam preparation.
+            References to AP course frameworks on this site are descriptive and
+            used in good faith to help students find the right material for
+            their exam preparation.
+          </p>
+          <p>
+            {SITE.name} is also not affiliated with, sponsored by, or endorsed
+            by CBSE or NCERT. References to CBSE classes, subject codes,
+            syllabi, and NCERT topics are descriptive labels for syllabus
+            alignment and student navigation.
           </p>
         </section>
 
@@ -50,19 +57,15 @@ export default function DisclaimerPage() {
             AI disclosure
           </h2>
           <p>
-            Questions may be drafted with AI assistance and reviewed by a
-            human before publication. AI does not grade your answers. Current
-            multiple-choice items are checked by deterministic code;
-            free-response items use self-grading rubrics; future algebraic
-            answers should be verified for mathematical equivalence using
-            SymPy or an equivalent symbolic system.
-          </p>
-          <p>
-            Items carry visible badges showing the level of human review:
-            "Needs mentor review" (alpha content), "AI-reviewed" (founder
-            spot-checked), or "Verified by [Mentor]" (subject teacher signed
-            off). You can always see which level of review an item has
-            received.
+            Questions may be drafted with AI assistance and revised through
+            automated checks, reviewer passes, and founder review before
+            publication. The aim is original practice that matches the style and
+            rigor of the relevant exam without copying from published papers,
+            textbooks, or commercial prep resources. AI does not grade your
+            answers. Current multiple-choice items are checked by deterministic
+            code; free-response items use self-grading rubrics; future algebraic
+            answers should be verified for mathematical equivalence using SymPy
+            or an equivalent symbolic system.
           </p>
         </section>
 
@@ -122,10 +125,55 @@ export default function DisclaimerPage() {
             Local nickname profiles
           </h2>
           <p>
-            Nickname profiles are local browser memory, not real accounts.
-            They are meant to separate progress, saved errors, and review
-            status for different students using the same device. Do not use
-            real names. Clearing browser data may delete this local progress.
+            Nickname profiles are local browser memory, not real accounts. They
+            are meant to separate progress, saved errors, and review status for
+            different students using the same device. Do not use real names.
+            Clearing browser data may delete this local progress.
+          </p>
+        </section>
+
+        <section className="space-y-3">
+          <h2 className="text-2xl font-semibold tracking-tight">
+            Student privacy and children's data
+          </h2>
+          <p>
+            {SITE.name} is designed for students, including students under 18.
+            India's{" "}
+            <a
+              href="https://www.meity.gov.in/static/uploads/2024/06/2bf1f0e9f04e6fb4f8fef35e82c42aa5.pdf"
+              rel="noopener noreferrer"
+              target="_blank"
+              className="text-primary underline underline-offset-4 hover:no-underline"
+            >
+              Digital Personal Data Protection Act, 2023
+            </a>{" "}
+            treats a person under 18 as a child and places special duties on
+            anyone processing a child's personal data, including verifiable
+            parental consent and restrictions on tracking, behavioural
+            monitoring, and targeted advertising directed at children.
+          </p>
+          <p>
+            To avoid collecting student data during ordinary practice,{" "}
+            {SITE.name} does not require server accounts, passwords, real names,
+            school names, phone numbers, server-side answer history, advertising
+            trackers or behavioural profiles. Practice
+            progress, drafts, saved mistakes, and nickname profiles stay in the
+            browser's local storage on the device being used.
+          </p>
+          <p>
+            Cloudflare Web Analytics measures aggregate page views, referrers
+            and website performance. It does not use analytics cookies or
+            browser fingerprinting. StudyLoop does not send your answers,
+            nickname, saved mistakes or hint activity to this service.
+          </p>
+          <p>
+            Feedback reports are one exception because they are deliberately
+            sent to us for review. A report may include the page address,
+            selected issue type, technical context, optional written details,
+            and an optional email address if you choose to provide one. Students
+            should not include unnecessary personal information in feedback; if
+            you are under 18, use feedback with a parent, guardian, or teacher's
+            knowledge.
           </p>
         </section>
 
@@ -135,10 +183,11 @@ export default function DisclaimerPage() {
           </h2>
           <p>
             We do our best to provide accurate, useful practice content, but
-            errors may exist. Your performance on the actual AP exam depends
-            on many factors beyond your use of this site. {SITE.name} and its
-            contributors accept no responsibility for exam outcomes or for
-            decisions students or families make based on practice results.
+            errors may exist. Your performance on an actual exam depends on many
+            factors beyond your use of this site. {SITE.name} and its
+            contributors accept no responsibility for exam outcomes, school
+            marks, admissions results, or decisions students or families make
+            based on practice results.
           </p>
         </section>
       </div>

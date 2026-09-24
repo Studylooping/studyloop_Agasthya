@@ -1,17 +1,16 @@
 import type { Metadata } from "next";
-import {
-  COURSES,
-  itemSlug,
-} from "@/content/courses";
+import { pageMetadata } from "@/lib/seo";
+import { COURSES, itemSlug } from "@/content/courses";
 import {
   ReviewNotebook,
   type ReviewContentEntry,
 } from "@/components/review/review-notebook";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata("/review", {
   title: "Review Notebook",
   description: "Local StudyLoop review notebook for saved practice errors.",
-};
+  robots: { index: false, follow: true },
+});
 
 function getReviewEntries(): ReviewContentEntry[] {
   return COURSES.flatMap((course) =>

@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/seo";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ArrowLeft, ArrowRight, Calculator, Ban } from "lucide-react";
@@ -43,6 +44,8 @@ function itemKindLabel(item: Item) {
 }
 
 export function generateStaticParams(): Params[] {
+  if (process.env.NODE_ENV === "development") return [];
+
   return COURSES.flatMap((c) =>
     c.units
       .filter((u) => u.status === "live")
@@ -66,9 +69,9 @@ export async function generateMetadata({
   const { courseSlug, unitSlug, itemSlug } = await params;
   const found = findItem(courseSlug, unitSlug, itemSlug);
   if (!found) return { title: "Not found" };
-  return {
-    title: `${found.item.kind === "frq" ? "FRQ" : "Practice"} — ${found.unit.title}`,
-  };
+  return pageMetadata(`/${courseSlug}/${unitSlug}/${itemSlug}`, {
+    title: `${itemKindLabel(found.item)} - ${found.unit.title}`,
+  });
 }
 
 export default async function ItemPage({
@@ -92,9 +95,13 @@ export default async function ItemPage({
   const nextItem =
     currentIndex < items.length - 1 ? items[currentIndex + 1] : null;
   const slugOf = toSlug;
+  const followUp = topic.items.find((candidate) =>
+    candidate.kind === "mc_single" && candidate.contentId !== item.contentId &&
+    candidate.skillTags.some((tag) => item.skillTags.includes(tag)),
+  );
 
   return (
-    <div className="container max-w-prose px-4 py-12">
+    <div className="container max-w-prose px-4 py-6">
       <Breadcrumb
         items={[
           { label: "Home", href: "/" },
@@ -150,11 +157,11 @@ export default async function ItemPage({
 
         {/* ── Attempt UI (client component) ────────────────────────────── */}
         {item.kind === "mc_single" ? (
-          <McAttempt item={item} />
+          <McAttempt key={item.contentId} item={item} followUpHref={followUp ? `/${course.slug}/${unit.slug}/${slugOf(followUp.contentId)}` : undefined} />
         ) : item.kind === "numeric" ? (
           <NumericAttempt item={item} />
         ) : item.kind === "frq" ? (
-          <FrqAttempt item={item} />
+          <FrqAttempt key={item.contentId} item={item} />
         ) : (
           <Card className="p-6 text-sm text-muted-foreground">
             This item type ({item.kind}) isn't yet supported in v0.1. It will be

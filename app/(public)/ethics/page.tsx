@@ -1,10 +1,11 @@
 import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/seo";
 import { SITE } from "@/lib/utils";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata("/ethics", {
   title: "Ethics",
   description: `Our commitments to students using ${SITE.name}.`,
-};
+});
 
 export default function EthicsPage() {
   return (
@@ -24,25 +25,26 @@ export default function EthicsPage() {
             1. The AI may make mistakes.
           </h2>
           <p>
-            Many items on {SITE.name} are drafted by AI and reviewed by the
-            founder before publication. Teacher verification happens over time
-            as mentors join. We're upfront about this on every item with an
-            "Needs mentor review" or "AI-reviewed" badge that flips to
-            "Verified by [Mentor]" once a subject teacher has signed off. If
-            you spot an error during alpha testing, note the item URL and
-            content ID so it can be retired or corrected quickly.
+            Many items on {SITE.name} are drafted with AI assistance and then
+            revised through automated checks, reviewer passes, and founder
+            review before publication. The questions are meant to closely match
+            the style and rigor of the relevant exam, including CBSE-style board
+            questions where the course is a CBSE course, but mistakes can still
+            happen. If you spot a wrong answer, unclear wording, broken LaTeX,
+            or a poor figure, use the feedback button so the item can be
+            corrected quickly.
           </p>
         </section>
 
         <section className="space-y-3">
           <h2 className="text-2xl font-semibold tracking-tight">
-            2. This site is for learning support, not official scoring.
+            2. This site supports learning; it does not predict scores.
           </h2>
           <p>
             We give you free, useful practice and feedback. We do not predict,
-            estimate, or simulate your actual AP exam score. The College Board
-            sets the scoring criteria for the real exam; we are independent
-            and not affiliated with them.
+            estimate, or guarantee your score in CBSE board exams, AP exams, or
+            any school assessment. Exam boards and schools set their own papers,
+            marking schemes, and scoring criteria.
           </p>
         </section>
 
@@ -77,7 +79,8 @@ export default function EthicsPage() {
 
         <section className="space-y-3">
           <h2 className="text-2xl font-semibold tracking-tight">
-            4. We minimize what we collect, and we never sell anything about you.
+            4. We minimize what we collect, and we never sell anything about
+            you.
           </h2>
           <p>
             You can practise without a server account. StudyLoop does not place
@@ -123,8 +126,8 @@ export default function EthicsPage() {
         </section>
 
         <p className="pt-4 text-sm text-muted-foreground">
-          These commitments are non-negotiable. They're built into how the
-          site is designed at the code level — not just policy promises.
+          These commitments are non-negotiable. They're built into how the site
+          is designed at the code level — not just policy promises.
         </p>
       </div>
     </article>

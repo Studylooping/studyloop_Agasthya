@@ -1,0 +1,27 @@
+{
+  "extends": "./tsconfig.json",
+  "include": [
+    "app/**/*.ts",
+    "app/**/*.tsx",
+    "pages/**/*.ts",
+    "pages/**/*.tsx",
+    "components/**/*.ts",
+    "components/**/*.tsx",
+    "content/**/*.ts",
+    "lib/**/*.ts",
+    "workers/**/*.ts",
+    "middleware.ts",
+    "open-next.config.ts",
+    "cloudflare-env.d.ts",
+    "next-env.d.ts"
+  ],
+  "exclude": [
+    "node_modules",
+    ".next",
+    ".next-dev",
+    ".next-*",
+    "out",
+    "review-packages",
+    "handoff-packages"
+  ]
+}

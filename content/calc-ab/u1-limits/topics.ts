@@ -13,7 +13,7 @@ import type {
 
 const COURSE = "calc-ab";
 const UNIT = "u1-limits";
-const VERSION = "0.3.5";
+const VERSION = "0.3.6";
 const REVIEW_STATUS = "human_review_required" as const;
 const SOURCE_TYPE = "original_ai_assisted_question" as const;
 const LETTERS = ["A", "B", "C", "D"] as const;
@@ -73,8 +73,14 @@ function hints(items: readonly [string, string, string]): Hint[] {
   }));
 }
 
-function calibrateMcDifficulty(seedDifficulty: Difficulty, index: number): Difficulty {
-  return Math.max(seedDifficulty, MC_DIFFICULTY_FLOORS[index] ?? 2) as Difficulty;
+function calibrateMcDifficulty(
+  seedDifficulty: Difficulty,
+  index: number,
+): Difficulty {
+  return Math.max(
+    seedDifficulty,
+    MC_DIFFICULTY_FLOORS[index] ?? 2,
+  ) as Difficulty;
 }
 
 function calibrateFrqDifficulty(seedDifficulty: Difficulty): Difficulty {
@@ -91,11 +97,11 @@ function makeMc(meta: TopicMeta, seed: McSeed, index: number): McSingleItem {
       isCorrect,
       rationaleIfWrong: isCorrect
         ? null
-        : seed.rationales?.[letter] ??
-          "This answer does not follow from the limit definition or the required algebraic step.",
+        : (seed.rationales?.[letter] ??
+          "This answer does not follow from the limit definition or the required algebraic step."),
       misconceptionTag: isCorrect
         ? null
-        : seed.misconceptionTags?.[letter] ?? "incorrect_limit_reasoning",
+        : (seed.misconceptionTags?.[letter] ?? "incorrect_limit_reasoning"),
     };
   }) as McChoice[];
 
@@ -528,8 +534,16 @@ const topicSeeds: readonly TopicSeed[] = [
           "Substitute $h=0$ only after the limit expression is simplified.",
         ],
         solution: [
-          { step: 1, explanation: "Start with the given average rate.", math: "4+h" },
-          { step: 2, explanation: "Let the interval width shrink to zero.", math: "\\lim_{h\\to0}(4+h)=4" },
+          {
+            step: 1,
+            explanation: "Start with the given average rate.",
+            math: "4+h",
+          },
+          {
+            step: 2,
+            explanation: "Let the interval width shrink to zero.",
+            math: "\\lim_{h\\to0}(4+h)=4",
+          },
         ],
       },
       {
@@ -550,8 +564,16 @@ const topicSeeds: readonly TopicSeed[] = [
           "Divide the change in position by $0.1$.",
         ],
         solution: [
-          { step: 1, explanation: "Evaluate the two positions.", math: "s(1.1)=16(1.21)=19.36,\\quad s(1)=16" },
-          { step: 2, explanation: "Divide by the change in time.", math: "\\frac{19.36-16}{0.1}=33.6" },
+          {
+            step: 1,
+            explanation: "Evaluate the two positions.",
+            math: "s(1.1)=16(1.21)=19.36,\\quad s(1)=16",
+          },
+          {
+            step: 2,
+            explanation: "Divide by the change in time.",
+            math: "\\frac{19.36-16}{0.1}=33.6",
+          },
         ],
       },
       {
@@ -572,8 +594,17 @@ const topicSeeds: readonly TopicSeed[] = [
           "Let $h\\to0$ after the quotient is simplified.",
         ],
         solution: [
-          { step: 1, explanation: "Use the limit definition of the derivative.", math: "f'(a)=\\lim_{h\\to0}\\frac{f(a+h)-f(a)}{h}" },
-          { step: 2, explanation: "Substitute the simplified quotient and evaluate the limit.", math: "f'(a)=\\lim_{h\\to0}(7-3h)=7" },
+          {
+            step: 1,
+            explanation: "Use the limit definition of the derivative.",
+            math: "f'(a)=\\lim_{h\\to0}\\frac{f(a+h)-f(a)}{h}",
+          },
+          {
+            step: 2,
+            explanation:
+              "Substitute the simplified quotient and evaluate the limit.",
+            math: "f'(a)=\\lim_{h\\to0}(7-3h)=7",
+          },
         ],
       },
       {
@@ -594,15 +625,26 @@ const topicSeeds: readonly TopicSeed[] = [
           "The denominator approaches 2.",
         ],
         solution: [
-          { step: 1, explanation: "Take the limit of the simplified secant slope.", math: "\\lim_{h\\to0}\\frac{-50}{2+h}" },
-          { step: 2, explanation: "Substitute h=0.", math: "\\frac{-50}{2}=-25" },
+          {
+            step: 1,
+            explanation: "Take the limit of the simplified secant slope.",
+            math: "\\lim_{h\\to0}\\frac{-50}{2+h}",
+          },
+          {
+            step: 2,
+            explanation: "Substitute h=0.",
+            math: "\\frac{-50}{2}=-25",
+          },
         ],
       },
       {
         questionLatex:
           "\\begin{array}{c|cccc}\\text{interval}&[2.9,3]&[2.99,3]&[3,3.01]&[3,3.1]\\\\\\hline \\text{average velocity}&-2.10&-2.01&-1.99&-1.90\\end{array}\\quad\\text{Which estimate for the instantaneous velocity at }t=3\\text{ is best supported?}",
         difficulty: 3,
-        skillTags: ["limits.graphical_interpretation", "instantaneous_velocity"],
+        skillTags: [
+          "limits.graphical_interpretation",
+          "instantaneous_velocity",
+        ],
         choices: [
           "$-2\\text{ units/s, because the nearby average velocities approach }-2$",
           "$0\\text{ units/s, because the interval widths approach }0$",
@@ -621,8 +663,18 @@ const topicSeeds: readonly TopicSeed[] = [
           "Keep the sign because velocity has direction.",
         ],
         solution: [
-          { step: 1, explanation: "The average velocities from both sides are moving toward the same value.", math: "-2.10,-2.01,-1.99,-1.90\\to -2" },
-          { step: 2, explanation: "The instantaneous velocity is the limiting value of those average velocities.", math: "-2\\text{ units/s}" },
+          {
+            step: 1,
+            explanation:
+              "The average velocities from both sides are moving toward the same value.",
+            math: "-2.10,-2.01,-1.99,-1.90\\to -2",
+          },
+          {
+            step: 2,
+            explanation:
+              "The instantaneous velocity is the limiting value of those average velocities.",
+            math: "-2\\text{ units/s}",
+          },
         ],
       },
     ],
@@ -631,9 +683,22 @@ const topicSeeds: readonly TopicSeed[] = [
       difficulty: 3,
       skillTags: ["limits.instantaneous_rate", "average_rate_of_change"],
       parts: [
-        { letter: "a", promptMarkdown: "Find the average velocity on $[1,1.5]$.", points: 1 },
-        { letter: "b", promptMarkdown: "Find the average velocity on $[1,1.1]$.", points: 1 },
-        { letter: "c", promptMarkdown: "Find the average velocity on $[1,1+k]$ and use it to determine the instantaneous velocity at $t=1$.", points: 4 },
+        {
+          letter: "a",
+          promptMarkdown: "Find the average velocity on $[1,1.5]$.",
+          points: 1,
+        },
+        {
+          letter: "b",
+          promptMarkdown: "Find the average velocity on $[1,1.1]$.",
+          points: 1,
+        },
+        {
+          letter: "c",
+          promptMarkdown:
+            "Find the average velocity on $[1,1+k]$ and use it to determine the instantaneous velocity at $t=1$.",
+          points: 4,
+        },
       ],
       hints: [
         "Average velocity on $[a,b]$ is $\\frac{h(b)-h(a)}{b-a}$.",
@@ -643,12 +708,34 @@ const topicSeeds: readonly TopicSeed[] = [
       rubric: {
         maxPoints: 6,
         criteria: [
-          { part: "a", points: 1, description: "Correctly computes the average velocity on [1,1.5] as 8." },
-          { part: "b", points: 1, description: "Correctly computes the average velocity on [1,1.1] as 14.4." },
-          { part: "c", points: 1, description: "Sets up the difference quotient with 1+k and 1." },
-          { part: "c", points: 1, description: "Correctly expands and simplifies h(1+k)-h(1)." },
+          {
+            part: "a",
+            points: 1,
+            description:
+              "Correctly computes the average velocity on [1,1.5] as 8.",
+          },
+          {
+            part: "b",
+            points: 1,
+            description:
+              "Correctly computes the average velocity on [1,1.1] as 14.4.",
+          },
+          {
+            part: "c",
+            points: 1,
+            description: "Sets up the difference quotient with 1+k and 1.",
+          },
+          {
+            part: "c",
+            points: 1,
+            description: "Correctly expands and simplifies h(1+k)-h(1).",
+          },
           { part: "c", points: 1, description: "Cancels k to get 16-16k." },
-          { part: "c", points: 1, description: "Takes the limit k -> 0 and concludes 16." },
+          {
+            part: "c",
+            points: 1,
+            description: "Takes the limit k -> 0 and concludes 16.",
+          },
         ],
       },
       commonErrors: [
@@ -657,9 +744,21 @@ const topicSeeds: readonly TopicSeed[] = [
         "Dropping the negative sign in the quadratic term.",
       ],
       workedSolution: [
-        { part: "a", explanation: "$h(1)=96$ and $h(1.5)=100$, so the average velocity is $(100-96)/0.5=8$." },
-        { part: "b", explanation: "$h(1.1)=97.44$, so the average velocity is $(97.44-96)/0.1=14.4$." },
-        { part: "c", explanation: "$h(1+k)=64+48(1+k)-16(1+k)^2=96+16k-16k^2$. Thus $\\frac{h(1+k)-h(1)}{k}=\\frac{16k-16k^2}{k}=16-16k$. Letting $k\\to0$ gives instantaneous velocity $16$." },
+        {
+          part: "a",
+          explanation:
+            "$h(1)=96$ and $h(1.5)=100$, so the average velocity is $(100-96)/0.5=8$.",
+        },
+        {
+          part: "b",
+          explanation:
+            "$h(1.1)=97.44$, so the average velocity is $(97.44-96)/0.1=14.4$.",
+        },
+        {
+          part: "c",
+          explanation:
+            "$h(1+k)=64+48(1+k)-16(1+k)^2=96+16k-16k^2$. Thus $\\frac{h(1+k)-h(1)}{k}=\\frac{16k-16k^2}{k}=16-16k$. Letting $k\\to0$ gives instantaneous velocity $16$.",
+        },
       ],
     },
   },
@@ -692,8 +791,18 @@ const topicSeeds: readonly TopicSeed[] = [
           "Then compare the limit with the separately defined value f(2).",
         ],
         solution: [
-          { step: 1, explanation: "Evaluate the one-sided limits from the neighboring formulas.", math: "\\lim_{x\\to2^-}(x+3)=5,\\quad \\lim_{x\\to2^+}(2x+1)=5" },
-          { step: 2, explanation: "The two-sided limit exists and equals 5, while the point value is defined separately.", math: "\\lim_{x\\to2}f(x)=5,\\quad f(2)=9" },
+          {
+            step: 1,
+            explanation:
+              "Evaluate the one-sided limits from the neighboring formulas.",
+            math: "\\lim_{x\\to2^-}(x+3)=5,\\quad \\lim_{x\\to2^+}(2x+1)=5",
+          },
+          {
+            step: 2,
+            explanation:
+              "The two-sided limit exists and equals 5, while the point value is defined separately.",
+            math: "\\lim_{x\\to2}f(x)=5,\\quad f(2)=9",
+          },
         ],
       },
       {
@@ -714,8 +823,17 @@ const topicSeeds: readonly TopicSeed[] = [
           "The value at x=4 does not control the limit.",
         ],
         solution: [
-          { step: 1, explanation: "Compute the two one-sided limits.", math: "\\lim_{x\\to4^-}(x^2-1)=15,\\quad \\lim_{x\\to4^+}(2x+7)=15" },
-          { step: 2, explanation: "Because the one-sided limits agree, the two-sided limit is the common value.", math: "\\lim_{x\\to4}g(x)=15" },
+          {
+            step: 1,
+            explanation: "Compute the two one-sided limits.",
+            math: "\\lim_{x\\to4^-}(x^2-1)=15,\\quad \\lim_{x\\to4^+}(2x+7)=15",
+          },
+          {
+            step: 2,
+            explanation:
+              "Because the one-sided limits agree, the two-sided limit is the common value.",
+            math: "\\lim_{x\\to4}g(x)=15",
+          },
         ],
       },
       {
@@ -736,8 +854,16 @@ const topicSeeds: readonly TopicSeed[] = [
           "Different one-sided limits mean the two-sided limit does not exist.",
         ],
         solution: [
-          { step: 1, explanation: "The one-sided limits are different.", math: "4\\ne6" },
-          { step: 2, explanation: "The two-sided limit does not exist.", math: null },
+          {
+            step: 1,
+            explanation: "The one-sided limits are different.",
+            math: "4\\ne6",
+          },
+          {
+            step: 2,
+            explanation: "The two-sided limit does not exist.",
+            math: null,
+          },
         ],
       },
       {
@@ -758,8 +884,17 @@ const topicSeeds: readonly TopicSeed[] = [
           "Let x approach 1 in that branch.",
         ],
         solution: [
-          { step: 1, explanation: "A right-hand limit uses the branch for x greater than 1.", math: "f(x)=5-x" },
-          { step: 2, explanation: "Evaluate the limiting value from that side.", math: "\\lim_{x\\to1^+}(5-x)=4" },
+          {
+            step: 1,
+            explanation:
+              "A right-hand limit uses the branch for x greater than 1.",
+            math: "f(x)=5-x",
+          },
+          {
+            step: 2,
+            explanation: "Evaluate the limiting value from that side.",
+            math: "\\lim_{x\\to1^+}(5-x)=4",
+          },
         ],
       },
       {
@@ -781,8 +916,16 @@ const topicSeeds: readonly TopicSeed[] = [
           "For the limit, follow the branches near x=2.",
         ],
         solution: [
-          { step: 1, explanation: "The branches approach the open circle at y=7.", math: null },
-          { step: 2, explanation: "The filled point does not change the limit.", math: "\\lim_{x\\to2}f(x)=7" },
+          {
+            step: 1,
+            explanation: "The branches approach the open circle at y=7.",
+            math: null,
+          },
+          {
+            step: 2,
+            explanation: "The filled point does not change the limit.",
+            math: "\\lim_{x\\to2}f(x)=7",
+          },
         ],
       },
     ],
@@ -792,9 +935,22 @@ const topicSeeds: readonly TopicSeed[] = [
       difficulty: 2,
       skillTags: ["limits.notation", "one_sided_limits"],
       parts: [
-        { letter: "a", promptMarkdown: "Find $\\lim_{x\\to2^-}f(x)$.", points: 1 },
-        { letter: "b", promptMarkdown: "Find $\\lim_{x\\to2^+}f(x)$.", points: 1 },
-        { letter: "c", promptMarkdown: "Find $\\lim_{x\\to2}f(x)$ and compare it with $f(2)$.", points: 3 },
+        {
+          letter: "a",
+          promptMarkdown: "Find $\\lim_{x\\to2^-}f(x)$.",
+          points: 1,
+        },
+        {
+          letter: "b",
+          promptMarkdown: "Find $\\lim_{x\\to2^+}f(x)$.",
+          points: 1,
+        },
+        {
+          letter: "c",
+          promptMarkdown:
+            "Find $\\lim_{x\\to2}f(x)$ and compare it with $f(2)$.",
+          points: 3,
+        },
       ],
       hints: [
         "Use the branch that matches the side of approach.",
@@ -804,11 +960,28 @@ const topicSeeds: readonly TopicSeed[] = [
       rubric: {
         maxPoints: 5,
         criteria: [
-          { part: "a", points: 1, description: "Correct left-hand limit of 3." },
-          { part: "b", points: 1, description: "Correct right-hand limit of 3." },
-          { part: "c", points: 1, description: "States the two-sided limit exists and equals 3." },
+          {
+            part: "a",
+            points: 1,
+            description: "Correct left-hand limit of 3.",
+          },
+          {
+            part: "b",
+            points: 1,
+            description: "Correct right-hand limit of 3.",
+          },
+          {
+            part: "c",
+            points: 1,
+            description: "States the two-sided limit exists and equals 3.",
+          },
           { part: "c", points: 1, description: "Identifies f(2)=5." },
-          { part: "c", points: 1, description: "Clearly explains that the limit and function value are different." },
+          {
+            part: "c",
+            points: 1,
+            description:
+              "Clearly explains that the limit and function value are different.",
+          },
         ],
       },
       commonErrors: [
@@ -817,9 +990,21 @@ const topicSeeds: readonly TopicSeed[] = [
         "Mixing up left-hand and right-hand notation.",
       ],
       workedSolution: [
-        { part: "a", explanation: "For $x<2$, $f(x)=x+1$, so $\\lim_{x\\to2^-}f(x)=2+1=3$." },
-        { part: "b", explanation: "For $x>2$, $f(x)=3x-3$, so $\\lim_{x\\to2^+}f(x)=6-3=3$." },
-        { part: "c", explanation: "Since both one-sided limits equal 3, $\\lim_{x\\to2}f(x)=3$. However, the piecewise definition gives $f(2)=5$, so the function value is not equal to the limit." },
+        {
+          part: "a",
+          explanation:
+            "For $x<2$, $f(x)=x+1$, so $\\lim_{x\\to2^-}f(x)=2+1=3$.",
+        },
+        {
+          part: "b",
+          explanation:
+            "For $x>2$, $f(x)=3x-3$, so $\\lim_{x\\to2^+}f(x)=6-3=3$.",
+        },
+        {
+          part: "c",
+          explanation:
+            "Since both one-sided limits equal 3, $\\lim_{x\\to2}f(x)=3$. However, the piecewise definition gives $f(2)=5$, so the function value is not equal to the limit.",
+        },
       ],
     },
   },
@@ -848,8 +1033,16 @@ const topicSeeds: readonly TopicSeed[] = [
           "The filled point gives f(1), not necessarily the limit.",
         ],
         solution: [
-          { step: 1, explanation: "Both branch descriptions approach the same y-value.", math: "\\lim_{x\\to1^-}(x+1)=2,\\quad \\lim_{x\\to1^+}(3-x)=2" },
-          { step: 2, explanation: "Therefore the limit is 2.", math: "\\lim_{x\\to1}f(x)=2" },
+          {
+            step: 1,
+            explanation: "Both branch descriptions approach the same y-value.",
+            math: "\\lim_{x\\to1^-}(x+1)=2,\\quad \\lim_{x\\to1^+}(3-x)=2",
+          },
+          {
+            step: 2,
+            explanation: "Therefore the limit is 2.",
+            math: "\\lim_{x\\to1}f(x)=2",
+          },
         ],
       },
       {
@@ -871,8 +1064,16 @@ const topicSeeds: readonly TopicSeed[] = [
           "The left and right values are different.",
         ],
         solution: [
-          { step: 1, explanation: "The left-hand and right-hand limits differ.", math: "4\\ne -2" },
-          { step: 2, explanation: "The two-sided limit does not exist.", math: null },
+          {
+            step: 1,
+            explanation: "The left-hand and right-hand limits differ.",
+            math: "4\\ne -2",
+          },
+          {
+            step: 2,
+            explanation: "The two-sided limit does not exist.",
+            math: null,
+          },
         ],
       },
       {
@@ -881,7 +1082,12 @@ const topicSeeds: readonly TopicSeed[] = [
         difficulty: 2,
         skillTags: ["limits.graphical_interpretation", "infinite_limits"],
         figure: positiveInfiniteAtThreeFigure,
-        choices: ["0", "3", "$\\infty$", "Does not exist because the sides disagree"],
+        choices: [
+          "0",
+          "3",
+          "$\\infty$",
+          "Does not exist because the sides disagree",
+        ],
         correctLetter: "C",
         rationales: {
           A: "The output values do not approach zero.",
@@ -894,15 +1100,26 @@ const topicSeeds: readonly TopicSeed[] = [
           "Use infinite-limit notation.",
         ],
         solution: [
-          { step: 1, explanation: "Both sides increase without bound.", math: null },
-          { step: 2, explanation: "So the infinite limit is positive infinity.", math: "\\lim_{x\\to3}f(x)=\\infty" },
+          {
+            step: 1,
+            explanation: "Both sides increase without bound.",
+            math: null,
+          },
+          {
+            step: 2,
+            explanation: "So the infinite limit is positive infinity.",
+            math: "\\lim_{x\\to3}f(x)=\\infty",
+          },
         ],
       },
       {
         questionLatex:
           "\\text{Use the graph of }f\\text{ shown. Which statement must be true?}",
         difficulty: 2,
-        skillTags: ["limits.graphical_interpretation", "removable_discontinuity"],
+        skillTags: [
+          "limits.graphical_interpretation",
+          "removable_discontinuity",
+        ],
         figure: removableDiscontinuityFigure,
         choices: [
           "$\\lim_{x\\to-2}f(x)=6$",
@@ -922,8 +1139,17 @@ const topicSeeds: readonly TopicSeed[] = [
           "The filled point controls the function value, not the approaching value.",
         ],
         solution: [
-          { step: 1, explanation: "Nearby graph points approach the hole.", math: "(-2,6)" },
-          { step: 2, explanation: "Thus the limit as x approaches -2 is 6, even though the filled point gives a different function value.", math: "\\lim_{x\\to-2}f(x)=6" },
+          {
+            step: 1,
+            explanation: "Nearby graph points approach the hole.",
+            math: "(-2,6)",
+          },
+          {
+            step: 2,
+            explanation:
+              "Thus the limit as x approaches -2 is 6, even though the filled point gives a different function value.",
+            math: "\\lim_{x\\to-2}f(x)=6",
+          },
         ],
       },
       {
@@ -945,21 +1171,43 @@ const topicSeeds: readonly TopicSeed[] = [
           "Two-sided limits require the same approaching y-value from both sides.",
         ],
         solution: [
-          { step: 1, explanation: "The one-sided graph behaviors are different.", math: "\\lim_{x\\to0^-}f(x)=-3,\\quad \\lim_{x\\to0^+}f(x)=-1" },
-          { step: 2, explanation: "Because the one-sided limits disagree, the two-sided limit does not exist.", math: null },
+          {
+            step: 1,
+            explanation: "The one-sided graph behaviors are different.",
+            math: "\\lim_{x\\to0^-}f(x)=-3,\\quad \\lim_{x\\to0^+}f(x)=-1",
+          },
+          {
+            step: 2,
+            explanation:
+              "Because the one-sided limits disagree, the two-sided limit does not exist.",
+            math: null,
+          },
         ],
       },
     ],
     frq: {
-      questionLatex:
-        "\\text{Use the graph of }f\\text{ shown.}",
+      questionLatex: "\\text{Use the graph of }f\\text{ shown.}",
       difficulty: 3,
       skillTags: ["limits.graphical_interpretation", "discontinuity_types"],
       figure: discontinuityTypesFigure,
       parts: [
-        { letter: "a", promptMarkdown: "Find $\\lim_{x\\to-1}f(x)$.", points: 1 },
-        { letter: "b", promptMarkdown: "Does $\\lim_{x\\to1}f(x)$ exist? Justify using one-sided limits.", points: 2 },
-        { letter: "c", promptMarkdown: "Write limit notation that describes the behavior of $f$ near $x=3$.", points: 2 },
+        {
+          letter: "a",
+          promptMarkdown: "Find $\\lim_{x\\to-1}f(x)$.",
+          points: 1,
+        },
+        {
+          letter: "b",
+          promptMarkdown:
+            "Does $\\lim_{x\\to1}f(x)$ exist? Justify using one-sided limits.",
+          points: 2,
+        },
+        {
+          letter: "c",
+          promptMarkdown:
+            "Write limit notation that describes the behavior of $f$ near $x=3$.",
+          points: 2,
+        },
       ],
       hints: [
         "For a hole, read the y-value the graph approaches.",
@@ -969,11 +1217,33 @@ const topicSeeds: readonly TopicSeed[] = [
       rubric: {
         maxPoints: 5,
         criteria: [
-          { part: "a", points: 1, description: "Correctly gives limit 2 at the hole." },
-          { part: "b", points: 1, description: "Correctly identifies the two one-sided limits 4 and -1." },
-          { part: "b", points: 1, description: "Concludes the two-sided limit does not exist because the one-sided limits differ." },
-          { part: "c", points: 1, description: "Uses negative infinity for falling without bound." },
-          { part: "c", points: 1, description: "Writes correct limit notation as x approaches 3." },
+          {
+            part: "a",
+            points: 1,
+            description: "Correctly gives limit 2 at the hole.",
+          },
+          {
+            part: "b",
+            points: 1,
+            description:
+              "Correctly identifies the two one-sided limits 4 and -1.",
+          },
+          {
+            part: "b",
+            points: 1,
+            description:
+              "Concludes the two-sided limit does not exist because the one-sided limits differ.",
+          },
+          {
+            part: "c",
+            points: 1,
+            description: "Uses negative infinity for falling without bound.",
+          },
+          {
+            part: "c",
+            points: 1,
+            description: "Writes correct limit notation as x approaches 3.",
+          },
         ],
       },
       commonErrors: [
@@ -982,9 +1252,21 @@ const topicSeeds: readonly TopicSeed[] = [
         "Writing DNE without describing the infinite behavior.",
       ],
       workedSolution: [
-        { part: "a", explanation: "Both branches approach the hole at $y=2$, so $\\lim_{x\\to-1}f(x)=2$." },
-        { part: "b", explanation: "$\\lim_{x\\to1^-}f(x)=4$ and $\\lim_{x\\to1^+}f(x)=-1$. Because these are different, $\\lim_{x\\to1}f(x)$ does not exist." },
-        { part: "c", explanation: "Falling without bound from both sides is written $\\lim_{x\\to3}f(x)=-\\infty$." },
+        {
+          part: "a",
+          explanation:
+            "Both branches approach the hole at $y=2$, so $\\lim_{x\\to-1}f(x)=2$.",
+        },
+        {
+          part: "b",
+          explanation:
+            "$\\lim_{x\\to1^-}f(x)=4$ and $\\lim_{x\\to1^+}f(x)=-1$. Because these are different, $\\lim_{x\\to1}f(x)$ does not exist.",
+        },
+        {
+          part: "c",
+          explanation:
+            "Falling without bound from both sides is written $\\lim_{x\\to3}f(x)=-\\infty$.",
+        },
       ],
     },
   },
@@ -1018,8 +1300,17 @@ const topicSeeds: readonly TopicSeed[] = [
           "A two-sided limit needs the same value from both sides.",
         ],
         solution: [
-          { step: 1, explanation: "Read the one-sided trends from the table.", math: "\\lim_{x\\to2^-}f(x)\\approx4,\\quad \\lim_{x\\to2^+}f(x)\\approx5" },
-          { step: 2, explanation: "Because the one-sided trends differ, the table supports a non-existent two-sided limit.", math: null },
+          {
+            step: 1,
+            explanation: "Read the one-sided trends from the table.",
+            math: "\\lim_{x\\to2^-}f(x)\\approx4,\\quad \\lim_{x\\to2^+}f(x)\\approx5",
+          },
+          {
+            step: 2,
+            explanation:
+              "Because the one-sided trends differ, the table supports a non-existent two-sided limit.",
+            math: null,
+          },
         ],
       },
       {
@@ -1041,9 +1332,22 @@ const topicSeeds: readonly TopicSeed[] = [
           "Different one-sided trends mean no two-sided limit.",
         ],
         solution: [
-          { step: 1, explanation: "The left-hand table values approach 2.", math: null },
-          { step: 2, explanation: "The right-hand table values approach 5.", math: null },
-          { step: 3, explanation: "Since 2 and 5 differ, the two-sided limit does not exist.", math: null },
+          {
+            step: 1,
+            explanation: "The left-hand table values approach 2.",
+            math: null,
+          },
+          {
+            step: 2,
+            explanation: "The right-hand table values approach 5.",
+            math: null,
+          },
+          {
+            step: 3,
+            explanation:
+              "Since 2 and 5 differ, the two-sided limit does not exist.",
+            math: null,
+          },
         ],
       },
       {
@@ -1065,8 +1369,16 @@ const topicSeeds: readonly TopicSeed[] = [
           "Estimate the common approaching output.",
         ],
         solution: [
-          { step: 1, explanation: "Near x=0, f(x) is about 0.99998.", math: null },
-          { step: 2, explanation: "The estimated limit is 1.", math: "\\lim_{x\\to0}f(x)\\approx1" },
+          {
+            step: 1,
+            explanation: "Near x=0, f(x) is about 0.99998.",
+            math: null,
+          },
+          {
+            step: 2,
+            explanation: "The estimated limit is 1.",
+            math: "\\lim_{x\\to0}f(x)\\approx1",
+          },
         ],
       },
       {
@@ -1093,8 +1405,18 @@ const topicSeeds: readonly TopicSeed[] = [
           "From the right, the values become large positive.",
         ],
         solution: [
-          { step: 1, explanation: "Left side: -10, -100 suggests decreasing without bound.", math: null },
-          { step: 2, explanation: "Right side: 100, 10 near the closer entry suggests increasing without bound as x approaches 3 from the right.", math: null },
+          {
+            step: 1,
+            explanation:
+              "Left side: -10, -100 suggests decreasing without bound.",
+            math: null,
+          },
+          {
+            step: 2,
+            explanation:
+              "Right side: 100, 10 near the closer entry suggests increasing without bound as x approaches 3 from the right.",
+            math: null,
+          },
         ],
       },
       {
@@ -1121,8 +1443,16 @@ const topicSeeds: readonly TopicSeed[] = [
           "The table separately gives p(5)=0.",
         ],
         solution: [
-          { step: 1, explanation: "The closest nearby values suggest the limit is 7.", math: "7.02\\to7,\\quad 6.98\\to7" },
-          { step: 2, explanation: "The table also shows the function value at x=5 is 0.", math: "p(5)=0" },
+          {
+            step: 1,
+            explanation: "The closest nearby values suggest the limit is 7.",
+            math: "7.02\\to7,\\quad 6.98\\to7",
+          },
+          {
+            step: 2,
+            explanation: "The table also shows the function value at x=5 is 0.",
+            math: "p(5)=0",
+          },
         ],
       },
     ],
@@ -1133,9 +1463,24 @@ const topicSeeds: readonly TopicSeed[] = [
       calculatorAllowed: true,
       skillTags: ["limits.tables", "limit_laws"],
       parts: [
-        { letter: "a", promptMarkdown: "Estimate $\\lim_{x\\to3}f(x)$ and $\\lim_{x\\to3}g(x)$.", points: 2 },
-        { letter: "b", promptMarkdown: "Use your estimates to find $\\lim_{x\\to3}(f(x)+g(x))$.", points: 1 },
-        { letter: "c", promptMarkdown: "Use your estimates to find $\\lim_{x\\to3}\\frac{f(x)}{g(x)}$ and explain why division is allowed.", points: 2 },
+        {
+          letter: "a",
+          promptMarkdown:
+            "Estimate $\\lim_{x\\to3}f(x)$ and $\\lim_{x\\to3}g(x)$.",
+          points: 2,
+        },
+        {
+          letter: "b",
+          promptMarkdown:
+            "Use your estimates to find $\\lim_{x\\to3}(f(x)+g(x))$.",
+          points: 1,
+        },
+        {
+          letter: "c",
+          promptMarkdown:
+            "Use your estimates to find $\\lim_{x\\to3}\\frac{f(x)}{g(x)}$ and explain why division is allowed.",
+          points: 2,
+        },
       ],
       hints: [
         "Use values nearest to x=3.",
@@ -1147,9 +1492,21 @@ const topicSeeds: readonly TopicSeed[] = [
         criteria: [
           { part: "a", points: 1, description: "Estimates lim f(x) as 6." },
           { part: "a", points: 1, description: "Estimates lim g(x) as 2." },
-          { part: "b", points: 1, description: "Correctly adds limits to get 8." },
-          { part: "c", points: 1, description: "Correctly computes quotient limit as 3." },
-          { part: "c", points: 1, description: "Explains that denominator limit 2 is nonzero." },
+          {
+            part: "b",
+            points: 1,
+            description: "Correctly adds limits to get 8.",
+          },
+          {
+            part: "c",
+            points: 1,
+            description: "Correctly computes quotient limit as 3.",
+          },
+          {
+            part: "c",
+            points: 1,
+            description: "Explains that denominator limit 2 is nonzero.",
+          },
         ],
       },
       commonErrors: [
@@ -1158,9 +1515,20 @@ const topicSeeds: readonly TopicSeed[] = [
         "Forgetting to justify that the quotient law applies.",
       ],
       workedSolution: [
-        { part: "a", explanation: "The table values closest to 3 suggest $f(x)\\to6$ and $g(x)\\to2$." },
-        { part: "b", explanation: "By the sum law, $\\lim_{x\\to3}(f(x)+g(x))=6+2=8$." },
-        { part: "c", explanation: "By the quotient law, $\\lim_{x\\to3}\\frac{f(x)}{g(x)}=\\frac{6}{2}=3$, and this is allowed because the denominator limit is $2\\ne0$." },
+        {
+          part: "a",
+          explanation:
+            "The table values closest to 3 suggest $f(x)\\to6$ and $g(x)\\to2$.",
+        },
+        {
+          part: "b",
+          explanation: "By the sum law, $\\lim_{x\\to3}(f(x)+g(x))=6+2=8$.",
+        },
+        {
+          part: "c",
+          explanation:
+            "By the quotient law, $\\lim_{x\\to3}\\frac{f(x)}{g(x)}=\\frac{6}{2}=3$, and this is allowed because the denominator limit is $2\\ne0$.",
+        },
       ],
     },
   },
@@ -1188,7 +1556,11 @@ const topicSeeds: readonly TopicSeed[] = [
           "Compute $2(3)-(-2)$.",
         ],
         solution: [
-          { step: 1, explanation: "Apply limit laws.", math: "2\\lim f-\\lim g" },
+          {
+            step: 1,
+            explanation: "Apply limit laws.",
+            math: "2\\lim f-\\lim g",
+          },
           { step: 2, explanation: "Substitute values.", math: "2(3)-(-2)=8" },
         ],
       },
@@ -1215,8 +1587,18 @@ const topicSeeds: readonly TopicSeed[] = [
           "Here the denominator limit is zero.",
         ],
         solution: [
-          { step: 1, explanation: "The quotient law requires the denominator limit to be nonzero.", math: "\\lim g(x)\\ne0" },
-          { step: 2, explanation: "Since $\\lim g(x)=0$, the quotient law cannot be used by itself.", math: null },
+          {
+            step: 1,
+            explanation:
+              "The quotient law requires the denominator limit to be nonzero.",
+            math: "\\lim g(x)\\ne0",
+          },
+          {
+            step: 2,
+            explanation:
+              "Since $\\lim g(x)=0$, the quotient law cannot be used by itself.",
+            math: null,
+          },
         ],
       },
       {
@@ -1237,7 +1619,11 @@ const topicSeeds: readonly TopicSeed[] = [
           "Compute $\\sqrt{9}$.",
         ],
         solution: [
-          { step: 1, explanation: "Apply the root law.", math: "\\lim_{x\\to2}\\sqrt{f(x)}=\\sqrt{\\lim_{x\\to2}f(x)}" },
+          {
+            step: 1,
+            explanation: "Apply the root law.",
+            math: "\\lim_{x\\to2}\\sqrt{f(x)}=\\sqrt{\\lim_{x\\to2}f(x)}",
+          },
           { step: 2, explanation: "Evaluate.", math: "\\sqrt{9}=3" },
         ],
       },
@@ -1259,8 +1645,16 @@ const topicSeeds: readonly TopicSeed[] = [
           "Compute $2(3)^2-(-2)$.",
         ],
         solution: [
-          { step: 1, explanation: "Apply power, constant multiple, and difference laws.", math: "2(\\lim f)^2-\\lim g" },
-          { step: 2, explanation: "Substitute the given limits.", math: "2(3)^2-(-2)=18+2=20" },
+          {
+            step: 1,
+            explanation: "Apply power, constant multiple, and difference laws.",
+            math: "2(\\lim f)^2-\\lim g",
+          },
+          {
+            step: 2,
+            explanation: "Substitute the given limits.",
+            math: "2(3)^2-(-2)=18+2=20",
+          },
         ],
       },
       {
@@ -1281,20 +1675,38 @@ const topicSeeds: readonly TopicSeed[] = [
           "Multiply by the limit of f.",
         ],
         solution: [
-          { step: 1, explanation: "Apply sum and product laws.", math: "\\lim f\\cdot(\\lim g+1)" },
+          {
+            step: 1,
+            explanation: "Apply sum and product laws.",
+            math: "\\lim f\\cdot(\\lim g+1)",
+          },
           { step: 2, explanation: "Substitute values.", math: "2(5+1)=12" },
         ],
       },
     ],
     frq: {
       questionLatex:
-        "\\lim_{x\\to a}f(x)=2,\\quad \\lim_{x\\to a}g(x)=-3,\\quad \\lim_{x\\to a}h(x)=0",
+        "Given $\\lim_{x\\to a}f(x)=2$, $\\lim_{x\\to a}g(x)=-3$ and $\\lim_{x\\to a}h(x)=0$, answer the following.",
       difficulty: 3,
       skillTags: ["limits.limit_laws", "quotient_law"],
       parts: [
-        { letter: "a", promptMarkdown: "Find $\\lim_{x\\to a}(4f(x)+g(x)^2)$.", points: 2 },
-        { letter: "b", promptMarkdown: "Find $\\lim_{x\\to a}\\frac{f(x)-g(x)}{f(x)+1}$ and justify that the quotient law applies.", points: 2 },
-        { letter: "c", promptMarkdown: "Explain why the given information is not enough to evaluate $\\lim_{x\\to a}\\frac{f(x)}{h(x)}$ using the quotient law.", points: 2 },
+        {
+          letter: "a",
+          promptMarkdown: "Find $\\lim_{x\\to a}(4f(x)+g(x)^2)$.",
+          points: 2,
+        },
+        {
+          letter: "b",
+          promptMarkdown:
+            "Find $\\lim_{x\\to a}\\frac{f(x)-g(x)}{f(x)+1}$ and justify that the quotient law applies.",
+          points: 2,
+        },
+        {
+          letter: "c",
+          promptMarkdown:
+            "Explain why the given information is not enough to evaluate $\\lim_{x\\to a}\\frac{f(x)}{h(x)}$ using the quotient law.",
+          points: 2,
+        },
       ],
       hints: [
         "Apply each limit law one operation at a time.",
@@ -1304,12 +1716,30 @@ const topicSeeds: readonly TopicSeed[] = [
       rubric: {
         maxPoints: 6,
         criteria: [
-          { part: "a", points: 1, description: "Correctly applies constant multiple and power laws." },
+          {
+            part: "a",
+            points: 1,
+            description: "Correctly applies constant multiple and power laws.",
+          },
           { part: "a", points: 1, description: "Computes 17." },
-          { part: "b", points: 1, description: "Correctly computes numerator and denominator limits." },
-          { part: "b", points: 1, description: "Computes 5/3 and states denominator limit is nonzero." },
+          {
+            part: "b",
+            points: 1,
+            description: "Correctly computes numerator and denominator limits.",
+          },
+          {
+            part: "b",
+            points: 1,
+            description:
+              "Computes 5/3 and states denominator limit is nonzero.",
+          },
           { part: "c", points: 1, description: "Identifies h's limit as 0." },
-          { part: "c", points: 1, description: "Explains quotient law cannot be applied when denominator limit is 0." },
+          {
+            part: "c",
+            points: 1,
+            description:
+              "Explains quotient law cannot be applied when denominator limit is 0.",
+          },
         ],
       },
       commonErrors: [
@@ -1318,9 +1748,20 @@ const topicSeeds: readonly TopicSeed[] = [
         "Saying a quotient with denominator approaching 0 must equal 0.",
       ],
       workedSolution: [
-        { part: "a", explanation: "$4\\lim f+(\\lim g)^2=4(2)+(-3)^2=8+9=17$." },
-        { part: "b", explanation: "The numerator limit is $2-(-3)=5$ and denominator limit is $2+1=3\\ne0$, so the quotient limit is $5/3$." },
-        { part: "c", explanation: "The denominator limit is $\\lim h(x)=0$, so the quotient law does not apply. More information about how h approaches 0 would be needed." },
+        {
+          part: "a",
+          explanation: "$4\\lim f+(\\lim g)^2=4(2)+(-3)^2=8+9=17$.",
+        },
+        {
+          part: "b",
+          explanation:
+            "The numerator limit is $2-(-3)=5$ and denominator limit is $2+1=3\\ne0$, so the quotient limit is $5/3$.",
+        },
+        {
+          part: "c",
+          explanation:
+            "The denominator limit is $\\lim h(x)=0$, so the quotient law does not apply. More information about how h approaches 0 would be needed.",
+        },
       ],
     },
   },
@@ -1333,8 +1774,14 @@ const topicSeeds: readonly TopicSeed[] = [
       {
         questionLatex: "\\lim_{x\\to3}\\frac{x^2-9}{x-3}",
         difficulty: 2,
-        skillTags: ["limits.algebraic_manipulation", "factoring.difference_of_squares"],
-        commonMisconceptions: ["zero_over_zero_equals_zero", "indeterminate_means_dne"],
+        skillTags: [
+          "limits.algebraic_manipulation",
+          "factoring.difference_of_squares",
+        ],
+        commonMisconceptions: [
+          "zero_over_zero_equals_zero",
+          "indeterminate_means_dne",
+        ],
         choices: ["0", "6", "Does not exist", "3"],
         correctLetter: "B",
         rationales: {
@@ -1348,20 +1795,28 @@ const topicSeeds: readonly TopicSeed[] = [
           "Cancel the common factor before substituting.",
         ],
         solution: [
-          { step: 1, explanation: "Factor the numerator.", math: "x^2-9=(x-3)(x+3)" },
-          { step: 2, explanation: "Cancel and evaluate.", math: "\\lim_{x\\to3}(x+3)=6" },
+          {
+            step: 1,
+            explanation: "Factor the numerator.",
+            math: "x^2-9=(x-3)(x+3)",
+          },
+          {
+            step: 2,
+            explanation: "Cancel and evaluate.",
+            math: "\\lim_{x\\to3}(x+3)=6",
+          },
         ],
       },
       {
         questionLatex: "\\lim_{x\\to-2}\\frac{x^2+5x+6}{x+2}",
         difficulty: 2,
         skillTags: ["limits.algebraic_manipulation", "factoring.quadratic"],
-        choices: ["$-1$", "0", "1", "Undefined"],
+        choices: ["$-1$", "0", "1", "Does not exist"],
         correctLetter: "C",
         rationales: {
           A: "This is a sign error after factoring.",
           B: "$0/0$ is indeterminate, not zero.",
-          D: "The function value is undefined, but the limit exists.",
+          D: "The function value is not defined at $x=-2$, but the limit exists.",
         },
         hints: [
           "Direct substitution gives $0/0$.",
@@ -1370,7 +1825,11 @@ const topicSeeds: readonly TopicSeed[] = [
         ],
         solution: [
           { step: 1, explanation: "Factor.", math: "x^2+5x+6=(x+2)(x+3)" },
-          { step: 2, explanation: "Cancel and evaluate.", math: "\\lim_{x\\to-2}(x+3)=1" },
+          {
+            step: 2,
+            explanation: "Cancel and evaluate.",
+            math: "\\lim_{x\\to-2}(x+3)=1",
+          },
         ],
       },
       {
@@ -1390,8 +1849,16 @@ const topicSeeds: readonly TopicSeed[] = [
           "Cancel $x-4$ and substitute.",
         ],
         solution: [
-          { step: 1, explanation: "Multiply by the conjugate.", math: "\\frac{\\sqrt{x}-2}{x-4}\\cdot\\frac{\\sqrt{x}+2}{\\sqrt{x}+2}=\\frac{x-4}{(x-4)(\\sqrt{x}+2)}" },
-          { step: 2, explanation: "Cancel and evaluate.", math: "\\frac{1}{\\sqrt{4}+2}=\\frac14" },
+          {
+            step: 1,
+            explanation: "Multiply by the conjugate.",
+            math: "\\frac{\\sqrt{x}-2}{x-4}\\cdot\\frac{\\sqrt{x}+2}{\\sqrt{x}+2}=\\frac{x-4}{(x-4)(\\sqrt{x}+2)}",
+          },
+          {
+            step: 2,
+            explanation: "Cancel and evaluate.",
+            math: "\\frac{1}{\\sqrt{4}+2}=\\frac14",
+          },
         ],
       },
       {
@@ -1411,8 +1878,16 @@ const topicSeeds: readonly TopicSeed[] = [
           "Cancel h and let h approach 0.",
         ],
         solution: [
-          { step: 1, explanation: "Expand and simplify.", math: "(3+h)^2-9=9+6h+h^2-9=h(6+h)" },
-          { step: 2, explanation: "Cancel and evaluate.", math: "\\lim_{h\\to0}(6+h)=6" },
+          {
+            step: 1,
+            explanation: "Expand and simplify.",
+            math: "(3+h)^2-9=9+6h+h^2-9=h(6+h)",
+          },
+          {
+            step: 2,
+            explanation: "Cancel and evaluate.",
+            math: "\\lim_{h\\to0}(6+h)=6",
+          },
         ],
       },
       {
@@ -1432,8 +1907,16 @@ const topicSeeds: readonly TopicSeed[] = [
           "Cancel the outer x.",
         ],
         solution: [
-          { step: 1, explanation: "Combine the inner numerator.", math: "\\frac{1}{x+2}-\\frac12=\\frac{2-(x+2)}{2(x+2)}=\\frac{-x}{2(x+2)}" },
-          { step: 2, explanation: "Divide by x and evaluate.", math: "\\lim_{x\\to0}\\frac{-1}{2(x+2)}=-\\frac14" },
+          {
+            step: 1,
+            explanation: "Combine the inner numerator.",
+            math: "\\frac{1}{x+2}-\\frac12=\\frac{2-(x+2)}{2(x+2)}=\\frac{-x}{2(x+2)}",
+          },
+          {
+            step: 2,
+            explanation: "Divide by x and evaluate.",
+            math: "\\lim_{x\\to0}\\frac{-1}{2(x+2)}=-\\frac14",
+          },
         ],
       },
     ],
@@ -1442,9 +1925,24 @@ const topicSeeds: readonly TopicSeed[] = [
       difficulty: 3,
       skillTags: ["limits.algebraic_manipulation", "removable_discontinuity"],
       parts: [
-        { letter: "a", promptMarkdown: "Show that direct substitution at $x=2$ gives an indeterminate form.", points: 1 },
-        { letter: "b", promptMarkdown: "Evaluate $\\lim_{x\\to2}f(x)$, showing all algebraic steps.", points: 3 },
-        { letter: "c", promptMarkdown: "What value should be assigned to $f(2)$ to make the function continuous at $x=2$?", points: 2 },
+        {
+          letter: "a",
+          promptMarkdown:
+            "Show that direct substitution at $x=2$ gives an indeterminate form.",
+          points: 1,
+        },
+        {
+          letter: "b",
+          promptMarkdown:
+            "Evaluate $\\lim_{x\\to2}f(x)$, showing all algebraic steps.",
+          points: 3,
+        },
+        {
+          letter: "c",
+          promptMarkdown:
+            "What value should be assigned to $f(2)$ to make the function continuous at $x=2$?",
+          points: 2,
+        },
       ],
       hints: [
         "Substitute x=2 first.",
@@ -1454,11 +1952,27 @@ const topicSeeds: readonly TopicSeed[] = [
       rubric: {
         maxPoints: 6,
         criteria: [
-          { part: "a", points: 1, description: "Shows substitution gives 0/0." },
-          { part: "b", points: 1, description: "Factors numerator as (x-2)(x+4)." },
-          { part: "b", points: 1, description: "Cancels the common factor for x not equal to 2." },
+          {
+            part: "a",
+            points: 1,
+            description: "Shows substitution gives 0/0.",
+          },
+          {
+            part: "b",
+            points: 1,
+            description: "Factors numerator as (x-2)(x+4).",
+          },
+          {
+            part: "b",
+            points: 1,
+            description: "Cancels the common factor for x not equal to 2.",
+          },
           { part: "b", points: 1, description: "Evaluates the limit as 6." },
-          { part: "c", points: 1, description: "States continuity requires f(2) to equal the limit." },
+          {
+            part: "c",
+            points: 1,
+            description: "States continuity requires f(2) to equal the limit.",
+          },
           { part: "c", points: 1, description: "Assigns f(2)=6." },
         ],
       },
@@ -1468,9 +1982,21 @@ const topicSeeds: readonly TopicSeed[] = [
         "Assigning any value other than the limit in part (c).",
       ],
       workedSolution: [
-        { part: "a", explanation: "At $x=2$, the expression gives $(4+4-8)/(2-2)=0/0$, an indeterminate form." },
-        { part: "b", explanation: "$x^2+2x-8=(x-2)(x+4)$, so for $x\\ne2$, $f(x)=x+4$. Therefore $\\lim_{x\\to2}f(x)=6$." },
-        { part: "c", explanation: "To make the function continuous at $x=2$, define $f(2)=\\lim_{x\\to2}f(x)=6$." },
+        {
+          part: "a",
+          explanation:
+            "At $x=2$, the expression gives $(4+4-8)/(2-2)=0/0$, an indeterminate form.",
+        },
+        {
+          part: "b",
+          explanation:
+            "$x^2+2x-8=(x-2)(x+4)$, so for $x\\ne2$, $f(x)=x+4$. Therefore $\\lim_{x\\to2}f(x)=6$.",
+        },
+        {
+          part: "c",
+          explanation:
+            "To make the function continuous at $x=2$, define $f(2)=\\lim_{x\\to2}f(x)=6$.",
+        },
       ],
     },
   },
@@ -1481,8 +2007,7 @@ const topicSeeds: readonly TopicSeed[] = [
       "Choosing direct substitution, factoring, conjugates, tables, graphs, or squeeze reasoning",
     mc: [
       {
-        questionLatex:
-          "\\lim_{x\\to2}\\left(\\frac{x^2-4}{x-2}+3x\\right)",
+        questionLatex: "\\lim_{x\\to2}\\left(\\frac{x^2-4}{x-2}+3x\\right)",
         difficulty: 3,
         skillTags: ["limits.procedure_selection", "direct_substitution"],
         choices: [
@@ -1503,15 +2028,28 @@ const topicSeeds: readonly TopicSeed[] = [
           "After cancellation, substitute x=2.",
         ],
         solution: [
-          { step: 1, explanation: "Factor the removable part.", math: "\\frac{x^2-4}{x-2}=\\frac{(x-2)(x+2)}{x-2}=x+2" },
-          { step: 2, explanation: "Evaluate the simplified expression.", math: "\\lim_{x\\to2}(x+2+3x)=4+6=10" },
+          {
+            step: 1,
+            explanation: "Factor the removable part.",
+            math: "\\frac{x^2-4}{x-2}=\\frac{(x-2)(x+2)}{x-2}=x+2",
+          },
+          {
+            step: 2,
+            explanation: "Evaluate the simplified expression.",
+            math: "\\lim_{x\\to2}(x+2+3x)=4+6=10",
+          },
         ],
       },
       {
         questionLatex: "\\lim_{x\\to5}\\frac{x^2-25}{x-5}",
         difficulty: 2,
         skillTags: ["limits.procedure_selection", "factoring"],
-        choices: ["Direct substitution only; limit is 0", "Factor and cancel; limit is 10", "Use a conjugate; limit is 5", "Use squeeze theorem; limit is 0"],
+        choices: [
+          "Direct substitution only; limit is 0",
+          "Factor and cancel; limit is 10",
+          "Use a conjugate; limit is 5",
+          "Use squeeze theorem; limit is 0",
+        ],
         correctLetter: "B",
         rationales: {
           A: "Direct substitution gives 0/0, so more work is needed.",
@@ -1525,14 +2063,23 @@ const topicSeeds: readonly TopicSeed[] = [
         ],
         solution: [
           { step: 1, explanation: "Factor.", math: "x^2-25=(x-5)(x+5)" },
-          { step: 2, explanation: "Cancel and evaluate.", math: "\\lim_{x\\to5}(x+5)=10" },
+          {
+            step: 2,
+            explanation: "Cancel and evaluate.",
+            math: "\\lim_{x\\to5}(x+5)=10",
+          },
         ],
       },
       {
         questionLatex: "\\lim_{x\\to9}\\frac{\\sqrt{x}-3}{x-9}",
         difficulty: 3,
         skillTags: ["limits.procedure_selection", "conjugates"],
-        choices: ["Use a conjugate; limit is $\\frac16$", "Use direct substitution; limit is 0", "Use factoring; limit is 6", "Use IVT; limit is 9"],
+        choices: [
+          "Use a conjugate; limit is $\\frac16$",
+          "Use direct substitution; limit is 0",
+          "Use factoring; limit is 6",
+          "Use IVT; limit is 9",
+        ],
         correctLetter: "A",
         rationales: {
           B: "Direct substitution gives 0/0, not 0.",
@@ -1545,7 +2092,11 @@ const topicSeeds: readonly TopicSeed[] = [
           "Evaluate the resulting reciprocal.",
         ],
         solution: [
-          { step: 1, explanation: "Use the conjugate.", math: "\\frac{\\sqrt{x}-3}{x-9}\\cdot\\frac{\\sqrt{x}+3}{\\sqrt{x}+3}=\\frac{1}{\\sqrt{x}+3}" },
+          {
+            step: 1,
+            explanation: "Use the conjugate.",
+            math: "\\frac{\\sqrt{x}-3}{x-9}\\cdot\\frac{\\sqrt{x}+3}{\\sqrt{x}+3}=\\frac{1}{\\sqrt{x}+3}",
+          },
           { step: 2, explanation: "Evaluate at x=9.", math: "\\frac{1}{6}" },
         ],
       },
@@ -1553,7 +2104,12 @@ const topicSeeds: readonly TopicSeed[] = [
         questionLatex: "\\lim_{x\\to0}x^2\\sin\\left(\\frac1x\\right)",
         difficulty: 3,
         skillTags: ["limits.procedure_selection", "squeeze_theorem"],
-        choices: ["Direct substitution", "Factoring", "Squeeze theorem", "Quotient law"],
+        choices: [
+          "Direct substitution",
+          "Factoring",
+          "Squeeze theorem",
+          "Quotient law",
+        ],
         correctLetter: "C",
         rationales: {
           A: "$\\sin(1/x)$ is not defined at x=0.",
@@ -1566,9 +2122,21 @@ const topicSeeds: readonly TopicSeed[] = [
           "Both bounds approach 0.",
         ],
         solution: [
-          { step: 1, explanation: "Use the bound for sine.", math: "-1\\le\\sin(1/x)\\le1" },
-          { step: 2, explanation: "Multiply by x^2.", math: "-x^2\\le x^2\\sin(1/x)\\le x^2" },
-          { step: 3, explanation: "Both bounds approach 0, so the limit is 0.", math: null },
+          {
+            step: 1,
+            explanation: "Use the bound for sine.",
+            math: "-1\\le\\sin(1/x)\\le1",
+          },
+          {
+            step: 2,
+            explanation: "Multiply by x^2.",
+            math: "-x^2\\le x^2\\sin(1/x)\\le x^2",
+          },
+          {
+            step: 3,
+            explanation: "Both bounds approach 0, so the limit is 0.",
+            math: null,
+          },
         ],
       },
       {
@@ -1595,8 +2163,16 @@ const topicSeeds: readonly TopicSeed[] = [
           "They both approach 2.",
         ],
         solution: [
-          { step: 1, explanation: "The table suggests a common approaching output.", math: null },
-          { step: 2, explanation: "Therefore it supports the limit estimate 2.", math: "\\lim_{x\\to a}f(x)\\approx2" },
+          {
+            step: 1,
+            explanation: "The table suggests a common approaching output.",
+            math: null,
+          },
+          {
+            step: 2,
+            explanation: "Therefore it supports the limit estimate 2.",
+            math: "\\lim_{x\\to a}f(x)\\approx2",
+          },
         ],
       },
     ],
@@ -1607,9 +2183,21 @@ const topicSeeds: readonly TopicSeed[] = [
       skillTags: ["limits.procedure_selection", "mixed_limit_methods"],
       parts: [
         { letter: "a", promptMarkdown: "$\\lim_{x\\to2}(x^2+3x)$", points: 1 },
-        { letter: "b", promptMarkdown: "$\\lim_{x\\to4}\\frac{x^2-16}{x-4}$", points: 2 },
-        { letter: "c", promptMarkdown: "$\\lim_{x\\to1}\\frac{\\sqrt{x+3}-2}{x-1}$", points: 2 },
-        { letter: "d", promptMarkdown: "$\\lim_{x\\to0}x^2\\cos(1/x)$", points: 2 },
+        {
+          letter: "b",
+          promptMarkdown: "$\\lim_{x\\to4}\\frac{x^2-16}{x-4}$",
+          points: 2,
+        },
+        {
+          letter: "c",
+          promptMarkdown: "$\\lim_{x\\to1}\\frac{\\sqrt{x+3}-2}{x-1}$",
+          points: 2,
+        },
+        {
+          letter: "d",
+          promptMarkdown: "$\\lim_{x\\to0}x^2\\cos(1/x)$",
+          points: 2,
+        },
       ],
       hints: [
         "Try direct substitution first.",
@@ -1619,10 +2207,22 @@ const topicSeeds: readonly TopicSeed[] = [
       rubric: {
         maxPoints: 7,
         criteria: [
-          { part: "a", points: 1, description: "Uses direct substitution and gets 10." },
-          { part: "b", points: 1, description: "Selects factoring/cancellation." },
+          {
+            part: "a",
+            points: 1,
+            description: "Uses direct substitution and gets 10.",
+          },
+          {
+            part: "b",
+            points: 1,
+            description: "Selects factoring/cancellation.",
+          },
           { part: "b", points: 1, description: "Gets 8." },
-          { part: "c", points: 1, description: "Selects conjugate multiplication." },
+          {
+            part: "c",
+            points: 1,
+            description: "Selects conjugate multiplication.",
+          },
           { part: "c", points: 1, description: "Gets 1/4." },
           { part: "d", points: 1, description: "Selects squeeze theorem." },
           { part: "d", points: 1, description: "Gets 0 with valid bounds." },
@@ -1635,9 +2235,21 @@ const topicSeeds: readonly TopicSeed[] = [
       ],
       workedSolution: [
         { part: "a", explanation: "Direct substitution: $2^2+3(2)=10$." },
-        { part: "b", explanation: "Factor $x^2-16=(x-4)(x+4)$, cancel, then evaluate $x+4$ at 4 to get 8." },
-        { part: "c", explanation: "Use the conjugate: $\\frac{\\sqrt{x+3}-2}{x-1}\\cdot\\frac{\\sqrt{x+3}+2}{\\sqrt{x+3}+2}=\\frac{1}{\\sqrt{x+3}+2}$, so the limit is $1/4$." },
-        { part: "d", explanation: "Since $-1\\le\\cos(1/x)\\le1$, $-x^2\\le x^2\\cos(1/x)\\le x^2$. Both bounds approach 0, so the limit is 0." },
+        {
+          part: "b",
+          explanation:
+            "Factor $x^2-16=(x-4)(x+4)$, cancel, then evaluate $x+4$ at 4 to get 8.",
+        },
+        {
+          part: "c",
+          explanation:
+            "Use the conjugate: $\\frac{\\sqrt{x+3}-2}{x-1}\\cdot\\frac{\\sqrt{x+3}+2}{\\sqrt{x+3}+2}=\\frac{1}{\\sqrt{x+3}+2}$, so the limit is $1/4$.",
+        },
+        {
+          part: "d",
+          explanation:
+            "Since $-1\\le\\cos(1/x)\\le1$, $-x^2\\le x^2\\cos(1/x)\\le x^2$. Both bounds approach 0, so the limit is 0.",
+        },
       ],
     },
   },
@@ -1665,8 +2277,17 @@ const topicSeeds: readonly TopicSeed[] = [
           "If both bounds approach the same number, f is squeezed to that number.",
         ],
         solution: [
-          { step: 1, explanation: "Evaluate both bounding functions as x approaches 2.", math: "5-(x-2)^2\\to5,\\quad 5+3(x-2)^2\\to5" },
-          { step: 2, explanation: "Since f is trapped between bounds with the same limit, the squeeze theorem gives the limit.", math: "\\lim_{x\\to2}f(x)=5" },
+          {
+            step: 1,
+            explanation: "Evaluate both bounding functions as x approaches 2.",
+            math: "5-(x-2)^2\\to5,\\quad 5+3(x-2)^2\\to5",
+          },
+          {
+            step: 2,
+            explanation:
+              "Since f is trapped between bounds with the same limit, the squeeze theorem gives the limit.",
+            math: "\\lim_{x\\to2}f(x)=5",
+          },
         ],
       },
       {
@@ -1686,8 +2307,16 @@ const topicSeeds: readonly TopicSeed[] = [
           "Both bounds approach 0.",
         ],
         solution: [
-          { step: 1, explanation: "Bound the sine term.", math: "-1\\le\\sin(5/x)\\le1" },
-          { step: 2, explanation: "Multiply by x^2.", math: "-x^2\\le x^2\\sin(5/x)\\le x^2" },
+          {
+            step: 1,
+            explanation: "Bound the sine term.",
+            math: "-1\\le\\sin(5/x)\\le1",
+          },
+          {
+            step: 2,
+            explanation: "Multiply by x^2.",
+            math: "-x^2\\le x^2\\sin(5/x)\\le x^2",
+          },
           { step: 3, explanation: "Both bounds approach 0.", math: null },
         ],
       },
@@ -1708,8 +2337,16 @@ const topicSeeds: readonly TopicSeed[] = [
           "$|x|$ approaches 0.",
         ],
         solution: [
-          { step: 1, explanation: "Use absolute value to avoid sign cases.", math: "|x\\cos(1/x)|\\le |x|" },
-          { step: 2, explanation: "Since $|x|\\to0$, the product approaches 0.", math: null },
+          {
+            step: 1,
+            explanation: "Use absolute value to avoid sign cases.",
+            math: "|x\\cos(1/x)|\\le |x|",
+          },
+          {
+            step: 2,
+            explanation: "Since $|x|\\to0$, the product approaches 0.",
+            math: null,
+          },
         ],
       },
       {
@@ -1730,8 +2367,16 @@ const topicSeeds: readonly TopicSeed[] = [
           "Both are 0.",
         ],
         solution: [
-          { step: 1, explanation: "The lower and upper bounds both approach 0.", math: "\\lim_{x\\to0}x^2=0,\\quad \\lim_{x\\to0}|x|=0" },
-          { step: 2, explanation: "By squeeze theorem, f(x) approaches 0.", math: null },
+          {
+            step: 1,
+            explanation: "The lower and upper bounds both approach 0.",
+            math: "\\lim_{x\\to0}x^2=0,\\quad \\lim_{x\\to0}|x|=0",
+          },
+          {
+            step: 2,
+            explanation: "By squeeze theorem, f(x) approaches 0.",
+            math: null,
+          },
         ],
       },
       {
@@ -1739,7 +2384,12 @@ const topicSeeds: readonly TopicSeed[] = [
           "\\text{If }1\\le f(x)\\le3\\text{ near }x=0,\\text{ what can be concluded about }\\lim_{x\\to0}f(x)\\text{ by squeeze theorem alone?}",
         difficulty: 3,
         skillTags: ["limits.squeeze_theorem", "theorem_conditions"],
-        choices: ["The limit is 1", "The limit is 2", "The limit is 3", "No single limit is forced by these bounds"],
+        choices: [
+          "The limit is 1",
+          "The limit is 2",
+          "The limit is 3",
+          "No single limit is forced by these bounds",
+        ],
         correctLetter: "D",
         rationales: {
           A: "The lower bound alone does not determine the squeezed function.",
@@ -1752,8 +2402,17 @@ const topicSeeds: readonly TopicSeed[] = [
           "The function could behave many ways between 1 and 3.",
         ],
         solution: [
-          { step: 1, explanation: "The lower bound limit is 1 and the upper bound limit is 3.", math: "1\\ne3" },
-          { step: 2, explanation: "The squeeze theorem does not force one limit value.", math: null },
+          {
+            step: 1,
+            explanation:
+              "The lower bound limit is 1 and the upper bound limit is 3.",
+            math: "1\\ne3",
+          },
+          {
+            step: 2,
+            explanation: "The squeeze theorem does not force one limit value.",
+            math: null,
+          },
         ],
       },
     ],
@@ -1762,9 +2421,23 @@ const topicSeeds: readonly TopicSeed[] = [
       difficulty: 3,
       skillTags: ["limits.squeeze_theorem", "bounded_trig"],
       parts: [
-        { letter: "a", promptMarkdown: "Write an inequality that bounds $\\sin(3/x)$.", points: 1 },
-        { letter: "b", promptMarkdown: "Use your inequality to bound $F(x)$ between two simpler functions.", points: 2 },
-        { letter: "c", promptMarkdown: "Use the squeeze theorem to evaluate $\\lim_{x\\to0}F(x)$.", points: 2 },
+        {
+          letter: "a",
+          promptMarkdown: "Write an inequality that bounds $\\sin(3/x)$.",
+          points: 1,
+        },
+        {
+          letter: "b",
+          promptMarkdown:
+            "Use your inequality to bound $F(x)$ between two simpler functions.",
+          points: 2,
+        },
+        {
+          letter: "c",
+          promptMarkdown:
+            "Use the squeeze theorem to evaluate $\\lim_{x\\to0}F(x)$.",
+          points: 2,
+        },
       ],
       hints: [
         "Sine is always between -1 and 1.",
@@ -1777,8 +2450,16 @@ const topicSeeds: readonly TopicSeed[] = [
           { part: "a", points: 1, description: "States -1 <= sin(3/x) <= 1." },
           { part: "b", points: 1, description: "Correctly multiplies by x^2." },
           { part: "b", points: 1, description: "Gives -x^2 <= F(x) <= x^2." },
-          { part: "c", points: 1, description: "Shows both bounds approach 0." },
-          { part: "c", points: 1, description: "Concludes the limit is 0 by squeeze theorem." },
+          {
+            part: "c",
+            points: 1,
+            description: "Shows both bounds approach 0.",
+          },
+          {
+            part: "c",
+            points: 1,
+            description: "Concludes the limit is 0 by squeeze theorem.",
+          },
         ],
       },
       commonErrors: [
@@ -1787,9 +2468,20 @@ const topicSeeds: readonly TopicSeed[] = [
         "Not naming the squeeze theorem in the conclusion.",
       ],
       workedSolution: [
-        { part: "a", explanation: "For all defined inputs, $-1\\le\\sin(3/x)\\le1$." },
-        { part: "b", explanation: "Because $x^2\\ge0$, multiplying gives $-x^2\\le x^2\\sin(3/x)\\le x^2$." },
-        { part: "c", explanation: "Both $-x^2$ and $x^2$ approach 0 as $x\\to0$, so by the squeeze theorem $\\lim_{x\\to0}F(x)=0$." },
+        {
+          part: "a",
+          explanation: "For all defined inputs, $-1\\le\\sin(3/x)\\le1$.",
+        },
+        {
+          part: "b",
+          explanation:
+            "Because $x^2\\ge0$, multiplying gives $-x^2\\le x^2\\sin(3/x)\\le x^2$.",
+        },
+        {
+          part: "c",
+          explanation:
+            "Both $-x^2$ and $x^2$ approach 0 as $x\\to0$, so by the squeeze theorem $\\lim_{x\\to0}F(x)=0$.",
+        },
       ],
     },
   },
@@ -1803,7 +2495,10 @@ const topicSeeds: readonly TopicSeed[] = [
         questionLatex:
           "f(x)=\\frac{x^2-x-6}{x-3}.\\ \\text{Use the graph shown. }\\lim_{x\\to3}f(x)=?",
         difficulty: 2,
-        skillTags: ["limits.multiple_representations", "removable_discontinuity"],
+        skillTags: [
+          "limits.multiple_representations",
+          "removable_discontinuity",
+        ],
         figure: holeAtThreeFiveFigure,
         choices: ["0", "3", "5", "Does not exist"],
         correctLetter: "C",
@@ -1818,7 +2513,11 @@ const topicSeeds: readonly TopicSeed[] = [
           "The hole's y-value is the limit.",
         ],
         solution: [
-          { step: 1, explanation: "Factor and cancel.", math: "\\frac{(x-3)(x+2)}{x-3}=x+2" },
+          {
+            step: 1,
+            explanation: "Factor and cancel.",
+            math: "\\frac{(x-3)(x+2)}{x-3}=x+2",
+          },
           { step: 2, explanation: "Evaluate near x=3.", math: "3+2=5" },
         ],
       },
@@ -1842,8 +2541,16 @@ const topicSeeds: readonly TopicSeed[] = [
           "Here they do not agree.",
         ],
         solution: [
-          { step: 1, explanation: "The left and right limits differ.", math: "1\\ne4" },
-          { step: 2, explanation: "So the two-sided limit does not exist.", math: null },
+          {
+            step: 1,
+            explanation: "The left and right limits differ.",
+            math: "1\\ne4",
+          },
+          {
+            step: 2,
+            explanation: "So the two-sided limit does not exist.",
+            math: null,
+          },
         ],
       },
       {
@@ -1869,8 +2576,16 @@ const topicSeeds: readonly TopicSeed[] = [
           "The limit value is 12.",
         ],
         solution: [
-          { step: 1, explanation: "The expression is a secant slope from 4 to 4+h.", math: null },
-          { step: 2, explanation: "Its limiting value is the instantaneous rate at 4.", math: "12" },
+          {
+            step: 1,
+            explanation: "The expression is a secant slope from 4 to 4+h.",
+            math: null,
+          },
+          {
+            step: 2,
+            explanation: "Its limiting value is the instantaneous rate at 4.",
+            math: "12",
+          },
         ],
       },
       {
@@ -1892,8 +2607,16 @@ const topicSeeds: readonly TopicSeed[] = [
           "The simplified expression approaches $x+2$.",
         ],
         solution: [
-          { step: 1, explanation: "Simplify for x not equal to 2.", math: "\\frac{(x-2)(x+2)}{x-2}=x+2" },
-          { step: 2, explanation: "Evaluate the simplified form at x=2.", math: "4" },
+          {
+            step: 1,
+            explanation: "Simplify for x not equal to 2.",
+            math: "\\frac{(x-2)(x+2)}{x-2}=x+2",
+          },
+          {
+            step: 2,
+            explanation: "Evaluate the simplified form at x=2.",
+            math: "4",
+          },
         ],
       },
       {
@@ -1919,8 +2642,17 @@ const topicSeeds: readonly TopicSeed[] = [
           "A graph can show this visually near x=1.",
         ],
         solution: [
-          { step: 1, explanation: "Vertical asymptotes correspond to infinite limits.", math: null },
-          { step: 2, explanation: "The graph showing growth without bound confirms that behavior.", math: null },
+          {
+            step: 1,
+            explanation: "Vertical asymptotes correspond to infinite limits.",
+            math: null,
+          },
+          {
+            step: 2,
+            explanation:
+              "The graph showing growth without bound confirms that behavior.",
+            math: null,
+          },
         ],
       },
     ],
@@ -1930,9 +2662,23 @@ const topicSeeds: readonly TopicSeed[] = [
       difficulty: 3,
       skillTags: ["limits.multiple_representations", "algebraic_manipulation"],
       parts: [
-        { letter: "a", promptMarkdown: "Use algebra to evaluate $\\lim_{x\\to2}f(x)$.", points: 2 },
-        { letter: "b", promptMarkdown: "Explain why a graph should show a hole at $x=2$ rather than a jump.", points: 2 },
-        { letter: "c", promptMarkdown: "Explain how the table evidence supports your answer in part (a).", points: 1 },
+        {
+          letter: "a",
+          promptMarkdown: "Use algebra to evaluate $\\lim_{x\\to2}f(x)$.",
+          points: 2,
+        },
+        {
+          letter: "b",
+          promptMarkdown:
+            "Explain why a graph should show a hole at $x=2$ rather than a jump.",
+          points: 2,
+        },
+        {
+          letter: "c",
+          promptMarkdown:
+            "Explain how the table evidence supports your answer in part (a).",
+          points: 1,
+        },
       ],
       hints: [
         "Factor the numerator.",
@@ -1942,11 +2688,29 @@ const topicSeeds: readonly TopicSeed[] = [
       rubric: {
         maxPoints: 5,
         criteria: [
-          { part: "a", points: 1, description: "Correctly factors numerator as (x-2)(x-3)." },
+          {
+            part: "a",
+            points: 1,
+            description: "Correctly factors numerator as (x-2)(x-3).",
+          },
           { part: "a", points: 1, description: "Cancels and gets limit -1." },
-          { part: "b", points: 1, description: "Explains the factor x-2 cancels for x not equal to 2." },
-          { part: "b", points: 1, description: "Identifies the discontinuity as removable/a hole." },
-          { part: "c", points: 1, description: "Connects table values near -1 to the algebraic limit." },
+          {
+            part: "b",
+            points: 1,
+            description:
+              "Explains the factor x-2 cancels for x not equal to 2.",
+          },
+          {
+            part: "b",
+            points: 1,
+            description: "Identifies the discontinuity as removable/a hole.",
+          },
+          {
+            part: "c",
+            points: 1,
+            description:
+              "Connects table values near -1 to the algebraic limit.",
+          },
         ],
       },
       commonErrors: [
@@ -1955,9 +2719,21 @@ const topicSeeds: readonly TopicSeed[] = [
         "Treating table evidence as unrelated to algebra.",
       ],
       workedSolution: [
-        { part: "a", explanation: "$x^2-5x+6=(x-2)(x-3)$, so for $x\\ne2$, $f(x)=x-3$. Therefore $\\lim_{x\\to2}f(x)=-1$." },
-        { part: "b", explanation: "The same factor $x-2$ appears in numerator and denominator, so the discontinuity at x=2 is removable. The graph should follow the line $y=x-3$ with a hole at $(2,-1)$." },
-        { part: "c", explanation: "Values near x=2 should be near $2-3=-1$, matching the table's trend." },
+        {
+          part: "a",
+          explanation:
+            "$x^2-5x+6=(x-2)(x-3)$, so for $x\\ne2$, $f(x)=x-3$. Therefore $\\lim_{x\\to2}f(x)=-1$.",
+        },
+        {
+          part: "b",
+          explanation:
+            "The same factor $x-2$ appears in numerator and denominator, so the discontinuity at x=2 is removable. The graph should follow the line $y=x-3$ with a hole at $(2,-1)$.",
+        },
+        {
+          part: "c",
+          explanation:
+            "Values near x=2 should be near $2-3=-1$, matching the table's trend.",
+        },
       ],
     },
   },
@@ -1990,8 +2766,17 @@ const topicSeeds: readonly TopicSeed[] = [
           "Evaluate the simplified expression at x=2.",
         ],
         solution: [
-          { step: 1, explanation: "Simplify away the removable factor.", math: "\\frac{x^2-4}{x-2}=\\frac{(x-2)(x+2)}{x-2}=x+2" },
-          { step: 2, explanation: "The finite limit is 4, so the discontinuity is removable.", math: "\\lim_{x\\to2}f(x)=4" },
+          {
+            step: 1,
+            explanation: "Simplify away the removable factor.",
+            math: "\\frac{x^2-4}{x-2}=\\frac{(x-2)(x+2)}{x-2}=x+2",
+          },
+          {
+            step: 2,
+            explanation:
+              "The finite limit is 4, so the discontinuity is removable.",
+            math: "\\lim_{x\\to2}f(x)=4",
+          },
         ],
       },
       {
@@ -2017,8 +2802,17 @@ const topicSeeds: readonly TopicSeed[] = [
           "Finite but unequal one-sided limits make a jump.",
         ],
         solution: [
-          { step: 1, explanation: "The two one-sided limits are finite but different.", math: "\\lim_{x\\to0^-}f(x)=1,\\quad \\lim_{x\\to0^+}f(x)=4" },
-          { step: 2, explanation: "Because the one-sided limits differ, the discontinuity is a jump.", math: null },
+          {
+            step: 1,
+            explanation: "The two one-sided limits are finite but different.",
+            math: "\\lim_{x\\to0^-}f(x)=1,\\quad \\lim_{x\\to0^+}f(x)=4",
+          },
+          {
+            step: 2,
+            explanation:
+              "Because the one-sided limits differ, the discontinuity is a jump.",
+            math: null,
+          },
         ],
       },
       {
@@ -2039,8 +2833,16 @@ const topicSeeds: readonly TopicSeed[] = [
           "This corresponds to a vertical asymptote.",
         ],
         solution: [
-          { step: 1, explanation: "At least one side is unbounded.", math: null },
-          { step: 2, explanation: "The discontinuity is infinite.", math: null },
+          {
+            step: 1,
+            explanation: "At least one side is unbounded.",
+            math: null,
+          },
+          {
+            step: 2,
+            explanation: "The discontinuity is infinite.",
+            math: null,
+          },
         ],
       },
       {
@@ -2066,8 +2868,16 @@ const topicSeeds: readonly TopicSeed[] = [
           "The factor $x-1$ cancels.",
         ],
         solution: [
-          { step: 1, explanation: "Factor option A.", math: "\\frac{x^2-1}{x-1}=\\frac{(x-1)(x+1)}{x-1}" },
-          { step: 2, explanation: "After cancellation, a hole remains at x=1.", math: null },
+          {
+            step: 1,
+            explanation: "Factor the rational expression.",
+            math: "\\frac{x^2-1}{x-1}=\\frac{(x-1)(x+1)}{x-1}",
+          },
+          {
+            step: 2,
+            explanation: "After cancellation, a hole remains at x=1.",
+            math: null,
+          },
         ],
       },
       {
@@ -2088,21 +2898,44 @@ const topicSeeds: readonly TopicSeed[] = [
           "The behavior is bounded but non-convergent.",
         ],
         solution: [
-          { step: 1, explanation: "The function keeps oscillating and does not approach one value.", math: null },
-          { step: 2, explanation: "That is an oscillatory discontinuity.", math: null },
+          {
+            step: 1,
+            explanation:
+              "The function keeps oscillating and does not approach one value.",
+            math: null,
+          },
+          {
+            step: 2,
+            explanation: "That is an oscillatory discontinuity.",
+            math: null,
+          },
         ],
       },
     ],
     frq: {
-      questionLatex:
-        "\\text{Use the graph of }f\\text{ shown.}",
+      questionLatex: "\\text{Use the graph of }f\\text{ shown.}",
       difficulty: 3,
       skillTags: ["discontinuity.types", "one_sided_limits"],
       figure: discontinuitiesAtMinusOneZeroFourFigure,
       parts: [
-        { letter: "a", promptMarkdown: "Classify the discontinuity at $x=-1$ and give the limit there.", points: 2 },
-        { letter: "b", promptMarkdown: "Classify the discontinuity at $x=0$ and explain why the two-sided limit fails.", points: 2 },
-        { letter: "c", promptMarkdown: "Classify the discontinuity at $x=4$ and name the related graph feature.", points: 2 },
+        {
+          letter: "a",
+          promptMarkdown:
+            "Classify the discontinuity at $x=-1$ and give the limit there.",
+          points: 2,
+        },
+        {
+          letter: "b",
+          promptMarkdown:
+            "Classify the discontinuity at $x=0$ and explain why the two-sided limit fails.",
+          points: 2,
+        },
+        {
+          letter: "c",
+          promptMarkdown:
+            "Classify the discontinuity at $x=4$ and name the related graph feature.",
+          points: 2,
+        },
       ],
       hints: [
         "A hole with a finite limiting value is removable.",
@@ -2112,11 +2945,23 @@ const topicSeeds: readonly TopicSeed[] = [
       rubric: {
         maxPoints: 6,
         criteria: [
-          { part: "a", points: 1, description: "Classifies x=-1 as removable." },
+          {
+            part: "a",
+            points: 1,
+            description: "Classifies x=-1 as removable.",
+          },
           { part: "a", points: 1, description: "Gives limit 2." },
           { part: "b", points: 1, description: "Classifies x=0 as jump." },
-          { part: "b", points: 1, description: "Explains one-sided limits 3 and -2 differ." },
-          { part: "c", points: 1, description: "Classifies x=4 as infinite discontinuity." },
+          {
+            part: "b",
+            points: 1,
+            description: "Explains one-sided limits 3 and -2 differ.",
+          },
+          {
+            part: "c",
+            points: 1,
+            description: "Classifies x=4 as infinite discontinuity.",
+          },
           { part: "c", points: 1, description: "Names vertical asymptote." },
         ],
       },
@@ -2126,9 +2971,21 @@ const topicSeeds: readonly TopicSeed[] = [
         "Confusing infinite discontinuity with oscillatory behavior.",
       ],
       workedSolution: [
-        { part: "a", explanation: "At $x=-1$, a hole at finite y-value 2 means a removable discontinuity, and $\\lim_{x\\to-1}f(x)=2$." },
-        { part: "b", explanation: "At $x=0$, the one-sided limits are finite but different: 3 and -2. This is a jump discontinuity, and the two-sided limit does not exist." },
-        { part: "c", explanation: "At $x=4$, values grow without bound, so the discontinuity is infinite and the graph has a vertical asymptote at $x=4$." },
+        {
+          part: "a",
+          explanation:
+            "At $x=-1$, a hole at finite y-value 2 means a removable discontinuity, and $\\lim_{x\\to-1}f(x)=2$.",
+        },
+        {
+          part: "b",
+          explanation:
+            "At $x=0$, the one-sided limits are finite but different: 3 and -2. This is a jump discontinuity, and the two-sided limit does not exist.",
+        },
+        {
+          part: "c",
+          explanation:
+            "At $x=4$, values grow without bound, so the discontinuity is infinite and the graph has a vertical asymptote at $x=4$.",
+        },
       ],
     },
   },
@@ -2161,8 +3018,18 @@ const topicSeeds: readonly TopicSeed[] = [
           "The limit is 3, while the function value is 5.",
         ],
         solution: [
-          { step: 1, explanation: "The matching one-sided limits make the two-sided limit exist.", math: "\\lim_{x\\to a}f(x)=3" },
-          { step: 2, explanation: "Continuity fails because the limit does not equal the function value.", math: "3\\ne5" },
+          {
+            step: 1,
+            explanation:
+              "The matching one-sided limits make the two-sided limit exist.",
+            math: "\\lim_{x\\to a}f(x)=3",
+          },
+          {
+            step: 2,
+            explanation:
+              "Continuity fails because the limit does not equal the function value.",
+            math: "3\\ne5",
+          },
         ],
       },
       {
@@ -2183,7 +3050,11 @@ const topicSeeds: readonly TopicSeed[] = [
           "Set the point value equal to the limit.",
         ],
         solution: [
-          { step: 1, explanation: "Find the limit of the surrounding formula.", math: "\\lim_{x\\to2}(x^2+1)=5" },
+          {
+            step: 1,
+            explanation: "Find the limit of the surrounding formula.",
+            math: "\\lim_{x\\to2}(x^2+1)=5",
+          },
           { step: 2, explanation: "Set k equal to 5.", math: "k=5" },
         ],
       },
@@ -2210,8 +3081,17 @@ const topicSeeds: readonly TopicSeed[] = [
           "Compare the limit with p(-1).",
         ],
         solution: [
-          { step: 1, explanation: "Evaluate the polynomial at x=-1.", math: "p(-1)=(-1)^4-3(-1)+1=5" },
-          { step: 2, explanation: "Because p is a polynomial, the limit equals the function value.", math: "\\lim_{x\\to-1}p(x)=p(-1)=5" },
+          {
+            step: 1,
+            explanation: "Evaluate the polynomial at x=-1.",
+            math: "p(-1)=(-1)^4-3(-1)+1=5",
+          },
+          {
+            step: 2,
+            explanation:
+              "Because p is a polynomial, the limit equals the function value.",
+            math: "\\lim_{x\\to-1}p(x)=p(-1)=5",
+          },
         ],
       },
       {
@@ -2237,8 +3117,16 @@ const topicSeeds: readonly TopicSeed[] = [
           "Division by zero is undefined.",
         ],
         solution: [
-          { step: 1, explanation: "At x=4, the denominator is zero.", math: "4-4=0" },
-          { step: 2, explanation: "So f(4) is undefined and continuity fails.", math: null },
+          {
+            step: 1,
+            explanation: "At x=4, the denominator is zero.",
+            math: "4-4=0",
+          },
+          {
+            step: 2,
+            explanation: "So f(4) is undefined and continuity fails.",
+            math: null,
+          },
         ],
       },
       {
@@ -2264,8 +3152,16 @@ const topicSeeds: readonly TopicSeed[] = [
           "Compare that limit with the defined value f(3).",
         ],
         solution: [
-          { step: 1, explanation: "Simplify the expression for x not equal to 3.", math: "\\frac{x^2-9}{x-3}=\\frac{(x-3)(x+3)}{x-3}=x+3" },
-          { step: 2, explanation: "The limit equals the defined point value.", math: "\\lim_{x\\to3}f(x)=6=f(3)" },
+          {
+            step: 1,
+            explanation: "Simplify the expression for x not equal to 3.",
+            math: "\\frac{x^2-9}{x-3}=\\frac{(x-3)(x+3)}{x-3}=x+3",
+          },
+          {
+            step: 2,
+            explanation: "The limit equals the defined point value.",
+            math: "\\lim_{x\\to3}f(x)=6=f(3)",
+          },
         ],
       },
     ],
@@ -2275,9 +3171,22 @@ const topicSeeds: readonly TopicSeed[] = [
       difficulty: 3,
       skillTags: ["continuity.point_definition", "piecewise_functions"],
       parts: [
-        { letter: "a", promptMarkdown: "Find $\\lim_{x\\to3^-}f(x)$ in terms of $k$.", points: 1 },
-        { letter: "b", promptMarkdown: "Find $\\lim_{x\\to3^+}f(x)$.", points: 1 },
-        { letter: "c", promptMarkdown: "Find the value of $k$ that makes $f$ continuous at $x=3$, or explain why none exists.", points: 3 },
+        {
+          letter: "a",
+          promptMarkdown: "Find $\\lim_{x\\to3^-}f(x)$ in terms of $k$.",
+          points: 1,
+        },
+        {
+          letter: "b",
+          promptMarkdown: "Find $\\lim_{x\\to3^+}f(x)$.",
+          points: 1,
+        },
+        {
+          letter: "c",
+          promptMarkdown:
+            "Find the value of $k$ that makes $f$ continuous at $x=3$, or explain why none exists.",
+          points: 3,
+        },
       ],
       hints: [
         "Use the left branch for the left-hand limit.",
@@ -2287,11 +3196,27 @@ const topicSeeds: readonly TopicSeed[] = [
       rubric: {
         maxPoints: 5,
         criteria: [
-          { part: "a", points: 1, description: "Computes left-hand limit as 6+k." },
-          { part: "b", points: 1, description: "Computes right-hand limit as 10." },
-          { part: "c", points: 1, description: "Sets 6+k equal to 10 for matching one-sided limits." },
+          {
+            part: "a",
+            points: 1,
+            description: "Computes left-hand limit as 6+k.",
+          },
+          {
+            part: "b",
+            points: 1,
+            description: "Computes right-hand limit as 10.",
+          },
+          {
+            part: "c",
+            points: 1,
+            description: "Sets 6+k equal to 10 for matching one-sided limits.",
+          },
           { part: "c", points: 1, description: "Finds k=4." },
-          { part: "c", points: 1, description: "Checks the common limit equals f(3)=10." },
+          {
+            part: "c",
+            points: 1,
+            description: "Checks the common limit equals f(3)=10.",
+          },
         ],
       },
       commonErrors: [
@@ -2300,9 +3225,21 @@ const topicSeeds: readonly TopicSeed[] = [
         "Solving for k but not checking continuity conditions.",
       ],
       workedSolution: [
-        { part: "a", explanation: "From the left branch, $\\lim_{x\\to3^-}f(x)=2(3)+k=6+k$." },
-        { part: "b", explanation: "From the right branch, $\\lim_{x\\to3^+}f(x)=3^2+1=10$." },
-        { part: "c", explanation: "For continuity, the one-sided limits must equal each other and equal $f(3)=10$. Set $6+k=10$, so $k=4$. Then the common limit is 10, matching $f(3)$." },
+        {
+          part: "a",
+          explanation:
+            "From the left branch, $\\lim_{x\\to3^-}f(x)=2(3)+k=6+k$.",
+        },
+        {
+          part: "b",
+          explanation:
+            "From the right branch, $\\lim_{x\\to3^+}f(x)=3^2+1=10$.",
+        },
+        {
+          part: "c",
+          explanation:
+            "For continuity, the one-sided limits must equal each other and equal $f(3)=10$. Set $6+k=10$, so $k=4$. Then the common limit is 10, matching $f(3)$.",
+        },
       ],
     },
   },
@@ -2317,7 +3254,12 @@ const topicSeeds: readonly TopicSeed[] = [
           "\\text{On which interval is }f(x)=\\frac{x+1}{x-2}\\text{ continuous?}",
         difficulty: 2,
         skillTags: ["continuity.intervals", "rational_functions"],
-        choices: ["$(-\\infty,\\infty)$", "$(-\\infty,2)$ only", "$(2,\\infty)$ only", "$(-\\infty,2)\\cup(2,\\infty)$"],
+        choices: [
+          "$(-\\infty,\\infty)$",
+          "$(-\\infty,2)$ only",
+          "$(2,\\infty)$ only",
+          "$(-\\infty,2)\\cup(2,\\infty)$",
+        ],
         correctLetter: "D",
         rationales: {
           A: "The denominator is zero at x=2.",
@@ -2330,8 +3272,17 @@ const topicSeeds: readonly TopicSeed[] = [
           "Exclude x=2 from the real line.",
         ],
         solution: [
-          { step: 1, explanation: "The denominator is zero at x=2.", math: "x-2=0" },
-          { step: 2, explanation: "So the function is continuous on intervals excluding 2.", math: "(-\\infty,2)\\cup(2,\\infty)" },
+          {
+            step: 1,
+            explanation: "The denominator is zero at x=2.",
+            math: "x-2=0",
+          },
+          {
+            step: 2,
+            explanation:
+              "So the function is continuous on intervals excluding 2.",
+            math: "(-\\infty,2)\\cup(2,\\infty)",
+          },
         ],
       },
       {
@@ -2339,7 +3290,12 @@ const topicSeeds: readonly TopicSeed[] = [
           "\\text{Let }F(x)=\\frac{p(x)}{x-1}\\text{ where }p(x)=x^5-4x+7.\\text{ Which interval is guaranteed to be an interval of continuity for }F?",
         difficulty: 3,
         skillTags: ["continuity.intervals", "polynomial_continuity"],
-        choices: ["$(-\\infty,1)$", "$(-\\infty,\\infty)$", "$[1,\\infty)$", "No interval"],
+        choices: [
+          "$(-\\infty,1)$",
+          "$(-\\infty,\\infty)$",
+          "$[1,\\infty)$",
+          "No interval",
+        ],
         correctLetter: "A",
         rationales: {
           B: "The quotient is not defined at x=1 because of the denominator.",
@@ -2352,8 +3308,18 @@ const topicSeeds: readonly TopicSeed[] = [
           "Choose an interval that avoids x=1.",
         ],
         solution: [
-          { step: 1, explanation: "The numerator is continuous everywhere, but the denominator is zero at x=1.", math: "x-1=0\\Rightarrow x=1" },
-          { step: 2, explanation: "The quotient is continuous on intervals that do not include x=1.", math: "(-\\infty,1)" },
+          {
+            step: 1,
+            explanation:
+              "The numerator is continuous everywhere, but the denominator is zero at x=1.",
+            math: "x-1=0\\Rightarrow x=1",
+          },
+          {
+            step: 2,
+            explanation:
+              "The quotient is continuous on intervals that do not include x=1.",
+            math: "(-\\infty,1)",
+          },
         ],
       },
       {
@@ -2361,7 +3327,12 @@ const topicSeeds: readonly TopicSeed[] = [
           "\\text{The function }r(x)=\\sqrt{5-x}\\text{ is continuous on its domain. What is the domain interval?}",
         difficulty: 2,
         skillTags: ["continuity.intervals", "radical_functions"],
-        choices: ["$(-\\infty,5]$", "$[5,\\infty)$", "$(-\\infty,\\infty)$", "$(5,\\infty)$"],
+        choices: [
+          "$(-\\infty,5]$",
+          "$[5,\\infty)$",
+          "$(-\\infty,\\infty)$",
+          "$(5,\\infty)$",
+        ],
         correctLetter: "A",
         rationales: {
           B: "For $\\sqrt{5-x}$, the radicand must satisfy $5-x\\ge0$.",
@@ -2374,9 +3345,17 @@ const topicSeeds: readonly TopicSeed[] = [
           "Include the endpoint where the radicand is zero.",
         ],
         solution: [
-          { step: 1, explanation: "Set the radicand nonnegative.", math: "5-x\\ge0" },
+          {
+            step: 1,
+            explanation: "Set the radicand nonnegative.",
+            math: "5-x\\ge0",
+          },
           { step: 2, explanation: "Solve.", math: "x\\le5" },
-          { step: 3, explanation: "The domain interval is $(-\\infty,5]$.", math: null },
+          {
+            step: 3,
+            explanation: "The domain interval is $(-\\infty,5]$.",
+            math: null,
+          },
         ],
       },
       {
@@ -2384,7 +3363,12 @@ const topicSeeds: readonly TopicSeed[] = [
           "f(x)=\\begin{cases}x+2,&x<1\\\\3,&x\\ge1\\end{cases}\\quad \\text{Is }f\\text{ continuous on }(-\\infty,\\infty)?",
         difficulty: 2,
         skillTags: ["continuity.intervals", "piecewise_functions"],
-        choices: ["Yes, because both pieces meet at 3", "No, because the left limit at 1 is 1", "No, because f(1) is undefined", "Yes, because all piecewise functions are continuous"],
+        choices: [
+          "Yes, because both pieces meet at 3",
+          "No, because the left limit at 1 is 1",
+          "No, because f(1) is undefined",
+          "Yes, because all piecewise functions are continuous",
+        ],
         correctLetter: "A",
         rationales: {
           B: "The left branch value approaches $1+2=3$, not 1.",
@@ -2397,9 +3381,21 @@ const topicSeeds: readonly TopicSeed[] = [
           "Compare it with f(1)=3.",
         ],
         solution: [
-          { step: 1, explanation: "Left-hand limit at 1 is 3.", math: "\\lim_{x\\to1^-}(x+2)=3" },
-          { step: 2, explanation: "Right-hand value and f(1) are also 3.", math: "f(1)=3" },
-          { step: 3, explanation: "The function is continuous everywhere.", math: null },
+          {
+            step: 1,
+            explanation: "Left-hand limit at 1 is 3.",
+            math: "\\lim_{x\\to1^-}(x+2)=3",
+          },
+          {
+            step: 2,
+            explanation: "Right-hand value and f(1) are also 3.",
+            math: "f(1)=3",
+          },
+          {
+            step: 3,
+            explanation: "The function is continuous everywhere.",
+            math: null,
+          },
         ],
       },
       {
@@ -2420,20 +3416,37 @@ const topicSeeds: readonly TopicSeed[] = [
           "Choose an interval that contains neither point.",
         ],
         solution: [
-          { step: 1, explanation: "The denominator is zero at x=-1 and x=4.", math: null },
-          { step: 2, explanation: "The interval $(-1,4)$ avoids both endpoints and contains no zero of the denominator.", math: null },
+          {
+            step: 1,
+            explanation: "The denominator is zero at x=-1 and x=4.",
+            math: null,
+          },
+          {
+            step: 2,
+            explanation:
+              "The interval $(-1,4)$ avoids both endpoints and contains no zero of the denominator.",
+            math: null,
+          },
         ],
       },
     ],
     frq: {
-      questionLatex:
-        "f(x)=\\frac{\\sqrt{x+3}}{x^2-9}",
+      questionLatex: "f(x)=\\frac{\\sqrt{x+3}}{x^2-9}",
       difficulty: 3,
       skillTags: ["continuity.intervals", "domain_analysis"],
       parts: [
         { letter: "a", promptMarkdown: "Find the domain of $f$.", points: 2 },
-        { letter: "b", promptMarkdown: "State the intervals on which $f$ is continuous.", points: 2 },
-        { letter: "c", promptMarkdown: "Explain why $x=-3$ is excluded even though the square root is defined there.", points: 1 },
+        {
+          letter: "b",
+          promptMarkdown: "State the intervals on which $f$ is continuous.",
+          points: 2,
+        },
+        {
+          letter: "c",
+          promptMarkdown:
+            "Explain why $x=-3$ is excluded even though the square root is defined there.",
+          points: 1,
+        },
       ],
       hints: [
         "Check the square root and the denominator.",
@@ -2443,10 +3456,28 @@ const topicSeeds: readonly TopicSeed[] = [
       rubric: {
         maxPoints: 5,
         criteria: [
-          { part: "a", points: 1, description: "Identifies radical condition x >= -3." },
-          { part: "a", points: 1, description: "Identifies denominator zeros x = -3 and x = 3, and excludes them." },
-          { part: "b", points: 2, description: "States intervals of continuity as (-3,3) and (3,infinity)." },
-          { part: "c", points: 1, description: "Explains denominator is zero at x=-3." },
+          {
+            part: "a",
+            points: 1,
+            description: "Identifies radical condition x >= -3.",
+          },
+          {
+            part: "a",
+            points: 1,
+            description:
+              "Identifies denominator zeros x = -3 and x = 3, and excludes them.",
+          },
+          {
+            part: "b",
+            points: 2,
+            description:
+              "States intervals of continuity as (-3,3) and (3,infinity).",
+          },
+          {
+            part: "c",
+            points: 1,
+            description: "Explains denominator is zero at x=-3.",
+          },
         ],
       },
       commonErrors: [
@@ -2455,9 +3486,21 @@ const topicSeeds: readonly TopicSeed[] = [
         "Writing one interval across x=3.",
       ],
       workedSolution: [
-        { part: "a", explanation: "The square root requires $x\\ge-3$. The denominator $x^2-9=(x-3)(x+3)$ cannot be zero, so exclude $x=-3$ and $x=3$. The domain is $(-3,3)\\cup(3,\\infty)$." },
-        { part: "b", explanation: "A quotient of continuous functions is continuous wherever it is defined, so $f$ is continuous on $(-3,3)$ and $(3,\\infty)$." },
-        { part: "c", explanation: "At $x=-3$, the numerator is defined as 0, but the denominator is also 0, so the whole quotient is undefined." },
+        {
+          part: "a",
+          explanation:
+            "The square root requires $x\\ge-3$. The denominator $x^2-9=(x-3)(x+3)$ cannot be zero, so exclude $x=-3$ and $x=3$. The domain is $(-3,3)\\cup(3,\\infty)$.",
+        },
+        {
+          part: "b",
+          explanation:
+            "A quotient of continuous functions is continuous wherever it is defined, so $f$ is continuous on $(-3,3)$ and $(3,\\infty)$.",
+        },
+        {
+          part: "c",
+          explanation:
+            "At $x=-3$, the numerator is defined as 0, but the denominator is also 0, so the whole quotient is undefined.",
+        },
       ],
     },
   },
@@ -2485,16 +3528,32 @@ const topicSeeds: readonly TopicSeed[] = [
           "Evaluate the simplified expression at x=2.",
         ],
         solution: [
-          { step: 1, explanation: "Simplify for x not equal to 2.", math: "\\frac{(x-2)(x+2)}{x-2}=x+2" },
-          { step: 2, explanation: "Patch with the limit value.", math: "f(2)=2+2=4" },
+          {
+            step: 1,
+            explanation: "Simplify for x not equal to 2.",
+            math: "\\frac{(x-2)(x+2)}{x-2}=x+2",
+          },
+          {
+            step: 2,
+            explanation: "Patch with the limit value.",
+            math: "f(2)=2+2=4",
+          },
         ],
       },
       {
         questionLatex:
           "\\text{A function has }\\lim_{x\\to1^-}f(x)=2\\text{ and }\\lim_{x\\to1^+}f(x)=5.\\text{ Can redefining }f(1)\\text{ make it continuous?}",
         difficulty: 2,
-        skillTags: ["continuity.removing_discontinuities", "jump_discontinuity"],
-        choices: ["Yes, set $f(1)=2$", "Yes, set $f(1)=5$", "Yes, set $f(1)=3.5$", "No, because the two-sided limit does not exist"],
+        skillTags: [
+          "continuity.removing_discontinuities",
+          "jump_discontinuity",
+        ],
+        choices: [
+          "Yes, set $f(1)=2$",
+          "Yes, set $f(1)=5$",
+          "Yes, set $f(1)=3.5$",
+          "No, because the two-sided limit does not exist",
+        ],
         correctLetter: "D",
         rationales: {
           A: "This fixes only the left side.",
@@ -2507,8 +3566,17 @@ const topicSeeds: readonly TopicSeed[] = [
           "The one-sided limits are different.",
         ],
         solution: [
-          { step: 1, explanation: "The one-sided limits differ.", math: "2\\ne5" },
-          { step: 2, explanation: "No single value of f(1) can make the function continuous.", math: null },
+          {
+            step: 1,
+            explanation: "The one-sided limits differ.",
+            math: "2\\ne5",
+          },
+          {
+            step: 2,
+            explanation:
+              "No single value of f(1) can make the function continuous.",
+            math: null,
+          },
         ],
       },
       {
@@ -2537,7 +3605,10 @@ const topicSeeds: readonly TopicSeed[] = [
         questionLatex:
           "f(x)=\\begin{cases}\\frac{x^2-1}{x-1},&x\\ne1\\\\k,&x=1\\end{cases}\\quad \\text{Find }k\\text{ for continuity at }x=1.",
         difficulty: 2,
-        skillTags: ["continuity.removing_discontinuities", "piecewise_functions"],
+        skillTags: [
+          "continuity.removing_discontinuities",
+          "piecewise_functions",
+        ],
         choices: ["0", "1", "2", "No value works"],
         correctLetter: "C",
         rationales: {
@@ -2551,7 +3622,11 @@ const topicSeeds: readonly TopicSeed[] = [
           "Set k equal to the limit.",
         ],
         solution: [
-          { step: 1, explanation: "Simplify the expression for x not equal to 1.", math: "\\frac{(x-1)(x+1)}{x-1}=x+1" },
+          {
+            step: 1,
+            explanation: "Simplify the expression for x not equal to 1.",
+            math: "\\frac{(x-1)(x+1)}{x-1}=x+1",
+          },
           { step: 2, explanation: "Evaluate at x=1.", math: "k=2" },
         ],
       },
@@ -2559,7 +3634,10 @@ const topicSeeds: readonly TopicSeed[] = [
         questionLatex:
           "f(x)=\\begin{cases}\\frac{x^2-9}{x-3},&x\\ne3\\\\k,&x=3\\end{cases}\\quad\\text{Which value of }k\\text{ removes the discontinuity at }x=3?",
         difficulty: 2,
-        skillTags: ["continuity.removing_discontinuities", "discontinuity_types"],
+        skillTags: [
+          "continuity.removing_discontinuities",
+          "discontinuity_types",
+        ],
         choices: ["$0$", "$3$", "$6$", "No value works"],
         correctLetter: "C",
         rationales: {
@@ -2573,8 +3651,16 @@ const topicSeeds: readonly TopicSeed[] = [
           "Set k equal to the limiting value.",
         ],
         solution: [
-          { step: 1, explanation: "Simplify the expression for x not equal to 3.", math: "\\frac{x^2-9}{x-3}=x+3" },
-          { step: 2, explanation: "Patch the hole with the limit value.", math: "k=\\lim_{x\\to3}(x+3)=6" },
+          {
+            step: 1,
+            explanation: "Simplify the expression for x not equal to 3.",
+            math: "\\frac{x^2-9}{x-3}=x+3",
+          },
+          {
+            step: 2,
+            explanation: "Patch the hole with the limit value.",
+            math: "k=\\lim_{x\\to3}(x+3)=6",
+          },
         ],
       },
     ],
@@ -2584,9 +3670,23 @@ const topicSeeds: readonly TopicSeed[] = [
       difficulty: 4,
       skillTags: ["continuity.removing_discontinuities", "parameter_selection"],
       parts: [
-        { letter: "a", promptMarkdown: "Find one pair $(a,b)$ such that the expression has a removable discontinuity at $x=1$.", points: 2 },
-        { letter: "b", promptMarkdown: "Using your pair, simplify the expression for $x\\ne1$.", points: 2 },
-        { letter: "c", promptMarkdown: "Find $k$ so that $f$ is continuous at $x=1$.", points: 2 },
+        {
+          letter: "a",
+          promptMarkdown:
+            "Find one pair $(a,b)$ such that the expression has a removable discontinuity at $x=1$.",
+          points: 2,
+        },
+        {
+          letter: "b",
+          promptMarkdown:
+            "Using your pair, simplify the expression for $x\\ne1$.",
+          points: 2,
+        },
+        {
+          letter: "c",
+          promptMarkdown: "Find $k$ so that $f$ is continuous at $x=1$.",
+          points: 2,
+        },
       ],
       hints: [
         "For a removable discontinuity, the numerator must also be zero at x=1.",
@@ -2596,11 +3696,31 @@ const topicSeeds: readonly TopicSeed[] = [
       rubric: {
         maxPoints: 6,
         criteria: [
-          { part: "a", points: 1, description: "Recognizes numerator must have factor x-1." },
-          { part: "a", points: 1, description: "Gives a valid pair such as a=1, b=-2." },
-          { part: "b", points: 1, description: "Correctly factors numerator for chosen pair." },
-          { part: "b", points: 1, description: "Cancels x-1 to get simplified expression." },
-          { part: "c", points: 1, description: "Evaluates the simplified expression at x=1." },
+          {
+            part: "a",
+            points: 1,
+            description: "Recognizes numerator must have factor x-1.",
+          },
+          {
+            part: "a",
+            points: 1,
+            description: "Gives a valid pair such as a=1, b=-2.",
+          },
+          {
+            part: "b",
+            points: 1,
+            description: "Correctly factors numerator for chosen pair.",
+          },
+          {
+            part: "b",
+            points: 1,
+            description: "Cancels x-1 to get simplified expression.",
+          },
+          {
+            part: "c",
+            points: 1,
+            description: "Evaluates the simplified expression at x=1.",
+          },
           { part: "c", points: 1, description: "Sets k equal to that value." },
         ],
       },
@@ -2610,9 +3730,21 @@ const topicSeeds: readonly TopicSeed[] = [
         "Finding k before simplifying the removable factor.",
       ],
       workedSolution: [
-        { part: "a", explanation: "One valid choice is numerator $(x-1)(x+2)=x^2+x-2$, so $a=1$ and $b=-2$." },
-        { part: "b", explanation: "With that pair, $\\frac{x^2+x-2}{x-1}=\\frac{(x-1)(x+2)}{x-1}=x+2$ for $x\\ne1$." },
-        { part: "c", explanation: "The limit as $x\\to1$ is $1+2=3$, so choose $k=3$ for continuity." },
+        {
+          part: "a",
+          explanation:
+            "One valid choice is numerator $(x-1)(x+2)=x^2+x-2$, so $a=1$ and $b=-2$.",
+        },
+        {
+          part: "b",
+          explanation:
+            "With that pair, $\\frac{x^2+x-2}{x-1}=\\frac{(x-1)(x+2)}{x-1}=x+2$ for $x\\ne1$.",
+        },
+        {
+          part: "c",
+          explanation:
+            "The limit as $x\\to1$ is $1+2=3$, so choose $k=3$ for continuity.",
+        },
       ],
     },
   },
@@ -2626,7 +3758,12 @@ const topicSeeds: readonly TopicSeed[] = [
         questionLatex: "\\lim_{x\\to2^+}\\frac{1}{x-2}",
         difficulty: 2,
         skillTags: ["limits.infinite_limits", "vertical_asymptotes"],
-        choices: ["$-\\infty$", "0", "$\\infty$", "Does not exist with no sign"],
+        choices: [
+          "$-\\infty$",
+          "0",
+          "$\\infty$",
+          "Does not exist with no sign",
+        ],
         correctLetter: "C",
         rationales: {
           A: "From the right, x-2 is positive.",
@@ -2639,8 +3776,17 @@ const topicSeeds: readonly TopicSeed[] = [
           "Use positive infinity.",
         ],
         solution: [
-          { step: 1, explanation: "As x approaches 2 from the right, denominator approaches 0 positive.", math: "x-2\\to0^+" },
-          { step: 2, explanation: "The quotient approaches positive infinity.", math: "\\infty" },
+          {
+            step: 1,
+            explanation:
+              "As x approaches 2 from the right, denominator approaches 0 positive.",
+            math: "x-2\\to0^+",
+          },
+          {
+            step: 2,
+            explanation: "The quotient approaches positive infinity.",
+            math: "\\infty",
+          },
         ],
       },
       {
@@ -2660,8 +3806,16 @@ const topicSeeds: readonly TopicSeed[] = [
           "The reciprocal grows without bound.",
         ],
         solution: [
-          { step: 1, explanation: "$(x-3)^2\\to0^+$ from both sides.", math: null },
-          { step: 2, explanation: "Therefore the quotient approaches $\\infty$.", math: null },
+          {
+            step: 1,
+            explanation: "$(x-3)^2\\to0^+$ from both sides.",
+            math: null,
+          },
+          {
+            step: 2,
+            explanation: "Therefore the quotient approaches $\\infty$.",
+            math: null,
+          },
         ],
       },
       {
@@ -2669,7 +3823,12 @@ const topicSeeds: readonly TopicSeed[] = [
           "f(x)=\\frac{x+1}{x^2-4}.\\ \\text{Which x-values are vertical asymptote candidates?}",
         difficulty: 2,
         skillTags: ["limits.infinite_limits", "vertical_asymptotes"],
-        choices: ["$x=-1$ only", "$x=2$ only", "$x=-2$ and $x=2$", "No vertical asymptotes"],
+        choices: [
+          "$x=-1$ only",
+          "$x=2$ only",
+          "$x=-2$ and $x=2$",
+          "No vertical asymptotes",
+        ],
         correctLetter: "C",
         rationales: {
           A: "x=-1 makes the numerator zero, not the denominator.",
@@ -2682,8 +3841,16 @@ const topicSeeds: readonly TopicSeed[] = [
           "The zeros are x=-2 and x=2.",
         ],
         solution: [
-          { step: 1, explanation: "Factor the denominator.", math: "x^2-4=(x-2)(x+2)" },
-          { step: 2, explanation: "The denominator is zero at x=2 and x=-2.", math: null },
+          {
+            step: 1,
+            explanation: "Factor the denominator.",
+            math: "x^2-4=(x-2)(x+2)",
+          },
+          {
+            step: 2,
+            explanation: "The denominator is zero at x=2 and x=-2.",
+            math: null,
+          },
         ],
       },
       {
@@ -2730,20 +3897,47 @@ const topicSeeds: readonly TopicSeed[] = [
           "The squared denominator approaches 0 through positive values from both sides.",
         ],
         solution: [
-          { step: 1, explanation: "At x=1, the denominator approaches 0 and no factor cancels.", math: "(x-1)^2\\to0^+" },
-          { step: 2, explanation: "The numerator approaches 3, so the quotient grows without bound from both sides.", math: "f(x)\\to\\infty" },
+          {
+            step: 1,
+            explanation:
+              "At x=1, the denominator approaches 0 and no factor cancels.",
+            math: "(x-1)^2\\to0^+",
+          },
+          {
+            step: 2,
+            explanation:
+              "The numerator approaches 3, so the quotient grows without bound from both sides.",
+            math: "f(x)\\to\\infty",
+          },
         ],
       },
     ],
     frq: {
-      questionLatex:
-        "f(x)=\\frac{x+1}{(x-2)(x+3)}",
+      questionLatex: "f(x)=\\frac{x+1}{(x-2)(x+3)}",
       difficulty: 4,
-      skillTags: ["limits.infinite_limits", "vertical_asymptotes", "sign_analysis"],
+      skillTags: [
+        "limits.infinite_limits",
+        "vertical_asymptotes",
+        "sign_analysis",
+      ],
       parts: [
-        { letter: "a", promptMarkdown: "Find the vertical asymptotes of $f$.", points: 1 },
-        { letter: "b", promptMarkdown: "Determine $\\lim_{x\\to2^-}f(x)$ and $\\lim_{x\\to2^+}f(x)$.", points: 2 },
-        { letter: "c", promptMarkdown: "Determine $\\lim_{x\\to-3^-}f(x)$ and $\\lim_{x\\to-3^+}f(x)$.", points: 2 },
+        {
+          letter: "a",
+          promptMarkdown: "Find the vertical asymptotes of $f$.",
+          points: 1,
+        },
+        {
+          letter: "b",
+          promptMarkdown:
+            "Determine $\\lim_{x\\to2^-}f(x)$ and $\\lim_{x\\to2^+}f(x)$.",
+          points: 2,
+        },
+        {
+          letter: "c",
+          promptMarkdown:
+            "Determine $\\lim_{x\\to-3^-}f(x)$ and $\\lim_{x\\to-3^+}f(x)$.",
+          points: 2,
+        },
       ],
       hints: [
         "Vertical asymptotes occur where uncancelled denominator factors are zero.",
@@ -2753,11 +3947,31 @@ const topicSeeds: readonly TopicSeed[] = [
       rubric: {
         maxPoints: 5,
         criteria: [
-          { part: "a", points: 1, description: "Identifies x=2 and x=-3 as vertical asymptotes." },
-          { part: "b", points: 1, description: "Correctly gives limit -infinity from the left of 2." },
-          { part: "b", points: 1, description: "Correctly gives limit infinity from the right of 2." },
-          { part: "c", points: 1, description: "Correctly gives limit -infinity from the left of -3." },
-          { part: "c", points: 1, description: "Correctly gives limit infinity from the right of -3." },
+          {
+            part: "a",
+            points: 1,
+            description: "Identifies x=2 and x=-3 as vertical asymptotes.",
+          },
+          {
+            part: "b",
+            points: 1,
+            description: "Correctly gives limit -infinity from the left of 2.",
+          },
+          {
+            part: "b",
+            points: 1,
+            description: "Correctly gives limit infinity from the right of 2.",
+          },
+          {
+            part: "c",
+            points: 1,
+            description: "Correctly gives limit -infinity from the left of -3.",
+          },
+          {
+            part: "c",
+            points: 1,
+            description: "Correctly gives limit infinity from the right of -3.",
+          },
         ],
       },
       commonErrors: [
@@ -2766,9 +3980,21 @@ const topicSeeds: readonly TopicSeed[] = [
         "Assuming both sides of every vertical asymptote have the same sign.",
       ],
       workedSolution: [
-        { part: "a", explanation: "The denominator is zero at $x=2$ and $x=-3$, and no factor cancels with $x+1$, so both are vertical asymptotes." },
-        { part: "b", explanation: "Near x=2, $x+1>0$ and $x+3>0$. From the left, $x-2<0$, so $f(x)\\to-\\infty$. From the right, $x-2>0$, so $f(x)\\to\\infty$." },
-        { part: "c", explanation: "Near x=-3, $x+1<0$ and $x-2<0$. From the left, $x+3<0$, so the denominator is positive? Since $(x-2)(x+3)$ is positive and numerator negative, $f(x)\\to-\\infty$. From the right, the denominator is negative and numerator negative, so $f(x)\\to\\infty$." },
+        {
+          part: "a",
+          explanation:
+            "The denominator is zero at $x=2$ and $x=-3$, and no factor cancels with $x+1$, so both are vertical asymptotes.",
+        },
+        {
+          part: "b",
+          explanation:
+            "Near x=2, $x+1>0$ and $x+3>0$. From the left, $x-2<0$, so $f(x)\\to-\\infty$. From the right, $x-2>0$, so $f(x)\\to\\infty$.",
+        },
+        {
+          part: "c",
+          explanation:
+            "Near x=-3, $x+1<0$ and $x-2<0$. From the left, $x+3<0$, so the denominator is positive? Since $(x-2)(x+3)$ is positive and numerator negative, $f(x)\\to-\\infty$. From the right, the denominator is negative and numerator negative, so $f(x)\\to\\infty$.",
+        },
       ],
     },
   },
@@ -2795,7 +4021,11 @@ const topicSeeds: readonly TopicSeed[] = [
           "Use the ratio of leading coefficients.",
         ],
         solution: [
-          { step: 1, explanation: "For equal degrees, use leading coefficients.", math: "\\frac{3}{2}" },
+          {
+            step: 1,
+            explanation: "For equal degrees, use leading coefficients.",
+            math: "\\frac{3}{2}",
+          },
         ],
       },
       {
@@ -2815,8 +4045,16 @@ const topicSeeds: readonly TopicSeed[] = [
           "The quotient approaches 0.",
         ],
         solution: [
-          { step: 1, explanation: "Numerator degree is 1 and denominator degree is 2.", math: null },
-          { step: 2, explanation: "The denominator grows faster, so the limit is 0.", math: null },
+          {
+            step: 1,
+            explanation: "Numerator degree is 1 and denominator degree is 2.",
+            math: null,
+          },
+          {
+            step: 2,
+            explanation: "The denominator grows faster, so the limit is 0.",
+            math: null,
+          },
         ],
       },
       {
@@ -2836,8 +4074,16 @@ const topicSeeds: readonly TopicSeed[] = [
           "For large positive x, the expression behaves like x.",
         ],
         solution: [
-          { step: 1, explanation: "The expression behaves like $x^3/x^2=x$.", math: null },
-          { step: 2, explanation: "As x approaches infinity, x approaches infinity.", math: "\\infty" },
+          {
+            step: 1,
+            explanation: "The expression behaves like $x^3/x^2=x$.",
+            math: null,
+          },
+          {
+            step: 2,
+            explanation: "As x approaches infinity, x approaches infinity.",
+            math: "\\infty",
+          },
         ],
       },
       {
@@ -2857,8 +4103,16 @@ const topicSeeds: readonly TopicSeed[] = [
           "The expression approaches $\\sqrt{4}$.",
         ],
         solution: [
-          { step: 1, explanation: "Factor inside the radical.", math: "\\frac{\\sqrt{x^2(4+1/x^2)}}{x}" },
-          { step: 2, explanation: "For x -> infinity, $\\sqrt{x^2}=x$.", math: "\\sqrt{4+1/x^2}\\to2" },
+          {
+            step: 1,
+            explanation: "Factor inside the radical.",
+            math: "\\frac{\\sqrt{x^2(4+1/x^2)}}{x}",
+          },
+          {
+            step: 2,
+            explanation: "For x -> infinity, $\\sqrt{x^2}=x$.",
+            math: "\\sqrt{4+1/x^2}\\to2",
+          },
         ],
       },
       {
@@ -2884,20 +4138,41 @@ const topicSeeds: readonly TopicSeed[] = [
           "Write a horizontal asymptote as y equals the limiting value.",
         ],
         solution: [
-          { step: 1, explanation: "The numerator and denominator both have degree 2.", math: "\\lim_{x\\to\\infty}f(x)=\\frac{-4}{1}=-4" },
-          { step: 2, explanation: "A finite end-behavior limit gives the horizontal asymptote.", math: "y=-4" },
+          {
+            step: 1,
+            explanation: "The numerator and denominator both have degree 2.",
+            math: "\\lim_{x\\to\\infty}f(x)=\\frac{-4}{1}=-4",
+          },
+          {
+            step: 2,
+            explanation:
+              "A finite end-behavior limit gives the horizontal asymptote.",
+            math: "y=-4",
+          },
         ],
       },
     ],
     frq: {
-      questionLatex:
-        "f(x)=\\frac{2x^2-3x+1}{x^2+5}",
+      questionLatex: "f(x)=\\frac{2x^2-3x+1}{x^2+5}",
       difficulty: 3,
       skillTags: ["limits.at_infinity", "horizontal_asymptotes"],
       parts: [
-        { letter: "a", promptMarkdown: "Find $\\lim_{x\\to\\infty}f(x)$.", points: 2 },
-        { letter: "b", promptMarkdown: "Find $\\lim_{x\\to-\\infty}f(x)$.", points: 2 },
-        { letter: "c", promptMarkdown: "State the horizontal asymptote and explain why the same asymptote applies on both ends.", points: 2 },
+        {
+          letter: "a",
+          promptMarkdown: "Find $\\lim_{x\\to\\infty}f(x)$.",
+          points: 2,
+        },
+        {
+          letter: "b",
+          promptMarkdown: "Find $\\lim_{x\\to-\\infty}f(x)$.",
+          points: 2,
+        },
+        {
+          letter: "c",
+          promptMarkdown:
+            "State the horizontal asymptote and explain why the same asymptote applies on both ends.",
+          points: 2,
+        },
       ],
       hints: [
         "Compare numerator and denominator degrees.",
@@ -2909,10 +4184,23 @@ const topicSeeds: readonly TopicSeed[] = [
         criteria: [
           { part: "a", points: 1, description: "Identifies equal degrees." },
           { part: "a", points: 1, description: "Computes right-end limit 2." },
-          { part: "b", points: 1, description: "Uses leading terms for negative infinity." },
+          {
+            part: "b",
+            points: 1,
+            description: "Uses leading terms for negative infinity.",
+          },
           { part: "b", points: 1, description: "Computes left-end limit 2." },
-          { part: "c", points: 1, description: "States horizontal asymptote y=2." },
-          { part: "c", points: 1, description: "Explains leading coefficient ratio controls both ends." },
+          {
+            part: "c",
+            points: 1,
+            description: "States horizontal asymptote y=2.",
+          },
+          {
+            part: "c",
+            points: 1,
+            description:
+              "Explains leading coefficient ratio controls both ends.",
+          },
         ],
       },
       commonErrors: [
@@ -2921,9 +4209,21 @@ const topicSeeds: readonly TopicSeed[] = [
         "Writing the horizontal asymptote as x=2.",
       ],
       workedSolution: [
-        { part: "a", explanation: "Both numerator and denominator have degree 2, so the limit as $x\\to\\infty$ is the leading coefficient ratio $2/1=2$." },
-        { part: "b", explanation: "The same leading terms dominate as $x\\to-\\infty$, so the limit is also 2." },
-        { part: "c", explanation: "Since both end behavior limits equal 2, the horizontal asymptote is $y=2$." },
+        {
+          part: "a",
+          explanation:
+            "Both numerator and denominator have degree 2, so the limit as $x\\to\\infty$ is the leading coefficient ratio $2/1=2$.",
+        },
+        {
+          part: "b",
+          explanation:
+            "The same leading terms dominate as $x\\to-\\infty$, so the limit is also 2.",
+        },
+        {
+          part: "c",
+          explanation:
+            "Since both end behavior limits equal 2, the horizontal asymptote is $y=2$.",
+        },
       ],
     },
   },
@@ -2956,8 +4256,18 @@ const topicSeeds: readonly TopicSeed[] = [
           "If 0 lies between the endpoint values, IVT guarantees a root.",
         ],
         solution: [
-          { step: 1, explanation: "The polynomial is continuous on [0,1], and the endpoint values bracket 0.", math: "f(0)=-1,\\quad f(1)=1" },
-          { step: 2, explanation: "By IVT, there is at least one c in (0,1) where f(c)=0.", math: null },
+          {
+            step: 1,
+            explanation:
+              "The polynomial is continuous on [0,1], and the endpoint values bracket 0.",
+            math: "f(0)=-1,\\quad f(1)=1",
+          },
+          {
+            step: 2,
+            explanation:
+              "By IVT, there is at least one c in (0,1) where f(c)=0.",
+            math: null,
+          },
         ],
       },
       {
@@ -2983,8 +4293,17 @@ const topicSeeds: readonly TopicSeed[] = [
           "A vertical asymptote breaks the IVT hypothesis.",
         ],
         solution: [
-          { step: 1, explanation: "The denominator is zero at an interior point.", math: "x-2=0\\Rightarrow x=2" },
-          { step: 2, explanation: "Because f is not continuous on [1,3], IVT cannot be applied on that interval.", math: null },
+          {
+            step: 1,
+            explanation: "The denominator is zero at an interior point.",
+            math: "x-2=0\\Rightarrow x=2",
+          },
+          {
+            step: 2,
+            explanation:
+              "Because f is not continuous on [1,3], IVT cannot be applied on that interval.",
+            math: null,
+          },
         ],
       },
       {
@@ -3005,8 +4324,17 @@ const topicSeeds: readonly TopicSeed[] = [
           "$f(1)=2$ and $f(2)=10$, so 5 is between them.",
         ],
         solution: [
-          { step: 1, explanation: "Evaluate endpoints.", math: "f(1)=2,\\quad f(2)=10" },
-          { step: 2, explanation: "Since 5 lies between 2 and 10 and f is continuous, IVT guarantees a solution in [1,2].", math: null },
+          {
+            step: 1,
+            explanation: "Evaluate endpoints.",
+            math: "f(1)=2,\\quad f(2)=10",
+          },
+          {
+            step: 2,
+            explanation:
+              "Since 5 lies between 2 and 10 and f is continuous, IVT guarantees a solution in [1,2].",
+            math: null,
+          },
         ],
       },
       {
@@ -3032,8 +4360,16 @@ const topicSeeds: readonly TopicSeed[] = [
           "It also does not guarantee uniqueness.",
         ],
         solution: [
-          { step: 1, explanation: "IVT guarantees existence of at least one input.", math: null },
-          { step: 2, explanation: "It does not identify the exact input value.", math: null },
+          {
+            step: 1,
+            explanation: "IVT guarantees existence of at least one input.",
+            math: null,
+          },
+          {
+            step: 2,
+            explanation: "It does not identify the exact input value.",
+            math: null,
+          },
         ],
       },
       {
@@ -3054,8 +4390,16 @@ const topicSeeds: readonly TopicSeed[] = [
           "0 lies between -1 and 8.",
         ],
         solution: [
-          { step: 1, explanation: "Endpoint outputs are -1 and 8.", math: "-1<0<8" },
-          { step: 2, explanation: "By IVT, f(c)=0 for some c in [-2,3].", math: null },
+          {
+            step: 1,
+            explanation: "Endpoint outputs are -1 and 8.",
+            math: "-1<0<8",
+          },
+          {
+            step: 2,
+            explanation: "By IVT, f(c)=0 for some c in [-2,3].",
+            math: null,
+          },
         ],
       },
     ],
@@ -3064,9 +4408,23 @@ const topicSeeds: readonly TopicSeed[] = [
       difficulty: 3,
       skillTags: ["continuity.ivt", "polynomial_continuity"],
       parts: [
-        { letter: "a", promptMarkdown: "Explain why $f$ is continuous on $[1,2]$.", points: 1 },
-        { letter: "b", promptMarkdown: "Use IVT to show there is a number $c$ in $[1,2]$ such that $f(c)=5$.", points: 3 },
-        { letter: "c", promptMarkdown: "Does IVT alone prove that this value of $c$ is unique? Explain.", points: 2 },
+        {
+          letter: "a",
+          promptMarkdown: "Explain why $f$ is continuous on $[1,2]$.",
+          points: 1,
+        },
+        {
+          letter: "b",
+          promptMarkdown:
+            "Use IVT to show there is a number $c$ in $[1,2]$ such that $f(c)=5$.",
+          points: 3,
+        },
+        {
+          letter: "c",
+          promptMarkdown:
+            "Does IVT alone prove that this value of $c$ is unique? Explain.",
+          points: 2,
+        },
       ],
       hints: [
         "Polynomials are continuous everywhere.",
@@ -3076,12 +4434,28 @@ const topicSeeds: readonly TopicSeed[] = [
       rubric: {
         maxPoints: 6,
         criteria: [
-          { part: "a", points: 1, description: "States f is a polynomial, hence continuous on [1,2]." },
+          {
+            part: "a",
+            points: 1,
+            description: "States f is a polynomial, hence continuous on [1,2].",
+          },
           { part: "b", points: 1, description: "Computes f(1)=2." },
           { part: "b", points: 1, description: "Computes f(2)=10." },
-          { part: "b", points: 1, description: "Notes 5 is between 2 and 10 and applies IVT." },
-          { part: "c", points: 1, description: "States IVT alone does not prove uniqueness." },
-          { part: "c", points: 1, description: "Explains IVT is an existence theorem." },
+          {
+            part: "b",
+            points: 1,
+            description: "Notes 5 is between 2 and 10 and applies IVT.",
+          },
+          {
+            part: "c",
+            points: 1,
+            description: "States IVT alone does not prove uniqueness.",
+          },
+          {
+            part: "c",
+            points: 1,
+            description: "Explains IVT is an existence theorem.",
+          },
         ],
       },
       commonErrors: [
@@ -3090,9 +4464,21 @@ const topicSeeds: readonly TopicSeed[] = [
         "Claiming IVT proves exactly one solution.",
       ],
       workedSolution: [
-        { part: "a", explanation: "$f(x)=x^3+x$ is a polynomial, and polynomials are continuous on all real numbers, so f is continuous on $[1,2]$." },
-        { part: "b", explanation: "$f(1)=2$ and $f(2)=10$. Since $5$ lies between $2$ and $10$, IVT guarantees at least one $c$ in $[1,2]$ such that $f(c)=5$." },
-        { part: "c", explanation: "No. IVT guarantees existence of at least one such c, but it does not by itself prove there is only one." },
+        {
+          part: "a",
+          explanation:
+            "$f(x)=x^3+x$ is a polynomial, and polynomials are continuous on all real numbers, so f is continuous on $[1,2]$.",
+        },
+        {
+          part: "b",
+          explanation:
+            "$f(1)=2$ and $f(2)=10$. Since $5$ lies between $2$ and $10$, IVT guarantees at least one $c$ in $[1,2]$ such that $f(c)=5$.",
+        },
+        {
+          part: "c",
+          explanation:
+            "No. IVT guarantees existence of at least one such c, but it does not by itself prove there is only one.",
+        },
       ],
     },
   },

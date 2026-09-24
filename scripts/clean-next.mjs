@@ -7,6 +7,11 @@ const targets = process.argv.slice(2);
 const dirs = targets.length > 0 ? targets : [".next", ".next-dev"];
 
 for (const dir of dirs) {
-  rmSync(join(root, dir), { recursive: true, force: true });
+  rmSync(join(root, dir), {
+    recursive: true,
+    force: true,
+    maxRetries: 5,
+    retryDelay: 200,
+  });
   console.log(`Removed ${dir}`);
 }

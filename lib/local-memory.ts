@@ -24,7 +24,9 @@ function emptyMemory(): LocalMemory {
 }
 
 function isBrowser(): boolean {
-  return typeof window !== "undefined" && typeof window.localStorage !== "undefined";
+  return (
+    typeof window !== "undefined" && typeof window.localStorage !== "undefined"
+  );
 }
 
 function safeReadMemory(): LocalMemory {
@@ -81,7 +83,9 @@ export function getActiveProfile(memory: LocalMemory): LocalProfile | null {
   );
 }
 
-export function getProfileStorageId(activeProfile: LocalProfile | null): string {
+export function getProfileStorageId(
+  activeProfile: LocalProfile | null,
+): string {
   return activeProfile?.id ?? GUEST_PROFILE_ID;
 }
 

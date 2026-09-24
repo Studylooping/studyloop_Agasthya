@@ -1,7 +1,7 @@
 {
   "name": "StudyLoop — Free STEM practice",
   "short_name": "StudyLoop",
-  "description": "Free guided STEM practice for CBSE Classes 9-12, AP, SAT, and IIT-JEE. Original questions, hint ladders, deterministic grading, and privacy-first review.",
+  "description": "Free guided STEM practice for CBSE Classes 9-12 and AP Calculus AB. Original questions, hint ladders, deterministic grading, and privacy-first review.",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#fcfcfd",

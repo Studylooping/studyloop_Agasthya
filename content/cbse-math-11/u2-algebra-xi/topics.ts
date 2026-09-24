@@ -13,7 +13,7 @@ import type {
 
 const COURSE = "cbse-math-11";
 const UNIT = "u2-algebra-xi";
-const VERSION = "0.1.3";
+const VERSION = "0.1.4";
 const REVIEW_STATUS = "human_review_required" as const;
 const SOURCE_TYPE = "original_ai_assisted_question" as const;
 const LETTERS = ["A", "B", "C", "D"] as const;
@@ -81,11 +81,17 @@ function hints(items: readonly [string, string, string]): Hint[] {
   }));
 }
 
-function calibrateMcDifficulty(seedDifficulty: Difficulty, _index: number): Difficulty {
+function calibrateMcDifficulty(
+  seedDifficulty: Difficulty,
+  _index: number,
+): Difficulty {
   return seedDifficulty;
 }
 
-function calibrateConstructedDifficulty(seedDifficulty: Difficulty, _type: ResponseType): Difficulty {
+function calibrateConstructedDifficulty(
+  seedDifficulty: Difficulty,
+  _type: ResponseType,
+): Difficulty {
   return seedDifficulty;
 }
 
@@ -105,29 +111,24 @@ function makeMc(meta: TopicMeta, seed: McSeed, index: number): McSingleItem {
       isCorrect,
       rationaleIfWrong: isCorrect
         ? null
-        : seed.rationales[seedLetter] ?? fallbackWrongRationale(seed, seedLetter),
+        : (seed.rationales[seedLetter] ??
+          fallbackWrongRationale(seed, seedLetter)),
       misconceptionTag: isCorrect
         ? null
-        : seed.misconceptionTags?.[seedLetter] ?? "incorrect_cbse_class11_algebra_reasoning",
+        : (seed.misconceptionTags?.[seedLetter] ??
+          "incorrect_cbse_class11_algebra_reasoning"),
     };
   });
 
-  const rotation = index % LETTERS.length;
-  const rotatedChoices =
-    rotation === 0
-      ? unletteredChoices
-      : [
-          ...unletteredChoices.slice(-rotation),
-          ...unletteredChoices.slice(0, -rotation),
-        ];
-  const choices = rotatedChoices.map((choice, choiceIndex) => ({
+  const choices = unletteredChoices.map((choice, choiceIndex) => ({
     letter: LETTERS[choiceIndex],
     text: choice.text,
     isCorrect: choice.isCorrect,
     rationaleIfWrong: choice.rationaleIfWrong,
     misconceptionTag: choice.misconceptionTag,
   })) as McChoice[];
-  const correctLetter = choices.find((choice) => choice.isCorrect)?.letter ?? "A";
+  const correctLetter =
+    choices.find((choice) => choice.isCorrect)?.letter ?? "A";
 
   return {
     contentId: `${COURSE}.u2.t${topicSlug(meta.topicCode)}.mc.${String(index + 1).padStart(3, "0")}`,
@@ -153,7 +154,11 @@ function makeMc(meta: TopicMeta, seed: McSeed, index: number): McSingleItem {
   };
 }
 
-function makeConstructed(meta: TopicMeta, seed: ConstructedSeed, index: number): FrqItem {
+function makeConstructed(
+  meta: TopicMeta,
+  seed: ConstructedSeed,
+  index: number,
+): FrqItem {
   return {
     contentId: `${COURSE}.u2.t${topicSlug(meta.topicCode)}.${seed.responseType}.${String(index + 1).padStart(3, "0")}`,
     kind: "frq",
@@ -161,7 +166,10 @@ function makeConstructed(meta: TopicMeta, seed: ConstructedSeed, index: number):
     course: COURSE,
     unit: UNIT,
     topic: meta.topicCode,
-    difficulty: calibrateConstructedDifficulty(seed.difficulty, seed.responseType),
+    difficulty: calibrateConstructedDifficulty(
+      seed.difficulty,
+      seed.responseType,
+    ),
     calculatorAllowed: seed.calculatorAllowed ?? false,
     skillTags: seed.skillTags,
     commonMisconceptions: seed.commonMisconceptions ?? [
@@ -191,16 +199,26 @@ function makeTopic(seed: TopicSeed): Topic {
     ...meta,
     items: [
       ...seed.mc.map((item, index) => makeMc(meta, item, index)),
-      ...seed.constructed.map((item, index) => makeConstructed(meta, item, index)),
+      ...seed.constructed.map((item, index) =>
+        makeConstructed(meta, item, index),
+      ),
     ],
   };
 }
 
-function singlePart(letter: string, promptMarkdown: string, points: number): FrqPart[] {
+function singlePart(
+  letter: string,
+  promptMarkdown: string,
+  points: number,
+): FrqPart[] {
   return [{ letter, promptMarkdown, points }];
 }
 
-function singleRubric(part: string, points: number, description: string): FrqRubric {
+function singleRubric(
+  part: string,
+  points: number,
+  description: string,
+): FrqRubric {
   return { maxPoints: points, criteria: [{ part, points, description }] };
 }
 
@@ -329,7 +347,8 @@ const topicSeeds: readonly TopicSeed[] = [
   {
     topicCode: "2.1",
     title: "Complex Numbers and Quadratic Motivation",
-    subtopic: "Algebraic form, operations, conjugates, and Argand-plane interpretation",
+    subtopic:
+      "Algebraic form, operations, conjugates, and Argand-plane interpretation",
     mc: [
       {
         questionLatex: L`\text{In the Argand diagram, }P\text{ represents }z=2+3i.\text{ Which labelled point represents }\overline z\text{?}`,
@@ -343,55 +362,101 @@ const topicSeeds: readonly TopicSeed[] = [
           C: "$S$ changes both signs, giving $-z$ rather than $\\overline z$.",
           D: "The origin represents $0$, not the conjugate of $2+3i$.",
         },
-        hints: ["Conjugation keeps the real part unchanged.", "It reverses the sign of the imaginary part.", "Reflect the point in the real axis."],
-        solution: [{ step: 1, explanation: "The conjugate of $2+3i$ is $2-3i$, which is point $Q$.", math: "\\overline z=2-3i" }],
+        hints: [
+          "Conjugation keeps the real part unchanged.",
+          "It reverses the sign of the imaginary part.",
+          "Reflect the point in the real axis.",
+        ],
+        solution: [
+          {
+            step: 1,
+            explanation:
+              "The conjugate of $2+3i$ is $2-3i$, which is point $Q$.",
+            math: "\\overline z=2-3i",
+          },
+        ],
       },
       {
         questionLatex: L`\text{A calculator-free simplification gives }(3-2i)+(1+5i)-2(2-i)=`,
         difficulty: 2,
         skillTags: ["complex_numbers", "complex_arithmetic"],
-        choices: ["$5i$", "$4+5i$", "$-5i$", "$0$"],
-        correctLetter: "A",
+        choices: ["$4+5i$", "$5i$", "$-5i$", "$0$"],
+        correctLetter: "B",
         rationales: {
-          B: "This keeps the real parts before subtracting $2(2-i)$; the real parts actually cancel.",
+          A: "This keeps the real parts before subtracting $2(2-i)$; the real parts actually cancel.",
           C: "This reverses the sign of the imaginary part in the last term.",
           D: "Only the real part becomes zero; the imaginary part is still $5i$.",
         },
-        hints: ["Distribute the factor $2$ first.", "Combine real parts and imaginary parts separately.", "The real part should cancel."],
-        solution: [{ step: 1, explanation: "Expand and combine like terms.", math: "(3-2i)+(1+5i)-4+2i=5i" }],
+        hints: [
+          "Distribute the factor $2$ first.",
+          "Combine real parts and imaginary parts separately.",
+          "The real part should cancel.",
+        ],
+        solution: [
+          {
+            step: 1,
+            explanation: "Expand and combine like terms.",
+            math: "(3-2i)+(1+5i)-4+2i=5i",
+          },
+        ],
       },
       {
         questionLatex: L`\text{Assertion (A): If }z=4-7i,\text{ then }z+\overline z=8.\text{ Reason (R): The conjugate changes the sign of the imaginary part but keeps the real part fixed. Choose the correct option.}`,
         difficulty: 3,
         skillTags: ["complex_numbers", "conjugate", "assertion_reason"],
         choices: [
-          "Both A and R are true, and R is the correct explanation of A.",
           "Both A and R are true, but R is not the correct explanation of A.",
           "A is true, but R is false.",
+          "Both A and R are true, and R is the correct explanation of A.",
           "A is false, but R is true.",
         ],
-        correctLetter: "A",
+        correctLetter: "C",
         rationales: {
-          B: "The reason directly explains why the imaginary parts cancel in $z+\\overline z$.",
-          C: "The reason is true: conjugation changes $-7i$ to $+7i$.",
+          A: "The reason directly explains why the imaginary parts cancel in $z+\\overline z$.",
+          B: "The reason is true: conjugation changes $-7i$ to $+7i$.",
           D: "The assertion is true because $(4-7i)+(4+7i)=8$.",
         },
-        hints: ["Write the conjugate explicitly.", "Add the two complex numbers.", "Check whether the reason explains the cancellation."],
-        solution: [{ step: 1, explanation: "Here $\\overline z=4+7i$, so the imaginary parts cancel and the real parts add.", math: "z+\\overline z=(4-7i)+(4+7i)=8" }],
+        hints: [
+          "Write the conjugate explicitly.",
+          "Add the two complex numbers.",
+          "Check whether the reason explains the cancellation.",
+        ],
+        solution: [
+          {
+            step: 1,
+            explanation:
+              "Here $\\overline z=4+7i$, so the imaginary parts cancel and the real parts add.",
+            math: "z+\\overline z=(4-7i)+(4+7i)=8",
+          },
+        ],
       },
       {
         questionLatex: L`\text{The real equation }x^2+4=0\text{ has no real solution. If }i^2=-1\text{ is introduced, its complex solutions are}`,
         difficulty: 3,
-        skillTags: ["complex_numbers", "quadratic_motivation", "imaginary_unit"],
-        choices: ["$x=\\pm2i$", "$x=\\pm4i$", "$x=\\pm2$", "$x=-4$"],
-        correctLetter: "A",
+        skillTags: [
+          "complex_numbers",
+          "quadratic_motivation",
+          "imaginary_unit",
+        ],
+        choices: ["$x=\\pm4i$", "$x=\\pm2$", "$x=-4$", "$x=\\pm2i$"],
+        correctLetter: "D",
         rationales: {
-          B: "This treats $\\sqrt4$ as $4$; since $x^2=-4$, the magnitude is $2$.",
-          C: "Real numbers $\\pm2$ satisfy $x^2=4$, not $x^2=-4$.",
-          D: "This gives a single real number and does not satisfy $x^2=-4$.",
+          A: "This treats $\\sqrt4$ as $4$; since $x^2=-4$, the magnitude is $2$.",
+          B: "Real numbers $\\pm2$ satisfy $x^2=4$, not $x^2=-4$.",
+          C: "This gives a single real number and does not satisfy $x^2=-4$.",
         },
-        hints: ["Move 4 to the other side.", "Use $-4=4i^2$.", "Both square roots must be included."],
-        solution: [{ step: 1, explanation: "The equation becomes $x^2=-4=4i^2$, so $x=\\pm2i$.", math: "x^2=-4\\Rightarrow x=\\pm2i" }],
+        hints: [
+          "Move 4 to the other side.",
+          "Use $-4=4i^2$.",
+          "Both square roots must be included.",
+        ],
+        solution: [
+          {
+            step: 1,
+            explanation: "The equation becomes $x^2=-4=4i^2$, so $x=\\pm2i$.",
+            math: "x^2=-4\\Rightarrow x=\\pm2i",
+          },
+        ],
       },
       {
         questionLatex: L`\text{A map uses the real axis for east-west and the imaginary axis for north-south. A marker }4\text{ units west and }6\text{ units south of the origin is represented by}`,
@@ -404,8 +469,18 @@ const topicSeeds: readonly TopicSeed[] = [
           C: "This swaps the real and imaginary coordinates.",
           D: "This uses south correctly but uses east instead of west for the real part.",
         },
-        hints: ["West means a negative real coordinate.", "South means a negative imaginary coordinate.", "Write the point as $x+iy$."],
-        solution: [{ step: 1, explanation: "The coordinates are $(-4,-6)$ in the Argand plane.", math: "z=-4-6i" }],
+        hints: [
+          "West means a negative real coordinate.",
+          "South means a negative imaginary coordinate.",
+          "Write the point as $x+iy$.",
+        ],
+        solution: [
+          {
+            step: 1,
+            explanation: "The coordinates are $(-4,-6)$ in the Argand plane.",
+            math: "z=-4-6i",
+          },
+        ],
       },
     ],
     constructed: [
@@ -415,10 +490,19 @@ const topicSeeds: readonly TopicSeed[] = [
         difficulty: 2,
         skillTags: ["complex_numbers", "complex_multiplication"],
         parts: singlePart("a", "Write the answer in $a+bi$ form.", 2),
-        hints: ["Use distributive multiplication.", "Remember $i^2=-1$.", "Collect real and imaginary parts."],
+        hints: [
+          "Use distributive multiplication.",
+          "Remember $i^2=-1$.",
+          "Collect real and imaginary parts.",
+        ],
         rubric: singleRubric("a", 2, "Finds $10-5i$."),
-        commonErrors: ["Using $i^2=1$.", "Combining real and imaginary parts as if they were like terms."],
-        workedSolution: [{ part: "a", explanation: "$(2+i)(3-4i)=6-8i+3i-4i^2=10-5i$." }],
+        commonErrors: [
+          "Using $i^2=1$.",
+          "Combining real and imaginary parts as if they were like terms.",
+        ],
+        workedSolution: [
+          { part: "a", explanation: "$(2+i)(3-4i)=6-8i+3i-4i^2=10-5i$." },
+        ],
       },
       {
         responseType: "vsaq",
@@ -426,10 +510,27 @@ const topicSeeds: readonly TopicSeed[] = [
         difficulty: 2,
         skillTags: ["complex_numbers", "conjugate", "argand_plane"],
         parts: singlePart("a", "Give both requested entries.", 2),
-        hints: ["The conjugate changes only the sign of $i$.", "The point for $a+bi$ is $(a,b)$.", "Keep the real part $-1$ fixed."],
-        rubric: singleRubric("a", 2, "Writes $\\overline z=-1-5i$ and point $(-1,5)$."),
-        commonErrors: ["Changing the sign of both real and imaginary parts.", "Writing the point as $(5,-1)$."],
-        workedSolution: [{ part: "a", explanation: "The conjugate is $-1-5i$. The Argand-plane point for $z$ is $(-1,5)$." }],
+        hints: [
+          "The conjugate changes only the sign of $i$.",
+          "The point for $a+bi$ is $(a,b)$.",
+          "Keep the real part $-1$ fixed.",
+        ],
+        rubric: singleRubric(
+          "a",
+          2,
+          "Writes $\\overline z=-1-5i$ and point $(-1,5)$.",
+        ),
+        commonErrors: [
+          "Changing the sign of both real and imaginary parts.",
+          "Writing the point as $(5,-1)$.",
+        ],
+        workedSolution: [
+          {
+            part: "a",
+            explanation:
+              "The conjugate is $-1-5i$. The Argand-plane point for $z$ is $(-1,5)$.",
+          },
+        ],
       },
       {
         responseType: "saq",
@@ -438,9 +539,22 @@ const topicSeeds: readonly TopicSeed[] = [
         skillTags: ["complex_numbers", "complex_polynomial_expression"],
         parts: singlePart("a", "Show the substitution and simplification.", 3),
         hints: ["First compute $z^2$.", "Use $i^2=-1$.", "Then add $2z+5$."],
-        rubric: singleRubric("a", 3, "Finds $4-18i$ with correct use of $i^2=-1$."),
-        commonErrors: ["Forgetting the cross term in $(2-3i)^2$.", "Using $i^2=1$."],
-        workedSolution: [{ part: "a", explanation: "$z^2=(2-3i)^2=4-12i+9i^2=-5-12i$. Hence $z^2+2z+5=(-5-12i)+(4-6i)+5=4-18i$." }],
+        rubric: singleRubric(
+          "a",
+          3,
+          "Finds $4-18i$ with correct use of $i^2=-1$.",
+        ),
+        commonErrors: [
+          "Forgetting the cross term in $(2-3i)^2$.",
+          "Using $i^2=1$.",
+        ],
+        workedSolution: [
+          {
+            part: "a",
+            explanation:
+              "$z^2=(2-3i)^2=4-12i+9i^2=-5-12i$. Hence $z^2+2z+5=(-5-12i)+(4-6i)+5=4-18i$.",
+          },
+        ],
       },
       {
         responseType: "laq",
@@ -450,22 +564,42 @@ const topicSeeds: readonly TopicSeed[] = [
         parts: [
           { letter: "a", promptMarkdown: "Find $z+w$.", points: 1 },
           { letter: "b", promptMarkdown: "Find $zw$.", points: 2 },
-          { letter: "c", promptMarkdown: "Show that $z\\overline z$ is real and find its value.", points: 2 },
+          {
+            letter: "c",
+            promptMarkdown:
+              "Show that $z\\overline z$ is real and find its value.",
+            points: 2,
+          },
         ],
-        hints: ["Add real and imaginary parts separately.", "Use row-by-row distribution for $zw$.", "$z\\overline z$ cancels the imaginary terms."],
+        hints: [
+          "Add real and imaginary parts separately.",
+          "Use row-by-row distribution for $zw$.",
+          "$z\\overline z$ cancels the imaginary terms.",
+        ],
         rubric: {
           maxPoints: 5,
           criteria: [
             { part: "a", points: 1, description: "Finds $4+i$." },
             { part: "b", points: 2, description: "Finds $5+5i$." },
-            { part: "c", points: 2, description: "Finds $z\\overline z=5$ and notes it is real." },
+            {
+              part: "c",
+              points: 2,
+              description: "Finds $z\\overline z=5$ and notes it is real.",
+            },
           ],
         },
-        commonErrors: ["Changing the sign of the wrong term when forming $\\overline z$.", "Dropping the $i^2$ term in multiplication."],
+        commonErrors: [
+          "Changing the sign of the wrong term when forming $\\overline z$.",
+          "Dropping the $i^2$ term in multiplication.",
+        ],
         workedSolution: [
           { part: "a", explanation: "$z+w=(1+2i)+(3-i)=4+i$." },
           { part: "b", explanation: "$zw=(1+2i)(3-i)=3-i+6i-2i^2=5+5i$." },
-          { part: "c", explanation: "$\\overline z=1-2i$, so $z\\overline z=(1+2i)(1-2i)=1-4i^2=5$, which is real." },
+          {
+            part: "c",
+            explanation:
+              "$\\overline z=1-2i$, so $z\\overline z=(1+2i)(1-2i)=1-4i^2=5$, which is real.",
+          },
         ],
       },
       {
@@ -474,24 +608,56 @@ const topicSeeds: readonly TopicSeed[] = [
         difficulty: 4,
         skillTags: ["complex_numbers", "argand_plane", "case_based"],
         parts: [
-          { letter: "a", promptMarkdown: "Find the complex displacement from $A$ to $B$.", points: 1 },
-          { letter: "b", promptMarkdown: "Find the midpoint complex number of segment $AB$.", points: 2 },
-          { letter: "c", promptMarkdown: "Reflect $A$ in the real axis and write the resulting complex number.", points: 1 },
+          {
+            letter: "a",
+            promptMarkdown: "Find the complex displacement from $A$ to $B$.",
+            points: 1,
+          },
+          {
+            letter: "b",
+            promptMarkdown: "Find the midpoint complex number of segment $AB$.",
+            points: 2,
+          },
+          {
+            letter: "c",
+            promptMarkdown:
+              "Reflect $A$ in the real axis and write the resulting complex number.",
+            points: 1,
+          },
         ],
-        hints: ["Displacement from $A$ to $B$ is $B-A$.", "Average the real parts and imaginary parts separately.", "Reflection in the real axis gives the conjugate."],
+        hints: [
+          "Displacement from $A$ to $B$ is $B-A$.",
+          "Average the real parts and imaginary parts separately.",
+          "Reflection in the real axis gives the conjugate.",
+        ],
         rubric: {
           maxPoints: 4,
           criteria: [
             { part: "a", points: 1, description: "Finds $-3+i$." },
-            { part: "b", points: 2, description: "Finds $\\frac12+\\frac72 i$." },
+            {
+              part: "b",
+              points: 2,
+              description: "Finds $\\frac12+\\frac72 i$.",
+            },
             { part: "c", points: 1, description: "Finds $2-3i$." },
           ],
         },
-        commonErrors: ["Computing $A-B$ instead of $B-A$.", "Averaging only the real parts for the midpoint."],
+        commonErrors: [
+          "Computing $A-B$ instead of $B-A$.",
+          "Averaging only the real parts for the midpoint.",
+        ],
         workedSolution: [
           { part: "a", explanation: "$B-A=(-1+4i)-(2+3i)=-3+i$." },
-          { part: "b", explanation: "The midpoint is $\\frac{(2+3i)+(-1+4i)}2=\\frac12+\\frac72 i$." },
-          { part: "c", explanation: "Reflection in the real axis changes $3i$ to $-3i$, so the image of $A$ is $2-3i$." },
+          {
+            part: "b",
+            explanation:
+              "The midpoint is $\\frac{(2+3i)+(-1+4i)}2=\\frac12+\\frac72 i$.",
+          },
+          {
+            part: "c",
+            explanation:
+              "Reflection in the real axis changes $3i$ to $-3i$, so the image of $A$ is $2-3i$.",
+          },
         ],
       },
     ],
@@ -505,77 +671,140 @@ const topicSeeds: readonly TopicSeed[] = [
         questionLatex: L`\text{A book fair coupon is valid when }3x+40<190,\text{ where }x\text{ is the number of books bought. If }x\text{ is a whole number, the greatest possible }x\text{ is}`,
         difficulty: 3,
         skillTags: ["linear_inequalities", "application", "integer_solution"],
-        choices: ["$49$", "$50$", "$51$", "$40$"],
-        correctLetter: "A",
+        choices: ["$50$", "$49$", "$51$", "$40$"],
+        correctLetter: "B",
         rationales: {
-          B: "$x=50$ makes $3x+40=190$, but the inequality is strict.",
+          A: "$x=50$ makes $3x+40=190$, but the inequality is strict.",
           C: "$x=51$ is beyond the upper bound from the inequality.",
           D: "This is a possible value but not the greatest possible whole number.",
         },
-        hints: ["Solve the inequality first.", "Pay attention to the strict sign.", "Choose the largest whole number below the bound."],
-        solution: [{ step: 1, explanation: "The inequality gives $3x<150$, so $x<50$. The greatest whole number below 50 is 49.", math: "x<50" }],
+        hints: [
+          "Solve the inequality first.",
+          "Pay attention to the strict sign.",
+          "Choose the largest whole number below the bound.",
+        ],
+        solution: [
+          {
+            step: 1,
+            explanation:
+              "The inequality gives $3x<150$, so $x<50$. The greatest whole number below 50 is 49.",
+            math: "x<50",
+          },
+        ],
       },
       {
         questionLatex: L`\text{Which statement matches the solution set shown on the number line?}`,
         difficulty: 2,
         skillTags: ["linear_inequalities", "number_line"],
         figure: inequalityNumberLineFigure,
-        choices: ["$-1<x\\le 5$", "$-1\\le x<5$", "$x<-1\\text{ or }x\\ge5$", "$-4<x\\le2$"],
-        correctLetter: "A",
+        choices: [
+          "$-1\\le x<5$",
+          "$x<-1\\text{ or }x\\ge5$",
+          "$-1<x\\le 5$",
+          "$-4<x\\le2$",
+        ],
+        correctLetter: "C",
         rationales: {
-          B: "This reverses the open and closed endpoints shown in the diagram.",
-          C: "This describes two outside rays, not the shaded interval between the endpoints.",
+          A: "This reverses the open and closed endpoints shown in the diagram.",
+          B: "This describes two outside rays, not the shaded interval between the endpoints.",
           D: "This uses the wrong endpoints from the number line.",
         },
-        hints: ["Open circle means the endpoint is not included.", "Closed circle means the endpoint is included.", "Read the shaded segment from left to right."],
-        solution: [{ step: 1, explanation: "The open point at $-1$ and closed point at $5$ give $-1<x\\le5$.", math: "-1<x\\le5" }],
+        hints: [
+          "Open circle means the endpoint is not included.",
+          "Closed circle means the endpoint is included.",
+          "Read the shaded segment from left to right.",
+        ],
+        solution: [
+          {
+            step: 1,
+            explanation:
+              "The open point at $-1$ and closed point at $5$ give $-1<x\\le5$.",
+            math: "-1<x\\le5",
+          },
+        ],
       },
       {
         questionLatex: L`\text{Assertion (A): From }-2x<8\text{, we get }x>-4.\text{ Reason (R): An inequality sign reverses when both sides are divided by a negative number. Choose the correct option.}`,
         difficulty: 3,
         skillTags: ["linear_inequalities", "assertion_reason"],
         choices: [
-          "Both A and R are true, and R is the correct explanation of A.",
           "Both A and R are true, but R is not the correct explanation of A.",
           "A is true, but R is false.",
           "A is false, but R is true.",
+          "Both A and R are true, and R is the correct explanation of A.",
         ],
-        correctLetter: "A",
+        correctLetter: "D",
         rationales: {
-          B: "The reason is exactly the rule used to move from $-2x<8$ to $x>-4$.",
-          C: "The reason is true; division by a negative reverses the sign.",
-          D: "The assertion is true because $-2$ is negative, so the inequality reverses.",
+          A: "The reason is exactly the rule used to move from $-2x<8$ to $x>-4$.",
+          B: "The reason is true; division by a negative reverses the sign.",
+          C: "The assertion is true because $-2$ is negative, so the inequality reverses.",
         },
-        hints: ["Divide both sides by $-2$.", "Remember the sign reversal rule.", "Check whether the reason explains the assertion."],
-        solution: [{ step: 1, explanation: "Dividing by $-2$ reverses $<$ to $>$.", math: "-2x<8\\Rightarrow x>-4" }],
+        hints: [
+          "Divide both sides by $-2$.",
+          "Remember the sign reversal rule.",
+          "Check whether the reason explains the assertion.",
+        ],
+        solution: [
+          {
+            step: 1,
+            explanation: "Dividing by $-2$ reverses $<$ to $>$.",
+            math: "-2x<8\\Rightarrow x>-4",
+          },
+        ],
       },
       {
         questionLatex: L`\text{The compound conditions }2x-3\le7\text{ and }x+4>1\text{ together give}`,
         difficulty: 3,
         skillTags: ["linear_inequalities", "compound_inequality"],
-        choices: ["$-3<x\\le5$", "$x\\le5\\text{ or }x>-3$", "$-3\\le x<5$", "$x<-3\\text{ and }x>5$"],
+        choices: [
+          "$-3<x\\le5$",
+          "$x\\le5\\text{ or }x>-3$",
+          "$-3\\le x<5$",
+          "$x<-3\\text{ and }x>5$",
+        ],
         correctLetter: "A",
         rationales: {
           B: "The word 'and' means intersection, not union.",
           C: "This changes both endpoint inclusions.",
           D: "This describes an impossible intersection and reverses the intended interval.",
         },
-        hints: ["Solve each inequality separately.", "Use intersection because both must hold.", "Watch strict and non-strict endpoints."],
-        solution: [{ step: 1, explanation: "The first inequality gives $x\\le5$, and the second gives $x>-3$.", math: "-3<x\\le5" }],
+        hints: [
+          "Solve each inequality separately.",
+          "Use intersection because both must hold.",
+          "Watch strict and non-strict endpoints.",
+        ],
+        solution: [
+          {
+            step: 1,
+            explanation:
+              "The first inequality gives $x\\le5$, and the second gives $x>-3$.",
+            math: "-3<x\\le5",
+          },
+        ],
       },
       {
         questionLatex: L`\text{A trip cost is }1500+120n\text{ rupees for }n\text{ students and must not exceed }6300.\text{ Which range is correct?}`,
         difficulty: 3,
         skillTags: ["linear_inequalities", "application"],
-        choices: ["$n\\le40$", "$n<40$", "$n\\ge40$", "$n\\le52$"],
-        correctLetter: "A",
+        choices: ["$n<40$", "$n\\le40$", "$n\\ge40$", "$n\\le52$"],
+        correctLetter: "B",
         rationales: {
-          B: "The phrase 'must not exceed' allows equality, so $n=40$ is permitted.",
+          A: "The phrase 'must not exceed' allows equality, so $n=40$ is permitted.",
           C: "This reverses the direction of the allowable values.",
           D: "This forgets to subtract the fixed cost before dividing by 120.",
         },
-        hints: ["Translate 'must not exceed' as $\\le$.", "Subtract the fixed cost first.", "Then divide by the positive coefficient."],
-        solution: [{ step: 1, explanation: "Solve $1500+120n\\le6300$.", math: "120n\\le4800\\Rightarrow n\\le40" }],
+        hints: [
+          "Translate 'must not exceed' as $\\le$.",
+          "Subtract the fixed cost first.",
+          "Then divide by the positive coefficient.",
+        ],
+        solution: [
+          {
+            step: 1,
+            explanation: "Solve $1500+120n\\le6300$.",
+            math: "120n\\le4800\\Rightarrow n\\le40",
+          },
+        ],
       },
     ],
     constructed: [
@@ -585,10 +814,21 @@ const topicSeeds: readonly TopicSeed[] = [
         difficulty: 2,
         skillTags: ["linear_inequalities"],
         parts: singlePart("a", "Write the solution set.", 2),
-        hints: ["Subtract 5 from both sides.", "Divide by $-2$.", "Reverse the inequality sign."],
+        hints: [
+          "Subtract 5 from both sides.",
+          "Divide by $-2$.",
+          "Reverse the inequality sign.",
+        ],
         rubric: singleRubric("a", 2, "Finds $x>-4$."),
-        commonErrors: ["Not reversing the inequality after division by a negative number."],
-        workedSolution: [{ part: "a", explanation: "$5-2x<13\\Rightarrow -2x<8\\Rightarrow x>-4$." }],
+        commonErrors: [
+          "Not reversing the inequality after division by a negative number.",
+        ],
+        workedSolution: [
+          {
+            part: "a",
+            explanation: "$5-2x<13\\Rightarrow -2x<8\\Rightarrow x>-4$.",
+          },
+        ],
       },
       {
         responseType: "vsaq",
@@ -596,10 +836,16 @@ const topicSeeds: readonly TopicSeed[] = [
         difficulty: 2,
         skillTags: ["linear_inequalities"],
         parts: singlePart("a", "Write the solution set.", 2),
-        hints: ["Expand the left side.", "Collect $x$ terms on one side.", "No sign reversal is needed if you do not divide by a negative."],
+        hints: [
+          "Expand the left side.",
+          "Collect $x$ terms on one side.",
+          "No sign reversal is needed if you do not divide by a negative.",
+        ],
         rubric: singleRubric("a", 2, "Finds $x\\le11$."),
         commonErrors: ["Expanding $3(x-2)$ as $3x-2$."],
-        workedSolution: [{ part: "a", explanation: "$3x-6\\le2x+5\\Rightarrow x\\le11$." }],
+        workedSolution: [
+          { part: "a", explanation: "$3x-6\\le2x+5\\Rightarrow x\\le11$." },
+        ],
       },
       {
         responseType: "saq",
@@ -607,10 +853,23 @@ const topicSeeds: readonly TopicSeed[] = [
         difficulty: 3,
         skillTags: ["linear_inequalities", "compound_inequality"],
         parts: singlePart("a", "Show the algebra and write the interval.", 3),
-        hints: ["Multiply the whole inequality by 4.", "Add 1 throughout.", "Divide throughout by 3."],
+        hints: [
+          "Multiply the whole inequality by 4.",
+          "Add 1 throughout.",
+          "Divide throughout by 3.",
+        ],
         rubric: singleRubric("a", 3, "Finds $3\\le x<7$."),
-        commonErrors: ["Solving the two sides separately and then joining them with 'or'.", "Dropping the strict inequality at the upper end."],
-        workedSolution: [{ part: "a", explanation: "$2\\le\\frac{3x-1}{4}<5\\Rightarrow 8\\le3x-1<20\\Rightarrow 9\\le3x<21\\Rightarrow 3\\le x<7$." }],
+        commonErrors: [
+          "Solving the two sides separately and then joining them with 'or'.",
+          "Dropping the strict inequality at the upper end.",
+        ],
+        workedSolution: [
+          {
+            part: "a",
+            explanation:
+              "$2\\le\\frac{3x-1}{4}<5\\Rightarrow 8\\le3x-1<20\\Rightarrow 9\\le3x<21\\Rightarrow 3\\le x<7$.",
+          },
+        ],
       },
       {
         responseType: "laq",
@@ -618,24 +877,51 @@ const topicSeeds: readonly TopicSeed[] = [
         difficulty: 4,
         skillTags: ["linear_inequalities", "application", "integer_solution"],
         parts: [
-          { letter: "a", promptMarkdown: "Form the inequality in $m$.", points: 1 },
+          {
+            letter: "a",
+            promptMarkdown: "Form the inequality in $m$.",
+            points: 1,
+          },
           { letter: "b", promptMarkdown: "Solve it for real $m$.", points: 2 },
-          { letter: "c", promptMarkdown: "If $m$ must be a positive integer and at least $7$ kg must be sent, list the possible values of $m$.", points: 2 },
+          {
+            letter: "c",
+            promptMarkdown:
+              "If $m$ must be a positive integer and at least $7$ kg must be sent, list the possible values of $m$.",
+            points: 2,
+          },
         ],
-        hints: ["Translate 'at most' as $\\le$.", "Subtract the fixed charge first.", "Use both the budget bound and the minimum weight condition."],
+        hints: [
+          "Translate 'at most' as $\\le$.",
+          "Subtract the fixed charge first.",
+          "Use both the budget bound and the minimum weight condition.",
+        ],
         rubric: {
           maxPoints: 5,
           criteria: [
             { part: "a", points: 1, description: "Forms $80+12m\\le260$." },
             { part: "b", points: 2, description: "Finds $m\\le15$." },
-            { part: "c", points: 2, description: "Lists integers $7,8,\\ldots,15$." },
+            {
+              part: "c",
+              points: 2,
+              description: "Lists integers $7,8,\\ldots,15$.",
+            },
           ],
         },
-        commonErrors: ["Using $<$ instead of $\\le$ for 'at most'.", "Forgetting the positive-integer restriction in part (c)."],
+        commonErrors: [
+          "Using $<$ instead of $\\le$ for 'at most'.",
+          "Forgetting the positive-integer restriction in part (c).",
+        ],
         workedSolution: [
-          { part: "a", explanation: "The budget condition is $80+12m\\le260$." },
+          {
+            part: "a",
+            explanation: "The budget condition is $80+12m\\le260$.",
+          },
           { part: "b", explanation: "$12m\\le180$, so $m\\le15$." },
-          { part: "c", explanation: "With $m$ a positive integer and $m\\ge7$, the possible values are $7,8,9,10,11,12,13,14,15$." },
+          {
+            part: "c",
+            explanation:
+              "With $m$ a positive integer and $m\\ge7$, the possible values are $7,8,9,10,11,12,13,14,15$.",
+          },
         ],
       },
       {
@@ -646,25 +932,48 @@ const topicSeeds: readonly TopicSeed[] = [
         parts: [
           { letter: "a", promptMarkdown: "Solve $2t+5\\le45$.", points: 1 },
           { letter: "b", promptMarkdown: "Solve $t-3>-8$.", points: 1 },
-          { letter: "c", promptMarkdown: "Write the combined real solution interval.", points: 1 },
-          { letter: "d", promptMarkdown: "How many integer settings are allowed?", points: 1 },
+          {
+            letter: "c",
+            promptMarkdown: "Write the combined real solution interval.",
+            points: 1,
+          },
+          {
+            letter: "d",
+            promptMarkdown: "How many integer settings are allowed?",
+            points: 1,
+          },
         ],
-        hints: ["Solve each condition independently.", "Both conditions must be true.", "Count integers from the first allowed integer to the last allowed integer."],
+        hints: [
+          "Solve each condition independently.",
+          "Both conditions must be true.",
+          "Count integers from the first allowed integer to the last allowed integer.",
+        ],
         rubric: {
           maxPoints: 4,
           criteria: [
             { part: "a", points: 1, description: "Finds $t\\le20$." },
             { part: "b", points: 1, description: "Finds $t>-5$." },
             { part: "c", points: 1, description: "Writes $-5<t\\le20$." },
-            { part: "d", points: 1, description: "Counts 25 integer settings." },
+            {
+              part: "d",
+              points: 1,
+              description: "Counts 25 integer settings.",
+            },
           ],
         },
-        commonErrors: ["Counting $-5$ even though the inequality is strict.", "Using union instead of intersection."],
+        commonErrors: [
+          "Counting $-5$ even though the inequality is strict.",
+          "Using union instead of intersection.",
+        ],
         workedSolution: [
           { part: "a", explanation: "$2t+5\\le45\\Rightarrow t\\le20$." },
           { part: "b", explanation: "$t-3>-8\\Rightarrow t>-5$." },
           { part: "c", explanation: "Both must hold, so $-5<t\\le20$." },
-          { part: "d", explanation: "The integer settings are $-4,-3,\\ldots,20$, which gives $20-(-4)+1=25$ settings." },
+          {
+            part: "d",
+            explanation:
+              "The integer settings are $-4,-3,\\ldots,20$, which gives $20-(-4)+1=25$ settings.",
+          },
         ],
       },
     ],
@@ -672,36 +981,59 @@ const topicSeeds: readonly TopicSeed[] = [
   {
     topicCode: "2.3",
     title: "Permutations and Combinations",
-    subtopic: "Counting principles, factorials, arrangements, selections, and simple applications",
+    subtopic:
+      "Counting principles, factorials, arrangements, selections, and simple applications",
     mc: [
       {
         questionLatex: L`\text{A code has one letter followed by two distinct digits, using the choices shown. How many codes are possible?}`,
         difficulty: 3,
         skillTags: ["counting_principle", "permutations", "application"],
         figure: countingSlotsFigure,
-        choices: ["$36$", "$30$", "$24$", "$10$"],
-        correctLetter: "A",
+        choices: ["$30$", "$24$", "$36$", "$10$"],
+        correctLetter: "C",
         rationales: {
-          B: "This uses $3\\cdot5\\cdot2$ or another slot count not shown in the figure.",
-          C: "This forgets one of the three letter choices.",
+          A: "This uses $3\\cdot5\\cdot2$ or another slot count not shown in the figure.",
+          B: "This forgets one of the three letter choices.",
           D: "This adds choices instead of multiplying independent stages.",
         },
-        hints: ["Use the multiplication principle.", "The second digit has fewer choices because repetition is not allowed.", "Multiply the numbers on the slots."],
-        solution: [{ step: 1, explanation: "There are $3$ choices for the letter, then $4$ for the first digit and $3$ for the second digit.", math: "3\\cdot4\\cdot3=36" }],
+        hints: [
+          "Use the multiplication principle.",
+          "The second digit has fewer choices because repetition is not allowed.",
+          "Multiply the numbers on the slots.",
+        ],
+        solution: [
+          {
+            step: 1,
+            explanation:
+              "There are $3$ choices for the letter, then $4$ for the first digit and $3$ for the second digit.",
+            math: "3\\cdot4\\cdot3=36",
+          },
+        ],
       },
       {
         questionLatex: L`\text{From }6\text{ volunteers, a president and a secretary are to be chosen. One person cannot hold both posts. The number of ways is}`,
         difficulty: 2,
         skillTags: ["permutations", "npr", "application"],
-        choices: ["$30$", "$15$", "$12$", "$36$"],
-        correctLetter: "A",
+        choices: ["$15$", "$12$", "$36$", "$30$"],
+        correctLetter: "D",
         rationales: {
-          B: "This is $^6C_2$, which ignores the difference between president and secretary.",
-          C: "This uses only two choices for each post and not all six volunteers.",
-          D: "This allows the same person to hold both posts.",
+          A: "This is $^6C_2$, which ignores the difference between president and secretary.",
+          B: "This uses only two choices for each post and not all six volunteers.",
+          C: "This allows the same person to hold both posts.",
         },
-        hints: ["The two posts are different.", "Choose the president first.", "Then choose the secretary from the remaining volunteers."],
-        solution: [{ step: 1, explanation: "There are $6$ choices for president and $5$ for secretary.", math: "{}^6P_2=6\\cdot5=30" }],
+        hints: [
+          "The two posts are different.",
+          "Choose the president first.",
+          "Then choose the secretary from the remaining volunteers.",
+        ],
+        solution: [
+          {
+            step: 1,
+            explanation:
+              "There are $6$ choices for president and $5$ for secretary.",
+            math: "{}^6P_2=6\\cdot5=30",
+          },
+        ],
       },
       {
         questionLatex: L`\text{Assertion (A): }{}^7P_3=7\cdot{}^6P_2.\text{ Reason (R): After the first position is filled in }7\text{ ways, the remaining two ordered positions can be filled in }{}^6P_2\text{ ways. Choose the correct option.}`,
@@ -719,36 +1051,67 @@ const topicSeeds: readonly TopicSeed[] = [
           C: "The reason is true by the multiplication principle for ordered positions.",
           D: "The assertion is true because $^7P_3=7\\cdot6\\cdot5=7\\cdot{}^6P_2$.",
         },
-        hints: ["Write $^7P_3$ as a product.", "Write $^6P_2$ as a product.", "Compare the two sides."],
-        solution: [{ step: 1, explanation: "Both sides equal $7\\cdot6\\cdot5$, and the reason gives the counting argument.", math: "{}^7P_3=7\\cdot6\\cdot5=7\\cdot{}^6P_2" }],
+        hints: [
+          "Write $^7P_3$ as a product.",
+          "Write $^6P_2$ as a product.",
+          "Compare the two sides.",
+        ],
+        solution: [
+          {
+            step: 1,
+            explanation:
+              "Both sides equal $7\\cdot6\\cdot5$, and the reason gives the counting argument.",
+            math: "{}^7P_3=7\\cdot6\\cdot5=7\\cdot{}^6P_2",
+          },
+        ],
       },
       {
         questionLatex: L`\text{A debate team of }3\text{ students is selected from }8\text{ students. Since the team positions are not named, the number of teams is}`,
         difficulty: 3,
         skillTags: ["combinations", "ncr", "application"],
-        choices: ["$56$", "$336$", "$24$", "$168$"],
-        correctLetter: "A",
+        choices: ["$336$", "$56$", "$24$", "$168$"],
+        correctLetter: "B",
         rationales: {
-          B: "This is $^8P_3$, which counts different orders as different teams.",
+          A: "This is $^8P_3$, which counts different orders as different teams.",
           C: "This is $4!$, unrelated to choosing 3 from 8.",
           D: "This divides the permutation count by 2 instead of by $3!$.",
         },
-        hints: ["The team has no president/secretary labels.", "Use combinations, not permutations.", "Compute $^8C_3$."],
-        solution: [{ step: 1, explanation: "Selecting an unordered team uses combinations.", math: "{}^8C_3=\\frac{8\\cdot7\\cdot6}{3\\cdot2\\cdot1}=56" }],
+        hints: [
+          "The team has no president/secretary labels.",
+          "Use combinations, not permutations.",
+          "Compute $^8C_3$.",
+        ],
+        solution: [
+          {
+            step: 1,
+            explanation: "Selecting an unordered team uses combinations.",
+            math: "{}^8C_3=\\frac{8\\cdot7\\cdot6}{3\\cdot2\\cdot1}=56",
+          },
+        ],
       },
       {
         questionLatex: L`\text{If }{}^nC_2=21,\text{ then }n\text{ is}`,
         difficulty: 3,
         skillTags: ["combinations", "ncr"],
-        choices: ["$7$", "$6$", "$8$", "$21$"],
-        correctLetter: "A",
+        choices: ["$6$", "$8$", "$7$", "$21$"],
+        correctLetter: "C",
         rationales: {
-          B: "$^6C_2=15$, not 21.",
-          C: "$^8C_2=28$, which is too large.",
+          A: "$^6C_2=15$, not 21.",
+          B: "$^8C_2=28$, which is too large.",
           D: "This treats $n$ as the value of the combination instead of solving for it.",
         },
-        hints: ["Use $^nC_2=\\frac{n(n-1)}2$.", "Set it equal to 21.", "Find consecutive integers whose product is 42."],
-        solution: [{ step: 1, explanation: "We need $n(n-1)=42$, and $7\\cdot6=42$.", math: "{}^7C_2=21" }],
+        hints: [
+          "Use $^nC_2=\\frac{n(n-1)}2$.",
+          "Set it equal to 21.",
+          "Find consecutive integers whose product is 42.",
+        ],
+        solution: [
+          {
+            step: 1,
+            explanation: "We need $n(n-1)=42$, and $7\\cdot6=42$.",
+            math: "{}^7C_2=21",
+          },
+        ],
       },
     ],
     constructed: [
@@ -758,10 +1121,20 @@ const topicSeeds: readonly TopicSeed[] = [
         difficulty: 2,
         skillTags: ["permutations", "combinations"],
         parts: singlePart("a", "Show both values.", 2),
-        hints: ["Compute the ordered count first.", "Compute the unordered count next.", "Add the two values."],
+        hints: [
+          "Compute the ordered count first.",
+          "Compute the unordered count next.",
+          "Add the two values.",
+        ],
         rubric: singleRubric("a", 2, "Finds $45$."),
         commonErrors: ["Treating $^6P_2$ and $^6C_2$ as equal."],
-        workedSolution: [{ part: "a", explanation: "$^6P_2=6\\cdot5=30$ and $^6C_2=15$, so the sum is $45$." }],
+        workedSolution: [
+          {
+            part: "a",
+            explanation:
+              "$^6P_2=6\\cdot5=30$ and $^6C_2=15$, so the sum is $45$.",
+          },
+        ],
       },
       {
         responseType: "vsaq",
@@ -769,10 +1142,22 @@ const topicSeeds: readonly TopicSeed[] = [
         difficulty: 2,
         skillTags: ["permutations", "counting_principle"],
         parts: singlePart("a", "Find the number of codes.", 2),
-        hints: ["The order of letters in a code matters.", "Use $5$ choices, then $4$, then $3$.", "Multiply the slot counts."],
+        hints: [
+          "The order of letters in a code matters.",
+          "Use $5$ choices, then $4$, then $3$.",
+          "Multiply the slot counts.",
+        ],
         rubric: singleRubric("a", 2, "Finds $60$."),
-        commonErrors: ["Using combinations even though codes are ordered.", "Allowing repetition."],
-        workedSolution: [{ part: "a", explanation: "The number of codes is $5\\cdot4\\cdot3=60$." }],
+        commonErrors: [
+          "Using combinations even though codes are ordered.",
+          "Allowing repetition.",
+        ],
+        workedSolution: [
+          {
+            part: "a",
+            explanation: "The number of codes is $5\\cdot4\\cdot3=60$.",
+          },
+        ],
       },
       {
         responseType: "saq",
@@ -780,10 +1165,23 @@ const topicSeeds: readonly TopicSeed[] = [
         difficulty: 3,
         skillTags: ["combinations", "complement_counting", "application"],
         parts: singlePart("a", "Use a complement count or a case split.", 3),
-        hints: ["Count all 3-student committees.", "Subtract committees with no girls.", "No order is involved."],
+        hints: [
+          "Count all 3-student committees.",
+          "Subtract committees with no girls.",
+          "No order is involved.",
+        ],
         rubric: singleRubric("a", 3, "Finds $74$."),
-        commonErrors: ["Counting ordered selections.", "Subtracting committees with all girls instead of no girls."],
-        workedSolution: [{ part: "a", explanation: "All committees: $^9C_3=84$. Committees with no girl: $^5C_3=10$. Required number $=84-10=74$." }],
+        commonErrors: [
+          "Counting ordered selections.",
+          "Subtracting committees with all girls instead of no girls.",
+        ],
+        workedSolution: [
+          {
+            part: "a",
+            explanation:
+              "All committees: $^9C_3=84$. Committees with no girl: $^5C_3=10$. Required number $=84-10=74$.",
+          },
+        ],
       },
       {
         responseType: "laq",
@@ -791,24 +1189,62 @@ const topicSeeds: readonly TopicSeed[] = [
         difficulty: 4,
         skillTags: ["permutations", "combinations", "application"],
         parts: [
-          { letter: "a", promptMarkdown: "In how many ways can all $8$ books be arranged if the science books must stay together?", points: 2 },
-          { letter: "b", promptMarkdown: "In how many ways can $4$ books be selected with exactly $2$ mathematics and $2$ science books?", points: 2 },
-          { letter: "c", promptMarkdown: "In how many ways can two distinct books be assigned to first and second display positions?", points: 1 },
+          {
+            letter: "a",
+            promptMarkdown:
+              "In how many ways can all $8$ books be arranged if the science books must stay together?",
+            points: 2,
+          },
+          {
+            letter: "b",
+            promptMarkdown:
+              "In how many ways can $4$ books be selected with exactly $2$ mathematics and $2$ science books?",
+            points: 2,
+          },
+          {
+            letter: "c",
+            promptMarkdown:
+              "In how many ways can two distinct books be assigned to first and second display positions?",
+            points: 1,
+          },
         ],
-        hints: ["Treat the science books as one block in part (a).", "Selection in part (b) is unordered.", "First and second display positions are ordered."],
+        hints: [
+          "Treat the science books as one block in part (a).",
+          "Selection in part (b) is unordered.",
+          "First and second display positions are ordered.",
+        ],
         rubric: {
           maxPoints: 5,
           criteria: [
             { part: "a", points: 2, description: "Finds $6!\\cdot3!$." },
-            { part: "b", points: 2, description: "Finds $^5C_2\\cdot{}^3C_2=30$." },
+            {
+              part: "b",
+              points: 2,
+              description: "Finds $^5C_2\\cdot{}^3C_2=30$.",
+            },
             { part: "c", points: 1, description: "Finds $^8P_2=56$." },
           ],
         },
-        commonErrors: ["Forgetting to arrange books within the science block.", "Using permutations for part (b)."],
+        commonErrors: [
+          "Forgetting to arrange books within the science block.",
+          "Using permutations for part (b).",
+        ],
         workedSolution: [
-          { part: "a", explanation: "Treat the 3 science books as one block. Then there are 6 objects to arrange, and the science books can be arranged internally in $3!$ ways. Total $=6!\\cdot3!=4320$." },
-          { part: "b", explanation: "Choose 2 mathematics and 2 science books: $^5C_2\\cdot{}^3C_2=10\\cdot3=30$." },
-          { part: "c", explanation: "The first display position can be filled in $8$ ways and the second in $7$ ways, so $^8P_2=8\\cdot7=56$." },
+          {
+            part: "a",
+            explanation:
+              "Treat the 3 science books as one block. Then there are 6 objects to arrange, and the science books can be arranged internally in $3!$ ways. Total $=6!\\cdot3!=4320$.",
+          },
+          {
+            part: "b",
+            explanation:
+              "Choose 2 mathematics and 2 science books: $^5C_2\\cdot{}^3C_2=10\\cdot3=30$.",
+          },
+          {
+            part: "c",
+            explanation:
+              "The first display position can be filled in $8$ ways and the second in $7$ ways, so $^8P_2=8\\cdot7=56$.",
+          },
         ],
       },
       {
@@ -817,11 +1253,29 @@ const topicSeeds: readonly TopicSeed[] = [
         difficulty: 4,
         skillTags: ["counting_principle", "permutations", "case_based"],
         parts: [
-          { letter: "a", promptMarkdown: "How many labels are possible?", points: 1 },
-          { letter: "b", promptMarkdown: "How many labels have $5$ as the first digit after the letter?", points: 1 },
-          { letter: "c", promptMarkdown: "How many labels use the digits $2$ and $4$ in some order?", points: 2 },
+          {
+            letter: "a",
+            promptMarkdown: "How many labels are possible?",
+            points: 1,
+          },
+          {
+            letter: "b",
+            promptMarkdown:
+              "How many labels have $5$ as the first digit after the letter?",
+            points: 1,
+          },
+          {
+            letter: "c",
+            promptMarkdown:
+              "How many labels use the digits $2$ and $4$ in some order?",
+            points: 2,
+          },
         ],
-        hints: ["Multiply the independent slot counts.", "Fixing one slot reduces the choices.", "For part (c), choose the letter and arrange the two fixed digits."],
+        hints: [
+          "Multiply the independent slot counts.",
+          "Fixing one slot reduces the choices.",
+          "For part (c), choose the letter and arrange the two fixed digits.",
+        ],
         rubric: {
           maxPoints: 4,
           criteria: [
@@ -830,11 +1284,26 @@ const topicSeeds: readonly TopicSeed[] = [
             { part: "c", points: 2, description: "Finds $8$." },
           ],
         },
-        commonErrors: ["Allowing repeated digits.", "Treating the digit order as irrelevant in a label."],
+        commonErrors: [
+          "Allowing repeated digits.",
+          "Treating the digit order as irrelevant in a label.",
+        ],
         workedSolution: [
-          { part: "a", explanation: "There are $4$ letter choices, then $5$ first-digit choices and $4$ second-digit choices, so $4\\cdot5\\cdot4=80$." },
-          { part: "b", explanation: "Choose the letter in $4$ ways, fix the first digit as $5$, then choose the second digit in $4$ ways. Total $=16$." },
-          { part: "c", explanation: "Choose the letter in $4$ ways and arrange digits $2$ and $4$ in $2!$ ways. Total $=4\\cdot2=8$." },
+          {
+            part: "a",
+            explanation:
+              "There are $4$ letter choices, then $5$ first-digit choices and $4$ second-digit choices, so $4\\cdot5\\cdot4=80$.",
+          },
+          {
+            part: "b",
+            explanation:
+              "Choose the letter in $4$ ways, fix the first digit as $5$, then choose the second digit in $4$ ways. Total $=16$.",
+          },
+          {
+            part: "c",
+            explanation:
+              "Choose the letter in $4$ ways and arrange digits $2$ and $4$ in $2!$ ways. Total $=4\\cdot2=8$.",
+          },
         ],
       },
     ],
@@ -842,22 +1311,33 @@ const topicSeeds: readonly TopicSeed[] = [
   {
     topicCode: "2.4",
     title: "Binomial Theorem",
-    subtopic: "Positive integral powers, Pascal triangle, and simple expansions",
+    subtopic:
+      "Positive integral powers, Pascal triangle, and simple expansions",
     mc: [
       {
         questionLatex: L`\text{Use the displayed Pascal row for }n=4.\text{ In }(a+2b)^4,\text{ the coefficient of }a^2b^2\text{ is}`,
         difficulty: 3,
         skillTags: ["binomial_theorem", "pascal_triangle", "coefficient"],
         figure: pascalTriangleFigure,
-        choices: ["$24$", "$6$", "$12$", "$16$"],
-        correctLetter: "A",
+        choices: ["$6$", "$12$", "$16$", "$24$"],
+        correctLetter: "D",
         rationales: {
-          B: "This uses only the Pascal coefficient and forgets the factor $(2b)^2$.",
-          C: "This multiplies the Pascal coefficient by 2 instead of by $2^2$.",
-          D: "This uses $2^4$ without the central Pascal coefficient.",
+          A: "This uses only the Pascal coefficient and forgets the factor $(2b)^2$.",
+          B: "This multiplies the Pascal coefficient by 2 instead of by $2^2$.",
+          C: "This uses $2^4$ without the central Pascal coefficient.",
         },
-        hints: ["The $a^2b^2$ term comes from the middle coefficient in row 4.", "The Pascal coefficient is 6.", "Do not forget $(2b)^2$."],
-        solution: [{ step: 1, explanation: "The required term is $6a^2(2b)^2=24a^2b^2$.", math: "6\\cdot2^2=24" }],
+        hints: [
+          "The $a^2b^2$ term comes from the middle coefficient in row 4.",
+          "The Pascal coefficient is 6.",
+          "Do not forget $(2b)^2$.",
+        ],
+        solution: [
+          {
+            step: 1,
+            explanation: "The required term is $6a^2(2b)^2=24a^2b^2$.",
+            math: "6\\cdot2^2=24",
+          },
+        ],
       },
       {
         questionLatex: L`\text{In the expansion of }(1+x)^5,\text{ the coefficient of }x^3\text{ is}`,
@@ -870,55 +1350,107 @@ const topicSeeds: readonly TopicSeed[] = [
           C: "This doubles the Pascal coefficient without a reason.",
           D: "This is the coefficient of the first or last term.",
         },
-        hints: ["Use the row for power 5.", "The coefficients are symmetric.", "The coefficient of $x^3$ equals $^5C_3$."],
-        solution: [{ step: 1, explanation: "For $(1+x)^5$, the coefficient of $x^3$ is $^5C_3=10$.", math: "{}^5C_3=10" }],
+        hints: [
+          "Use the row for power 5.",
+          "The coefficients are symmetric.",
+          "The coefficient of $x^3$ equals $^5C_3$.",
+        ],
+        solution: [
+          {
+            step: 1,
+            explanation:
+              "For $(1+x)^5$, the coefficient of $x^3$ is $^5C_3=10$.",
+            math: "{}^5C_3=10",
+          },
+        ],
       },
       {
         questionLatex: L`\text{Assertion (A): The sum of coefficients in }(2x-3)^4\text{ is }1.\text{ Reason (R): The sum of coefficients of a polynomial in }x\text{ is found by putting }x=1.\text{ Choose the correct option.}`,
         difficulty: 3,
-        skillTags: ["binomial_theorem", "sum_of_coefficients", "assertion_reason"],
+        skillTags: [
+          "binomial_theorem",
+          "sum_of_coefficients",
+          "assertion_reason",
+        ],
         choices: [
-          "Both A and R are true, and R is the correct explanation of A.",
           "Both A and R are true, but R is not the correct explanation of A.",
+          "Both A and R are true, and R is the correct explanation of A.",
           "A is true, but R is false.",
           "A is false, but R is true.",
         ],
-        correctLetter: "A",
+        correctLetter: "B",
         rationales: {
-          B: "The reason explains exactly why substituting $x=1$ gives the coefficient sum.",
+          A: "The reason explains exactly why substituting $x=1$ gives the coefficient sum.",
           C: "The reason is true for polynomials written in powers of $x$.",
           D: "The assertion is true because $(2\\cdot1-3)^4=1$.",
         },
-        hints: ["Use the standard coefficient-sum test.", "Substitute $x=1$ in the whole expression.", "Check whether the reason justifies the assertion."],
-        solution: [{ step: 1, explanation: "The coefficient sum is obtained by substituting $x=1$.", math: "(2\\cdot1-3)^4=(-1)^4=1" }],
+        hints: [
+          "Use the standard coefficient-sum test.",
+          "Substitute $x=1$ in the whole expression.",
+          "Check whether the reason justifies the assertion.",
+        ],
+        solution: [
+          {
+            step: 1,
+            explanation:
+              "The coefficient sum is obtained by substituting $x=1$.",
+            math: "(2\\cdot1-3)^4=(-1)^4=1",
+          },
+        ],
       },
       {
         questionLatex: L`\text{The coefficient of }x\text{ in }(1-3x)^3\text{ is}`,
         difficulty: 3,
         skillTags: ["binomial_theorem", "coefficient"],
-        choices: ["$-9$", "$9$", "$-3$", "$27$"],
-        correctLetter: "A",
+        choices: ["$9$", "$-3$", "$-9$", "$27$"],
+        correctLetter: "C",
         rationales: {
-          B: "This misses the negative sign from $-3x$.",
-          C: "This forgets the Pascal coefficient 3.",
+          A: "This misses the negative sign from $-3x$.",
+          B: "This forgets the Pascal coefficient 3.",
           D: "This uses the cubic term instead of the linear term.",
         },
-        hints: ["Use the $3$ from the row $1,3,3,1$.", "The linear term chooses $-3x$ once.", "Keep the negative sign."],
-        solution: [{ step: 1, explanation: "The linear term is $3(1)^2(-3x)=-9x$.", math: "\\text{coefficient of }x=-9" }],
+        hints: [
+          "Use the $3$ from the row $1,3,3,1$.",
+          "The linear term chooses $-3x$ once.",
+          "Keep the negative sign.",
+        ],
+        solution: [
+          {
+            step: 1,
+            explanation: "The linear term is $3(1)^2(-3x)=-9x$.",
+            math: "\\text{coefficient of }x=-9",
+          },
+        ],
       },
       {
         questionLatex: L`\text{Which Pascal row gives the coefficients of }(p+q)^5\text{?}`,
         difficulty: 2,
         skillTags: ["binomial_theorem", "pascal_triangle"],
-        choices: ["$1,5,10,10,5,1$", "$1,4,6,4,1$", "$1,6,15,20,15,6,1$", "$5,10,10,5$"],
-        correctLetter: "A",
+        choices: [
+          "$1,4,6,4,1$",
+          "$1,6,15,20,15,6,1$",
+          "$5,10,10,5$",
+          "$1,5,10,10,5,1$",
+        ],
+        correctLetter: "D",
         rationales: {
-          B: "This is the row for power 4, not power 5.",
-          C: "This is the row for power 6.",
-          D: "This omits the endpoint coefficients 1 and is not a complete Pascal row.",
+          A: "This is the row for power 4, not power 5.",
+          B: "This is the row for power 6.",
+          C: "This omits the endpoint coefficients 1 and is not a complete Pascal row.",
         },
-        hints: ["The row for power $n$ has $n+1$ entries.", "Power 5 needs 6 entries.", "Use Pascal row $n=5$."],
-        solution: [{ step: 1, explanation: "The coefficients of $(p+q)^5$ are given by the $n=5$ row.", math: "1,5,10,10,5,1" }],
+        hints: [
+          "The row for power $n$ has $n+1$ entries.",
+          "Power 5 needs 6 entries.",
+          "Use Pascal row $n=5$.",
+        ],
+        solution: [
+          {
+            step: 1,
+            explanation:
+              "The coefficients of $(p+q)^5$ are given by the $n=5$ row.",
+            math: "1,5,10,10,5,1",
+          },
+        ],
       },
     ],
     constructed: [
@@ -928,10 +1460,22 @@ const topicSeeds: readonly TopicSeed[] = [
         difficulty: 2,
         skillTags: ["binomial_theorem", "expansion"],
         parts: singlePart("a", "Write the complete expansion.", 2),
-        hints: ["Use coefficients $1,3,3,1$.", "The second term is $3x^2(2)$.", "The last term is $2^3$."],
+        hints: [
+          "Use coefficients $1,3,3,1$.",
+          "The second term is $3x^2(2)$.",
+          "The last term is $2^3$.",
+        ],
         rubric: singleRubric("a", 2, "Finds $x^3+6x^2+12x+8$."),
-        commonErrors: ["Writing $x^3+8$ only.", "Forgetting the interior terms."],
-        workedSolution: [{ part: "a", explanation: "$(x+2)^3=x^3+3x^2(2)+3x(2^2)+2^3=x^3+6x^2+12x+8$." }],
+        commonErrors: [
+          "Writing $x^3+8$ only.",
+          "Forgetting the interior terms.",
+        ],
+        workedSolution: [
+          {
+            part: "a",
+            explanation: "$(x+2)^3=x^3+3x^2(2)+3x(2^2)+2^3=x^3+6x^2+12x+8$.",
+          },
+        ],
       },
       {
         responseType: "vsaq",
@@ -939,21 +1483,44 @@ const topicSeeds: readonly TopicSeed[] = [
         difficulty: 2,
         skillTags: ["binomial_theorem", "coefficient"],
         parts: singlePart("a", "Give the coefficient with sign.", 2),
-        hints: ["Use the row $1,3,3,1$.", "The $a^2b$ term chooses $-b$ once.", "The sign is negative."],
+        hints: [
+          "Use the row $1,3,3,1$.",
+          "The $a^2b$ term chooses $-b$ once.",
+          "The sign is negative.",
+        ],
         rubric: singleRubric("a", 2, "Finds $-3$."),
         commonErrors: ["Ignoring the negative sign in $-b$."],
-        workedSolution: [{ part: "a", explanation: "The $a^2b$ term is $3a^2(-b)=-3a^2b$, so the coefficient is $-3$." }],
+        workedSolution: [
+          {
+            part: "a",
+            explanation:
+              "The $a^2b$ term is $3a^2(-b)=-3a^2b$, so the coefficient is $-3$.",
+          },
+        ],
       },
       {
         responseType: "saq",
         questionLatex: L`\text{Expand }(2x-1)^4\text{ using the binomial theorem.}`,
         difficulty: 3,
         skillTags: ["binomial_theorem", "expansion"],
-        parts: singlePart("a", "Show the binomial coefficients and simplify.", 3),
-        hints: ["Use coefficients $1,4,6,4,1$.", "Keep the signs from $-1$.", "Simplify each term."],
+        parts: singlePart(
+          "a",
+          "Show the binomial coefficients and simplify.",
+          3,
+        ),
+        hints: [
+          "Use coefficients $1,4,6,4,1$.",
+          "Keep the signs from $-1$.",
+          "Simplify each term.",
+        ],
         rubric: singleRubric("a", 3, "Finds $16x^4-32x^3+24x^2-8x+1$."),
-        commonErrors: ["Making every term positive.", "Forgetting powers of 2 in $(2x)^k$."],
-        workedSolution: [{ part: "a", explanation: "$(2x-1)^4=16x^4-32x^3+24x^2-8x+1$." }],
+        commonErrors: [
+          "Making every term positive.",
+          "Forgetting powers of 2 in $(2x)^k$.",
+        ],
+        workedSolution: [
+          { part: "a", explanation: "$(2x-1)^4=16x^4-32x^3+24x^2-8x+1$." },
+        ],
       },
       {
         responseType: "laq",
@@ -962,23 +1529,56 @@ const topicSeeds: readonly TopicSeed[] = [
         skillTags: ["binomial_theorem", "application"],
         parts: [
           { letter: "a", promptMarkdown: "Expand $(1+r)^4$.", points: 2 },
-          { letter: "b", promptMarkdown: "Use the expansion to find $(1.1)^4$ exactly as a decimal.", points: 2 },
-          { letter: "c", promptMarkdown: "State why all terms after the first are positive when $r>0$.", points: 1 },
+          {
+            letter: "b",
+            promptMarkdown:
+              "Use the expansion to find $(1.1)^4$ exactly as a decimal.",
+            points: 2,
+          },
+          {
+            letter: "c",
+            promptMarkdown:
+              "State why all terms after the first are positive when $r>0$.",
+            points: 1,
+          },
         ],
-        hints: ["Use the row $1,4,6,4,1$.", "Put $r=0.1$.", "Each power of a positive $r$ is positive."],
+        hints: [
+          "Use the row $1,4,6,4,1$.",
+          "Put $r=0.1$.",
+          "Each power of a positive $r$ is positive.",
+        ],
         rubric: {
           maxPoints: 5,
           criteria: [
-            { part: "a", points: 2, description: "Finds $1+4r+6r^2+4r^3+r^4$." },
+            {
+              part: "a",
+              points: 2,
+              description: "Finds $1+4r+6r^2+4r^3+r^4$.",
+            },
             { part: "b", points: 2, description: "Finds $1.4641$." },
-            { part: "c", points: 1, description: "Explains positivity for $r>0$." },
+            {
+              part: "c",
+              points: 1,
+              description: "Explains positivity for $r>0$.",
+            },
           ],
         },
-        commonErrors: ["Using the row for power 3.", "Rounding before completing the exact decimal calculation."],
+        commonErrors: [
+          "Using the row for power 3.",
+          "Rounding before completing the exact decimal calculation.",
+        ],
         workedSolution: [
           { part: "a", explanation: "$(1+r)^4=1+4r+6r^2+4r^3+r^4$." },
-          { part: "b", explanation: "For $r=0.1$, $(1.1)^4=1+0.4+0.06+0.004+0.0001=1.4641$." },
-          { part: "c", explanation: "When $r>0$, each power $r,r^2,r^3,r^4$ is positive, and all binomial coefficients are positive." },
+          {
+            part: "b",
+            explanation:
+              "For $r=0.1$, $(1.1)^4=1+0.4+0.06+0.004+0.0001=1.4641$.",
+          },
+          {
+            part: "c",
+            explanation:
+              "When $r>0$, each power $r,r^2,r^3,r^4$ is positive, and all binomial coefficients are positive.",
+          },
         ],
       },
       {
@@ -987,11 +1587,27 @@ const topicSeeds: readonly TopicSeed[] = [
         difficulty: 4,
         skillTags: ["binomial_theorem", "pascal_triangle", "case_based"],
         parts: [
-          { letter: "a", promptMarkdown: "Write the coefficient row for power $5$.", points: 1 },
-          { letter: "b", promptMarkdown: "Find the coefficient of $m^3n^2$ in $(m+n)^5$.", points: 1 },
-          { letter: "c", promptMarkdown: "Find the coefficient of $m^2n^3$ in $(m-n)^5$.", points: 2 },
+          {
+            letter: "a",
+            promptMarkdown: "Write the coefficient row for power $5$.",
+            points: 1,
+          },
+          {
+            letter: "b",
+            promptMarkdown: "Find the coefficient of $m^3n^2$ in $(m+n)^5$.",
+            points: 1,
+          },
+          {
+            letter: "c",
+            promptMarkdown: "Find the coefficient of $m^2n^3$ in $(m-n)^5$.",
+            points: 2,
+          },
         ],
-        hints: ["Use the Pascal row for $n=5$.", "For $(m+n)^5$, signs stay positive.", "For $(m-n)^5$, odd powers of $n$ are negative."],
+        hints: [
+          "Use the Pascal row for $n=5$.",
+          "For $(m+n)^5$, signs stay positive.",
+          "For $(m-n)^5$, odd powers of $n$ are negative.",
+        ],
         rubric: {
           maxPoints: 4,
           criteria: [
@@ -1000,11 +1616,22 @@ const topicSeeds: readonly TopicSeed[] = [
             { part: "c", points: 2, description: "Finds $-10$." },
           ],
         },
-        commonErrors: ["Ignoring the sign change in $(m-n)^5$.", "Using the row for power 4."],
+        commonErrors: [
+          "Ignoring the sign change in $(m-n)^5$.",
+          "Using the row for power 4.",
+        ],
         workedSolution: [
           { part: "a", explanation: "The row for power 5 is $1,5,10,10,5,1$." },
-          { part: "b", explanation: "The coefficient of $m^3n^2$ is the middle coefficient $10$." },
-          { part: "c", explanation: "The $m^2n^3$ term uses coefficient $10$ and $(-n)^3$, so the coefficient is $-10$." },
+          {
+            part: "b",
+            explanation:
+              "The coefficient of $m^3n^2$ is the middle coefficient $10$.",
+          },
+          {
+            part: "c",
+            explanation:
+              "The $m^2n^3$ term uses coefficient $10$ and $(-n)^3$, so the coefficient is $-10$.",
+          },
         ],
       },
     ],
@@ -1012,7 +1639,8 @@ const topicSeeds: readonly TopicSeed[] = [
   {
     topicCode: "2.5",
     title: "Sequences and Series",
-    subtopic: "Sequences, GP terms and sums, infinite GP, AM, GM, and AM-GM relation",
+    subtopic:
+      "Sequences, GP terms and sums, infinite GP, AM, GM, and AM-GM relation",
     mc: [
       {
         questionLatex: L`\text{The displayed pattern continues as a geometric progression. The sum of all terms of the infinite GP is}`,
@@ -1026,55 +1654,97 @@ const topicSeeds: readonly TopicSeed[] = [
           C: "This uses an incorrect common ratio.",
           D: "This is just the first term, not the infinite sum.",
         },
-        hints: ["Find the common ratio from consecutive terms.", "Use $S_\\infty=\\frac{a}{1-r}$ when $|r|<1$.", "Here the first term is 12."],
-        solution: [{ step: 1, explanation: "The common ratio is $\\frac12$.", math: "S_\\infty=\\frac{12}{1-1/2}=24" }],
+        hints: [
+          "Find the common ratio from consecutive terms.",
+          "Use $S_\\infty=\\frac{a}{1-r}$ when $|r|<1$.",
+          "Here the first term is 12.",
+        ],
+        solution: [
+          {
+            step: 1,
+            explanation: "The common ratio is $\\frac12$.",
+            math: "S_\\infty=\\frac{12}{1-1/2}=24",
+          },
+        ],
       },
       {
         questionLatex: L`\text{The fifth term of the GP }3,6,12,\ldots\text{ is}`,
         difficulty: 2,
         skillTags: ["geometric_progression", "nth_term"],
-        choices: ["$48$", "$24$", "$96$", "$15$"],
-        correctLetter: "A",
+        choices: ["$24$", "$48$", "$96$", "$15$"],
+        correctLetter: "B",
         rationales: {
-          B: "This is the fourth term, not the fifth.",
+          A: "This is the fourth term, not the fifth.",
           C: "This is the sixth term.",
           D: "This adds 3 repeatedly, treating the sequence as arithmetic.",
         },
-        hints: ["Find the common ratio.", "Use $a_n=ar^{n-1}$.", "For the fifth term, use exponent 4."],
-        solution: [{ step: 1, explanation: "Here $a=3$ and $r=2$.", math: "a_5=3\\cdot2^4=48" }],
+        hints: [
+          "Find the common ratio.",
+          "Use $a_n=ar^{n-1}$.",
+          "For the fifth term, use exponent 4.",
+        ],
+        solution: [
+          {
+            step: 1,
+            explanation: "Here $a=3$ and $r=2$.",
+            math: "a_5=3\\cdot2^4=48",
+          },
+        ],
       },
       {
         questionLatex: L`\text{Assertion (A): For positive numbers }a\text{ and }b,\text{ their G.M. is not greater than their A.M. Reason (R): }(\sqrt a-\sqrt b)^2\ge0\text{ gives }a+b\ge2\sqrt{ab}.\text{ Choose the correct option.}`,
         difficulty: 3,
         skillTags: ["am_gm", "assertion_reason"],
         choices: [
-          "Both A and R are true, and R is the correct explanation of A.",
           "Both A and R are true, but R is not the correct explanation of A.",
           "A is true, but R is false.",
+          "Both A and R are true, and R is the correct explanation of A.",
           "A is false, but R is true.",
         ],
-        correctLetter: "A",
+        correctLetter: "C",
         rationales: {
-          B: "The reason is the standard proof that $\\sqrt{ab}\\le\\frac{a+b}{2}$.",
-          C: "The reason is true because every square is non-negative.",
+          A: "The reason is the standard proof that $\\sqrt{ab}\\le\\frac{a+b}{2}$.",
+          B: "The reason is true because every square is non-negative.",
           D: "The assertion is true for positive numbers by the AM-GM relation.",
         },
-        hints: ["Rewrite A.M. and G.M.", "Use the inequality from the reason.", "Divide by 2 to compare."],
-        solution: [{ step: 1, explanation: "From $a+b\\ge2\\sqrt{ab}$, divide by 2 to get $\\frac{a+b}{2}\\ge\\sqrt{ab}$.", math: "\\text{A.M.}\\ge\\text{G.M.}" }],
+        hints: [
+          "Rewrite A.M. and G.M.",
+          "Use the inequality from the reason.",
+          "Divide by 2 to compare.",
+        ],
+        solution: [
+          {
+            step: 1,
+            explanation:
+              "From $a+b\\ge2\\sqrt{ab}$, divide by 2 to get $\\frac{a+b}{2}\\ge\\sqrt{ab}$.",
+            math: "\\text{A.M.}\\ge\\text{G.M.}",
+          },
+        ],
       },
       {
         questionLatex: L`\text{Three positive numbers are in GP. If the first is }5\text{ and the third is }20,\text{ the middle number is}`,
         difficulty: 3,
         skillTags: ["geometric_progression", "geometric_mean"],
-        choices: ["$10$", "$25$", "$12.5$", "$15$"],
-        correctLetter: "A",
+        choices: ["$25$", "$12.5$", "$15$", "$10$"],
+        correctLetter: "D",
         rationales: {
-          B: "This multiplies the first and third terms without taking the square root.",
-          C: "This is the arithmetic mean, not the geometric mean.",
-          D: "This is a linear midpoint, not the GP central value.",
+          A: "This multiplies the first and third terms without taking the square root.",
+          B: "This is the arithmetic mean, not the geometric mean.",
+          C: "This is a linear midpoint, not the GP central value.",
         },
-        hints: ["For three positive GP entries, the central entry is the G.M. of the outer entries.", "Compute $\\sqrt{5\\cdot20}$.", "Use the positive value."],
-        solution: [{ step: 1, explanation: "The central GP entry is the geometric mean of 5 and 20.", math: "\\sqrt{5\\cdot20}=10" }],
+        hints: [
+          "For three positive GP entries, the central entry is the G.M. of the outer entries.",
+          "Compute $\\sqrt{5\\cdot20}$.",
+          "Use the positive value.",
+        ],
+        solution: [
+          {
+            step: 1,
+            explanation:
+              "The central GP entry is the geometric mean of 5 and 20.",
+            math: "\\sqrt{5\\cdot20}=10",
+          },
+        ],
       },
       {
         questionLatex: L`\text{The sum of the first four terms of the GP }2,6,18,\ldots\text{ is}`,
@@ -1087,8 +1757,18 @@ const topicSeeds: readonly TopicSeed[] = [
           C: "This uses a common ratio of 2 instead of 3.",
           D: "This omits the first term or adds only part of the series.",
         },
-        hints: ["Find the first four terms.", "The common ratio is 3.", "Add $2+6+18+54$."],
-        solution: [{ step: 1, explanation: "The first four terms are $2,6,18,54$.", math: "2+6+18+54=80" }],
+        hints: [
+          "Find the first four terms.",
+          "The common ratio is 3.",
+          "Add $2+6+18+54$.",
+        ],
+        solution: [
+          {
+            step: 1,
+            explanation: "The first four terms are $2,6,18,54$.",
+            math: "2+6+18+54=80",
+          },
+        ],
       },
     ],
     constructed: [
@@ -1098,10 +1778,23 @@ const topicSeeds: readonly TopicSeed[] = [
         difficulty: 2,
         skillTags: ["arithmetic_mean", "geometric_mean", "am_gm"],
         parts: singlePart("a", "Give both values.", 2),
-        hints: ["A.M. is the average.", "G.M. is the square root of the product.", "Simplify $\\sqrt{576}$."],
+        hints: [
+          "A.M. is the average.",
+          "G.M. is the square root of the product.",
+          "Simplify $\\sqrt{576}$.",
+        ],
         rubric: singleRubric("a", 2, "Finds A.M. $25$ and G.M. $24$."),
-        commonErrors: ["Using $18+32$ as the A.M. without dividing by 2.", "Leaving $\\sqrt{576}$ unsimplified."],
-        workedSolution: [{ part: "a", explanation: "A.M. $=\\frac{18+32}{2}=25$. G.M. $=\\sqrt{18\\cdot32}=\\sqrt{576}=24$." }],
+        commonErrors: [
+          "Using $18+32$ as the A.M. without dividing by 2.",
+          "Leaving $\\sqrt{576}$ unsimplified.",
+        ],
+        workedSolution: [
+          {
+            part: "a",
+            explanation:
+              "A.M. $=\\frac{18+32}{2}=25$. G.M. $=\\sqrt{18\\cdot32}=\\sqrt{576}=24$.",
+          },
+        ],
       },
       {
         responseType: "vsaq",
@@ -1109,10 +1802,22 @@ const topicSeeds: readonly TopicSeed[] = [
         difficulty: 2,
         skillTags: ["geometric_progression", "nth_term"],
         parts: singlePart("a", "Write the sixth term.", 2),
-        hints: ["Find the common ratio.", "Use $a_n=ar^{n-1}$.", "Use exponent 5 for the sixth term."],
+        hints: [
+          "Find the common ratio.",
+          "Use $a_n=ar^{n-1}$.",
+          "Use exponent 5 for the sixth term.",
+        ],
         rubric: singleRubric("a", 2, "Finds $160$."),
-        commonErrors: ["Using exponent 6 instead of 5.", "Treating the sequence as arithmetic."],
-        workedSolution: [{ part: "a", explanation: "Here $a=5$ and $r=2$, so $a_6=5\\cdot2^5=160$." }],
+        commonErrors: [
+          "Using exponent 6 instead of 5.",
+          "Treating the sequence as arithmetic.",
+        ],
+        workedSolution: [
+          {
+            part: "a",
+            explanation: "Here $a=5$ and $r=2$, so $a_6=5\\cdot2^5=160$.",
+          },
+        ],
       },
       {
         responseType: "saq",
@@ -1120,10 +1825,23 @@ const topicSeeds: readonly TopicSeed[] = [
         difficulty: 3,
         skillTags: ["geometric_progression", "finite_gp_sum"],
         parts: singlePart("a", "Show how you find the common ratio.", 3),
-        hints: ["Divide the third term by the second term.", "Use the common ratio to move backward to the first term.", "Then list the first four terms."],
+        hints: [
+          "Divide the third term by the second term.",
+          "Use the common ratio to move backward to the first term.",
+          "Then list the first four terms.",
+        ],
         rubric: singleRubric("a", 3, "Finds first term $4$ and sum $160$."),
-        commonErrors: ["Subtracting terms to find common difference.", "Starting the sum from the second term."],
-        workedSolution: [{ part: "a", explanation: "$r=36/12=3$. Hence the first term is $12/3=4$. The first four terms are $4,12,36,108$, and their sum is $160$." }],
+        commonErrors: [
+          "Subtracting terms to find common difference.",
+          "Starting the sum from the second term.",
+        ],
+        workedSolution: [
+          {
+            part: "a",
+            explanation:
+              "$r=36/12=3$. Hence the first term is $12/3=4$. The first four terms are $4,12,36,108$, and their sum is $160$.",
+          },
+        ],
       },
       {
         responseType: "laq",
@@ -1132,10 +1850,23 @@ const topicSeeds: readonly TopicSeed[] = [
         skillTags: ["geometric_progression", "finite_gp_sum", "infinite_gp"],
         parts: [
           { letter: "a", promptMarkdown: "Find the common ratio.", points: 1 },
-          { letter: "b", promptMarkdown: "Find the sum to infinity.", points: 2 },
-          { letter: "c", promptMarkdown: "Find the least $n$ for which the sum of the first $n$ terms exceeds $15$.", points: 2 },
+          {
+            letter: "b",
+            promptMarkdown: "Find the sum to infinity.",
+            points: 2,
+          },
+          {
+            letter: "c",
+            promptMarkdown:
+              "Find the least $n$ for which the sum of the first $n$ terms exceeds $15$.",
+            points: 2,
+          },
         ],
-        hints: ["The ratio is less than 1 in magnitude.", "Use $S_\\infty=\\frac{a}{1-r}$.", "Use $S_n=16(1-(1/2)^n)$ for part (c)."],
+        hints: [
+          "The ratio is less than 1 in magnitude.",
+          "Use $S_\\infty=\\frac{a}{1-r}$.",
+          "Use $S_n=16(1-(1/2)^n)$ for part (c).",
+        ],
         rubric: {
           maxPoints: 5,
           criteria: [
@@ -1144,11 +1875,18 @@ const topicSeeds: readonly TopicSeed[] = [
             { part: "c", points: 2, description: "Finds least $n=5$." },
           ],
         },
-        commonErrors: ["Using the infinite sum formula when $|r|\\ge1$ in unrelated problems.", "Testing $n=4$ without checking strict 'exceeds'."],
+        commonErrors: [
+          "Using the infinite sum formula when $|r|\\ge1$ in unrelated problems.",
+          "Testing $n=4$ without checking strict 'exceeds'.",
+        ],
         workedSolution: [
           { part: "a", explanation: "$r=4/8=1/2$." },
           { part: "b", explanation: "$S_\\infty=\\frac{8}{1-1/2}=16$." },
-          { part: "c", explanation: "$S_n=8\\frac{1-(1/2)^n}{1-1/2}=16(1-(1/2)^n)$. We need $16(1-(1/2)^n)>15$, so $(1/2)^n<1/16$. The least such integer is $n=5$." },
+          {
+            part: "c",
+            explanation:
+              "$S_n=8\\frac{1-(1/2)^n}{1-1/2}=16(1-(1/2)^n)$. We need $16(1-(1/2)^n)>15$, so $(1/2)^n<1/16$. The least such integer is $n=5$.",
+          },
         ],
       },
       {
@@ -1157,11 +1895,27 @@ const topicSeeds: readonly TopicSeed[] = [
         difficulty: 4,
         skillTags: ["geometric_progression", "case_based", "finite_gp_sum"],
         parts: [
-          { letter: "a", promptMarkdown: "Find the second and third deposits.", points: 1 },
-          { letter: "b", promptMarkdown: "Find the fourth deposit.", points: 1 },
-          { letter: "c", promptMarkdown: "Find the total of the first four deposits.", points: 2 },
+          {
+            letter: "a",
+            promptMarkdown: "Find the second and third deposits.",
+            points: 1,
+          },
+          {
+            letter: "b",
+            promptMarkdown: "Find the fourth deposit.",
+            points: 1,
+          },
+          {
+            letter: "c",
+            promptMarkdown: "Find the total of the first four deposits.",
+            points: 2,
+          },
         ],
-        hints: ["Multiply by $3/2$ each time.", "Use either listing or the finite GP sum formula.", "Keep rupee amounts exact."],
+        hints: [
+          "Multiply by $3/2$ each time.",
+          "Use either listing or the finite GP sum formula.",
+          "Keep rupee amounts exact.",
+        ],
         rubric: {
           maxPoints: 4,
           criteria: [
@@ -1170,11 +1924,24 @@ const topicSeeds: readonly TopicSeed[] = [
             { part: "c", points: 2, description: "Finds total $8125$." },
           ],
         },
-        commonErrors: ["Adding $3/2$ instead of multiplying by $3/2$.", "Using the infinite GP formula even though $r>1$."],
+        commonErrors: [
+          "Adding $3/2$ instead of multiplying by $3/2$.",
+          "Using the infinite GP formula even though $r>1$.",
+        ],
         workedSolution: [
-          { part: "a", explanation: "The second deposit is $1000\\cdot\\frac32=1500$, and the third is $1500\\cdot\\frac32=2250$." },
-          { part: "b", explanation: "The fourth deposit is $2250\\cdot\\frac32=3375$." },
-          { part: "c", explanation: "The total is $1000+1500+2250+3375=8125$ rupees." },
+          {
+            part: "a",
+            explanation:
+              "The second deposit is $1000\\cdot\\frac32=1500$, and the third is $1500\\cdot\\frac32=2250$.",
+          },
+          {
+            part: "b",
+            explanation: "The fourth deposit is $2250\\cdot\\frac32=3375$.",
+          },
+          {
+            part: "c",
+            explanation: "The total is $1000+1500+2250+3375=8125$ rupees.",
+          },
         ],
       },
     ],

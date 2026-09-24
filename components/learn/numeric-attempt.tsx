@@ -204,8 +204,9 @@ export function NumericAttempt({ item }: { item: NumericItem }) {
                 </p>
                 {!isCorrect && (
                   <p className="mt-1 text-sm text-muted-foreground">
-                    Recheck the exact count. JEE numerical questions expect the
-                    final number, without units or extra text.
+                    Recheck the exact value. Numerical questions expect the
+                    final number only, without units or extra text unless the
+                    question asks for them.
                   </p>
                 )}
               </div>

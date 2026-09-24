@@ -1,12 +1,12 @@
 "use client";
 
 /**
- * Global error boundary — the last line of defense.
+ * Global error boundary: the last line of defense.
  *
- * Catches errors that happen in the root layout itself (where the normal
- * error.tsx can't help). Because it replaces the root layout, it must render
- * its own <html> and <body>. Kept dependency-free and inline-styled so it
- * works even if the stylesheet or a component failed to load.
+ * Catches errors that happen in the root layout itself, where the normal
+ * error.tsx cannot help. Because it replaces the root layout, it must render
+ * its own html and body. Kept dependency-free and inline-styled so it works
+ * even if the stylesheet or a component failed to load.
  */
 export default function GlobalError({
   error,

@@ -6,6 +6,8 @@ const FOOTER_LINKS = [
   { href: "/ethics", label: "Ethics" },
   { href: "/disclaimer", label: "Disclaimer" },
   { href: "/changelog", label: "Changelog" },
+  { href: "/review", label: "Review mistakes" },
+  { href: "/schools", label: "For teachers" },
 ] as const;
 
 export function Footer() {
@@ -50,13 +52,12 @@ export function Footer() {
           </div>
         </div>
 
-        {/* MANDATORY College Board trademark disclaimer. Must appear on every
-            page. Per ARCHITECTURE.md §5.5 and the original research. */}
         <p className="mt-8 border-t border-border/40 pt-6 text-xs leading-relaxed text-muted-foreground">
-          AP&reg; is a trademark registered by the College Board, which is not
-          affiliated with, and does not endorse, this site. {SITE.name} is an
-          independent, free educational project. All practice content is
-          original and not derived from College Board materials.
+          {SITE.name} is an independent, free educational project. It is not
+          affiliated with, sponsored by, or endorsed by CBSE, NCERT, the College
+          Board, or any exam body. AP&reg; is a trademark registered by the
+          College Board. All practice content is original and is not copied from
+          official papers, textbooks, or commercial prep resources.
         </p>
       </div>
     </footer>

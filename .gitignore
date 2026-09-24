@@ -11,6 +11,7 @@ coverage/
 # next.js
 .next/
 .next-dev/
+.next-build-check-*/
 out/
 next-env.d.ts
 .static-build-disabled/
@@ -29,12 +30,19 @@ review-packages/
 Thumbs.db
 
 # debug
+*.log
+.codex-logs/
+.next-audit-*/
+.next-dev-*/
+.static-export-workspace/
 .next-dev-logs/
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 .pnpm-debug.log*
 studyloop-dev*.log
+build-debug-*.log
+build-pages-debug-*.log
 
 # local env files
 .env

@@ -9,8 +9,13 @@ import {
   writeLocalValue,
 } from "@/lib/local-memory";
 
+// "mastered" is the legacy storage key. UI calls this "Reviewed"; preserving
+// the key retains existing local notebooks without claiming durable mastery.
 export type ReviewRecordStatus = "needs_review" | "mastered";
-export type ReviewRecordSource = "item-page" | "practice-session" | "review-tool";
+export type ReviewRecordSource =
+  | "item-page"
+  | "practice-session"
+  | "review-tool";
 
 interface ReviewRecordBase {
   contentId: string;
@@ -56,7 +61,9 @@ function emptyNotebook(): ReviewNotebook {
 }
 
 function isBrowser(): boolean {
-  return typeof window !== "undefined" && typeof window.localStorage !== "undefined";
+  return (
+    typeof window !== "undefined" && typeof window.localStorage !== "undefined"
+  );
 }
 
 function reviewKey(profileStorageId: string): string {
@@ -148,10 +155,7 @@ export function markReviewMastered(
   writeNotebook(profileStorageId, notebook);
 }
 
-export function resetReviewRecord(
-  profileStorageId: string,
-  contentId: string,
-) {
+export function resetReviewRecord(profileStorageId: string, contentId: string) {
   if (!profileStorageId) return;
 
   const notebook = readNotebook(profileStorageId);

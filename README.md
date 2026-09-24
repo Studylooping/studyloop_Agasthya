@@ -126,6 +126,25 @@ The public learning site should deploy as static Cloudflare Pages output. This
 keeps course, unit, question, and practice-session pages out of the Worker
 runtime, which is important on Cloudflare's free Worker CPU limits.
 
+**Required after every production deployment:** purge the `studyloop.in` cache,
+then run the release smoke checks. The `deploy`, `deploy:cloudflare`,
+`deploy:pages`, and `deploy:feedback` scripts do this automatically after a
+successful deployment. Failed purges or live checks make the command fail, but
+do not roll back an already published deployment. Update the smoke checks when
+release expectations change; do not ignore a failing withdrawn-question check.
+
+For a direct Wrangler or dashboard deployment, run `pnpm deploy:verify` after
+the deployment succeeds. This checks the bare domain, `www`, and `www2` without
+cache-busting. Repository-connected Cloudflare builds do not run this local
+post-deployment command automatically; do not put it in the build command,
+because the new deployment is not live at that point.
+
+The purge script reads `CLOUDFLARE_API_TOKEN` and `CLOUDFLARE_ZONE_ID` from the
+environment or the ignored `.env.cloudflare.local` file. The token needs
+**Cache Purge** for **studyloop.in only**, in addition to its existing deployment
+access. Never commit the file or disable TLS verification. Local test:
+`node --test scripts/purge-cloudflare-cache.test.mjs` (no network requests).
+
 Recommended Pages settings:
 
 1. In Cloudflare, open **Workers & Pages** and choose **Create application**.
@@ -134,7 +153,7 @@ Recommended Pages settings:
 3. Set the production branch to `main`.
 4. Set the build command to `pnpm run build:pages`.
 5. Set the output directory to `out`.
-6. Add `NEXT_PUBLIC_SITE_URL=https://www2.studyloop.in` or the final canonical
+6. Add `NEXT_PUBLIC_SITE_URL=https://www.studyloop.in` or the final canonical
    hostname as a Pages build variable.
 7. Add `NEXT_PUBLIC_FEEDBACK_ENDPOINT=/api/feedback` if a feedback Worker is
    routed on the same hostname.
@@ -146,7 +165,7 @@ the full Next app Worker:
 pnpm deploy:feedback
 ```
 
-Then route `www2.studyloop.in/api/feedback` to the `studyloop-feedback` Worker
+Then route `www.studyloop.in/api/feedback` to the `studyloop-feedback` Worker
 or set `NEXT_PUBLIC_FEEDBACK_ENDPOINT` to the Worker URL/subdomain before the
 Pages build. Before enabling public notifications, verify `hello@studyloop.in`
 under **Email Service > Email Routing > Destination Addresses** and onboard
@@ -175,7 +194,7 @@ studyloop/
 |   |-- site/                        Header, footer, theme toggle
 |   `-- ui/                          shadcn primitives
 |-- content/
-|   |-- learning-paths.ts            CBSE/AP/SAT/JEE roadmap
+|   |-- learning-paths.ts            Public AP/CBSE subject list
 |   |-- courses.ts                   Live course registry
 |   `-- calc-ab/                     AP Calc AB content, starting with Units 1-8
 |-- lib/
@@ -252,11 +271,9 @@ Research notes are kept in the local `review-packages/videos-*.md` files.
 
 ## What's not in this alpha yet
 
-These ship in subsequent phases:
+These remain active roadmap items:
 
-- CBSE, JEE, and SAT content tracks
 - Spaced-review scheduling beyond simple local resume
-- Numeric and symbolic item input
 - Supabase database wiring + RLS
 - Admin console
 - SymPy serverless function for symbolic grading
@@ -279,5 +296,5 @@ free to fork and adapt.
 ## Contributing
 
 Public contributions welcome once mentors come on board. During alpha testing,
-report content errors by sharing the item URL and content ID with the project
-owner. A proper report form should be connected before public launch.
+report content errors with the feedback form on the site or by sharing the item
+URL and content ID with the project owner.

@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/seo";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ArrowRight, Hash, ScrollText, Play } from "lucide-react";
@@ -12,6 +13,7 @@ import {
 import { ItemStatusBadge } from "@/components/learn/item-status-badge";
 import { VideoPreparation } from "@/components/learn/video-preparation";
 import { getVideoLessons } from "@/content/video-lessons";
+import { QuestionStem } from "@/components/math/math";
 import { findCourse, findUnit, COURSES, itemSlug } from "@/content/courses";
 import { cn } from "@/lib/utils";
 import type { Item } from "@/lib/content/types";
@@ -22,17 +24,19 @@ interface Params {
 }
 
 function itemKindLabel(item: Item) {
-  if (item.kind === "mc_single") return "MC";
-  if (item.kind === "numeric") return "Num";
+  if (item.kind === "mc_single") return "Multiple choice";
+  if (item.kind === "numeric") return "Numerical answer";
   if (item.kind !== "frq") return "Practice";
-  if (item.responseType === "vsaq") return "VSAQ";
-  if (item.responseType === "saq") return "SAQ";
-  if (item.responseType === "laq") return "LAQ";
-  if (item.responseType === "case") return "Case";
-  return "FRQ";
+  if (item.responseType === "vsaq") return "Very short answer";
+  if (item.responseType === "saq") return "Short answer";
+  if (item.responseType === "laq") return "Long answer";
+  if (item.responseType === "case") return "Case study";
+  return "Free response";
 }
 
 export function generateStaticParams(): Params[] {
+  if (process.env.NODE_ENV === "development") return [];
+
   return COURSES.flatMap((c) =>
     c.units
       .filter((u) => u.status === "live")
@@ -49,10 +53,10 @@ export async function generateMetadata({
   const course = findCourse(courseSlug);
   const unit = findUnit(courseSlug, unitSlug);
   if (!course || !unit) return { title: "Not found" };
-  return {
+  return pageMetadata(`/${courseSlug}/${unitSlug}`, {
     title: `${unit.title} — ${course.shortTitle}`,
     description: unit.description,
-  };
+  });
 }
 
 export default async function UnitPage({
@@ -102,12 +106,11 @@ export default async function UnitPage({
           .filter((i) => i.kind === "mc_single").length;
         if (mcCount === 0) return null;
         return (
-          <div className="mt-8 flex flex-col gap-3 rounded-xl border border-primary/20 bg-primary/5 p-5 sm:flex-row sm:items-center sm:justify-between">
+          <div className="mt-8 flex flex-col gap-3 border-y border-border py-5 sm:flex-row sm:items-center sm:justify-between">
             <div>
-              <p className="font-semibold tracking-tight">Test yourself</p>
+              <p className="font-semibold tracking-tight">Practice a topic</p>
               <p className="mt-0.5 text-sm text-muted-foreground">
-                A focused, distraction-free run through {mcCount} multiple-choice
-                questions. Hints if you need them; your score at the end.
+                Choose 5, 10 or all {mcCount} multiple-choice questions.
               </p>
             </div>
             <Button asChild size="lg" className="shrink-0">
@@ -159,23 +162,29 @@ export default async function UnitPage({
                     <Link
                       key={item.contentId}
                       href={`/${course.slug}/${unit.slug}/${slug}`}
-                      className="group block rounded-xl focus:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+                      className="group block min-w-0 rounded-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
                     >
                       <Card className="h-full p-4 transition-all hover:border-primary/50 hover:shadow-md">
-                        <div className="flex items-start justify-between gap-2">
-                          <div className="flex items-center gap-2 text-xs font-medium uppercase tracking-wider text-muted-foreground">
+                        <div className="flex flex-wrap items-start justify-between gap-2">
+                          <div className="flex flex-wrap items-center gap-2 text-xs font-medium text-muted-foreground">
                             {item.kind === "frq" ? (
                               <>
-                                <ScrollText className="h-3.5 w-3.5" aria-hidden="true" />
+                                <ScrollText
+                                  className="h-3.5 w-3.5"
+                                  aria-hidden="true"
+                                />
                                 {itemKindLabel(item)}
                               </>
                             ) : item.kind === "numeric" ? (
                               <>
-                                <Hash className="h-3.5 w-3.5" aria-hidden="true" />
+                                <Hash
+                                  className="h-3.5 w-3.5"
+                                  aria-hidden="true"
+                                />
                                 {itemKindLabel(item)}
                               </>
                             ) : (
-                              <span>MC</span>
+                              <span>Multiple choice</span>
                             )}
                             <span aria-hidden="true">·</span>
                             <span>{getDifficultyLabel(item.difficulty)}</span>
@@ -188,6 +197,9 @@ export default async function UnitPage({
                         <p className="mt-3 font-medium text-foreground">
                           Item {i + 1}
                         </p>
+                        <div className="mt-2 line-clamp-3 text-sm text-muted-foreground">
+                          <QuestionStem text={item.questionLatex} />
+                        </div>
                         <p className="mt-3 inline-flex items-center gap-1 text-sm text-primary group-hover:underline">
                           Open
                           <ArrowRight

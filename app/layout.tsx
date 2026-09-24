@@ -1,28 +1,10 @@
 import type { Metadata, Viewport } from "next";
-import { Inter, Source_Serif_4, JetBrains_Mono } from "next/font/google";
 import { SiteFeedbackButton } from "@/components/feedback/site-feedback-button";
 import { ThemeProvider } from "@/components/site/theme-provider";
 import { SITE } from "@/lib/utils";
+import { organizationData, jsonLd } from "@/lib/seo";
 import "./globals.css";
 import "katex/dist/katex.min.css";
-
-const inter = Inter({
-  subsets: ["latin"],
-  variable: "--font-inter",
-  display: "swap",
-});
-
-const sourceSerif = Source_Serif_4({
-  subsets: ["latin"],
-  variable: "--font-source-serif",
-  display: "swap",
-});
-
-const jetbrainsMono = JetBrains_Mono({
-  subsets: ["latin"],
-  variable: "--font-jetbrains-mono",
-  display: "swap",
-});
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE.url),
@@ -35,8 +17,6 @@ export const metadata: Metadata = {
   authors: [{ name: SITE.name }],
   keywords: [
     "CBSE STEM",
-    "IIT JEE preparation",
-    "SAT Math",
     "AP Calculus AB",
     "free STEM practice",
     "study companion",
@@ -81,12 +61,9 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html
-      lang="en"
-      suppressHydrationWarning
-      className={`${inter.variable} ${sourceSerif.variable} ${jetbrainsMono.variable}`}
-    >
+    <html lang="en" suppressHydrationWarning>
       <body className="min-h-screen bg-background font-sans">
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLd(organizationData) }} />
         <ThemeProvider
           attribute="class"
           defaultTheme="system"

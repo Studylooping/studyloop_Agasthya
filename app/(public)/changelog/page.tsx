@@ -1,11 +1,12 @@
 import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/seo";
 import { SITE } from "@/lib/utils";
 import { formatDate } from "@/lib/utils";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata("/changelog", {
   title: "Changelog",
   description: `What changed on ${SITE.name} and when.`,
-};
+});
 
 interface Entry {
   version: string;
@@ -15,6 +16,43 @@ interface Entry {
 }
 
 const ENTRIES: Entry[] = [
+  {
+    version: "v0.1-alpha.28",
+    date: "2026-09-17",
+    title: "Educator review repairs",
+    highlights: [
+      "Repaired seven cited Class IX Science questions with complete observations/data, plausible distractors, specific feedback and separate marking points.",
+      "Withdrew the remaining 293 Class IX and 360 Class X Science supplemental template questions pending individual revision. Core question banks remain available.",
+      "Restored diagrams in error replay and fixed ordinary prose being interpreted as algebra after a colon.",
+      "Replaced generic marking criteria in Chemistry XI and XII practical work and XII Coordination Compounds with answer-specific requirements and separate partial-credit points.",
+      "Made Review mistakes reachable on mobile; renamed the immediate retry state Reviewed, with a Solved on retry message instead of a mastery claim.",
+      "Added 5-question and 10-question topic sessions, independent practice without hints, written-answer hints, a compact difficulty guide, and direct subject selection.",
+      "Added a printable 15-question Cells collection and teacher guide. It is prepared for review, not labeled teacher-verified; review status and content versions are visible.",
+      "Extended regression checks to the actual published course registry, including supplemental items, and all three diagram pathways.",
+    ],
+  },
+  {
+    version: "v0.1-alpha.27",
+    date: "2026-08-30",
+    title: "Public subject list cleanup",
+    highlights: [
+      "Removed SAT Math from the public subject list until it has authored and vetted practice.",
+      "Removed JEE Main Mathematics as a standalone public subject; advanced math challenge work now appears only as CBSE enrichment where relevant.",
+      "Simplified the homepage cards so students see the available subjects directly instead of roadmap-status labels.",
+      "Updated homepage, About, metadata, and repository copy so the public platform describes AP Calculus AB and CBSE STEM practice accurately.",
+    ],
+  },
+  {
+    version: "v0.1-alpha.26",
+    date: "2026-08-30",
+    title: "Public roadmap and privacy copy repair",
+    highlights: [
+      "Reframed the homepage so it no longer implies unfinished subjects are complete.",
+      "Clarified that only published subjects and units should be presented as ready for students.",
+      "Removed stale 'live locally' and 'practice will unlock after local authoring' wording from course descriptions that are already published.",
+      "Added student privacy and children's-data language to the Disclaimer, including StudyLoop's no-account, no-ads, no-behavioural-tracking design and the limited data sent by optional feedback reports.",
+    ],
+  },
   {
     version: "v0.1-alpha.25",
     date: "2026-06-01",
@@ -199,7 +237,7 @@ const ENTRIES: Entry[] = [
       "Added optional SVG figures to StudyLoop questions and rendered them on item pages for graph-reading practice.",
       "Attached actual graph figures to the Unit 1 graphical limits MCQ and FRQ that previously described the graph only in words.",
       "Replaced the Unit 4 motion questions that used displacement, total distance, and integrals with derivative-only velocity, acceleration, direction, and speed-behavior practice.",
-      "Reviewer exports now include figure titles, descriptions, and SVG source for mentor review.",
+      "Reviewer exports now include figure titles, descriptions, and SVG source for content review.",
     ],
   },
   {
@@ -207,9 +245,9 @@ const ENTRIES: Entry[] = [
     date: "2026-05-27",
     title: "Limits rigor repair",
     highlights: [
-      "Repaired AP Calculus AB Unit 1 after mentor vetting by replacing the low-rigor recall and read-off MCQs with applied limit, continuity, asymptote, and IVT items.",
+      "Repaired AP Calculus AB Unit 1 after review by replacing the low-rigor recall and read-off MCQs with applied limit, continuity, asymptote, and IVT items.",
       "Unit 1 now has zero Foundational difficulty items while keeping the same stable item URLs.",
-      "The Unit 1 content version is now v0.3.0 and remains marked Needs mentor review until a subject mentor signs off.",
+      "The Unit 1 content version is now v0.3.0 after a deeper rigor pass.",
     ],
   },
   {
@@ -274,7 +312,7 @@ const ENTRIES: Entry[] = [
       "AP Calculus AB Unit 1 now has all 16 Limits and Continuity topics live.",
       "Each topic has 5 original MCQs and 1 original FRQ, for 80 MCQs and 16 FRQs total.",
       "Item URLs now include the topic, such as t1-1-mc-001, so questions from different topics do not collide.",
-      "All new content is marked Needs mentor review until a teacher verifies it.",
+      "All new content now carries internal review metadata for audit and revision workflows.",
     ],
   },
   {
@@ -293,10 +331,10 @@ const ENTRIES: Entry[] = [
     date: "2026-05-25",
     title: "Broad STEM direction set",
     highlights: [
-      "StudyLoop is now framed as a broad STEM practice platform for CBSE, AP, SAT, and IIT-JEE.",
+      "StudyLoop is now framed as a broad STEM practice platform.",
       "AP Calculus AB remains the first live track while the wider platform structure is prepared.",
       "First Calc AB content slice launched with Unit 1, Topic 1.6 draft practice.",
-      "Public copy now explains that CBSE, JEE, and SAT are planned tracks, not live content.",
+      "Public copy now frames StudyLoop as a broad STEM practice platform while new tracks are prepared.",
       "Alpha reporting language is honest: item issues should be noted by URL and content ID until a report form ships.",
     ],
   },
@@ -332,7 +370,9 @@ export default function ChangelogPage() {
 
             <ul className="space-y-2 pl-5 [&>li]:list-disc">
               {entry.highlights.map((h, i) => (
-                <li key={i} className="leading-relaxed">{h}</li>
+                <li key={i} className="leading-relaxed">
+                  {h}
+                </li>
               ))}
             </ul>
           </section>

@@ -4,6 +4,12 @@
 
 @layer base {
   :root {
+    --font-inter:
+      system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    --font-source-serif: Georgia, "Times New Roman", serif;
+    --font-jetbrains-mono:
+      "Cascadia Code", Consolas, "Liberation Mono", monospace;
+
     /* Light theme — calm neutral base, deep indigo accent.
        Values are HSL channels (no `hsl()` wrapper) so Tailwind can
        compose with opacity utilities like `bg-primary/80`. */
@@ -89,7 +95,9 @@
   }
   body {
     @apply bg-background text-foreground antialiased;
-    font-feature-settings: "rlig" 1, "calt" 1;
+    font-feature-settings:
+      "rlig" 1,
+      "calt" 1;
     text-rendering: optimizeLegibility;
   }
 
@@ -122,5 +130,31 @@
   /* Long-form prose container for lessons (used Phase 2+). */
   .prose-lesson {
     @apply font-serif text-lg leading-relaxed text-foreground;
+  }
+}
+
+@media print {
+  body:has(.school-print) {
+    background: white;
+    color: black;
+  }
+  body:has(.school-print) header,
+  body:has(.school-print) footer,
+  body:has(.school-print) .skip-link {
+    display: none !important;
+  }
+  .school-print {
+    max-width: none;
+    padding: 0;
+    font-size: 11pt;
+  }
+  .school-question {
+    break-inside: avoid;
+  }
+  .school-print figure {
+    max-width: 130mm;
+  }
+  .school-print .text-muted-foreground {
+    color: #333;
   }
 }

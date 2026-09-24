@@ -6,6 +6,8 @@ import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Breadcrumb } from "@/components/learn/breadcrumb";
 import { findCourse, COURSES } from "@/content/courses";
 import { cn } from "@/lib/utils";
+import { pageMetadata, jsonLd, organizationData } from "@/lib/seo";
+import { siteUrl } from "@/lib/site-origin";
 
 interface Params {
   courseSlug: string;
@@ -23,10 +25,10 @@ export async function generateMetadata({
   const { courseSlug } = await params;
   const course = findCourse(courseSlug);
   if (!course) return { title: "Not found" };
-  return {
+  return pageMetadata(`/${courseSlug}`, {
     title: course.title,
     description: course.description,
-  };
+  });
 }
 
 export default async function CourseHubPage({
@@ -38,15 +40,33 @@ export default async function CourseHubPage({
   const course = findCourse(courseSlug);
   if (!course) notFound();
 
+  const supplementaryUnitCodes = new Set(["ia", "lab", "note", "formative"]);
+  const syllabusUnitCount = course.units.filter(
+    (unit) => !supplementaryUnitCodes.has(unit.unitCode.toLowerCase()),
+  ).length;
+  const includesPracticals = course.units.some((unit) =>
+    ["ia", "lab"].includes(unit.unitCode.toLowerCase()),
+  );
+
   return (
     <div className="container max-w-content px-4 py-12">
-      <Breadcrumb items={[{ label: "Home", href: "/" }, { label: course.title }]} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLd({
+        "@context": "https://schema.org", "@type": "Course",
+        name: course.title, description: course.description,
+        url: siteUrl(`/${course.slug}`), isAccessibleForFree: true,
+        provider: organizationData,
+      }) }} />
+      <Breadcrumb
+        items={[{ label: "Home", href: "/" }, { label: course.title }]}
+      />
 
       <header className="mt-6">
         <p className="text-sm font-medium uppercase tracking-wider text-muted-foreground">
           {course.examFamily} · {course.shortTitle} · {course.audience}
         </p>
-        <h1 className="mt-2 text-4xl font-bold tracking-tight">{course.title}</h1>
+        <h1 className="mt-2 text-4xl font-bold tracking-tight">
+          {course.title}
+        </h1>
         <p className="mt-3 max-w-prose text-lg text-muted-foreground">
           {course.description}
         </p>
@@ -55,8 +75,9 @@ export default async function CourseHubPage({
       <section className="mt-10">
         <h2 className="text-xl font-semibold tracking-tight">Units</h2>
         <p className="mt-1 text-sm text-muted-foreground">
-          {course.units.length} units mapped to the {course.frameworkLabel}.
-          Click into a live unit to start practicing.
+          {syllabusUnitCount} units
+          {includesPracticals ? " plus practicals" : ""} mapped to the{" "}
+          {course.frameworkLabel}. Click into a live unit to start practicing.
         </p>
 
         <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
@@ -81,7 +102,9 @@ export default async function CourseHubPage({
                       <p className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
                         {unit.unitCode}
                       </p>
-                      <CardTitle className="mt-1 text-lg">{unit.title}</CardTitle>
+                      <CardTitle className="mt-1 text-lg">
+                        {unit.title}
+                      </CardTitle>
                     </div>
                     {!isLive && (
                       <Lock

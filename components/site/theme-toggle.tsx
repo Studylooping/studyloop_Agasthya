@@ -20,7 +20,8 @@ export function ThemeToggle() {
   }, []);
 
   const cycle = () => {
-    const next = theme === "light" ? "dark" : theme === "dark" ? "system" : "light";
+    const next =
+      theme === "light" ? "dark" : theme === "dark" ? "system" : "light";
     setTheme(next);
   };
 

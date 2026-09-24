@@ -13,7 +13,7 @@ import type {
 
 const COURSE = "cbse-math-12";
 const UNIT = "u5-linear-programming";
-const VERSION = "0.2.1";
+const VERSION = "0.2.2";
 const REVIEW_STATUS = "human_review_required" as const;
 const SOURCE_TYPE = "original_ai_assisted_question" as const;
 const LETTERS = ["A", "B", "C", "D"] as const;
@@ -146,15 +146,7 @@ function makeMc(meta: TopicMeta, seed: McSeed, index: number): McSingleItem {
     };
   });
 
-  const rotation = index % LETTERS.length;
-  const rotatedChoices =
-    rotation === 0
-      ? unletteredChoices
-      : [
-          ...unletteredChoices.slice(-rotation),
-          ...unletteredChoices.slice(0, -rotation),
-        ];
-  const choices = rotatedChoices.map((choice, choiceIndex) => ({
+  const choices = unletteredChoices.map((choice, choiceIndex) => ({
     letter: LETTERS[choiceIndex],
     text: choice.text,
     isCorrect: choice.isCorrect,

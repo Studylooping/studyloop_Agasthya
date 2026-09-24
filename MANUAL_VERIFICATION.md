@@ -180,7 +180,7 @@ Pass if you see:
 - The page shows a Difficulty guide explaining `Foundational`, `AP routine`,
   `AP medium`, `AP hard`, and `Challenge`.
 - Difficulty labels use AP-calibrated wording such as `AP routine`, `AP
-  medium`, and `AP hard`.
+medium`, and `AP hard`.
 
 Open two sample items:
 

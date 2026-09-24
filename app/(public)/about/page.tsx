@@ -1,10 +1,11 @@
 import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/seo";
 import { SITE } from "@/lib/utils";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata("/about", {
   title: "About",
-  description: `Who built ${SITE.name} and why. A free, student-led STEM practice platform.`,
-};
+  description: `What ${SITE.name} offers and how its free STEM practice is built.`,
+});
 
 export default function AboutPage() {
   return (
@@ -12,48 +13,44 @@ export default function AboutPage() {
       <header className="mb-8">
         <h1 className="text-4xl font-bold tracking-tight">About {SITE.name}</h1>
         <p className="mt-3 text-lg text-muted-foreground">
-          A free, student-led STEM practice platform.
+          Free STEM practice with hints, feedback, and review.
         </p>
       </header>
 
       <div className="space-y-6 text-base leading-relaxed">
         <p>
-          {SITE.name} exists because serious STEM learning should not depend
-          on expensive prep platforms. The long-term goal is to support CBSE
-          Classes 9-12, AP, SAT, and IIT-JEE through one careful learning
-          loop: practice, hints, feedback, and review.
+          {SITE.name} exists because serious STEM learning should not depend on
+          expensive prep platforms. The site is built around one loop:
+          exam-style practice, progressive hints, mistake-aware feedback, worked
+          solutions, and review of missed questions.
         </p>
 
         <p>
-          The project is built and maintained by a Class 11 student in India,
-          with an adult sponsor overseeing the legal and operational side.
-          The goal is not to compete with huge education companies on day one.
-          It is to build a small, careful, honest study tool that is free,
-          ad-free, and respectful of the students who use it.
+          {SITE.name} is developed by Agasthya Venkatesh Bhairampally, a Class
+          11 student.
+          It is designed to stay free, ad-free, privacy-respecting, and useful
+          for students who want practice that explains the mistake instead of
+          only revealing the answer.
         </p>
 
         <h2 className="pt-6 text-2xl font-semibold tracking-tight">
           What's here right now
         </h2>
         <p>
-          AP Calculus AB is the first live track. It currently has full Unit
-          1 Limits, Unit 2 Differentiation, Unit 3 Composite/Implicit/Inverse
-          Differentiation, Unit 4 Contextual Applications, and Unit 5
-          Analytical Applications, Unit 6 Integration, Unit 7 Differential
-          Equations, and Unit 8 Applications of Integration question banks with
-          multiple-choice practice, free-response self-grading, hint ladders,
-          worked solutions, and local nickname profiles that remember your work
-          on this device. CBSE, JEE, and SAT are planned tracks, but they should
-          be added only after the first AP Calc loop is stable.
+          {SITE.name} now hosts a growing catalogue for CBSE school subjects,
+          and AP Calculus AB. Course pages show published units only after the
+          local automated checks pass. These checks catch structural and
+          rendering problems; they do not certify academic accuracy. Question
+          pages show whether teacher review is still pending.
         </p>
 
         <h2 className="pt-6 text-2xl font-semibold tracking-tight">
           How learning works here
         </h2>
         <p>
-          Every practice item gives you three progressive hints if you're
-          stuck — first a nudge, then a strategic direction, then a structured
-          setup. Wrong answers come with feedback that points to the specific
+          Multiple-choice and written-answer practice offer progressive hints
+          where available: a nudge, a strategy, then a structured setup.
+          Wrong answers come with feedback that points to the specific
           misconception so you understand what to fix, not just what to
           memorize. A local nickname profile lets the browser resume practice
           sessions, restore drafted free-response work, and save missed items
@@ -64,20 +61,23 @@ export default function AboutPage() {
           A note on AI
         </h2>
         <p>
-          AI may help draft questions and explanations. AI does not decide
-          whether your answer is right. Multiple-choice answers are checked by
-          deterministic code, free-response items use self-grading rubrics, and
-          future symbolic math should be checked by a real algebra system such
-          as SymPy. Until teacher mentors verify each item, alpha items can
-          carry a "Needs mentor review" badge so you know the level of review
-          behind them.
+          Questions and explanations may be drafted with AI assistance, then
+          revised through automated checks and multiple review passes before
+          publication. The goal is original practice that closely matches the
+          style and rigor of the relevant exam, such as CBSE or AP, without
+          copying from published papers or commercial resources. AI does not
+          decide whether your answer is right: multiple-choice answers are
+          checked by deterministic code, and free-response items use
+          self-grading rubrics.
         </p>
 
         <h2 className="pt-6 text-2xl font-semibold tracking-tight">Contact</h2>
         <p>
-          Found an error in a question during alpha testing? Note the item
-          page URL and content ID, then share it with the project owner. A
-          proper report form should be connected before public launch.
+          Found an error in a question or have an idea for the site? Use the
+          feedback button on the page. Reports include the current page address
+          and technical context, plus any details or email address you choose to
+          enter. Your StudyLoop nickname profile and practice answers are not
+          sent.
         </p>
       </div>
     </article>

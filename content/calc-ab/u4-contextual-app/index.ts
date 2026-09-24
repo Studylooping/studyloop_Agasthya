@@ -4,8 +4,8 @@ import { contextualApplicationTopics } from "./topics";
 /**
  * Calc AB Unit 4 - Contextual Applications of Differentiation.
  *
- * Original AP-style draft content. Each topic has 5 MCQs and 1 FRQ.
- * Items stay marked `human_review_required` until a subject mentor verifies them.
+ * Original AP-style content. Each topic has 5 MCQs and 1 FRQ.
+ * Items keep internal review metadata for audit workflows.
  */
 export const u4ContextualApplications: Unit = {
   slug: "u4-contextual-app",

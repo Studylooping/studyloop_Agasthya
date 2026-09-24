@@ -7,10 +7,10 @@ import { Button } from "@/components/ui/button";
  * Route-level error boundary.
  *
  * If any page or component throws at runtime, Next.js renders this instead of
- * crashing the whole app to a white screen. The rest of the site (header,
- * other routes) keeps working, and the student gets a recover button.
+ * crashing the whole app to a white screen. The rest of the site keeps
+ * working, and the student gets a recovery button.
  *
- * This is the single biggest "reduce crash impact" win: one bad item or one
+ * This is the single biggest reduce-crash-impact win: one bad item or one
  * bad component can no longer take down the page.
  */
 export default function Error({
@@ -22,7 +22,7 @@ export default function Error({
 }) {
   useEffect(() => {
     // Log so it shows in the browser console / Vercel logs.
-    // When Sentry is added (Phase 0c), report here too.
+    // When Sentry is added, report here too.
     console.error("Route error boundary caught:", error);
   }, [error]);
 
@@ -36,7 +36,7 @@ export default function Error({
       </h1>
       <p className="mt-4 max-w-prose-narrow text-muted-foreground">
         It&apos;s not your fault. Your progress is saved in your browser. Try
-        again, or head back to the home page — the rest of the site is fine.
+        again, or head back to the home page. The rest of the site is fine.
       </p>
       <div className="mt-8 flex flex-col gap-3 sm:flex-row">
         <Button onClick={reset}>Try again</Button>

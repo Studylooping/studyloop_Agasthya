@@ -13,7 +13,7 @@ import type {
 
 const COURSE = "calc-ab";
 const UNIT = "u6-integration";
-const VERSION = "0.1.8";
+const VERSION = "0.1.9";
 const REVIEW_STATUS = "human_review_required" as const;
 const SOURCE_TYPE = "original_ai_assisted_question" as const;
 const LETTERS = ["A", "B", "C", "D"] as const;
@@ -73,8 +73,14 @@ function hints(items: readonly [string, string, string]): Hint[] {
   }));
 }
 
-function calibrateMcDifficulty(seedDifficulty: Difficulty, index: number): Difficulty {
-  return Math.max(seedDifficulty, MC_DIFFICULTY_FLOORS[index] ?? 2) as Difficulty;
+function calibrateMcDifficulty(
+  seedDifficulty: Difficulty,
+  index: number,
+): Difficulty {
+  return Math.max(
+    seedDifficulty,
+    MC_DIFFICULTY_FLOORS[index] ?? 2,
+  ) as Difficulty;
 }
 
 function calibrateFrqDifficulty(seedDifficulty: Difficulty): Difficulty {
@@ -87,7 +93,10 @@ function feedbackFocus(seed: McSeed): string {
   if (tags.has("riemann_sum") || tags.has("trapezoidal_sum")) {
     return "You likely used the wrong subinterval width, endpoint, or area formula for the approximation.";
   }
-  if (tags.has("summation_notation") || tags.has("definite_integral_notation")) {
+  if (
+    tags.has("summation_notation") ||
+    tags.has("definite_integral_notation")
+  ) {
     return "You likely matched the sum to the wrong interval, sample point, or differential width.";
   }
   if (tags.has("accumulation") || tags.has("signed_area")) {
@@ -140,23 +149,16 @@ function makeMc(meta: TopicMeta, seed: McSeed, index: number): McSingleItem {
       isCorrect,
       rationaleIfWrong: isCorrect
         ? null
-        : seed.rationales?.[seedLetter] ??
-          fallbackWrongRationale(seed, seedLetter),
+        : (seed.rationales?.[seedLetter] ??
+          fallbackWrongRationale(seed, seedLetter)),
       misconceptionTag: isCorrect
         ? null
-        : seed.misconceptionTags?.[seedLetter] ?? "incorrect_integration_reasoning",
+        : (seed.misconceptionTags?.[seedLetter] ??
+          "incorrect_integration_reasoning"),
     };
   });
 
-  const rotation = index % LETTERS.length;
-  const rotatedChoices =
-    rotation === 0
-      ? unletteredChoices
-      : [
-          ...unletteredChoices.slice(-rotation),
-          ...unletteredChoices.slice(0, -rotation),
-        ];
-  const choices = rotatedChoices.map((choice, choiceIndex) => ({
+  const choices = unletteredChoices.map((choice, choiceIndex) => ({
     letter: LETTERS[choiceIndex],
     ...choice,
   })) as McChoice[];
@@ -315,8 +317,7 @@ const semicircleAreaFigure: ItemFigure = {
 const trapezoidAreaFigure: ItemFigure = {
   type: "svg",
   title: "Trapezoid area under a graph",
-  description:
-    "A line segment above the horizontal axis forming a trapezoid.",
+  description: "A line segment above the horizontal axis forming a trapezoid.",
   svg: `<svg viewBox="0 0 640 360" role="img" aria-label="Line segment from height two to height five over interval zero to four">
   <rect width="640" height="360" rx="18" fill="#f8fafc"/>
   <line x1="80" y1="290" x2="585" y2="290" stroke="#64748b" stroke-width="3"/>
@@ -473,8 +474,7 @@ const topicSeeds: readonly TopicSeed[] = [
   {
     topicCode: "6.1",
     title: "Exploring Accumulations of Change",
-    subtopic:
-      "Understanding definite integrals as geometric and signed area",
+    subtopic: "Understanding definite integrals as geometric and signed area",
     mc: [
       {
         questionLatex:
@@ -502,7 +502,8 @@ const topicSeeds: readonly TopicSeed[] = [
         solution: [
           {
             step: 1,
-            explanation: "Read the shaded region as a rectangle under the rate graph.",
+            explanation:
+              "Read the shaded region as a rectangle under the rate graph.",
             math: "\\text{base}=6,\\quad \\text{height}=4",
           },
           {
@@ -518,10 +519,10 @@ const topicSeeds: readonly TopicSeed[] = [
         difficulty: 2,
         skillTags: ["accumulation", "geometric_area", "triangle_area"],
         figure: triangleAreaFigure,
-        choices: ["$18$", "$36$", "$12$", "$6$"],
-        correctLetter: "A",
+        choices: ["$36$", "$18$", "$12$", "$6$"],
+        correctLetter: "B",
         rationales: {
-          B: "This multiplies base and height but forgets the factor $1/2$ for a triangle.",
+          A: "This multiplies base and height but forgets the factor $1/2$ for a triangle.",
           C: "This adds the base and height instead of finding area.",
           D: "This uses only one dimension of the triangle.",
         },
@@ -549,11 +550,11 @@ const topicSeeds: readonly TopicSeed[] = [
         difficulty: 3,
         skillTags: ["accumulation", "geometric_area", "semicircle_area"],
         figure: semicircleAreaFigure,
-        choices: ["$\\frac{9\\pi}{2}$", "$9\\pi$", "$6\\pi$", "$18$"],
-        correctLetter: "A",
+        choices: ["$9\\pi$", "$6\\pi$", "$\\frac{9\\pi}{2}$", "$18$"],
+        correctLetter: "C",
         rationales: {
-          B: "This is the area of the full circle, but the graph shows only the upper half.",
-          C: "This uses diameter information incorrectly instead of $\\frac12\\pi r^2$.",
+          A: "This is the area of the full circle, but the graph shows only the upper half.",
+          B: "This uses diameter information incorrectly instead of $\\frac12\\pi r^2$.",
           D: "This uses base times height like a triangle or rectangle, but the region is curved.",
         },
         hints: [
@@ -580,17 +581,12 @@ const topicSeeds: readonly TopicSeed[] = [
         difficulty: 3,
         skillTags: ["accumulation", "geometric_area", "trapezoid_area"],
         figure: trapezoidAreaFigure,
-        choices: [
-          "$14$",
-          "$28$",
-          "$7$",
-          "$20$",
-        ],
-        correctLetter: "A",
+        choices: ["$28$", "$7$", "$20$", "$14$"],
+        correctLetter: "D",
         rationales: {
-          B: "This multiplies the sum of the parallel sides by the width but forgets the factor $1/2$.",
-          C: "This averages the parallel sides but does not multiply by the width.",
-          D: "This multiplies only the larger height by the width, as if the whole region were a rectangle.",
+          A: "This multiplies the sum of the parallel sides by the width but forgets the factor $1/2$.",
+          B: "This averages the parallel sides but does not multiply by the width.",
+          C: "This multiplies only the larger height by the width, as if the whole region were a rectangle.",
         },
         hints: [
           "The graph is above the axis, so the integral is the shaded area.",
@@ -605,7 +601,8 @@ const topicSeeds: readonly TopicSeed[] = [
           },
           {
             step: 2,
-            explanation: "Substitute the two vertical side lengths and the width.",
+            explanation:
+              "Substitute the two vertical side lengths and the width.",
             math: "\\frac12(2+5)(4)=14",
           },
         ],
@@ -626,7 +623,8 @@ const topicSeeds: readonly TopicSeed[] = [
         solution: [
           {
             step: 1,
-            explanation: "Use signed area: above-axis area is positive and below-axis area is negative.",
+            explanation:
+              "Use signed area: above-axis area is positive and below-axis area is negative.",
             math: "\\int_0^6 r(t)\\,dt=8-3",
           },
           {
@@ -641,13 +639,35 @@ const topicSeeds: readonly TopicSeed[] = [
       questionLatex:
         "\\text{The figure shows the graph of }f\\text{ on }0\\le x\\le9.\\text{ Selected lengths are marked in the figure.}",
       difficulty: 4,
-      skillTags: ["accumulation", "geometric_area", "signed_area", "graph_interpretation"],
+      skillTags: [
+        "accumulation",
+        "geometric_area",
+        "signed_area",
+        "graph_interpretation",
+      ],
       figure: introductoryAreaFrqFigure,
       parts: [
-        { letter: "a", promptMarkdown: "Find $\\int_0^2 f(x)\\,dx$.", points: 1 },
-        { letter: "b", promptMarkdown: "Find $\\int_2^6 f(x)\\,dx$.", points: 2 },
-        { letter: "c", promptMarkdown: "Find $\\int_6^9 f(x)\\,dx$.", points: 1 },
-        { letter: "d", promptMarkdown: "Find $\\int_0^9 f(x)\\,dx$. Justify your answer using the graph.", points: 2 },
+        {
+          letter: "a",
+          promptMarkdown: "Find $\\int_0^2 f(x)\\,dx$.",
+          points: 1,
+        },
+        {
+          letter: "b",
+          promptMarkdown: "Find $\\int_2^6 f(x)\\,dx$.",
+          points: 2,
+        },
+        {
+          letter: "c",
+          promptMarkdown: "Find $\\int_6^9 f(x)\\,dx$.",
+          points: 1,
+        },
+        {
+          letter: "d",
+          promptMarkdown:
+            "Find $\\int_0^9 f(x)\\,dx$. Justify your answer using the graph.",
+          points: 2,
+        },
       ],
       hints: [
         "Evaluate each integral by interpreting it as signed area from the graph.",
@@ -657,12 +677,36 @@ const topicSeeds: readonly TopicSeed[] = [
       rubric: {
         maxPoints: 6,
         criteria: [
-          { part: "a", points: 1, description: "Computes the rectangle area as 6." },
-          { part: "b", points: 1, description: "Recognizes the region as a semicircle of radius 2." },
-          { part: "b", points: 1, description: "Computes the semicircle area as $2\\pi$." },
-          { part: "c", points: 1, description: "Computes the triangle contribution as $-6$." },
-          { part: "d", points: 1, description: "Adds signed areas to get $2\\pi$." },
-          { part: "d", points: 1, description: "Explains that below-axis area counts negatively." },
+          {
+            part: "a",
+            points: 1,
+            description: "Computes the rectangle area as 6.",
+          },
+          {
+            part: "b",
+            points: 1,
+            description: "Recognizes the region as a semicircle of radius 2.",
+          },
+          {
+            part: "b",
+            points: 1,
+            description: "Computes the semicircle area as $2\\pi$.",
+          },
+          {
+            part: "c",
+            points: 1,
+            description: "Computes the triangle contribution as $-6$.",
+          },
+          {
+            part: "d",
+            points: 1,
+            description: "Adds signed areas to get $2\\pi$.",
+          },
+          {
+            part: "d",
+            points: 1,
+            description: "Explains that below-axis area counts negatively.",
+          },
         ],
       },
       commonErrors: [
@@ -697,8 +741,7 @@ const topicSeeds: readonly TopicSeed[] = [
   {
     topicCode: "6.2",
     title: "Approximating Areas with Riemann Sums",
-    subtopic:
-      "Using left, right, midpoint, and trapezoidal approximations",
+    subtopic: "Using left, right, midpoint, and trapezoidal approximations",
     mc: [
       {
         questionLatex:
@@ -706,8 +749,8 @@ const topicSeeds: readonly TopicSeed[] = [
         difficulty: 2,
         skillTags: ["riemann_sum", "left_endpoint"],
         figure: riemannFigure,
-        choices: ["$14$", "$30$", "$16$", "$21$"],
-        correctLetter: "A",
+        choices: ["$30$", "$14$", "$16$", "$21$"],
+        correctLetter: "B",
         hints: [
           "The width is $\\Delta x=1$.",
           "Use left endpoints $0,1,2,3$.",
@@ -731,8 +774,8 @@ const topicSeeds: readonly TopicSeed[] = [
           "\\begin{array}{c|cccc}x&0&1&3&4\\\\ \\hline f(x)&2&5&4&6\\end{array}\\quad\\text{Using right endpoints on the listed subintervals, approximate }\\int_0^4 f(x)\\,dx.",
         difficulty: 2,
         skillTags: ["riemann_sum", "right_endpoint", "unequal_subintervals"],
-        choices: ["$19$", "$17$", "$23$", "$13$"],
-        correctLetter: "A",
+        choices: ["$17$", "$23$", "$19$", "$13$"],
+        correctLetter: "C",
         hints: [
           "The subintervals are $[0,1]$, $[1,3]$, and $[3,4]$.",
           "Use the right endpoint height on each subinterval.",
@@ -756,8 +799,8 @@ const topicSeeds: readonly TopicSeed[] = [
           "\\text{A midpoint sum on }[0,6]\\text{ uses three subintervals of width }2.\\text{ If midpoint values are }3,5,4,\\text{ what is the approximation?}",
         difficulty: 3,
         skillTags: ["riemann_sum", "midpoint_rule"],
-        choices: ["$24$", "$12$", "$18$", "$30$"],
-        correctLetter: "A",
+        choices: ["$12$", "$18$", "$30$", "$24$"],
+        correctLetter: "D",
         hints: [
           "Each rectangle has width $2$.",
           "Use the three midpoint heights.",
@@ -796,7 +839,8 @@ const topicSeeds: readonly TopicSeed[] = [
         solution: [
           {
             step: 1,
-            explanation: "On each subinterval, the left endpoint gives the smallest height.",
+            explanation:
+              "On each subinterval, the left endpoint gives the smallest height.",
             math: "L_n<\\int_a^b f(x)\\,dx",
           },
         ],
@@ -807,12 +851,12 @@ const topicSeeds: readonly TopicSeed[] = [
         difficulty: 4,
         skillTags: ["trapezoidal_sum", "concavity", "error_analysis"],
         choices: [
-          "It overestimates the integral.",
           "It underestimates the integral.",
+          "It overestimates the integral.",
           "It is always exact.",
           "It equals the midpoint approximation.",
         ],
-        correctLetter: "A",
+        correctLetter: "B",
         hints: [
           "For concave up graphs, secant lines lie above the curve.",
           "Trapezoids use secant segments as tops.",
@@ -831,11 +875,31 @@ const topicSeeds: readonly TopicSeed[] = [
       questionLatex:
         "\\begin{array}{c|ccccc}t&0&2&5&7&10\\\\ \\hline v(t)&3&7&4&-1&2\\end{array}\\quad\\text{The table gives velocity }v(t)\\text{ in meters per second.}",
       difficulty: 4,
-      skillTags: ["riemann_sum", "trapezoidal_sum", "velocity", "table_approximation"],
+      skillTags: [
+        "riemann_sum",
+        "trapezoidal_sum",
+        "velocity",
+        "table_approximation",
+      ],
       parts: [
-        { letter: "a", promptMarkdown: "Use a left Riemann sum on the listed subintervals to approximate displacement on $[0,10]$.", points: 2 },
-        { letter: "b", promptMarkdown: "Use the trapezoidal rule on the listed subintervals to approximate displacement on $[0,10]$.", points: 2 },
-        { letter: "c", promptMarkdown: "Explain why these are displacement approximations, not total distance approximations.", points: 1 },
+        {
+          letter: "a",
+          promptMarkdown:
+            "Use a left Riemann sum on the listed subintervals to approximate displacement on $[0,10]$.",
+          points: 2,
+        },
+        {
+          letter: "b",
+          promptMarkdown:
+            "Use the trapezoidal rule on the listed subintervals to approximate displacement on $[0,10]$.",
+          points: 2,
+        },
+        {
+          letter: "c",
+          promptMarkdown:
+            "Explain why these are displacement approximations, not total distance approximations.",
+          points: 1,
+        },
       ],
       hints: [
         "Widths are not all equal.",
@@ -845,11 +909,28 @@ const topicSeeds: readonly TopicSeed[] = [
       rubric: {
         maxPoints: 5,
         criteria: [
-          { part: "a", points: 1, description: "Uses correct left endpoint heights and widths." },
+          {
+            part: "a",
+            points: 1,
+            description: "Uses correct left endpoint heights and widths.",
+          },
           { part: "a", points: 1, description: "Computes left sum as 32." },
-          { part: "b", points: 1, description: "Uses trapezoidal averages correctly." },
-          { part: "b", points: 1, description: "Computes trapezoidal approximation as 31." },
-          { part: "c", points: 1, description: "Explains that negative velocity contributes signed displacement." },
+          {
+            part: "b",
+            points: 1,
+            description: "Uses trapezoidal averages correctly.",
+          },
+          {
+            part: "b",
+            points: 1,
+            description: "Computes trapezoidal approximation as 31.",
+          },
+          {
+            part: "c",
+            points: 1,
+            description:
+              "Explains that negative velocity contributes signed displacement.",
+          },
         ],
       },
       commonErrors: [
@@ -860,8 +941,7 @@ const topicSeeds: readonly TopicSeed[] = [
       workedSolution: [
         {
           part: "a",
-          explanation:
-            "Left sum: $2(3)+3(7)+2(4)+3(-1)=6+21+8-3=32$ meters.",
+          explanation: "Left sum: $2(3)+3(7)+2(4)+3(-1)=6+21+8-3=32$ meters.",
         },
         {
           part: "b",
@@ -879,16 +959,20 @@ const topicSeeds: readonly TopicSeed[] = [
   {
     topicCode: "6.3",
     title: "Riemann Sums, Summation Notation, and Definite Integral Notation",
-    subtopic:
-      "Connecting finite sums, limits of sums, and definite integrals",
+    subtopic: "Connecting finite sums, limits of sums, and definite integrals",
     mc: [
       {
         questionLatex:
           "\\text{Which definite integral is represented by }\\lim_{n\\to\\infty}\\sum_{i=1}^n\\left(3+\\frac{2i}{n}\\right)^2\\frac{2}{n}\\text{?}",
         difficulty: 2,
         skillTags: ["summation_notation", "definite_integral_notation"],
-        choices: ["$\\int_3^5 x^2\\,dx$", "$\\int_0^2 x^2\\,dx$", "$\\int_3^5 2x\\,dx$", "$\\int_0^n x^2\\,dx$"],
-        correctLetter: "A",
+        choices: [
+          "$\\int_0^2 x^2\\,dx$",
+          "$\\int_3^5 2x\\,dx$",
+          "$\\int_3^5 x^2\\,dx$",
+          "$\\int_0^n x^2\\,dx$",
+        ],
+        correctLetter: "C",
         hints: [
           "The width is $\\Delta x=2/n$.",
           "The sample point is $x_i=3+2i/n$.",
@@ -913,12 +997,12 @@ const topicSeeds: readonly TopicSeed[] = [
         difficulty: 2,
         skillTags: ["riemann_sum", "definite_integral_notation"],
         choices: [
-          "$2[f(0)+f(2)+f(4)]$",
           "$2[f(2)+f(4)+f(6)]$",
           "$3[f(0)+f(3)+f(6)]$",
           "$6[f(0)+f(2)+f(4)]$",
+          "$2[f(0)+f(2)+f(4)]$",
         ],
-        correctLetter: "A",
+        correctLetter: "D",
         hints: [
           "The width is $(6-0)/3=2$.",
           "Left endpoints are $0$, $2$, and $4$.",
@@ -944,11 +1028,7 @@ const topicSeeds: readonly TopicSeed[] = [
         skillTags: ["riemann_sum", "delta_x"],
         choices: ["$\\frac12$", "$2$", "$\\frac16$", "$6$"],
         correctLetter: "A",
-        hints: [
-          "Use $\\Delta x=(b-a)/n$.",
-          "Here $b-a=6$.",
-          "Divide by $12$.",
-        ],
+        hints: ["Use $\\Delta x=(b-a)/n$.", "Here $b-a=6$.", "Divide by $12$."],
         solution: [
           {
             step: 1,
@@ -963,12 +1043,12 @@ const topicSeeds: readonly TopicSeed[] = [
         difficulty: 3,
         skillTags: ["riemann_sum", "midpoint_rule", "summation_notation"],
         choices: [
-          "$\\frac{i-\\frac12}{2}$",
           "$\\frac{i}{2}$",
+          "$\\frac{i-\\frac12}{2}$",
           "$\\frac{i-1}{2}$",
           "$4+\\frac{i}{8}$",
         ],
-        correctLetter: "A",
+        correctLetter: "B",
         hints: [
           "$\\Delta x=4/8=1/2$.",
           "The midpoint of the $i$th interval is $a+(i-1/2)\\Delta x$.",
@@ -987,11 +1067,16 @@ const topicSeeds: readonly TopicSeed[] = [
           "\\text{Which definite integral is represented by }\\lim_{n\\to\\infty}\\sum_{i=1}^n\\frac1n\\left(1+\\frac{i}{n}\\right)^3\\text{?}",
         difficulty: 4,
         skillTags: ["summation_notation", "definite_integral_notation"],
-        choices: ["$\\int_1^2 x^3\\,dx$", "$\\int_0^1 x^3\\,dx$", "$\\int_1^2 3x^2\\,dx$", "$\\int_0^n \\left(1+\\frac{x}{n}\\right)^3\\,dx$"],
-        correctLetter: "A",
+        choices: [
+          "$\\int_0^1 x^3\\,dx$",
+          "$\\int_1^2 3x^2\\,dx$",
+          "$\\int_1^2 x^3\\,dx$",
+          "$\\int_0^n \\left(1+\\frac{x}{n}\\right)^3\\,dx$",
+        ],
+        correctLetter: "C",
         rationales: {
-          B: "This uses the width $1/n$ but misses that the sample points start at $1+1/n$ and end near $2$.",
-          C: "This differentiates $x^3$ instead of preserving the integrand represented by the summand.",
+          A: "This uses the width $1/n$ but misses that the sample points start at $1+1/n$ and end near $2$.",
+          B: "This differentiates $x^3$ instead of preserving the integrand represented by the summand.",
           D: "A definite integral should have fixed bounds and a fixed integrand, not a bound or integrand still depending on $n$.",
         },
         hints: [
@@ -1002,7 +1087,8 @@ const topicSeeds: readonly TopicSeed[] = [
         solution: [
           {
             step: 1,
-            explanation: "Identify the width, sample point, interval, and integrand.",
+            explanation:
+              "Identify the width, sample point, interval, and integrand.",
             math: "\\Delta x=\\frac1n,\\quad x_i=1+\\frac{i}{n},\\quad 1\\le x\\le2",
           },
           {
@@ -1014,14 +1100,32 @@ const topicSeeds: readonly TopicSeed[] = [
       },
     ],
     frq: {
-      questionLatex:
-        "\\text{Consider }\\int_2^8 \\sqrt{1+x^3}\\,dx.",
+      questionLatex: "\\text{Consider }\\int_2^8 \\sqrt{1+x^3}\\,dx.",
       difficulty: 4,
-      skillTags: ["summation_notation", "definite_integral_notation", "riemann_sum"],
+      skillTags: [
+        "summation_notation",
+        "definite_integral_notation",
+        "riemann_sum",
+      ],
       parts: [
-        { letter: "a", promptMarkdown: "Write $\\Delta x$ for a right Riemann sum with $n$ equal subintervals.", points: 1 },
-        { letter: "b", promptMarkdown: "Write the right endpoint $x_i$ for the $i$th subinterval.", points: 1 },
-        { letter: "c", promptMarkdown: "Write the definite integral as a limit of right Riemann sums.", points: 2 },
+        {
+          letter: "a",
+          promptMarkdown:
+            "Write $\\Delta x$ for a right Riemann sum with $n$ equal subintervals.",
+          points: 1,
+        },
+        {
+          letter: "b",
+          promptMarkdown:
+            "Write the right endpoint $x_i$ for the $i$th subinterval.",
+          points: 1,
+        },
+        {
+          letter: "c",
+          promptMarkdown:
+            "Write the definite integral as a limit of right Riemann sums.",
+          points: 2,
+        },
       ],
       hints: [
         "The interval length is $8-2=6$.",
@@ -1033,8 +1137,16 @@ const topicSeeds: readonly TopicSeed[] = [
         criteria: [
           { part: "a", points: 1, description: "Writes $\\Delta x=6/n$." },
           { part: "b", points: 1, description: "Writes $x_i=2+6i/n$." },
-          { part: "c", points: 1, description: "Uses correct integrand at $x_i$." },
-          { part: "c", points: 1, description: "Includes limit and $\\Delta x$ factor." },
+          {
+            part: "c",
+            points: 1,
+            description: "Uses correct integrand at $x_i$.",
+          },
+          {
+            part: "c",
+            points: 1,
+            description: "Includes limit and $\\Delta x$ factor.",
+          },
         ],
       },
       commonErrors: [
@@ -1045,8 +1157,7 @@ const topicSeeds: readonly TopicSeed[] = [
       workedSolution: [
         {
           part: "a",
-          explanation:
-            "$\\Delta x=\\frac{8-2}{n}=\\frac6n$.",
+          explanation: "$\\Delta x=\\frac{8-2}{n}=\\frac6n$.",
         },
         {
           part: "b",
@@ -1064,16 +1175,20 @@ const topicSeeds: readonly TopicSeed[] = [
   {
     topicCode: "6.4",
     title: "The Fundamental Theorem of Calculus and Accumulation Functions",
-    subtopic:
-      "Differentiating accumulation functions with variable limits",
+    subtopic: "Differentiating accumulation functions with variable limits",
     mc: [
       {
         questionLatex:
           "\\text{Let }G(x)=\\int_1^x (t^3+2t)\\,dt.\\text{ What is }G'(x)\\text{?}",
         difficulty: 2,
         skillTags: ["ftc_accumulation", "accumulation_derivative"],
-        choices: ["$x^3+2x$", "$3x^2+2$", "$t^3+2t$", "$\\int_1^x(3t^2+2)\\,dt$"],
-        correctLetter: "A",
+        choices: [
+          "$3x^2+2$",
+          "$t^3+2t$",
+          "$\\int_1^x(3t^2+2)\\,dt$",
+          "$x^3+2x$",
+        ],
+        correctLetter: "D",
         hints: [
           "FTC Part 1 says derivative of an accumulation function is the integrand at the upper limit.",
           "Replace $t$ with $x$.",
@@ -1092,7 +1207,12 @@ const topicSeeds: readonly TopicSeed[] = [
           "\\text{Let }H(x)=\\int_0^{x^2}\\cos(t^3)\\,dt.\\text{ What is }H'(x)\\text{?}",
         difficulty: 2,
         skillTags: ["ftc_accumulation", "chain_rule"],
-        choices: ["$2x\\cos(x^6)$", "$\\cos(x^6)$", "$2x\\cos(x^3)$", "$-\\sin(x^6)$"],
+        choices: [
+          "$2x\\cos(x^6)$",
+          "$\\cos(x^6)$",
+          "$2x\\cos(x^3)$",
+          "$-\\sin(x^6)$",
+        ],
         correctLetter: "A",
         hints: [
           "Use FTC, then multiply by the derivative of the upper limit.",
@@ -1102,7 +1222,8 @@ const topicSeeds: readonly TopicSeed[] = [
         solution: [
           {
             step: 1,
-            explanation: "Evaluate the integrand at the upper limit and apply chain rule.",
+            explanation:
+              "Evaluate the integrand at the upper limit and apply chain rule.",
             math: "H'(x)=\\cos((x^2)^3)\\cdot2x=2x\\cos(x^6)",
           },
         ],
@@ -1112,8 +1233,8 @@ const topicSeeds: readonly TopicSeed[] = [
           "\\text{Let }K(x)=\\int_x^4 e^{t^2}\\,dt.\\text{ What is }K'(x)\\text{?}",
         difficulty: 3,
         skillTags: ["ftc_accumulation", "lower_limit"],
-        choices: ["$-e^{x^2}$", "$e^{x^2}$", "$2xe^{x^2}$", "$0$"],
-        correctLetter: "A",
+        choices: ["$e^{x^2}$", "$-e^{x^2}$", "$2xe^{x^2}$", "$0$"],
+        correctLetter: "B",
         hints: [
           "A variable lower limit introduces a negative sign.",
           "Rewrite $\\int_x^4=-\\int_4^x$ if helpful.",
@@ -1137,8 +1258,8 @@ const topicSeeds: readonly TopicSeed[] = [
           "\\text{Let }A(x)=\\int_2^x f(t)\\,dt.\\text{ If }f(3)=-5,\\text{ what is }A'(3)\\text{?}",
         difficulty: 3,
         skillTags: ["ftc_accumulation", "table_value"],
-        choices: ["$-5$", "$5$", "$0$", "$\\int_2^3 f(t)\\,dt$"],
-        correctLetter: "A",
+        choices: ["$5$", "$0$", "$-5$", "$\\int_2^3 f(t)\\,dt$"],
+        correctLetter: "C",
         hints: [
           "The derivative of the accumulation function is the integrand.",
           "$A'(x)=f(x)$.",
@@ -1158,12 +1279,12 @@ const topicSeeds: readonly TopicSeed[] = [
         difficulty: 4,
         skillTags: ["ftc_accumulation", "chain_rule", "trig"],
         choices: [
-          "$\\cos x\\sqrt{1+\\sin^2 x}$",
           "$\\sqrt{1+\\sin^2 x}$",
           "$\\sin x\\sqrt{1+\\cos^2 x}$",
           "$\\frac{\\sin x}{\\sqrt{1+\\sin^2x}}$",
+          "$\\cos x\\sqrt{1+\\sin^2 x}$",
         ],
-        correctLetter: "A",
+        correctLetter: "D",
         hints: [
           "Evaluate the integrand at $t=\\sin x$.",
           "Multiply by the derivative of $\\sin x$.",
@@ -1179,8 +1300,7 @@ const topicSeeds: readonly TopicSeed[] = [
       },
     ],
     frq: {
-      questionLatex:
-        "\\text{Let }F(x)=\\int_1^{x^2}(t^2-4)\\,dt.",
+      questionLatex: "\\text{Let }F(x)=\\int_1^{x^2}(t^2-4)\\,dt.",
       difficulty: 4,
       skillTags: ["ftc_accumulation", "chain_rule", "second_derivative"],
       parts: [
@@ -1196,10 +1316,18 @@ const topicSeeds: readonly TopicSeed[] = [
       rubric: {
         maxPoints: 5,
         criteria: [
-          { part: "a", points: 1, description: "Evaluates integrand at $x^2$." },
+          {
+            part: "a",
+            points: 1,
+            description: "Evaluates integrand at $x^2$.",
+          },
           { part: "a", points: 1, description: "Includes chain factor $2x$." },
           { part: "b", points: 1, description: "Computes $F'(2)=48$." },
-          { part: "c", points: 1, description: "Expands or differentiates $2x(x^4-4)$ correctly." },
+          {
+            part: "c",
+            points: 1,
+            description: "Expands or differentiates $2x(x^4-4)$ correctly.",
+          },
           { part: "c", points: 1, description: "Finds $F''(x)=10x^4-8$." },
         ],
       },
@@ -1211,18 +1339,15 @@ const topicSeeds: readonly TopicSeed[] = [
       workedSolution: [
         {
           part: "a",
-          explanation:
-            "$F'(x)=( (x^2)^2-4)(2x)=2x(x^4-4)$.",
+          explanation: "$F'(x)=( (x^2)^2-4)(2x)=2x(x^4-4)$.",
         },
         {
           part: "b",
-          explanation:
-            "$F'(2)=2(2)(2^4-4)=4(12)=48$.",
+          explanation: "$F'(2)=2(2)(2^4-4)=4(12)=48$.",
         },
         {
           part: "c",
-          explanation:
-            "$F'(x)=2x^5-8x$, so $F''(x)=10x^4-8$.",
+          explanation: "$F'(x)=2x^5-8x$, so $F''(x)=10x^4-8$.",
         },
       ],
     },
@@ -1264,12 +1389,12 @@ const topicSeeds: readonly TopicSeed[] = [
         difficulty: 2,
         skillTags: ["accumulation_derivative", "local_extrema"],
         choices: [
-          "$A$ has a local maximum at $x=2$.",
           "$A$ has a local minimum at $x=2$.",
+          "$A$ has a local maximum at $x=2$.",
           "$A$ has a vertical tangent at $x=2$.",
           "$A(2)=0$.",
         ],
-        correctLetter: "A",
+        correctLetter: "B",
         hints: [
           "$A'(x)=f(x)$.",
           "A positive-to-negative change in $A'$ gives a local maximum.",
@@ -1294,17 +1419,12 @@ const topicSeeds: readonly TopicSeed[] = [
           "derivative_ladder",
         ],
         figure: accumulationDerivativeLadderFigure,
-        choices: [
-          "$(0,1)$",
-          "$(1,2)$",
-          "$(2,4)$",
-          "$(4,5)$",
-        ],
-        correctLetter: "D",
+        choices: ["$(0,1)$", "$(1,2)$", "$(4,5)$", "$(2,4)$"],
+        correctLetter: "C",
         rationales: {
           A: "On $(0,1)$, the graph of $f$ is below the x-axis, so $A'(x)=f(x)<0$ and $A$ is decreasing, not increasing.",
           B: "On $(1,2)$, $f>0$ so $A$ is increasing, but $f'>0$, so $A''>0$ and $A$ is concave up.",
-          C: "On $(2,4)$, $f>0$ so $A$ is increasing, but $f'=0$, so the graph of $A$ is linear rather than concave down.",
+          D: "On $(2,4)$, $f>0$ so $A$ is increasing, but $f'=0$, so the graph of $A$ is linear rather than concave down.",
         },
         hints: [
           "Increasing requires $A'(x)>0$.",
@@ -1338,8 +1458,8 @@ const topicSeeds: readonly TopicSeed[] = [
         difficulty: 3,
         skillTags: ["accumulation", "graph_interpretation", "signed_area"],
         figure: accumulationGraphFigure,
-        choices: ["$13$", "$8$", "$5$", "$-3$"],
-        correctLetter: "A",
+        choices: ["$8$", "$5$", "$-3$", "$13$"],
+        correctLetter: "D",
         hints: [
           "Compute signed area from $0$ to $4$.",
           "The graph forms two triangles above the x-axis.",
@@ -1362,7 +1482,11 @@ const topicSeeds: readonly TopicSeed[] = [
         questionLatex:
           "\\text{For the same }A(x)=5+\\int_0^x f(t)\\,dt\\text{ and graph shown, where does }A\\text{ have a local minimum on }(0,7)?",
         difficulty: 4,
-        skillTags: ["accumulation_derivative", "graph_interpretation", "local_extrema"],
+        skillTags: [
+          "accumulation_derivative",
+          "graph_interpretation",
+          "local_extrema",
+        ],
         figure: accumulationGraphFigure,
         choices: ["$x=6$", "$x=2$", "$x=4$", "$x=5$"],
         correctLetter: "A",
@@ -1497,8 +1621,8 @@ const topicSeeds: readonly TopicSeed[] = [
           "\\text{If }\\int_0^3 f(x)\\,dx=5\\text{ and }\\int_3^7 f(x)\\,dx=-2,\\text{ what is }\\int_0^7 f(x)\\,dx?",
         difficulty: 2,
         skillTags: ["integral_properties", "additivity"],
-        choices: ["$3$", "$7$", "$-10$", "$-3$"],
-        correctLetter: "A",
+        choices: ["$7$", "$3$", "$-10$", "$-3$"],
+        correctLetter: "B",
         hints: [
           "Use additivity over adjacent intervals.",
           "$\\int_0^7=\\int_0^3+\\int_3^7$.",
@@ -1517,8 +1641,8 @@ const topicSeeds: readonly TopicSeed[] = [
           "\\text{If }\\int_0^7 f(x)\\,dx=3,\\text{ what is }\\int_7^0 f(x)\\,dx?",
         difficulty: 2,
         skillTags: ["integral_properties", "reversal_of_limits"],
-        choices: ["$-3$", "$3$", "$7$", "$-7$"],
-        correctLetter: "A",
+        choices: ["$3$", "$7$", "$-3$", "$-7$"],
+        correctLetter: "C",
         hints: [
           "Reversing limits changes the sign.",
           "$\\int_7^0 f=-\\int_0^7 f$.",
@@ -1537,8 +1661,8 @@ const topicSeeds: readonly TopicSeed[] = [
           "\\text{If }\\int_0^3 f(x)\\,dx=5,\\text{ what is }\\int_0^3 (2f(x)+4)\\,dx?",
         difficulty: 3,
         skillTags: ["integral_properties", "linearity"],
-        choices: ["$22$", "$14$", "$18$", "$13$"],
-        correctLetter: "A",
+        choices: ["$14$", "$18$", "$13$", "$22$"],
+        correctLetter: "D",
         hints: [
           "Use linearity.",
           "$\\int_0^3 2f=2\\int_0^3 f$.",
@@ -1562,7 +1686,12 @@ const topicSeeds: readonly TopicSeed[] = [
           "\\text{If }g\\text{ is odd and integrable, what is }\\int_{-2}^{2} g(x)\\,dx?",
         difficulty: 3,
         skillTags: ["integral_properties", "symmetry"],
-        choices: ["$0$", "$2g(2)$", "$2\\int_0^2 g(x)\\,dx$", "$\\int_0^2 |g(x)|\\,dx$"],
+        choices: [
+          "$0$",
+          "$2g(2)$",
+          "$2\\int_0^2 g(x)\\,dx$",
+          "$\\int_0^2 |g(x)|\\,dx$",
+        ],
         correctLetter: "A",
         hints: [
           "Odd functions have origin symmetry.",
@@ -1582,8 +1711,8 @@ const topicSeeds: readonly TopicSeed[] = [
           "\\text{If }\\int_1^4 f(x)\\,dx=6,\\text{ what is the average value of }f\\text{ on }[1,4]?",
         difficulty: 4,
         skillTags: ["integral_properties", "average_value"],
-        choices: ["$2$", "$6$", "$\\frac32$", "$18$"],
-        correctLetter: "A",
+        choices: ["$6$", "$2$", "$\\frac32$", "$18$"],
+        correctLetter: "B",
         hints: [
           "Average value is $\\frac{1}{b-a}\\int_a^b f(x)\\,dx$.",
           "Here $b-a=3$.",
@@ -1604,9 +1733,21 @@ const topicSeeds: readonly TopicSeed[] = [
       difficulty: 4,
       skillTags: ["integral_properties", "linearity", "average_value"],
       parts: [
-        { letter: "a", promptMarkdown: "Find $\\int_5^0 f(x)\\,dx$.", points: 1 },
-        { letter: "b", promptMarkdown: "Find $\\int_0^5 (2f(x)-g(x))\\,dx$.", points: 2 },
-        { letter: "c", promptMarkdown: "Find the average value of $f$ on $[0,5]$.", points: 1 },
+        {
+          letter: "a",
+          promptMarkdown: "Find $\\int_5^0 f(x)\\,dx$.",
+          points: 1,
+        },
+        {
+          letter: "b",
+          promptMarkdown: "Find $\\int_0^5 (2f(x)-g(x))\\,dx$.",
+          points: 2,
+        },
+        {
+          letter: "c",
+          promptMarkdown: "Find the average value of $f$ on $[0,5]$.",
+          points: 1,
+        },
       ],
       hints: [
         "First combine the two integrals involving $f$.",
@@ -1619,7 +1760,11 @@ const topicSeeds: readonly TopicSeed[] = [
           { part: "a", points: 1, description: "Computes $\\int_5^0 f=1$." },
           { part: "b", points: 1, description: "Uses $\\int_0^5 f=-1$." },
           { part: "b", points: 1, description: "Computes $2(-1)-7=-9$." },
-          { part: "c", points: 1, description: "Computes average value $-1/5$." },
+          {
+            part: "c",
+            points: 1,
+            description: "Computes average value $-1/5$.",
+          },
         ],
       },
       commonErrors: [
@@ -1630,13 +1775,11 @@ const topicSeeds: readonly TopicSeed[] = [
       workedSolution: [
         {
           part: "a",
-          explanation:
-            "$\\int_0^5 f=3+(-4)=-1$, so $\\int_5^0 f=1$.",
+          explanation: "$\\int_0^5 f=3+(-4)=-1$, so $\\int_5^0 f=1$.",
         },
         {
           part: "b",
-          explanation:
-            "$\\int_0^5(2f-g)=2\\int_0^5f-\\int_0^5g=2(-1)-7=-9$.",
+          explanation: "$\\int_0^5(2f-g)=2\\int_0^5f-\\int_0^5g=2(-1)-7=-9$.",
         },
         {
           part: "c",
@@ -1653,12 +1796,11 @@ const topicSeeds: readonly TopicSeed[] = [
       "Evaluating definite integrals using antiderivatives and total change",
     mc: [
       {
-        questionLatex:
-          "\\text{Evaluate }\\int_1^3(2x+1)\\,dx.",
+        questionLatex: "\\text{Evaluate }\\int_1^3(2x+1)\\,dx.",
         difficulty: 2,
         skillTags: ["definite_integral", "ftc_evaluation"],
-        choices: ["$10$", "$8$", "$12$", "$6$"],
-        correctLetter: "A",
+        choices: ["$8$", "$12$", "$10$", "$6$"],
+        correctLetter: "C",
         hints: [
           "Find an antiderivative of $2x+1$.",
           "Use $x^2+x$.",
@@ -1673,12 +1815,11 @@ const topicSeeds: readonly TopicSeed[] = [
         ],
       },
       {
-        questionLatex:
-          "\\text{Evaluate }\\int_0^{\\pi}\\cos x\\,dx.",
+        questionLatex: "\\text{Evaluate }\\int_0^{\\pi}\\cos x\\,dx.",
         difficulty: 2,
         skillTags: ["definite_integral", "trig"],
-        choices: ["$0$", "$2$", "$-2$", "$\\pi$"],
-        correctLetter: "A",
+        choices: ["$2$", "$-2$", "$\\pi$", "$0$"],
+        correctLetter: "D",
         hints: [
           "An antiderivative of $\\cos x$ is $\\sin x$.",
           "Evaluate $\\sin x$ from $0$ to $\\pi$.",
@@ -1693,8 +1834,7 @@ const topicSeeds: readonly TopicSeed[] = [
         ],
       },
       {
-        questionLatex:
-          "\\text{Evaluate }\\int_1^e\\frac1x\\,dx.",
+        questionLatex: "\\text{Evaluate }\\int_1^e\\frac1x\\,dx.",
         difficulty: 3,
         skillTags: ["definite_integral", "logarithmic_integral"],
         choices: ["$1$", "$e-1$", "$\\ln(e-1)$", "$0$"],
@@ -1717,8 +1857,8 @@ const topicSeeds: readonly TopicSeed[] = [
           "\\text{If }F'(x)=v(x)\\text{ and }\\int_2^5 v(x)\\,dx=-7,\\text{ what is }F(5)-F(2)?",
         difficulty: 3,
         skillTags: ["ftc_evaluation", "total_change"],
-        choices: ["$-7$", "$7$", "$F(5)+7$", "$0$"],
-        correctLetter: "A",
+        choices: ["$7$", "$-7$", "$F(5)+7$", "$0$"],
+        correctLetter: "B",
         hints: [
           "The integral of a derivative gives net change.",
           "$\\int_2^5 F'(x)\\,dx=F(5)-F(2)$.",
@@ -1733,12 +1873,11 @@ const topicSeeds: readonly TopicSeed[] = [
         ],
       },
       {
-        questionLatex:
-          "\\text{Evaluate }\\int_0^2 3e^{3x}\\,dx.",
+        questionLatex: "\\text{Evaluate }\\int_0^2 3e^{3x}\\,dx.",
         difficulty: 4,
         skillTags: ["definite_integral", "exponential_integral"],
-        choices: ["$e^6-1$", "$3e^6-3$", "$e^2-1$", "$6e^6$"],
-        correctLetter: "A",
+        choices: ["$3e^6-3$", "$e^2-1$", "$e^6-1$", "$6e^6$"],
+        correctLetter: "C",
         hints: [
           "An antiderivative of $3e^{3x}$ is $e^{3x}$.",
           "Evaluate at $2$ and $0$.",
@@ -1754,14 +1893,22 @@ const topicSeeds: readonly TopicSeed[] = [
       },
     ],
     frq: {
-      questionLatex:
-        "\\text{Let }P'(x)=x^3-2x+1\\text{ and }P(0)=4.",
+      questionLatex: "\\text{Let }P'(x)=x^3-2x+1\\text{ and }P(0)=4.",
       difficulty: 4,
       skillTags: ["ftc_evaluation", "total_change", "definite_integral"],
       parts: [
-        { letter: "a", promptMarkdown: "Find $\\int_0^2 (x^3-2x+1)\\,dx$.", points: 2 },
+        {
+          letter: "a",
+          promptMarkdown: "Find $\\int_0^2 (x^3-2x+1)\\,dx$.",
+          points: 2,
+        },
         { letter: "b", promptMarkdown: "Find $P(2)$.", points: 1 },
-        { letter: "c", promptMarkdown: "Explain the meaning of the integral in part (a) in terms of $P$.", points: 1 },
+        {
+          letter: "c",
+          promptMarkdown:
+            "Explain the meaning of the integral in part (a) in terms of $P$.",
+          points: 1,
+        },
       ],
       hints: [
         "Use an antiderivative of $x^3-2x+1$.",
@@ -1771,10 +1918,19 @@ const topicSeeds: readonly TopicSeed[] = [
       rubric: {
         maxPoints: 4,
         criteria: [
-          { part: "a", points: 1, description: "Finds correct antiderivative." },
+          {
+            part: "a",
+            points: 1,
+            description: "Finds correct antiderivative.",
+          },
           { part: "a", points: 1, description: "Evaluates integral as 2." },
           { part: "b", points: 1, description: "Computes $P(2)=6$." },
-          { part: "c", points: 1, description: "Interprets integral as net change in $P$ from 0 to 2." },
+          {
+            part: "c",
+            points: 1,
+            description:
+              "Interprets integral as net change in $P$ from 0 to 2.",
+          },
         ],
       },
       commonErrors: [
@@ -1790,8 +1946,7 @@ const topicSeeds: readonly TopicSeed[] = [
         },
         {
           part: "b",
-          explanation:
-            "$P(2)=P(0)+\\int_0^2P'(x)\\,dx=4+2=6$.",
+          explanation: "$P(2)=P(0)+\\int_0^2P'(x)\\,dx=4+2=6$.",
         },
         {
           part: "c",
@@ -1803,22 +1958,21 @@ const topicSeeds: readonly TopicSeed[] = [
   },
   {
     topicCode: "6.8",
-    title: "Finding Antiderivatives and Indefinite Integrals: Basic Rules and Notation",
-    subtopic:
-      "Finding general antiderivatives and particular solutions",
+    title:
+      "Finding Antiderivatives and Indefinite Integrals: Basic Rules and Notation",
+    subtopic: "Finding general antiderivatives and particular solutions",
     mc: [
       {
-        questionLatex:
-          "\\text{Find }\\int(6x^2-4x+5)\\,dx.",
+        questionLatex: "\\text{Find }\\int(6x^2-4x+5)\\,dx.",
         difficulty: 2,
         skillTags: ["antiderivative", "power_rule"],
         choices: [
-          "$2x^3-2x^2+5x+C$",
           "$18x-4+C$",
           "$2x^3-4x^2+5+C$",
           "$6x^3-4x^2+5x+C$",
+          "$2x^3-2x^2+5x+C$",
         ],
-        correctLetter: "A",
+        correctLetter: "D",
         hints: [
           "Reverse the power rule term by term.",
           "Increase each power by $1$ and divide by the new power.",
@@ -1833,11 +1987,15 @@ const topicSeeds: readonly TopicSeed[] = [
         ],
       },
       {
-        questionLatex:
-          "\\text{Find }\\int(\\sec^2x+e^x)\\,dx.",
+        questionLatex: "\\text{Find }\\int(\\sec^2x+e^x)\\,dx.",
         difficulty: 2,
         skillTags: ["antiderivative", "trig", "exponential"],
-        choices: ["$\\tan x+e^x+C$", "$\\sec x+e^x+C$", "$\\tan x+xe^x+C$", "$\\sec x+e^{x+1}+C$"],
+        choices: [
+          "$\\tan x+e^x+C$",
+          "$\\sec x+e^x+C$",
+          "$\\tan x+xe^x+C$",
+          "$\\sec x+e^{x+1}+C$",
+        ],
         correctLetter: "A",
         hints: [
           "An antiderivative of $\\sec^2x$ is $\\tan x$.",
@@ -1857,8 +2015,8 @@ const topicSeeds: readonly TopicSeed[] = [
           "\\text{If }f'(x)=3x^2-4\\text{ and }f(1)=2,\\text{ what is }f(x)\\text{?}",
         difficulty: 3,
         skillTags: ["particular_solution", "antiderivative"],
-        choices: ["$x^3-4x+5$", "$x^3-4x+2$", "$6x-4$", "$x^3-4x-3$"],
-        correctLetter: "A",
+        choices: ["$x^3-4x+2$", "$x^3-4x+5$", "$6x-4$", "$x^3-4x-3$"],
+        correctLetter: "B",
         hints: [
           "First find the general antiderivative.",
           "$f(x)=x^3-4x+C$.",
@@ -1882,8 +2040,13 @@ const topicSeeds: readonly TopicSeed[] = [
           "\\text{Find }\\int \\frac{1}{\\sqrt{x}}\\,dx\\text{ for }x>0.",
         difficulty: 3,
         skillTags: ["antiderivative", "power_rule"],
-        choices: ["$2\\sqrt{x}+C$", "$\\frac{1}{2\\sqrt{x}}+C$", "$\\ln x+C$", "$-2x^{-1/2}+C$"],
-        correctLetter: "A",
+        choices: [
+          "$\\frac{1}{2\\sqrt{x}}+C$",
+          "$\\ln x+C$",
+          "$2\\sqrt{x}+C$",
+          "$-2x^{-1/2}+C$",
+        ],
+        correctLetter: "C",
         hints: [
           "Rewrite $1/\\sqrt{x}$ as $x^{-1/2}$.",
           "Increase the exponent by $1$.",
@@ -1902,8 +2065,13 @@ const topicSeeds: readonly TopicSeed[] = [
           "\\text{If }y'=\\cos x\\text{ and }y\\left(\\frac\\pi2\\right)=4,\\text{ what is }y?",
         difficulty: 4,
         skillTags: ["particular_solution", "trig", "antiderivative"],
-        choices: ["$y=\\sin x+3$", "$y=\\sin x+4$", "$y=-\\sin x+5$", "$y=\\cos x+4$"],
-        correctLetter: "A",
+        choices: [
+          "$y=\\sin x+4$",
+          "$y=-\\sin x+5$",
+          "$y=\\cos x+4$",
+          "$y=\\sin x+3$",
+        ],
+        correctLetter: "D",
         hints: [
           "An antiderivative of $\\cos x$ is $\\sin x$.",
           "Use $y=\\sin x+C$.",
@@ -1936,11 +2104,23 @@ const topicSeeds: readonly TopicSeed[] = [
       rubric: {
         maxPoints: 5,
         criteria: [
-          { part: "a", points: 1, description: "Integrates acceleration correctly." },
+          {
+            part: "a",
+            points: 1,
+            description: "Integrates acceleration correctly.",
+          },
           { part: "a", points: 1, description: "Uses $v(0)=2$." },
-          { part: "b", points: 1, description: "Integrates velocity correctly." },
+          {
+            part: "b",
+            points: 1,
+            description: "Integrates velocity correctly.",
+          },
           { part: "b", points: 1, description: "Uses $s(0)=7$." },
-          { part: "c", points: 1, description: "Computes $s(2)=\\frac{29}{3}$." },
+          {
+            part: "c",
+            points: 1,
+            description: "Computes $s(2)=\\frac{29}{3}$.",
+          },
         ],
       },
       commonErrors: [
@@ -1961,8 +2141,7 @@ const topicSeeds: readonly TopicSeed[] = [
         },
         {
           part: "c",
-          explanation:
-            "$s(2)=\\frac{32}{3}-10+4+7=\\frac{29}{3}$.",
+          explanation: "$s(2)=\\frac{32}{3}-10+4+7=\\frac{29}{3}$.",
         },
       ],
     },
@@ -1974,17 +2153,17 @@ const topicSeeds: readonly TopicSeed[] = [
       "Recognizing composite structure and transforming integrals consistently",
     mc: [
       {
-        questionLatex:
-          "\\text{Find }\\int 2x\\cos(x^2)\\,dx.",
+        questionLatex: "\\text{Find }\\int 2x\\cos(x^2)\\,dx.",
         difficulty: 2,
         skillTags: ["substitution", "indefinite_integral"],
-        choices: ["$\\sin(x^2)+C$", "$2\\sin(x^2)+C$", "$-\\sin(x^2)+C$", "$x^2\\sin(x^2)+C$"],
-        correctLetter: "A",
-        hints: [
-          "Let $u=x^2$.",
-          "Then $du=2x\\,dx$.",
-          "Integrate $\\cos u$.",
+        choices: [
+          "$\\sin(x^2)+C$",
+          "$2\\sin(x^2)+C$",
+          "$-\\sin(x^2)+C$",
+          "$x^2\\sin(x^2)+C$",
         ],
+        correctLetter: "A",
+        hints: ["Let $u=x^2$.", "Then $du=2x\\,dx$.", "Integrate $\\cos u$."],
         solution: [
           {
             step: 1,
@@ -1999,12 +2178,11 @@ const topicSeeds: readonly TopicSeed[] = [
         ],
       },
       {
-        questionLatex:
-          "\\text{Evaluate }\\int_0^1 3x^2e^{x^3}\\,dx.",
+        questionLatex: "\\text{Evaluate }\\int_0^1 3x^2e^{x^3}\\,dx.",
         difficulty: 2,
         skillTags: ["substitution", "definite_integral"],
-        choices: ["$e-1$", "$e^3-1$", "$3e-3$", "$1$"],
-        correctLetter: "A",
+        choices: ["$e^3-1$", "$e-1$", "$3e-3$", "$1$"],
+        correctLetter: "B",
         hints: [
           "Let $u=x^3$.",
           "Then $du=3x^2\\,dx$.",
@@ -2024,12 +2202,16 @@ const topicSeeds: readonly TopicSeed[] = [
         ],
       },
       {
-        questionLatex:
-          "\\text{Find }\\int \\frac{x}{x^2+4}\\,dx.",
+        questionLatex: "\\text{Find }\\int \\frac{x}{x^2+4}\\,dx.",
         difficulty: 3,
         skillTags: ["substitution", "logarithmic_integral"],
-        choices: ["$\\frac12\\ln(x^2+4)+C$", "$\\ln(x^2+4)+C$", "$\\frac{1}{x^2+4}+C$", "$2\\ln(x^2+4)+C$"],
-        correctLetter: "A",
+        choices: [
+          "$\\ln(x^2+4)+C$",
+          "$\\frac{1}{x^2+4}+C$",
+          "$\\frac12\\ln(x^2+4)+C$",
+          "$2\\ln(x^2+4)+C$",
+        ],
+        correctLetter: "C",
         hints: [
           "Let $u=x^2+4$.",
           "Then $du=2x\\,dx$.",
@@ -2053,8 +2235,8 @@ const topicSeeds: readonly TopicSeed[] = [
           "\\text{Evaluate }\\int_0^{\\pi/2}\\sin x\\cos(\\cos x)\\,dx.",
         difficulty: 3,
         skillTags: ["substitution", "trig", "definite_integral"],
-        choices: ["$\\sin 1$", "$1-\\cos1$", "$-\\sin1$", "$\\cos1$"],
-        correctLetter: "A",
+        choices: ["$1-\\cos1$", "$-\\sin1$", "$\\cos1$", "$\\sin 1$"],
+        correctLetter: "D",
         hints: [
           "Let $u=\\cos x$.",
           "Then $du=-\\sin x\\,dx$.",
@@ -2074,8 +2256,7 @@ const topicSeeds: readonly TopicSeed[] = [
         ],
       },
       {
-        questionLatex:
-          "\\text{Find }\\int4x(2x^2+1)^5\\,dx.",
+        questionLatex: "\\text{Find }\\int4x(2x^2+1)^5\\,dx.",
         difficulty: 4,
         skillTags: ["substitution", "power_rule"],
         choices: [
@@ -2085,11 +2266,7 @@ const topicSeeds: readonly TopicSeed[] = [
           "$\\frac{(2x^2+1)^4}{4}+C$",
         ],
         correctLetter: "A",
-        hints: [
-          "Let $u=2x^2+1$.",
-          "Then $du=4x\\,dx$.",
-          "Integrate $u^5$.",
-        ],
+        hints: ["Let $u=2x^2+1$.", "Then $du=4x\\,dx$.", "Integrate $u^5$."],
         solution: [
           {
             step: 1,
@@ -2110,9 +2287,23 @@ const topicSeeds: readonly TopicSeed[] = [
       difficulty: 5,
       skillTags: ["substitution", "definite_integral", "radical_integral"],
       parts: [
-        { letter: "a", promptMarkdown: "Identify a change of variable that simplifies the radical, and transform the bounds.", points: 2 },
-        { letter: "b", promptMarkdown: "Rewrite the integral entirely in terms of the new variable.", points: 1 },
-        { letter: "c", promptMarkdown: "Evaluate the integral exactly.", points: 2 },
+        {
+          letter: "a",
+          promptMarkdown:
+            "Identify a change of variable that simplifies the radical, and transform the bounds.",
+          points: 2,
+        },
+        {
+          letter: "b",
+          promptMarkdown:
+            "Rewrite the integral entirely in terms of the new variable.",
+          points: 1,
+        },
+        {
+          letter: "c",
+          promptMarkdown: "Evaluate the integral exactly.",
+          points: 2,
+        },
       ],
       hints: [
         "Use the expression inside the square root.",
@@ -2123,10 +2314,27 @@ const topicSeeds: readonly TopicSeed[] = [
         maxPoints: 5,
         criteria: [
           { part: "a", points: 1, description: "Chooses $u=x^2+5$." },
-          { part: "a", points: 1, description: "Transforms bounds to 5 and 9." },
-          { part: "b", points: 1, description: "Rewrites as $\\frac12\\int_5^9u^{1/2}\\,du$." },
-          { part: "c", points: 1, description: "Finds antiderivative $\\frac13u^{3/2}$." },
-          { part: "c", points: 1, description: "Evaluates exactly as $9-\\frac{5\\sqrt5}{3}$ or equivalent." },
+          {
+            part: "a",
+            points: 1,
+            description: "Transforms bounds to 5 and 9.",
+          },
+          {
+            part: "b",
+            points: 1,
+            description: "Rewrites as $\\frac12\\int_5^9u^{1/2}\\,du$.",
+          },
+          {
+            part: "c",
+            points: 1,
+            description: "Finds antiderivative $\\frac13u^{3/2}$.",
+          },
+          {
+            part: "c",
+            points: 1,
+            description:
+              "Evaluates exactly as $9-\\frac{5\\sqrt5}{3}$ or equivalent.",
+          },
         ],
       },
       commonErrors: [
@@ -2142,8 +2350,7 @@ const topicSeeds: readonly TopicSeed[] = [
         },
         {
           part: "b",
-          explanation:
-            "The integral becomes $\\frac12\\int_5^9 u^{1/2}\\,du$.",
+          explanation: "The integral becomes $\\frac12\\int_5^9 u^{1/2}\\,du$.",
         },
         {
           part: "c",
@@ -2155,22 +2362,22 @@ const topicSeeds: readonly TopicSeed[] = [
   },
   {
     topicCode: "6.10",
-    title: "Integrating Functions Using Long Division and Completing the Square",
+    title:
+      "Integrating Functions Using Long Division and Completing the Square",
     subtopic:
       "Rewriting rational functions before applying antiderivative rules",
     mc: [
       {
-        questionLatex:
-          "\\text{Find }\\int\\frac{x^2+1}{x+1}\\,dx.",
+        questionLatex: "\\text{Find }\\int\\frac{x^2+1}{x+1}\\,dx.",
         difficulty: 2,
         skillTags: ["algebraic_integration", "long_division"],
         choices: [
-          "$\\frac{x^2}{2}-x+2\\ln|x+1|+C$",
           "$\\frac{x^2}{2}+x+\\ln|x+1|+C$",
+          "$\\frac{x^2}{2}-x+2\\ln|x+1|+C$",
           "$\\ln|x^2+1|-\\ln|x+1|+C$",
           "$\\frac{x^3}{3}+x+C$",
         ],
-        correctLetter: "A",
+        correctLetter: "B",
         hints: [
           "Divide $x^2+1$ by $x+1$ first.",
           "$\\frac{x^2+1}{x+1}=x-1+\\frac2{x+1}$.",
@@ -2190,17 +2397,16 @@ const topicSeeds: readonly TopicSeed[] = [
         ],
       },
       {
-        questionLatex:
-          "\\text{Find }\\int\\frac{x^2+3x+5}{x+2}\\,dx.",
+        questionLatex: "\\text{Find }\\int\\frac{x^2+3x+5}{x+2}\\,dx.",
         difficulty: 2,
         skillTags: ["algebraic_integration", "long_division"],
         choices: [
-          "$\\frac{x^2}{2}+x+3\\ln|x+2|+C$",
           "$\\frac{x^2}{2}+x+\\ln|x+2|+C$",
           "$\\ln|x^2+3x+5|+C$",
+          "$\\frac{x^2}{2}+x+3\\ln|x+2|+C$",
           "$\\frac{x^3}{3}+\\frac{3x^2}{2}+5x+C$",
         ],
-        correctLetter: "A",
+        correctLetter: "C",
         hints: [
           "Divide $x^2+3x+5$ by $x+2$ first.",
           "$x^2+3x+5=(x+2)(x+1)+3$.",
@@ -2220,17 +2426,20 @@ const topicSeeds: readonly TopicSeed[] = [
         ],
       },
       {
-        questionLatex:
-          "\\text{Find }\\int\\frac{1}{x^2+4x+8}\\,dx.",
+        questionLatex: "\\text{Find }\\int\\frac{1}{x^2+4x+8}\\,dx.",
         difficulty: 3,
-        skillTags: ["algebraic_integration", "completing_square", "inverse_trig"],
+        skillTags: [
+          "algebraic_integration",
+          "completing_square",
+          "inverse_trig",
+        ],
         choices: [
-          "$\\frac12\\arctan\\left(\\frac{x+2}{2}\\right)+C$",
           "$\\arctan(x+2)+C$",
           "$\\frac{1}{(x+2)^2+4}+C$",
           "$\\ln|x^2+4x+8|+C$",
+          "$\\frac12\\arctan\\left(\\frac{x+2}{2}\\right)+C$",
         ],
-        correctLetter: "A",
+        correctLetter: "D",
         hints: [
           "Complete the square in the denominator.",
           "$x^2+4x+8=(x+2)^2+4$.",
@@ -2250,8 +2459,7 @@ const topicSeeds: readonly TopicSeed[] = [
         ],
       },
       {
-        questionLatex:
-          "\\text{Find }\\int\\frac{x^2}{x^2+1}\\,dx.",
+        questionLatex: "\\text{Find }\\int\\frac{x^2}{x^2+1}\\,dx.",
         difficulty: 3,
         skillTags: ["algebraic_integration", "long_division", "inverse_trig"],
         choices: [
@@ -2280,17 +2488,16 @@ const topicSeeds: readonly TopicSeed[] = [
         ],
       },
       {
-        questionLatex:
-          "\\text{Find }\\int\\frac{x^3}{x^2+1}\\,dx.",
+        questionLatex: "\\text{Find }\\int\\frac{x^3}{x^2+1}\\,dx.",
         difficulty: 4,
         skillTags: ["algebraic_integration", "long_division", "substitution"],
         choices: [
-          "$\\frac{x^2}{2}-\\frac12\\ln(x^2+1)+C$",
           "$\\frac{x^2}{2}+\\frac12\\ln(x^2+1)+C$",
+          "$\\frac{x^2}{2}-\\frac12\\ln(x^2+1)+C$",
           "$x-\\arctan x+C$",
           "$\\frac{x^4}{4(x^2+1)}+C$",
         ],
-        correctLetter: "A",
+        correctLetter: "B",
         hints: [
           "Divide $x^3$ by $x^2+1$.",
           "$x^3/(x^2+1)=x-\\frac{x}{x^2+1}$.",
@@ -2314,10 +2521,23 @@ const topicSeeds: readonly TopicSeed[] = [
       questionLatex:
         "\\text{Evaluate the following integrals exactly. Show the form of each integrand before finding an antiderivative.}",
       difficulty: 5,
-      skillTags: ["algebraic_integration", "long_division", "completing_square", "definite_integral"],
+      skillTags: [
+        "algebraic_integration",
+        "long_division",
+        "completing_square",
+        "definite_integral",
+      ],
       parts: [
-        { letter: "a", promptMarkdown: "Evaluate $\\int_0^1 \\frac{x^2+2x+3}{x+1}\\,dx$.", points: 3 },
-        { letter: "b", promptMarkdown: "Evaluate $\\int_0^2 \\frac{1}{x^2+4x+8}\\,dx$.", points: 3 },
+        {
+          letter: "a",
+          promptMarkdown: "Evaluate $\\int_0^1 \\frac{x^2+2x+3}{x+1}\\,dx$.",
+          points: 3,
+        },
+        {
+          letter: "b",
+          promptMarkdown: "Evaluate $\\int_0^2 \\frac{1}{x^2+4x+8}\\,dx$.",
+          points: 3,
+        },
       ],
       hints: [
         "For part (a), divide the numerator by $x+1$.",
@@ -2327,12 +2547,32 @@ const topicSeeds: readonly TopicSeed[] = [
       rubric: {
         maxPoints: 6,
         criteria: [
-          { part: "a", points: 1, description: "Rewrites integrand as $x+1+2/(x+1)$." },
-          { part: "a", points: 1, description: "Finds a correct antiderivative." },
+          {
+            part: "a",
+            points: 1,
+            description: "Rewrites integrand as $x+1+2/(x+1)$.",
+          },
+          {
+            part: "a",
+            points: 1,
+            description: "Finds a correct antiderivative.",
+          },
           { part: "a", points: 1, description: "Evaluates as $3/2+2\\ln2$." },
-          { part: "b", points: 1, description: "Completes the square correctly." },
-          { part: "b", points: 1, description: "Finds arctangent antiderivative." },
-          { part: "b", points: 1, description: "Evaluates with correct bounds." },
+          {
+            part: "b",
+            points: 1,
+            description: "Completes the square correctly.",
+          },
+          {
+            part: "b",
+            points: 1,
+            description: "Finds arctangent antiderivative.",
+          },
+          {
+            part: "b",
+            points: 1,
+            description: "Evaluates with correct bounds.",
+          },
         ],
       },
       commonErrors: [
@@ -2370,15 +2610,15 @@ const topicSeeds: readonly TopicSeed[] = [
           "misses_inner_derivative_match",
         ],
         choices: [
-          "Use substitution with $u=x^2+1$.",
           "Use long division before integrating.",
           "Complete the square in $x^2+1$.",
+          "Use substitution with $u=x^2+1$.",
           "Use a left Riemann sum.",
         ],
-        correctLetter: "A",
+        correctLetter: "C",
         rationales: {
-          B: "Long division is useful for rational functions, but this integrand is a product with an inside function whose derivative is present.",
-          C: "Completing the square helps with quadratic denominators, not with $\\cos(x^2+1)$ multiplied by $x$.",
+          A: "Long division is useful for rational functions, but this integrand is a product with an inside function whose derivative is present.",
+          B: "Completing the square helps with quadratic denominators, not with $\\cos(x^2+1)$ multiplied by $x$.",
           D: "A Riemann sum approximates a definite integral from data or rectangles; this asks for an antiderivative.",
         },
         hints: [
@@ -2394,7 +2634,8 @@ const topicSeeds: readonly TopicSeed[] = [
           },
           {
             step: 2,
-            explanation: "The derivative of the inside is a constant multiple of the remaining factor.",
+            explanation:
+              "The derivative of the inside is a constant multiple of the remaining factor.",
             math: "d(x^2+1)=2x\\,dx",
           },
           {
@@ -2408,22 +2649,26 @@ const topicSeeds: readonly TopicSeed[] = [
         questionLatex:
           "\\text{Before integrating }\\int\\frac{x^2+4}{x+1}\\,dx,\\text{ which first step is most efficient?}",
         difficulty: 2,
-        skillTags: ["technique_selection", "algebraic_integration", "long_division"],
+        skillTags: [
+          "technique_selection",
+          "algebraic_integration",
+          "long_division",
+        ],
         commonMisconceptions: [
           "tries_direct_quotient_integration",
           "misidentifies_rational_rewrite",
         ],
         choices: [
-          "Use long division because the numerator degree is at least the denominator degree.",
           "Use substitution with $u=x+1$ because the denominator is linear.",
           "Complete the square in the numerator.",
           "Use the power rule directly on the quotient.",
+          "Use long division because the numerator degree is at least the denominator degree.",
         ],
-        correctLetter: "A",
+        correctLetter: "D",
         rationales: {
-          B: "The derivative of $x+1$ is just $1$, which does not simplify the numerator $x^2+4$ into a basic form.",
-          C: "Completing the square in the numerator does not separate the quotient into integrable pieces.",
-          D: "There is no power rule for integrating a quotient as one piece.",
+          A: "The derivative of $x+1$ is just $1$, which does not simplify the numerator $x^2+4$ into a basic form.",
+          B: "Completing the square in the numerator does not separate the quotient into integrable pieces.",
+          C: "There is no power rule for integrating a quotient as one piece.",
         },
         hints: [
           "Compare the degrees of the numerator and denominator.",
@@ -2433,7 +2678,8 @@ const topicSeeds: readonly TopicSeed[] = [
         solution: [
           {
             step: 1,
-            explanation: "The numerator degree is $2$ and the denominator degree is $1$.",
+            explanation:
+              "The numerator degree is $2$ and the denominator degree is $1$.",
             math: "2\\ge1",
           },
           {
@@ -2486,20 +2732,24 @@ const topicSeeds: readonly TopicSeed[] = [
         questionLatex:
           "\\text{For }\\int_0^4\\left(\\sqrt{x}+\\frac1{x+1}\\right)\\,dx,\\text{ which plan is most efficient?}",
         difficulty: 3,
-        skillTags: ["technique_selection", "basic_antiderivative", "definite_integral"],
+        skillTags: [
+          "technique_selection",
+          "basic_antiderivative",
+          "definite_integral",
+        ],
         commonMisconceptions: [
           "overuses_substitution",
           "misses_split_integral_structure",
         ],
         choices: [
-          "Split the integral, rewrite $\\sqrt{x}$ as $x^{1/2}$, and use basic antiderivatives.",
           "Use one substitution for the entire sum.",
+          "Split the integral, rewrite $\\sqrt{x}$ as $x^{1/2}$, and use basic antiderivatives.",
           "Use long division on both terms.",
           "Complete the square in $x+1$.",
         ],
-        correctLetter: "A",
+        correctLetter: "B",
         rationales: {
-          B: "The two terms do not share one inside function, so one substitution for the entire sum is not efficient.",
+          A: "The two terms do not share one inside function, so one substitution for the entire sum is not efficient.",
           C: "Long division applies to rational expressions with polynomial quotients, not to $\\sqrt{x}$.",
           D: "Completing the square is a quadratic-denominator strategy; $x+1$ is already linear.",
         },
@@ -2516,7 +2766,8 @@ const topicSeeds: readonly TopicSeed[] = [
           },
           {
             step: 2,
-            explanation: "These use the power rule backward and the logarithm rule.",
+            explanation:
+              "These use the power rule backward and the logarithm rule.",
             math: "\\frac23x^{3/2}+\\ln|x+1|",
           },
         ],
@@ -2525,21 +2776,25 @@ const topicSeeds: readonly TopicSeed[] = [
         questionLatex:
           "\\text{Which plan correctly starts }\\int\\left(\\frac{x^3}{x^2+1}+2xe^{x^2}\\right)\\,dx?",
         difficulty: 4,
-        skillTags: ["technique_selection", "algebraic_integration", "substitution"],
+        skillTags: [
+          "technique_selection",
+          "algebraic_integration",
+          "substitution",
+        ],
         commonMisconceptions: [
           "tries_one_method_for_mixed_integral",
           "misses_need_to_rewrite_before_substitution",
         ],
         choices: [
-          "Rewrite $\\frac{x^3}{x^2+1}=x-\\frac{x}{x^2+1}$, then use substitution on the remaining composed terms.",
           "Use completing the square on $x^2+1$ and integrate $2xe^{x^2}$ by the power rule.",
           "Use one substitution $u=x^2+1$ for the entire integral.",
+          "Rewrite $\\frac{x^3}{x^2+1}=x-\\frac{x}{x^2+1}$, then use substitution on the remaining composed terms.",
           "Use long division on both terms.",
         ],
-        correctLetter: "A",
+        correctLetter: "C",
         rationales: {
-          B: "Completing the square does not simplify $x^2+1$, and $2xe^{x^2}$ is not handled by the power rule.",
-          C: "The substitution $u=x^2+1$ helps the rational part after rewriting, but it does not handle $e^{x^2}$ as written.",
+          A: "Completing the square does not simplify $x^2+1$, and $2xe^{x^2}$ is not handled by the power rule.",
+          B: "The substitution $u=x^2+1$ helps the rational part after rewriting, but it does not handle $e^{x^2}$ as written.",
           D: "Long division helps the rational term, but it does not apply to $2xe^{x^2}$.",
         },
         hints: [
@@ -2555,7 +2810,8 @@ const topicSeeds: readonly TopicSeed[] = [
           },
           {
             step: 2,
-            explanation: "Then use substitution on $x/(x^2+1)$ and on $2xe^{x^2}$.",
+            explanation:
+              "Then use substitution on $x/(x^2+1)$ and on $2xe^{x^2}$.",
             math: "u=x^2+1\\quad\\text{and}\\quad v=x^2",
           },
         ],
@@ -2577,10 +2833,30 @@ const topicSeeds: readonly TopicSeed[] = [
         "forgets_to_rewrite_before_integrating",
       ],
       parts: [
-        { letter: "a", promptMarkdown: "Evaluate $\\int \\frac{4x}{x^2+9}\\,dx$. State the technique.", points: 2 },
-        { letter: "b", promptMarkdown: "Evaluate $\\int\\frac{x^2+2x+5}{x+1}\\,dx$. State the technique.", points: 2 },
-        { letter: "c", promptMarkdown: "Evaluate $\\int\\frac{1}{x^2-4x+8}\\,dx$. State the technique.", points: 2 },
-        { letter: "d", promptMarkdown: "Evaluate $\\int_0^4\\left(\\sqrt{x}+\\frac1{x+1}\\right)\\,dx$. State the technique.", points: 2 },
+        {
+          letter: "a",
+          promptMarkdown:
+            "Evaluate $\\int \\frac{4x}{x^2+9}\\,dx$. State the technique.",
+          points: 2,
+        },
+        {
+          letter: "b",
+          promptMarkdown:
+            "Evaluate $\\int\\frac{x^2+2x+5}{x+1}\\,dx$. State the technique.",
+          points: 2,
+        },
+        {
+          letter: "c",
+          promptMarkdown:
+            "Evaluate $\\int\\frac{1}{x^2-4x+8}\\,dx$. State the technique.",
+          points: 2,
+        },
+        {
+          letter: "d",
+          promptMarkdown:
+            "Evaluate $\\int_0^4\\left(\\sqrt{x}+\\frac1{x+1}\\right)\\,dx$. State the technique.",
+          points: 2,
+        },
       ],
       hints: [
         "Classify each integrand before starting to compute.",
@@ -2590,14 +2866,48 @@ const topicSeeds: readonly TopicSeed[] = [
       rubric: {
         maxPoints: 8,
         criteria: [
-          { part: "a", points: 1, description: "Chooses substitution with $u=x^2+9$." },
-          { part: "a", points: 1, description: "Evaluates as $2\\ln(x^2+9)+C$." },
-          { part: "b", points: 1, description: "Uses long division to rewrite the integrand." },
-          { part: "b", points: 1, description: "Evaluates as $x^2/2+x+4\\ln|x+1|+C$." },
-          { part: "c", points: 1, description: "Completes the square as $(x-2)^2+4$." },
-          { part: "c", points: 1, description: "Evaluates as $\\frac12\\arctan\\left(\\frac{x-2}{2}\\right)+C$." },
-          { part: "d", points: 1, description: "Splits and rewrites the integrand using basic antiderivative forms." },
-          { part: "d", points: 1, description: "Evaluates exactly as $\\frac{16}{3}+\\ln5$." },
+          {
+            part: "a",
+            points: 1,
+            description: "Chooses substitution with $u=x^2+9$.",
+          },
+          {
+            part: "a",
+            points: 1,
+            description: "Evaluates as $2\\ln(x^2+9)+C$.",
+          },
+          {
+            part: "b",
+            points: 1,
+            description: "Uses long division to rewrite the integrand.",
+          },
+          {
+            part: "b",
+            points: 1,
+            description: "Evaluates as $x^2/2+x+4\\ln|x+1|+C$.",
+          },
+          {
+            part: "c",
+            points: 1,
+            description: "Completes the square as $(x-2)^2+4$.",
+          },
+          {
+            part: "c",
+            points: 1,
+            description:
+              "Evaluates as $\\frac12\\arctan\\left(\\frac{x-2}{2}\\right)+C$.",
+          },
+          {
+            part: "d",
+            points: 1,
+            description:
+              "Splits and rewrites the integrand using basic antiderivative forms.",
+          },
+          {
+            part: "d",
+            points: 1,
+            description: "Evaluates exactly as $\\frac{16}{3}+\\ln5$.",
+          },
         ],
       },
       commonErrors: [

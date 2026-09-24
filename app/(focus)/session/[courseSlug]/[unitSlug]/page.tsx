@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/seo";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Button } from "@/components/ui/button";
-import { PracticeSession } from "@/components/learn/practice-session";
+import { PracticeSetup } from "@/components/learn/practice-setup";
 import { findCourse, findUnit, COURSES } from "@/content/courses";
 import type { McSingleItem } from "@/lib/content/types";
 
@@ -12,6 +13,8 @@ interface Params {
 }
 
 export function generateStaticParams(): Params[] {
+  if (process.env.NODE_ENV === "development") return [];
+
   return COURSES.flatMap((c) =>
     c.units
       .filter((u) => u.status === "live")
@@ -28,10 +31,10 @@ export async function generateMetadata({
   const course = findCourse(courseSlug);
   const unit = findUnit(courseSlug, unitSlug);
   if (!course || !unit) return { title: "Practice" };
-  return {
+  return pageMetadata(`/session/${courseSlug}/${unitSlug}`, {
     title: `Practice — ${unit.title}`,
     robots: { index: false, follow: false },
-  };
+  });
 }
 
 export default async function SessionPage({
@@ -68,13 +71,14 @@ export default async function SessionPage({
   }
 
   return (
-    <PracticeSession
+    <PracticeSetup
       courseSlug={course.slug}
       courseShortTitle={course.shortTitle}
       unitSlug={unit.slug}
       unitCode={unit.unitCode}
       unitTitle={unit.title}
       items={mcItems}
+      topics={unit.topics.map(({ topicCode, title }) => ({ topicCode, title }))}
     />
   );
 }

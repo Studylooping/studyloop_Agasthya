@@ -12,7 +12,7 @@ import type {
 
 const COURSE = "calc-ab";
 const UNIT = "u4-contextual-app";
-const VERSION = "0.5.3";
+const VERSION = "0.5.4";
 const REVIEW_STATUS = "human_review_required" as const;
 const SOURCE_TYPE = "original_ai_assisted_question" as const;
 const LETTERS = ["A", "B", "C", "D"] as const;
@@ -84,15 +84,7 @@ function makeMc(meta: TopicMeta, seed: McSeed, index: number): McSingleItem {
     };
   });
 
-  const rotation = index % LETTERS.length;
-  const rotatedChoices =
-    rotation === 0
-      ? unletteredChoices
-      : [
-          ...unletteredChoices.slice(-rotation),
-          ...unletteredChoices.slice(0, -rotation),
-        ];
-  const choices = rotatedChoices.map((choice, choiceIndex) => ({
+  const choices = unletteredChoices.map((choice, choiceIndex) => ({
     letter: LETTERS[choiceIndex],
     ...choice,
   })) as McChoice[];
@@ -214,14 +206,14 @@ const topicSeeds: readonly TopicSeed[] = [
         difficulty: 2,
         skillTags: ["marginal_cost", "units"],
         choices: [
-          "\\text{The 201st item costs about }\\$4.75\\text{ to produce.}",
           "\\text{The first 200 items cost }\\$4.75\\text{ total.}",
+          "\\text{The 201st item costs about }\\$4.75\\text{ to produce.}",
           "\\text{The average cost for 200 items is }\\$4.75.",
           "\\text{The company produced 4.75 items after 200 dollars.}",
         ],
-        correctLetter: "A",
+        correctLetter: "B",
         rationales: {
-          B: "That would describe $C(200)$, not $C'(200)$.",
+          A: "That would describe $C(200)$, not $C'(200)$.",
           C: "Average cost would be $C(200)/200$.",
           D: "This reverses the dependent and independent variables.",
         },
@@ -249,15 +241,15 @@ const topicSeeds: readonly TopicSeed[] = [
         difficulty: 3,
         skillTags: ["first_second_derivative_context", "sign_interpretation"],
         choices: [
-          "\\text{The tea is cooling, but the cooling rate is becoming less negative.}",
           "\\text{The tea is warming, and the warming rate is increasing.}",
           "\\text{The tea is cooling faster and faster.}",
+          "\\text{The tea is cooling, but the cooling rate is becoming less negative.}",
           "\\text{The tea has temperature }0\\text{ degrees Celsius.}",
         ],
-        correctLetter: "A",
+        correctLetter: "C",
         rationales: {
-          B: "$T'(8)<0$ means temperature is decreasing.",
-          C: "$T''(8)>0$ means the derivative is increasing, so a negative cooling rate is becoming less negative.",
+          A: "$T'(8)<0$ means temperature is decreasing.",
+          B: "$T''(8)>0$ means the derivative is increasing, so a negative cooling rate is becoming less negative.",
           D: "The signs of derivatives do not give the actual temperature value.",
         },
         hints: [
@@ -283,12 +275,12 @@ const topicSeeds: readonly TopicSeed[] = [
           "\\text{A population }P(t)\\text{ is measured in people, with }t\\text{ in years. If }P(4)=1200\\text{ and }P'(4)=85,\\text{ what is }P(4.2)\\text{ approximately?}",
         difficulty: 3,
         skillTags: ["local_linear_interpretation", "units"],
-        choices: ["$1217$", "$1285$", "$1200.2$", "$1115$"],
-        correctLetter: "A",
+        choices: ["$1285$", "$1200.2$", "$1115$", "$1217$"],
+        correctLetter: "D",
         rationales: {
-          B: "This uses a one-year change instead of a 0.2-year change.",
-          C: "This treats the derivative as people rather than people per year.",
-          D: "This uses the correct magnitude with the wrong sign.",
+          A: "This uses a one-year change instead of a 0.2-year change.",
+          B: "This treats the derivative as people rather than people per year.",
+          C: "This uses the correct magnitude with the wrong sign.",
         },
         hints: [
           "Use the derivative as an approximate rate near t=4.",
@@ -445,14 +437,14 @@ const topicSeeds: readonly TopicSeed[] = [
         difficulty: 2,
         skillTags: ["motion", "velocity"],
         choices: [
-          "$-16\\text{ m/s}$",
           "$16\\text{ m/s}$",
+          "$-16\\text{ m/s}$",
           "$2\\text{ m/s}$",
           "$-8\\text{ m/s}$",
         ],
-        correctLetter: "A",
+        correctLetter: "B",
         rationales: {
-          B: "This has the wrong sign.",
+          A: "This has the wrong sign.",
           C: "This is the input time, not velocity.",
           D: "This is the position value at t=2.",
         },
@@ -475,15 +467,15 @@ const topicSeeds: readonly TopicSeed[] = [
         difficulty: 2,
         skillTags: ["motion", "particle_at_rest"],
         choices: [
-          "$t=\\frac25\\text{ and }t=4$",
           "$t=0\\text{ and }t=5$",
           "$t=2$",
+          "$t=\\frac25\\text{ and }t=4$",
           "\\text{Never}",
         ],
-        correctLetter: "A",
+        correctLetter: "C",
         rationales: {
-          B: "Those are interval endpoints, not zeros of velocity.",
-          C: "At t=2, velocity is -16.",
+          A: "Those are interval endpoints, not zeros of velocity.",
+          B: "At t=2, velocity is -16.",
           D: "The velocity polynomial has zeros in the interval.",
         },
         hints: [
@@ -505,16 +497,16 @@ const topicSeeds: readonly TopicSeed[] = [
         difficulty: 3,
         skillTags: ["motion", "speed_increasing_decreasing", "acceleration"],
         choices: [
-          "\\text{Speed is decreasing because }v(1)<0\\text{ and }a(1)>0.",
           "\\text{Speed is increasing because }v(1)<0\\text{ and }a(1)>0.",
           "\\text{Speed is zero because }a(1)>0.",
           "\\text{Speed cannot be determined without position.}",
+          "\\text{Speed is decreasing because }v(1)<0\\text{ and }a(1)>0.",
         ],
-        correctLetter: "A",
+        correctLetter: "D",
         rationales: {
-          B: "Opposite signs for velocity and acceleration mean speed is decreasing.",
-          C: "Acceleration is not speed; speed is $|v(1)|=3$ ft/s.",
-          D: "Speed behavior can be determined from the signs of velocity and acceleration.",
+          A: "Opposite signs for velocity and acceleration mean speed is decreasing.",
+          B: "Acceleration is not speed; speed is $|v(1)|=3$ ft/s.",
+          C: "Speed behavior can be determined from the signs of velocity and acceleration.",
         },
         hints: [
           "Speed changes according to the signs of velocity and acceleration.",
@@ -571,14 +563,14 @@ const topicSeeds: readonly TopicSeed[] = [
         difficulty: 3,
         skillTags: ["motion", "speed_increasing_decreasing", "table_values"],
         choices: [
-          "$t=1\\text{ and }t=2$",
           "$t=3\\text{ only}$",
+          "$t=1\\text{ and }t=2$",
           "$t=1\\text{ only}$",
           "\\text{None of them}",
         ],
-        correctLetter: "A",
+        correctLetter: "B",
         rationales: {
-          B: "At t=3, velocity and acceleration are both positive, so speed is increasing.",
+          A: "At t=3, velocity and acceleration are both positive, so speed is increasing.",
           C: "At t=2, velocity is negative and acceleration is positive, so speed is also decreasing there.",
           D: "There are listed times where velocity and acceleration have opposite signs.",
         },
@@ -715,15 +707,15 @@ const topicSeeds: readonly TopicSeed[] = [
         difficulty: 3,
         skillTags: ["rates_other_contexts", "area_rate"],
         choices: [
-          "$4\\pi\\text{ m}^2/\\text{min}$",
           "$8\\pi\\text{ m}^2/\\text{min}$",
           "$2\\pi\\text{ m}^2/\\text{min}$",
+          "$4\\pi\\text{ m}^2/\\text{min}$",
           "$16\\pi\\text{ m}^2/\\text{min}$",
         ],
-        correctLetter: "A",
+        correctLetter: "C",
         rationales: {
-          B: "This uses $dr/dt=1$ instead of $0.5$.",
-          C: "This omits the radius value in $dA/dt=2\\pi r\\,dr/dt$.",
+          A: "This uses $dr/dt=1$ instead of $0.5$.",
+          B: "This omits the radius value in $dA/dt=2\\pi r\\,dr/dt$.",
           D: "This gives the area, not its rate of change.",
         },
         hints: [
@@ -748,12 +740,12 @@ const topicSeeds: readonly TopicSeed[] = [
           "revenue_derivative",
           "product_rule",
         ],
-        choices: ["$20$", "$60$", "$100$", "$-20$"],
-        correctLetter: "A",
+        choices: ["$60$", "$100$", "$-20$", "$20$"],
+        correctLetter: "D",
         rationales: {
-          B: "This is the demand $q(20)$, not marginal revenue.",
-          C: "This omits the derivative of the demand factor.",
-          D: "This uses the wrong sign for $q'(p)$ contribution.",
+          A: "This is the demand $q(20)$, not marginal revenue.",
+          B: "This omits the derivative of the demand factor.",
+          C: "This uses the wrong sign for $q'(p)$ contribution.",
         },
         hints: [
           "Revenue is $R(p)=p(100-2p)$.",
@@ -804,14 +796,14 @@ const topicSeeds: readonly TopicSeed[] = [
         difficulty: 2,
         skillTags: ["rates_other_contexts", "temperature_rate", "chain_rule"],
         choices: [
-          "$-1.2\\text{ deg C/min}$",
           "$6\\text{ deg C/min}$",
+          "$-1.2\\text{ deg C/min}$",
           "$-18\\text{ deg C/min}$",
           "$1.2\\text{ deg C/min}$",
         ],
-        correctLetter: "A",
+        correctLetter: "B",
         rationales: {
-          B: "This is the initial exponential offset, not the derivative.",
+          A: "This is the initial exponential offset, not the derivative.",
           C: "This is the long-term temperature term, not a rate.",
           D: "The exponential term is decreasing.",
         },
@@ -834,15 +826,15 @@ const topicSeeds: readonly TopicSeed[] = [
         difficulty: 2,
         skillTags: ["rates_other_contexts", "volume_rate", "chain_rule"],
         choices: [
-          "$15\\text{ cm}^3/\\text{s}$",
           "$3\\text{ cm}^3/\\text{s}$",
           "$25\\text{ cm}^3/\\text{s}$",
+          "$15\\text{ cm}^3/\\text{s}$",
           "$75\\text{ cm}^3/\\text{s}$",
         ],
-        correctLetter: "A",
+        correctLetter: "C",
         rationales: {
-          B: "This uses $3s\\,ds/dt$ instead of $3s^2\\,ds/dt$.",
-          C: "This is $s^2$, not the rate of change of volume.",
+          A: "This uses $3s\\,ds/dt$ instead of $3s^2\\,ds/dt$.",
+          B: "This is $s^2$, not the rate of change of volume.",
           D: "This omits the factor $ds/dt=0.2$.",
         },
         hints: [
@@ -957,16 +949,16 @@ const topicSeeds: readonly TopicSeed[] = [
         difficulty: 2,
         skillTags: ["related_rates_setup", "area_rate"],
         choices: [
-          "$\\frac{dA}{dt}=2s\\frac{ds}{dt}$",
           "$\\frac{dA}{dt}=s^2\\frac{ds}{dt}$",
           "$\\frac{dA}{dt}=2\\frac{ds}{dt}$",
           "$\\frac{dA}{dt}=\\frac{ds}{dt}$",
+          "$\\frac{dA}{dt}=2s\\frac{ds}{dt}$",
         ],
-        correctLetter: "A",
+        correctLetter: "D",
         rationales: {
-          B: "This multiplies by the original area instead of differentiating $s^2$.",
-          C: "This omits the factor of s.",
-          D: "Area and side length do not change at the same rate.",
+          A: "This multiplies by the original area instead of differentiating $s^2$.",
+          B: "This omits the factor of s.",
+          C: "Area and side length do not change at the same rate.",
         },
         hints: [
           "Start with $A=s^2$.",
@@ -1017,14 +1009,14 @@ const topicSeeds: readonly TopicSeed[] = [
         difficulty: 2,
         skillTags: ["related_rates_setup", "volume_rate"],
         choices: [
-          "$\\frac{dV}{dt}=4\\pi r^2\\frac{dr}{dt}$",
           "$\\frac{dV}{dt}=4\\pi r^2$",
+          "$\\frac{dV}{dt}=4\\pi r^2\\frac{dr}{dt}$",
           "$V=4\\pi r^2\\frac{dr}{dt}$",
           "$\\frac{dr}{dt}=4\\pi r^2\\frac{dV}{dt}$",
         ],
-        correctLetter: "A",
+        correctLetter: "B",
         rationales: {
-          B: "This is surface area, not volume rate.",
+          A: "This is surface area, not volume rate.",
           C: "This puts the rate into the volume equation incorrectly.",
           D: "This reverses the relationship between $dV/dt$ and $dr/dt$.",
         },
@@ -1047,15 +1039,15 @@ const topicSeeds: readonly TopicSeed[] = [
         difficulty: 3,
         skillTags: ["related_rates_setup", "similar_triangles"],
         choices: [
-          "$\\frac{15}{x+y}=\\frac6y$",
           "$\\frac{15}{x}=\\frac6y$",
           "$\\frac6{x+y}=\\frac{15}{y}$",
+          "$\\frac{15}{x+y}=\\frac6y$",
           "$15y=6x$",
         ],
-        correctLetter: "A",
+        correctLetter: "C",
         rationales: {
-          B: "The large triangle's base is $x+y$, not x.",
-          C: "The heights are reversed.",
+          A: "The large triangle's base is $x+y$, not x.",
+          B: "The heights are reversed.",
           D: "This misses the full base $x+y$ before simplifying.",
         },
         hints: [
@@ -1077,16 +1069,16 @@ const topicSeeds: readonly TopicSeed[] = [
         difficulty: 3,
         skillTags: ["related_rates_setup", "cone_volume"],
         choices: [
-          "$V=\\frac{\\pi h^3}{27}$",
           "$V=\\pi h^3$",
           "$V=\\frac{\\pi h^3}{9}$",
           "$V=\\frac{\\pi h^2}{9}$",
+          "$V=\\frac{\\pi h^3}{27}$",
         ],
-        correctLetter: "A",
+        correctLetter: "D",
         rationales: {
-          B: "This ignores both the cone formula and the radius-height relationship.",
-          C: "This uses cylinder volume, not cone volume.",
-          D: "Volume should be cubic in h.",
+          A: "This ignores both the cone formula and the radius-height relationship.",
+          B: "This uses cylinder volume, not cone volume.",
+          C: "Volume should be cubic in h.",
         },
         hints: [
           "Cone volume is $V=\\frac13\\pi r^2h$.",
@@ -1212,14 +1204,14 @@ const topicSeeds: readonly TopicSeed[] = [
         difficulty: 3,
         skillTags: ["related_rates", "ladder_problem"],
         choices: [
-          "$\\frac56\\text{ ft/s}$",
           "$\\frac{10}{13}\\text{ ft/s}$",
+          "$\\frac56\\text{ ft/s}$",
           "$\\frac{12}{5}\\text{ ft/s}$",
           "$\\frac65\\text{ ft/s}$",
         ],
-        correctLetter: "A",
+        correctLetter: "B",
         rationales: {
-          B: "This uses the ladder length as the horizontal distance.",
+          A: "This uses the ladder length as the horizontal distance.",
           C: "This solves for the wrong rate ratio.",
           D: "This reverses x and y in the related-rates equation.",
         },
@@ -1247,15 +1239,15 @@ const topicSeeds: readonly TopicSeed[] = [
         difficulty: 4,
         skillTags: ["related_rates", "cone_volume"],
         choices: [
-          "$\\frac1{3\\pi}\\text{ cm/s}$",
           "$\\frac1{9\\pi}\\text{ cm/s}$",
           "$\\frac3\\pi\\text{ cm/s}$",
+          "$\\frac1{3\\pi}\\text{ cm/s}$",
           "$\\frac1\\pi\\text{ cm/s}$",
         ],
-        correctLetter: "A",
+        correctLetter: "C",
         rationales: {
-          B: "This uses an incorrect volume-height relationship.",
-          C: "This reverses the coefficient when solving for $dh/dt$.",
+          A: "This uses an incorrect volume-height relationship.",
+          B: "This reverses the coefficient when solving for $dh/dt$.",
           D: "This misses the factor 3 from the derivative of $h^3$.",
         },
         hints: [
@@ -1282,16 +1274,16 @@ const topicSeeds: readonly TopicSeed[] = [
         difficulty: 4,
         skillTags: ["related_rates", "shadow_problem", "similar_triangles"],
         choices: [
-          "$\\frac{20}{3}\\text{ ft/s}$",
           "$\\frac83\\text{ ft/s}$",
           "$4\\text{ ft/s}$",
           "$\\frac{12}{5}\\text{ ft/s}$",
+          "$\\frac{20}{3}\\text{ ft/s}$",
         ],
-        correctLetter: "A",
+        correctLetter: "D",
         rationales: {
-          B: "This is the rate at which the shadow length changes, not the tip's distance from the lamp.",
-          C: "The shadow tip moves faster than the person.",
-          D: "This comes from reversing the similar-triangles ratio.",
+          A: "This is the rate at which the shadow length changes, not the tip's distance from the lamp.",
+          B: "The shadow tip moves faster than the person.",
+          C: "This comes from reversing the similar-triangles ratio.",
         },
         hints: [
           "Let x be the person's distance from the lamp and y be the shadow length.",
@@ -1431,10 +1423,10 @@ const topicSeeds: readonly TopicSeed[] = [
           "\\text{If }f(4)=10\\text{ and }f'(4)=-0.3,\\text{ what is the tangent-line estimate for }f(4.2)?",
         difficulty: 2,
         skillTags: ["linearization", "local_linearity"],
-        choices: ["$9.94$", "$10.06$", "$9.7$", "$10.2$"],
-        correctLetter: "A",
+        choices: ["$10.06$", "$9.94$", "$9.7$", "$10.2$"],
+        correctLetter: "B",
         rationales: {
-          B: "The derivative is negative, so the estimate should decrease.",
+          A: "The derivative is negative, so the estimate should decrease.",
           C: "This uses a change of 1 instead of 0.2.",
           D: "This uses the input change as the output change.",
         },
@@ -1456,11 +1448,11 @@ const topicSeeds: readonly TopicSeed[] = [
           "\\text{Using linearization of }f(x)=\\sqrt{x}\\text{ at }x=16,\\text{ approximate }\\sqrt{16.5}.",
         difficulty: 2,
         skillTags: ["linearization", "radical_approximation"],
-        choices: ["$4.0625$", "$4.125$", "$4.5$", "$4.03125$"],
-        correctLetter: "A",
+        choices: ["$4.125$", "$4.5$", "$4.0625$", "$4.03125$"],
+        correctLetter: "C",
         rationales: {
-          B: "This uses derivative $1/4$ instead of $1/8$.",
-          C: "This adds the entire input change to the square root.",
+          A: "This uses derivative $1/4$ instead of $1/8$.",
+          B: "This adds the entire input change to the square root.",
           D: "This uses an input change of 0.25 instead of 0.5.",
         },
         hints: [
@@ -1482,16 +1474,16 @@ const topicSeeds: readonly TopicSeed[] = [
         difficulty: 3,
         skillTags: ["linearization", "concavity_error"],
         choices: [
-          "\\text{an overestimate}",
           "\\text{an underestimate}",
           "\\text{exact}",
           "\\text{impossible to compare from concavity}",
+          "\\text{an overestimate}",
         ],
-        correctLetter: "A",
+        correctLetter: "D",
         rationales: {
-          B: "For concave down functions, tangent lines lie above the graph locally.",
-          C: "A tangent line is exact only for linear functions or special points.",
-          D: "Concavity gives the tangent-line error direction locally.",
+          A: "For concave down functions, tangent lines lie above the graph locally.",
+          B: "A tangent line is exact only for linear functions or special points.",
+          C: "Concavity gives the tangent-line error direction locally.",
         },
         hints: [
           "$f''<0$ means the graph is concave down.",
@@ -1541,10 +1533,10 @@ const topicSeeds: readonly TopicSeed[] = [
           "\\text{The linearization of }f(x)=\\ln x\\text{ at }x=1\\text{ gives which estimate for }\\ln(1.1)?",
         difficulty: 2,
         skillTags: ["linearization", "log_derivative"],
-        choices: ["$0.1$", "$1.1$", "$0$", "$\\frac1{1.1}$"],
-        correctLetter: "A",
+        choices: ["$1.1$", "$0.1$", "$0$", "$\\frac1{1.1}$"],
+        correctLetter: "B",
         rationales: {
-          B: "This uses the input value as the logarithm.",
+          A: "This uses the input value as the logarithm.",
           C: "This is $\\ln1$ but ignores the input change.",
           D: "This is the derivative near 1.1, not the linear estimate from x=1.",
         },
@@ -1643,11 +1635,11 @@ const topicSeeds: readonly TopicSeed[] = [
         questionLatex: "\\lim_{x\\to0}\\frac{\\sin(3x)}{x}=",
         difficulty: 2,
         skillTags: ["lhospital", "trig_limit"],
-        choices: ["$3$", "$1$", "$0$", "\\text{Does not exist}"],
-        correctLetter: "A",
+        choices: ["$1$", "$0$", "$3$", "\\text{Does not exist}"],
+        correctLetter: "C",
         rationales: {
-          B: "This ignores the inner derivative factor 3.",
-          C: "The original expression has a 0/0 form, but the limit is not 0.",
+          A: "This ignores the inner derivative factor 3.",
+          B: "The original expression has a 0/0 form, but the limit is not 0.",
           D: "The L'Hospital result exists.",
         },
         hints: [
@@ -1667,12 +1659,12 @@ const topicSeeds: readonly TopicSeed[] = [
         questionLatex: "\\lim_{x\\to\\infty}\\frac{x}{e^x}=",
         difficulty: 2,
         skillTags: ["lhospital", "infinity_over_infinity"],
-        choices: ["$0$", "$1$", "\\infty", "\\text{Does not exist}"],
-        correctLetter: "A",
+        choices: ["$1$", "\\infty", "\\text{Does not exist}", "$0$"],
+        correctLetter: "D",
         rationales: {
-          B: "After L'Hospital, the limit is $1/e^x$, which approaches 0.",
-          C: "The exponential grows faster than x.",
-          D: "The limit exists.",
+          A: "After L'Hospital, the limit is $1/e^x$, which approaches 0.",
+          B: "The exponential grows faster than x.",
+          C: "The limit exists.",
         },
         hints: [
           "The form is $\\infty/\\infty$.",
@@ -1715,10 +1707,10 @@ const topicSeeds: readonly TopicSeed[] = [
         questionLatex: "\\lim_{x\\to0}\\frac{1-\\cos x}{x^2}=",
         difficulty: 3,
         skillTags: ["lhospital", "repeated_lhospital"],
-        choices: ["$\\frac12$", "$1$", "$0$", "\\text{Does not exist}"],
-        correctLetter: "A",
+        choices: ["$1$", "$\\frac12$", "$0$", "\\text{Does not exist}"],
+        correctLetter: "B",
         rationales: {
-          B: "This is the result after differentiating only once incorrectly or forgetting the denominator derivative.",
+          A: "This is the result after differentiating only once incorrectly or forgetting the denominator derivative.",
           C: "After repeated L'Hospital, the limit is not 0.",
           D: "The repeated L'Hospital limit exists.",
         },
@@ -1746,15 +1738,15 @@ const topicSeeds: readonly TopicSeed[] = [
         difficulty: 3,
         skillTags: ["lhospital", "indeterminate_forms"],
         choices: [
-          "$\\lim_{x\\to0}\\frac{\\ln(1+x)}{x}$",
           "$\\lim_{x\\to0}\\frac{x+1}{x}$",
           "$\\lim_{x\\to0}(1+x)^{1/x}$",
+          "$\\lim_{x\\to0}\\frac{\\ln(1+x)}{x}$",
           "$\\lim_{x\\to0}\\frac{1}{x^2}$",
         ],
-        correctLetter: "A",
+        correctLetter: "C",
         rationales: {
-          B: "This is not 0/0 or $\\infty/\\infty$; the numerator approaches 1.",
-          C: "This has form $1^\\infty$ and needs logarithmic rewriting before L'Hospital.",
+          A: "This is not 0/0 or $\\infty/\\infty$; the numerator approaches 1.",
+          B: "This has form $1^\\infty$ and needs logarithmic rewriting before L'Hospital.",
           D: "This tends to infinity and is not a quotient indeterminate form.",
         },
         hints: [

@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import Link from "next/link";
 import { CheckCircle2, XCircle, Lightbulb, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -40,7 +41,7 @@ interface StoredMcAttempt {
  * profile. StudyLoop does not need a real-name account or server tracking to
  * remember this work on the student's device.
  */
-export function McAttempt({ item }: { item: McSingleItem }) {
+export function McAttempt({ item, followUpHref }: { item: McSingleItem; followUpHref?: string }) {
   const [selected, setSelected] = React.useState<string | null>(null);
   const [submitted, setSubmitted] = React.useState(false);
   const [hintsShown, setHintsShown] = React.useState(0);
@@ -157,12 +158,12 @@ export function McAttempt({ item }: { item: McSingleItem }) {
                   submitted ? `rationale-${choice.letter}` : undefined
                 }
               />
-              <div className="flex-1">
+              <div className="min-w-0 flex-1">
                 <div className="flex items-baseline gap-2">
                   <span className="font-semibold text-foreground">
                     {displayLetter}.
                   </span>
-                  <MixedMath text={choice.text} />
+                  <MixedMath text={choice.text} className="min-w-0" />
                 </div>
                 {submitted &&
                   choice.rationaleIfWrong &&
@@ -255,6 +256,7 @@ export function McAttempt({ item }: { item: McSingleItem }) {
           showSolution={showSolution}
           onToggleSolution={() => setShowSolution((s) => !s)}
           onRetry={reset}
+          followUpHref={followUpHref}
         />
       )}
     </div>
@@ -270,6 +272,7 @@ function FeedbackPanel({
   showSolution,
   onToggleSolution,
   onRetry,
+  followUpHref,
 }: {
   isCorrect: boolean;
   hintsUsed: number;
@@ -279,6 +282,7 @@ function FeedbackPanel({
   showSolution: boolean;
   onToggleSolution: () => void;
   onRetry: () => void;
+  followUpHref?: string;
 }) {
   return (
     <Card
@@ -295,13 +299,13 @@ function FeedbackPanel({
         ) : (
           <XCircle className="mt-0.5 h-6 w-6 shrink-0 text-destructive" />
         )}
-        <div className="flex-1 space-y-3">
+        <div className="min-w-0 flex-1 space-y-3">
           <div>
             <p className="font-semibold">
               {isCorrect ? "Correct" : "Not quite"}
             </p>
             <p className="mt-1 text-sm text-muted-foreground">
-              {isCorrect && hintsUsed === 0 && "Nailed it on the first try."}
+              {isCorrect && hintsUsed === 0 && "Correct without hints."}
               {isCorrect &&
                 hintsUsed > 0 &&
                 `Solved with ${hintsUsed} of ${totalHints} hints.`}
@@ -337,6 +341,8 @@ function FeedbackPanel({
             )}
           </div>
 
+          {followUpHref && <Link href={followUpHref} className="inline-block text-sm text-primary underline">Try a different question on this topic</Link>}
+
           {showSolution && (
             <div className="mt-2 space-y-3 rounded-md bg-background/60 p-4">
               <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
@@ -348,7 +354,7 @@ function FeedbackPanel({
                     <span className="shrink-0 font-semibold text-muted-foreground">
                       {step.step}.
                     </span>
-                    <div className="space-y-1.5">
+                    <div className="min-w-0 space-y-1.5">
                       <p>
                         <MixedMath text={step.explanation} />
                       </p>

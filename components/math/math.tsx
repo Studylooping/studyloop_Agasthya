@@ -38,7 +38,11 @@ export function Tex({ tex, display = false, className, ariaLabel }: MathProps) {
   const Tag = display ? "div" : "span";
   return (
     <Tag
-      className={cn(display && "my-3 overflow-x-auto", className)}
+      className={cn(
+        "max-w-full",
+        display ? "my-3 overflow-x-auto" : "inline-block overflow-x-auto align-middle",
+        className,
+      )}
       aria-label={ariaLabel}
       // eslint-disable-next-line react/no-danger
       dangerouslySetInnerHTML={{ __html: html }}
@@ -117,7 +121,7 @@ export function QuestionStem({
     );
   }
 
-  if (!looksLikeProseStem(text)) {
+  if (!looksLikeProseStem(text) && looksLikeLatex(text)) {
     return <Tex tex={text} display className={className} />;
   }
 
@@ -170,7 +174,7 @@ function looksLikeLatex(text: string) {
 function looksLikeProseStem(text: string) {
   return (
     /\s/.test(text) &&
-    /\b(?:A|How|If|In|Let|On|For|Find|The|Then|Which|Suppose|Restricted|defined|define|number|sets?|functions?|relations?)\b/i.test(
+    /\b(?:A|An|How|If|In|Let|On|For|Find|State|Give|Write|Explain|Use|Why|Trace|Differentiate|Compare|List|Identify|Name|Classify|Describe|Calculate|Evaluate|The|Then|Which|Suppose|During|While|Four|Two|Three|Restricted|defined|define|number|sets?|functions?|relations?)\b/i.test(
       text,
     )
   );
@@ -331,7 +335,10 @@ function splitHybridQuestion(text: string) {
       continue;
     }
 
-    const math = readMathChunk(rest);
+    // A suffix of an ordinary word (for example, the n in "situation: A")
+    // must never become the start of an inferred algebra expression.
+    const atBoundary = i === 0 || !/[A-Za-z0-9]/.test(text[i - 1]);
+    const math = atBoundary ? readMathChunk(rest) : null;
     if (math) {
       push("math", math.value);
       i += math.length;
@@ -360,7 +367,7 @@ function readMathChunk(text: string): { value: string; length: number } | null {
   if (commandExpression) return trimTrailingPunctuation(commandExpression[0]);
 
   const relationExpression = text.match(
-    /^(?:[A-Za-z]\([^)]*\)|\([^)]+\)\(x\)|f\^\{?\d+\}?\(x\)|f\^\{-1\}\(x\)|[fg]\s*\\circ\s*[fg]|[A-Za-z](?:\s*[:=]\s*|:\s*)\\?[{\\A-Za-z])[^,.;?]*/,
+    /^(?:[A-Za-z]\([^)]*\)|\([^)]+\)\(x\)|f\^\{?\d+\}?\(x\)|f\^\{-1\}\(x\)|[fg]\s*\\circ\s*[fg]|[A-Za-z]\s*=\s*\\?[{\\A-Za-z]|[A-Za-z]\s*:\s*\\)[^,.;?]*/,
   );
   if (relationExpression) return trimTrailingPunctuation(relationExpression[0]);
 

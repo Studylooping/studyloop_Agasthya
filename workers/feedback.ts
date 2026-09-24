@@ -62,6 +62,14 @@ const siteFeedbackLabels: Record<string, string> = {
 
 const rateLimits = new Map<string, { count: number; resetAt: number }>();
 
+function isAllowedOriginHost(originHost: string, requestHost: string): boolean {
+  return (
+    originHost === requestHost ||
+    originHost === "studyloop.in" ||
+    originHost.endsWith(".studyloop.in")
+  );
+}
+
 function json(data: unknown, init?: ResponseInit) {
   return new Response(JSON.stringify(data), {
     ...init,
@@ -134,10 +142,7 @@ function corsHeaders(request: Request): Record<string, string> {
 
   try {
     const originUrl = new URL(origin);
-    if (
-      originUrl.host === requestUrl.host ||
-      originUrl.hostname.endsWith(".studyloop.in")
-    ) {
+    if (isAllowedOriginHost(originUrl.host, requestUrl.host)) {
       return {
         "Access-Control-Allow-Origin": origin,
         "Access-Control-Allow-Methods": "POST, OPTIONS",
@@ -158,10 +163,7 @@ async function handlePost(request: Request, env: Env) {
   if (origin) {
     try {
       const originUrl = new URL(origin);
-      if (
-        originUrl.host !== requestUrl.host &&
-        !originUrl.hostname.endsWith(".studyloop.in")
-      ) {
+      if (!isAllowedOriginHost(originUrl.host, requestUrl.host)) {
         return json({ error: "Invalid origin" }, { status: 403 });
       }
     } catch {
@@ -174,17 +176,6 @@ async function handlePost(request: Request, env: Env) {
     return json({ error: "Request too large" }, { status: 413 });
   }
 
-  const ip =
-    request.headers.get("cf-connecting-ip") ??
-    request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ??
-    "unknown";
-  if (isRateLimited(ip)) {
-    return json(
-      { error: "Please wait before sending more feedback." },
-      { status: 429 },
-    );
-  }
-
   let raw: Partial<FeedbackSubmission>;
   try {
     raw = (await request.json()) as Partial<FeedbackSubmission>;
@@ -194,6 +185,17 @@ async function handlePost(request: Request, env: Env) {
 
   if (cleanText(raw.website, 200)) {
     return json({ ok: true });
+  }
+
+  const ip =
+    request.headers.get("cf-connecting-ip") ??
+    request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ??
+    "unknown";
+  if (isRateLimited(ip)) {
+    return json(
+      { error: "Please wait before sending more feedback." },
+      { status: 429 },
+    );
   }
 
   const kind: FeedbackKind | null =

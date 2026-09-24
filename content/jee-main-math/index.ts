@@ -115,7 +115,7 @@ export const jeeMainMath: Course = {
   frameworkLabel: "NTA JEE Main Paper 1 Mathematics syllabus",
   status: "live",
   description:
-    "Original JEE Main Mathematics practice aligned to the official Paper 1 syllabus, with tough MCQs, numerical-value questions, hints, and trap-aware feedback.",
+    "Original JEE Main Mathematics practice aligned to the NTA Paper 1 Mathematics syllabus, with tough MCQs, numerical-value questions, hints, and trap-aware feedback.",
   units: [
     u1SetsRelationsFunctions,
     u2ComplexNumbersQuadraticEquations,

@@ -13,7 +13,7 @@ import type {
 
 const COURSE = "calc-ab";
 const UNIT = "u5-analytical-app";
-const VERSION = "0.1.3";
+const VERSION = "0.1.4";
 const REVIEW_STATUS = "human_review_required" as const;
 const SOURCE_TYPE = "original_ai_assisted_question" as const;
 const LETTERS = ["A", "B", "C", "D"] as const;
@@ -73,8 +73,14 @@ function hints(items: readonly [string, string, string]): Hint[] {
   }));
 }
 
-function calibrateMcDifficulty(seedDifficulty: Difficulty, index: number): Difficulty {
-  return Math.max(seedDifficulty, MC_DIFFICULTY_FLOORS[index] ?? 2) as Difficulty;
+function calibrateMcDifficulty(
+  seedDifficulty: Difficulty,
+  index: number,
+): Difficulty {
+  return Math.max(
+    seedDifficulty,
+    MC_DIFFICULTY_FLOORS[index] ?? 2,
+  ) as Difficulty;
 }
 
 function calibrateFrqDifficulty(seedDifficulty: Difficulty): Difficulty {
@@ -141,23 +147,16 @@ function makeMc(meta: TopicMeta, seed: McSeed, index: number): McSingleItem {
       isCorrect,
       rationaleIfWrong: isCorrect
         ? null
-        : seed.rationales?.[seedLetter] ??
-          fallbackWrongRationale(seed, seedLetter),
+        : (seed.rationales?.[seedLetter] ??
+          fallbackWrongRationale(seed, seedLetter)),
       misconceptionTag: isCorrect
         ? null
-        : seed.misconceptionTags?.[seedLetter] ?? "incorrect_analytical_reasoning",
+        : (seed.misconceptionTags?.[seedLetter] ??
+          "incorrect_analytical_reasoning"),
     };
   });
 
-  const rotation = index % LETTERS.length;
-  const rotatedChoices =
-    rotation === 0
-      ? unletteredChoices
-      : [
-          ...unletteredChoices.slice(-rotation),
-          ...unletteredChoices.slice(0, -rotation),
-        ];
-  const choices = rotatedChoices.map((choice, choiceIndex) => ({
+  const choices = unletteredChoices.map((choice, choiceIndex) => ({
     letter: LETTERS[choiceIndex],
     ...choice,
   })) as McChoice[];
@@ -258,8 +257,7 @@ const mvtSecantFigure: ItemFigure = {
 const derivativeSignGraphFigure: ItemFigure = {
   type: "svg",
   title: "Graph of first derivative",
-  description:
-    "The graph of f prime crosses the x-axis at x=-2 and x=1.",
+  description: "The graph of f prime crosses the x-axis at x=-2 and x=1.",
   svg: `<svg viewBox="0 0 640 340" role="img" aria-label="Graph of f prime with zeros at -2 and 1">
   <rect width="640" height="340" rx="18" fill="#f8fafc"/>
   <line x1="70" y1="180" x2="590" y2="180" stroke="#64748b" stroke-width="3"/>
@@ -444,14 +442,14 @@ const topicSeeds: readonly TopicSeed[] = [
         difficulty: 2,
         skillTags: ["rolles_theorem", "hypotheses"],
         choices: [
-          "$g$ is not differentiable at $x=2$.",
           "$g$ is not continuous at $x=2$.",
+          "$g$ is not differentiable at $x=2$.",
           "$g(0)\\ne g(4)$.",
           "The interval $[0,4]$ is not closed.",
         ],
-        correctLetter: "A",
+        correctLetter: "B",
         rationales: {
-          B: "$|x-2|$ is continuous at $x=2$.",
+          A: "$|x-2|$ is continuous at $x=2$.",
           C: "Both endpoint values are $2$.",
           D: "$[0,4]$ is a closed interval.",
         },
@@ -463,12 +461,14 @@ const topicSeeds: readonly TopicSeed[] = [
         solution: [
           {
             step: 1,
-            explanation: "Check the interior point where the graph has a corner.",
+            explanation:
+              "Check the interior point where the graph has a corner.",
             math: "x=2",
           },
           {
             step: 2,
-            explanation: "The derivative fails at the corner, so the differentiability hypothesis fails.",
+            explanation:
+              "The derivative fails at the corner, so the differentiability hypothesis fails.",
             math: "g'(2)\\text{ does not exist}",
           },
         ],
@@ -478,8 +478,8 @@ const topicSeeds: readonly TopicSeed[] = [
           "\\text{A differentiable function satisfies }f(1)=3\\text{ and }f(5)=11.\\text{ What derivative value is guaranteed somewhere in }(1,5)?",
         difficulty: 2,
         skillTags: ["mean_value_theorem", "table_to_derivative"],
-        choices: ["$2$", "$4$", "$8$", "$\\frac{11}{5}$"],
-        correctLetter: "A",
+        choices: ["$4$", "$8$", "$2$", "$\\frac{11}{5}$"],
+        correctLetter: "C",
         hints: [
           "Use the slope of the secant line through the endpoints.",
           "The MVT guarantees a matching instantaneous rate.",
@@ -493,7 +493,8 @@ const topicSeeds: readonly TopicSeed[] = [
           },
           {
             step: 2,
-            explanation: "The MVT guarantees some $c$ with this derivative value.",
+            explanation:
+              "The MVT guarantees some $c$ with this derivative value.",
             math: "f'(c)=2",
           },
         ],
@@ -505,16 +506,16 @@ const topicSeeds: readonly TopicSeed[] = [
         skillTags: ["mean_value_theorem", "graph_interpretation"],
         figure: mvtSecantFigure,
         choices: [
-          "There is some $c\\in(a,b)$ such that $f'(c)=2$.",
           "Every $c\\in(a,b)$ satisfies $f'(c)=2$.",
           "$f'(a)=f'(b)=2$.",
           "The function must be linear on $[a,b]$.",
+          "There is some $c\\in(a,b)$ such that $f'(c)=2$.",
         ],
-        correctLetter: "A",
+        correctLetter: "D",
         rationales: {
-          B: "The theorem guarantees at least one point, not every point.",
-          C: "The endpoint derivatives are not the conclusion of the MVT.",
-          D: "A nonlinear curve can still have one tangent parallel to the secant.",
+          A: "The theorem guarantees at least one point, not every point.",
+          B: "The endpoint derivatives are not the conclusion of the MVT.",
+          C: "A nonlinear curve can still have one tangent parallel to the secant.",
         },
         hints: [
           "The relevant visual feature is a tangent parallel to the secant line.",
@@ -524,12 +525,14 @@ const topicSeeds: readonly TopicSeed[] = [
         solution: [
           {
             step: 1,
-            explanation: "The curve is continuous and differentiable on the needed interval.",
+            explanation:
+              "The curve is continuous and differentiable on the needed interval.",
             math: "\\text{MVT hypotheses hold}",
           },
           {
             step: 2,
-            explanation: "The theorem guarantees a point where instantaneous slope equals average slope.",
+            explanation:
+              "The theorem guarantees a point where instantaneous slope equals average slope.",
             math: "f'(c)=2",
           },
         ],
@@ -584,8 +587,7 @@ const topicSeeds: readonly TopicSeed[] = [
         },
         {
           letter: "b",
-          promptMarkdown:
-            "Find the average rate of change of $f$ on $[0,2]$.",
+          promptMarkdown: "Find the average rate of change of $f$ on $[0,2]$.",
           points: 1,
         },
         {
@@ -603,10 +605,22 @@ const topicSeeds: readonly TopicSeed[] = [
       rubric: {
         maxPoints: 4,
         criteria: [
-          { part: "a", points: 1, description: "States continuity and differentiability correctly." },
-          { part: "b", points: 1, description: "Computes the average rate of change as 1." },
+          {
+            part: "a",
+            points: 1,
+            description: "States continuity and differentiability correctly.",
+          },
+          {
+            part: "b",
+            points: 1,
+            description: "Computes the average rate of change as 1.",
+          },
           { part: "c", points: 1, description: "Sets $3c^2-3=1$." },
-          { part: "c", points: 1, description: "Finds $c=2/\\sqrt3$ and rejects the negative value." },
+          {
+            part: "c",
+            points: 1,
+            description: "Finds $c=2/\\sqrt3$ and rejects the negative value.",
+          },
         ],
       },
       commonErrors: [
@@ -635,7 +649,8 @@ const topicSeeds: readonly TopicSeed[] = [
   },
   {
     topicCode: "5.2",
-    title: "Extreme Value Theorem, Global Versus Local Extrema, and Critical Points",
+    title:
+      "Extreme Value Theorem, Global Versus Local Extrema, and Critical Points",
     subtopic:
       "Identifying candidate points and distinguishing guaranteed absolute extrema from local behavior",
     mc: [
@@ -645,12 +660,12 @@ const topicSeeds: readonly TopicSeed[] = [
         difficulty: 3,
         skillTags: ["critical_points", "absolute_extrema_candidates"],
         choices: [
-          "$\\{-1,0,2,4\\}$",
           "$\\{0,2\\}$",
+          "$\\{-1,0,2,4\\}$",
           "$\\{-1,4\\}$",
           "$\\{-1,2,4\\}$",
         ],
-        correctLetter: "A",
+        correctLetter: "B",
         hints: [
           "For a closed interval, include endpoints.",
           "Interior critical points occur where $f'(x)=0$ or undefined.",
@@ -675,15 +690,15 @@ const topicSeeds: readonly TopicSeed[] = [
         difficulty: 2,
         skillTags: ["extreme_value_theorem", "hypotheses"],
         choices: [
-          "The domain is not a closed interval.",
           "$f$ is not differentiable at $x=1$.",
           "$f(1)$ is undefined.",
+          "The domain is not a closed interval.",
           "$f$ has a critical point in the interval.",
         ],
-        correctLetter: "A",
+        correctLetter: "C",
         rationales: {
-          B: "$f$ is differentiable at $x=1$ from the left as an endpoint issue, but differentiability is not the EVT requirement.",
-          C: "$f(1)=1$ is defined.",
+          A: "$f$ is differentiable at $x=1$ from the left as an endpoint issue, but differentiability is not the EVT requirement.",
+          B: "$f(1)=1$ is defined.",
           D: "A critical point would not prevent the EVT from applying.",
         },
         hints: [
@@ -709,12 +724,12 @@ const topicSeeds: readonly TopicSeed[] = [
           "\\text{For }g(x)=|x-3|+2,\\text{ which value is a critical point?}",
         difficulty: 2,
         skillTags: ["critical_points", "nondifferentiability"],
-        choices: ["$x=3$", "$x=2$", "$x=0$", "There are no critical points."],
-        correctLetter: "A",
+        choices: ["$x=2$", "$x=0$", "There are no critical points.", "$x=3$"],
+        correctLetter: "D",
         rationales: {
-          B: "$x=2$ is not where the corner occurs.",
-          C: "$x=0$ is in the domain but has a defined nonzero derivative.",
-          D: "A point where the derivative does not exist can be critical if it is in the domain.",
+          A: "$x=2$ is not where the corner occurs.",
+          B: "$x=0$ is in the domain but has a defined nonzero derivative.",
+          C: "A point where the derivative does not exist can be critical if it is in the domain.",
         },
         hints: [
           "Critical points can occur where $g'(x)=0$ or where $g'$ does not exist.",
@@ -729,7 +744,8 @@ const topicSeeds: readonly TopicSeed[] = [
           },
           {
             step: 2,
-            explanation: "Since $g(3)$ exists but $g'(3)$ does not, $x=3$ is critical.",
+            explanation:
+              "Since $g(3)$ exists but $g'(3)$ does not, $x=3$ is critical.",
             math: "g'(3)\\text{ does not exist}",
           },
         ],
@@ -759,7 +775,8 @@ const topicSeeds: readonly TopicSeed[] = [
           },
           {
             step: 2,
-            explanation: "The sign changes only at $x=2$, from negative to positive.",
+            explanation:
+              "The sign changes only at $x=2$, from negative to positive.",
             math: "x=2\\text{ is a local minimum}",
           },
         ],
@@ -769,8 +786,8 @@ const topicSeeds: readonly TopicSeed[] = [
           "\\text{For }p(x)=x^4-8x^2\\text{ on }[-3,2],\\text{ where does }p\\text{ attain its absolute maximum?}",
         difficulty: 4,
         skillTags: ["absolute_extrema", "candidates_test"],
-        choices: ["$x=-3$", "$x=-2$", "$x=0$", "$x=2$"],
-        correctLetter: "A",
+        choices: ["$x=-2$", "$x=-3$", "$x=0$", "$x=2$"],
+        correctLetter: "B",
         hints: [
           "Find all candidates, including endpoints.",
           "$p'(x)=4x(x^2-4)$.",
@@ -779,7 +796,8 @@ const topicSeeds: readonly TopicSeed[] = [
         solution: [
           {
             step: 1,
-            explanation: "Candidates in the interval are endpoints and critical points.",
+            explanation:
+              "Candidates in the interval are endpoints and critical points.",
             math: "x=-3,-2,0,2",
           },
           {
@@ -799,11 +817,29 @@ const topicSeeds: readonly TopicSeed[] = [
       questionLatex:
         "\\text{Let }f(x)=x^3-3x^2+1\\text{ on }[-1,3].\\text{ Find and classify the absolute extrema of }f.",
       difficulty: 4,
-      skillTags: ["extreme_value_theorem", "candidates_test", "absolute_extrema"],
+      skillTags: [
+        "extreme_value_theorem",
+        "candidates_test",
+        "absolute_extrema",
+      ],
       parts: [
-        { letter: "a", promptMarkdown: "Explain why $f$ must have an absolute maximum and an absolute minimum on $[-1,3]$.", points: 1 },
-        { letter: "b", promptMarkdown: "Find all candidate $x$-values for absolute extrema.", points: 2 },
-        { letter: "c", promptMarkdown: "Determine the absolute maximum value and absolute minimum value.", points: 2 },
+        {
+          letter: "a",
+          promptMarkdown:
+            "Explain why $f$ must have an absolute maximum and an absolute minimum on $[-1,3]$.",
+          points: 1,
+        },
+        {
+          letter: "b",
+          promptMarkdown: "Find all candidate $x$-values for absolute extrema.",
+          points: 2,
+        },
+        {
+          letter: "c",
+          promptMarkdown:
+            "Determine the absolute maximum value and absolute minimum value.",
+          points: 2,
+        },
       ],
       hints: [
         "Use the EVT first, then the Candidates Test.",
@@ -813,11 +849,24 @@ const topicSeeds: readonly TopicSeed[] = [
       rubric: {
         maxPoints: 5,
         criteria: [
-          { part: "a", points: 1, description: "Cites continuity on a closed interval." },
+          {
+            part: "a",
+            points: 1,
+            description: "Cites continuity on a closed interval.",
+          },
           { part: "b", points: 1, description: "Computes $f'(x)=3x(x-2)$." },
           { part: "b", points: 1, description: "Lists candidates $-1,0,2,3$." },
-          { part: "c", points: 1, description: "Correctly evaluates candidate function values." },
-          { part: "c", points: 1, description: "Identifies absolute maximum and minimum values with locations." },
+          {
+            part: "c",
+            points: 1,
+            description: "Correctly evaluates candidate function values.",
+          },
+          {
+            part: "c",
+            points: 1,
+            description:
+              "Identifies absolute maximum and minimum values with locations.",
+          },
         ],
       },
       commonErrors: [
@@ -846,7 +895,8 @@ const topicSeeds: readonly TopicSeed[] = [
   },
   {
     topicCode: "5.3",
-    title: "Determining Intervals on Which a Function Is Increasing or Decreasing",
+    title:
+      "Determining Intervals on Which a Function Is Increasing or Decreasing",
     subtopic:
       "Using the sign of the first derivative to describe monotonic behavior",
     mc: [
@@ -856,12 +906,12 @@ const topicSeeds: readonly TopicSeed[] = [
         difficulty: 3,
         skillTags: ["increasing_decreasing", "derivative_sign"],
         choices: [
-          "$(-\\infty,-2)\\cup(1,\\infty)$",
           "$(-2,1)$",
           "$(-\\infty,1)$",
+          "$(-\\infty,-2)\\cup(1,\\infty)$",
           "$(-2,\\infty)$",
         ],
-        correctLetter: "A",
+        correctLetter: "C",
         hints: [
           "A function increases where $f'(x)>0$.",
           "The sign can change at $x=-2$ and $x=1$.",
@@ -886,12 +936,12 @@ const topicSeeds: readonly TopicSeed[] = [
         difficulty: 2,
         skillTags: ["increasing_decreasing", "sign_chart"],
         choices: [
-          "$g$ is decreasing on $(0,3)$ and $(3,\\infty)$.",
           "$g$ is increasing on $(0,\\infty)$.",
           "$g$ has a local minimum at $x=0$.",
           "$g$ is constant on $(0,3)$.",
+          "$g$ is decreasing on $(0,3)$ and $(3,\\infty)$.",
         ],
-        correctLetter: "A",
+        correctLetter: "D",
         hints: [
           "Positive $g'$ means increasing; negative $g'$ means decreasing.",
           "Read the intervals directly from the sign information.",
@@ -916,7 +966,12 @@ const topicSeeds: readonly TopicSeed[] = [
         difficulty: 3,
         skillTags: ["derivative_graph", "decreasing_intervals"],
         figure: derivativeSignGraphFigure,
-        choices: ["$(-2,1)$", "$(-\\infty,-2)$", "$(1,\\infty)$", "$(-\\infty,1)$"],
+        choices: [
+          "$(-2,1)$",
+          "$(-\\infty,-2)$",
+          "$(1,\\infty)$",
+          "$(-\\infty,1)$",
+        ],
         correctLetter: "A",
         hints: [
           "A function decreases where its derivative is below the x-axis.",
@@ -941,8 +996,13 @@ const topicSeeds: readonly TopicSeed[] = [
           "\\text{For }h(x)=\\ln x-\\frac{x}{2}\\text{ with }x>0,\\text{ on which interval is }h\\text{ increasing?}",
         difficulty: 3,
         skillTags: ["increasing_decreasing", "domain_restriction"],
-        choices: ["$(0,2)$", "$(2,\\infty)$", "$(-\\infty,2)$", "$(0,\\infty)$"],
-        correctLetter: "A",
+        choices: [
+          "$(2,\\infty)$",
+          "$(0,2)$",
+          "$(-\\infty,2)$",
+          "$(0,\\infty)$",
+        ],
+        correctLetter: "B",
         hints: [
           "Differentiate first.",
           "$h'(x)=1/x-1/2$.",
@@ -967,12 +1027,12 @@ const topicSeeds: readonly TopicSeed[] = [
         difficulty: 4,
         skillTags: ["derivative_sign", "rational_derivative"],
         choices: [
-          "$(-\\infty,-1)\\cup(4,\\infty)$",
           "$(-1,4)$",
           "$(-\\infty,4)$",
+          "$(-\\infty,-1)\\cup(4,\\infty)$",
           "$(-1,\\infty)$",
         ],
-        correctLetter: "A",
+        correctLetter: "C",
         hints: [
           "The denominator $x^2+1$ is always positive.",
           "So the sign comes from $(x-4)(x+1)$.",
@@ -981,7 +1041,8 @@ const topicSeeds: readonly TopicSeed[] = [
         solution: [
           {
             step: 1,
-            explanation: "Because the denominator is positive, analyze the numerator.",
+            explanation:
+              "Because the denominator is positive, analyze the numerator.",
             math: "(x-4)(x+1)>0",
           },
           {
@@ -996,11 +1057,29 @@ const topicSeeds: readonly TopicSeed[] = [
       questionLatex:
         "\\text{A differentiable function }f\\text{ has }f'(x)=(x-1)(x-3)\\text{ on }[0,5].",
       difficulty: 4,
-      skillTags: ["increasing_decreasing", "first_derivative_test", "justification"],
+      skillTags: [
+        "increasing_decreasing",
+        "first_derivative_test",
+        "justification",
+      ],
       parts: [
-        { letter: "a", promptMarkdown: "Determine the intervals on which $f$ is increasing and decreasing.", points: 2 },
-        { letter: "b", promptMarkdown: "Classify any local extrema of $f$ in $(0,5)$.", points: 2 },
-        { letter: "c", promptMarkdown: "Explain why your classifications follow from the derivative sign.", points: 1 },
+        {
+          letter: "a",
+          promptMarkdown:
+            "Determine the intervals on which $f$ is increasing and decreasing.",
+          points: 2,
+        },
+        {
+          letter: "b",
+          promptMarkdown: "Classify any local extrema of $f$ in $(0,5)$.",
+          points: 2,
+        },
+        {
+          letter: "c",
+          promptMarkdown:
+            "Explain why your classifications follow from the derivative sign.",
+          points: 1,
+        },
       ],
       hints: [
         "Zeros of $f'$ split the interval into sign-test intervals.",
@@ -1010,11 +1089,31 @@ const topicSeeds: readonly TopicSeed[] = [
       rubric: {
         maxPoints: 5,
         criteria: [
-          { part: "a", points: 1, description: "Correctly identifies where $f'(x)>0$." },
-          { part: "a", points: 1, description: "Correctly identifies where $f'(x)<0$." },
-          { part: "b", points: 1, description: "Classifies the local maximum at $x=1$." },
-          { part: "b", points: 1, description: "Classifies the local minimum at $x=3$." },
-          { part: "c", points: 1, description: "Uses derivative sign changes as justification." },
+          {
+            part: "a",
+            points: 1,
+            description: "Correctly identifies where $f'(x)>0$.",
+          },
+          {
+            part: "a",
+            points: 1,
+            description: "Correctly identifies where $f'(x)<0$.",
+          },
+          {
+            part: "b",
+            points: 1,
+            description: "Classifies the local maximum at $x=1$.",
+          },
+          {
+            part: "b",
+            points: 1,
+            description: "Classifies the local minimum at $x=3$.",
+          },
+          {
+            part: "c",
+            points: 1,
+            description: "Uses derivative sign changes as justification.",
+          },
         ],
       },
       commonErrors: [
@@ -1044,8 +1143,7 @@ const topicSeeds: readonly TopicSeed[] = [
   {
     topicCode: "5.4",
     title: "Using the First Derivative Test to Determine Relative Extrema",
-    subtopic:
-      "Classifying local extrema from derivative sign changes",
+    subtopic: "Classifying local extrema from derivative sign changes",
     mc: [
       {
         questionLatex:
@@ -1053,12 +1151,12 @@ const topicSeeds: readonly TopicSeed[] = [
         difficulty: 2,
         skillTags: ["first_derivative_test", "local_extrema"],
         choices: [
-          "$f$ has a local maximum at $x=-2$ and a local minimum at $x=3$.",
           "$f$ has local minima at both $x=-2$ and $x=3$.",
           "$f$ has a local minimum at $x=-2$ and a local maximum at $x=3$.",
           "$f$ has no local extrema.",
+          "$f$ has a local maximum at $x=-2$ and a local minimum at $x=3$.",
         ],
-        correctLetter: "A",
+        correctLetter: "D",
         hints: [
           "Positive derivative means the function is increasing.",
           "Negative derivative means the function is decreasing.",
@@ -1102,7 +1200,8 @@ const topicSeeds: readonly TopicSeed[] = [
           },
           {
             step: 2,
-            explanation: "At $x=2$, the sign stays positive because of the squared factor.",
+            explanation:
+              "At $x=2$, the sign stays positive because of the squared factor.",
             math: "x=2\\text{ is not a local extremum}",
           },
         ],
@@ -1114,14 +1213,14 @@ const topicSeeds: readonly TopicSeed[] = [
         skillTags: ["derivative_graph", "first_derivative_test"],
         figure: firstDerivativeShapeFigure,
         choices: [
-          "A local minimum at $x=-2$ and a local maximum at $x=3$",
           "A local maximum at $x=-2$ and a local minimum at $x=3$",
+          "A local minimum at $x=-2$ and a local maximum at $x=3$",
           "A local maximum at $x=0$ only",
           "No local extrema",
         ],
-        correctLetter: "A",
+        correctLetter: "B",
         rationales: {
-          B: "The sign of $f'$ changes from negative to positive at $x=-2$ and positive to negative at $x=3$.",
+          A: "The sign of $f'$ changes from negative to positive at $x=-2$ and positive to negative at $x=3$.",
           C: "$x=0$ is where $f'$ has a peak, not where $f'=0$.",
           D: "The graph of $f'$ crosses the axis twice.",
         },
@@ -1149,12 +1248,12 @@ const topicSeeds: readonly TopicSeed[] = [
         difficulty: 2,
         skillTags: ["first_derivative_test", "local_minimum"],
         choices: [
-          "$g$ has a local minimum at $x=4$.",
           "$g$ has a local maximum at $x=4$.",
           "$g$ has an inflection point at $x=4$.",
+          "$g$ has a local minimum at $x=4$.",
           "$g$ must be undefined at $x=4$.",
         ],
-        correctLetter: "A",
+        correctLetter: "C",
         hints: [
           "Negative $g'$ means decreasing.",
           "Positive $g'$ means increasing.",
@@ -1163,12 +1262,14 @@ const topicSeeds: readonly TopicSeed[] = [
         solution: [
           {
             step: 1,
-            explanation: "The function decreases before $x=4$ and increases after.",
+            explanation:
+              "The function decreases before $x=4$ and increases after.",
             math: "-\\to+",
           },
           {
             step: 2,
-            explanation: "By the First Derivative Test, $g$ has a local minimum at $x=4$.",
+            explanation:
+              "By the First Derivative Test, $g$ has a local minimum at $x=4$.",
             math: "\\text{local minimum at }x=4",
           },
         ],
@@ -1179,12 +1280,12 @@ const topicSeeds: readonly TopicSeed[] = [
         difficulty: 3,
         skillTags: ["first_derivative_test", "exponential_factor"],
         choices: [
-          "$p$ has a local minimum at $x=2$.",
           "$p$ has a local maximum at $x=2$.",
           "$p$ has neither a maximum nor a minimum at $x=2$.",
           "The test cannot be applied because $e^x$ is never zero.",
+          "$p$ has a local minimum at $x=2$.",
         ],
-        correctLetter: "A",
+        correctLetter: "D",
         hints: [
           "$e^x$ is always positive.",
           "So the sign of $p'$ is the sign of $x-2$.",
@@ -1208,11 +1309,27 @@ const topicSeeds: readonly TopicSeed[] = [
       questionLatex:
         "\\text{A differentiable function }f\\text{ has }f'(x)=\\frac{(x-1)(x+2)}{x^2+1}.",
       difficulty: 4,
-      skillTags: ["first_derivative_test", "rational_derivative", "local_extrema"],
+      skillTags: [
+        "first_derivative_test",
+        "rational_derivative",
+        "local_extrema",
+      ],
       parts: [
-        { letter: "a", promptMarkdown: "Find the critical points of $f$.", points: 1 },
-        { letter: "b", promptMarkdown: "Determine where $f$ is increasing and decreasing.", points: 2 },
-        { letter: "c", promptMarkdown: "Classify each local extremum.", points: 2 },
+        {
+          letter: "a",
+          promptMarkdown: "Find the critical points of $f$.",
+          points: 1,
+        },
+        {
+          letter: "b",
+          promptMarkdown: "Determine where $f$ is increasing and decreasing.",
+          points: 2,
+        },
+        {
+          letter: "c",
+          promptMarkdown: "Classify each local extremum.",
+          points: 2,
+        },
       ],
       hints: [
         "The denominator is always positive.",
@@ -1222,11 +1339,31 @@ const topicSeeds: readonly TopicSeed[] = [
       rubric: {
         maxPoints: 5,
         criteria: [
-          { part: "a", points: 1, description: "Finds critical points $x=-2$ and $x=1$." },
-          { part: "b", points: 1, description: "Gives increasing intervals correctly." },
-          { part: "b", points: 1, description: "Gives decreasing interval correctly." },
-          { part: "c", points: 1, description: "Classifies $x=-2$ as local maximum." },
-          { part: "c", points: 1, description: "Classifies $x=1$ as local minimum." },
+          {
+            part: "a",
+            points: 1,
+            description: "Finds critical points $x=-2$ and $x=1$.",
+          },
+          {
+            part: "b",
+            points: 1,
+            description: "Gives increasing intervals correctly.",
+          },
+          {
+            part: "b",
+            points: 1,
+            description: "Gives decreasing interval correctly.",
+          },
+          {
+            part: "c",
+            points: 1,
+            description: "Classifies $x=-2$ as local maximum.",
+          },
+          {
+            part: "c",
+            points: 1,
+            description: "Classifies $x=1$ as local minimum.",
+          },
         ],
       },
       commonErrors: [
@@ -1295,12 +1432,12 @@ const topicSeeds: readonly TopicSeed[] = [
         difficulty: 3,
         skillTags: ["absolute_extrema", "candidates_test", "rational_function"],
         choices: [
-          "$g$ has an absolute minimum of $4$ at $x=2$.",
           "$g$ has an absolute maximum of $4$ at $x=2$.",
+          "$g$ has an absolute minimum of $4$ at $x=2$.",
           "$g$ has an absolute minimum of $5$ at $x=1$.",
           "$g$ has no absolute extrema on the interval.",
         ],
-        correctLetter: "A",
+        correctLetter: "B",
         hints: [
           "Differentiate and find critical points in the interval.",
           "$g'(x)=1-4/x^2$.",
@@ -1330,12 +1467,12 @@ const topicSeeds: readonly TopicSeed[] = [
         difficulty: 2,
         skillTags: ["candidates_test", "method_selection"],
         choices: [
-          "The endpoints and all critical points in $(a,b)$",
           "Only points where $f'(x)=0$",
           "Only points where $f''(x)=0$",
+          "The endpoints and all critical points in $(a,b)$",
           "Only the endpoints",
         ],
-        correctLetter: "A",
+        correctLetter: "C",
         hints: [
           "Absolute extrema on a closed interval can occur at endpoints.",
           "Interior extrema can occur at critical points.",
@@ -1344,7 +1481,8 @@ const topicSeeds: readonly TopicSeed[] = [
         solution: [
           {
             step: 1,
-            explanation: "The Candidates Test requires all possible absolute-extremum locations.",
+            explanation:
+              "The Candidates Test requires all possible absolute-extremum locations.",
             math: "a,\\ b,\\text{ and critical points in }(a,b)",
           },
         ],
@@ -1354,8 +1492,13 @@ const topicSeeds: readonly TopicSeed[] = [
           "\\text{For }p(x)=\\sin x+\\cos x\\text{ on }[0,\\pi],\\text{ where is the absolute maximum attained?}",
         difficulty: 4,
         skillTags: ["trig_extrema", "candidates_test"],
-        choices: ["$x=\\frac{\\pi}{4}$", "$x=0$", "$x=\\frac{\\pi}{2}$", "$x=\\pi$"],
-        correctLetter: "A",
+        choices: [
+          "$x=0$",
+          "$x=\\frac{\\pi}{2}$",
+          "$x=\\pi$",
+          "$x=\\frac{\\pi}{4}$",
+        ],
+        correctLetter: "D",
         hints: [
           "Find where $p'(x)=0$.",
           "$p'(x)=\\cos x-\\sin x$.",
@@ -1416,9 +1559,22 @@ const topicSeeds: readonly TopicSeed[] = [
       difficulty: 4,
       skillTags: ["candidates_test", "absolute_extrema", "polynomial"],
       parts: [
-        { letter: "a", promptMarkdown: "Find all candidate $x$-values.", points: 2 },
-        { letter: "b", promptMarkdown: "Evaluate $f$ at each candidate.", points: 2 },
-        { letter: "c", promptMarkdown: "State the absolute maximum and absolute minimum values with their locations.", points: 2 },
+        {
+          letter: "a",
+          promptMarkdown: "Find all candidate $x$-values.",
+          points: 2,
+        },
+        {
+          letter: "b",
+          promptMarkdown: "Evaluate $f$ at each candidate.",
+          points: 2,
+        },
+        {
+          letter: "c",
+          promptMarkdown:
+            "State the absolute maximum and absolute minimum values with their locations.",
+          points: 2,
+        },
       ],
       hints: [
         "Include endpoints $-2$ and $3$.",
@@ -1429,10 +1585,27 @@ const topicSeeds: readonly TopicSeed[] = [
         maxPoints: 6,
         criteria: [
           { part: "a", points: 1, description: "Computes $f'(x)=4x(x^2-2)$." },
-          { part: "a", points: 1, description: "Lists candidates $-2,-\\sqrt2,0,\\sqrt2,3$." },
-          { part: "b", points: 2, description: "Correctly evaluates all candidate values." },
-          { part: "c", points: 1, description: "Identifies absolute maximum value $45$ at $x=3$." },
-          { part: "c", points: 1, description: "Identifies absolute minimum value $-4$ at $x=\\pm\\sqrt2$." },
+          {
+            part: "a",
+            points: 1,
+            description: "Lists candidates $-2,-\\sqrt2,0,\\sqrt2,3$.",
+          },
+          {
+            part: "b",
+            points: 2,
+            description: "Correctly evaluates all candidate values.",
+          },
+          {
+            part: "c",
+            points: 1,
+            description: "Identifies absolute maximum value $45$ at $x=3$.",
+          },
+          {
+            part: "c",
+            points: 1,
+            description:
+              "Identifies absolute minimum value $-4$ at $x=\\pm\\sqrt2$.",
+          },
         ],
       },
       commonErrors: [
@@ -1470,8 +1643,13 @@ const topicSeeds: readonly TopicSeed[] = [
           "\\text{If }f''(x)=6x-12,\\text{ where is }f\\text{ concave up?}",
         difficulty: 2,
         skillTags: ["concavity", "second_derivative_sign"],
-        choices: ["$(2,\\infty)$", "$(-\\infty,2)$", "$(-\\infty,\\infty)$", "$(0,2)$"],
-        correctLetter: "A",
+        choices: [
+          "$(-\\infty,2)$",
+          "$(2,\\infty)$",
+          "$(-\\infty,\\infty)$",
+          "$(0,2)$",
+        ],
+        correctLetter: "B",
         hints: [
           "Concave up means $f''(x)>0$.",
           "Solve $6x-12>0$.",
@@ -1495,8 +1673,8 @@ const topicSeeds: readonly TopicSeed[] = [
           "\\text{If }g'(x)=3x^2-6x,\\text{ at which }x\\text{-value does }g\\text{ have a possible inflection point?}",
         difficulty: 3,
         skillTags: ["inflection_points", "second_derivative"],
-        choices: ["$x=1$", "$x=0$", "$x=3$", "$x=2$"],
-        correctLetter: "A",
+        choices: ["$x=0$", "$x=3$", "$x=1$", "$x=2$"],
+        correctLetter: "C",
         hints: [
           "Inflection points are about concavity, so use $g''$.",
           "Differentiate $g'$.",
@@ -1521,8 +1699,13 @@ const topicSeeds: readonly TopicSeed[] = [
         difficulty: 2,
         skillTags: ["concavity", "sign_chart"],
         figure: concavityChartFigure,
-        choices: ["$(-2,1)$", "$(-\\infty,-2)$", "$(1,\\infty)$", "$(-\\infty,-2)\\cup(1,\\infty)$"],
-        correctLetter: "A",
+        choices: [
+          "$(-\\infty,-2)$",
+          "$(1,\\infty)$",
+          "$(-\\infty,-2)\\cup(1,\\infty)$",
+          "$(-2,1)$",
+        ],
+        correctLetter: "D",
         hints: [
           "Concave down means $f''<0$.",
           "Read the interval marked with a negative sign.",
@@ -1531,7 +1714,8 @@ const topicSeeds: readonly TopicSeed[] = [
         solution: [
           {
             step: 1,
-            explanation: "From the sign chart, $f''$ is negative between $-2$ and $1$.",
+            explanation:
+              "From the sign chart, $f''$ is negative between $-2$ and $1$.",
             math: "f''(x)<0\\text{ on }(-2,1)",
           },
           {
@@ -1576,8 +1760,13 @@ const topicSeeds: readonly TopicSeed[] = [
           "\\text{If }p''(x)=(x-1)^2(x+2),\\text{ where does }p\\text{ have an inflection point?}",
         difficulty: 4,
         skillTags: ["inflection_points", "multiplicity", "concavity"],
-        choices: ["$x=-2$ only", "$x=1$ only", "$x=-2$ and $x=1$", "Neither value"],
-        correctLetter: "A",
+        choices: [
+          "$x=1$ only",
+          "$x=-2$ only",
+          "$x=-2$ and $x=1$",
+          "Neither value",
+        ],
+        correctLetter: "B",
         hints: [
           "An inflection point requires a change in concavity.",
           "The squared factor does not change sign at $x=1$.",
@@ -1603,9 +1792,22 @@ const topicSeeds: readonly TopicSeed[] = [
       difficulty: 4,
       skillTags: ["concavity", "inflection_points", "second_derivative_sign"],
       parts: [
-        { letter: "a", promptMarkdown: "Determine where $f$ is concave up and concave down.", points: 2 },
-        { letter: "b", promptMarkdown: "Find the $x$-coordinates of all inflection points.", points: 1 },
-        { letter: "c", promptMarkdown: "Justify why the points in part (b) are inflection points.", points: 1 },
+        {
+          letter: "a",
+          promptMarkdown: "Determine where $f$ is concave up and concave down.",
+          points: 2,
+        },
+        {
+          letter: "b",
+          promptMarkdown: "Find the $x$-coordinates of all inflection points.",
+          points: 1,
+        },
+        {
+          letter: "c",
+          promptMarkdown:
+            "Justify why the points in part (b) are inflection points.",
+          points: 1,
+        },
       ],
       hints: [
         "Use the sign of $f''$.",
@@ -1615,10 +1817,22 @@ const topicSeeds: readonly TopicSeed[] = [
       rubric: {
         maxPoints: 4,
         criteria: [
-          { part: "a", points: 1, description: "Gives concave up intervals correctly." },
-          { part: "a", points: 1, description: "Gives concave down interval correctly." },
+          {
+            part: "a",
+            points: 1,
+            description: "Gives concave up intervals correctly.",
+          },
+          {
+            part: "a",
+            points: 1,
+            description: "Gives concave down interval correctly.",
+          },
           { part: "b", points: 1, description: "Identifies $x=0$ and $x=3$." },
-          { part: "c", points: 1, description: "Justifies by sign changes of $f''$." },
+          {
+            part: "c",
+            points: 1,
+            description: "Justifies by sign changes of $f''$.",
+          },
         ],
       },
       commonErrors: [
@@ -1648,8 +1862,7 @@ const topicSeeds: readonly TopicSeed[] = [
   {
     topicCode: "5.7",
     title: "Using the Second Derivative Test to Determine Extrema",
-    subtopic:
-      "Classifying critical points using second derivative information",
+    subtopic: "Classifying critical points using second derivative information",
     mc: [
       {
         questionLatex:
@@ -1657,12 +1870,12 @@ const topicSeeds: readonly TopicSeed[] = [
         difficulty: 2,
         skillTags: ["second_derivative_test", "local_maximum"],
         choices: [
-          "$f$ has a local maximum at $x=2$.",
           "$f$ has a local minimum at $x=2$.",
           "$f$ has an inflection point at $x=2$.",
+          "$f$ has a local maximum at $x=2$.",
           "The test is inconclusive.",
         ],
-        correctLetter: "A",
+        correctLetter: "C",
         hints: [
           "$f'(2)=0$ makes $x=2$ a critical point.",
           "$f''(2)<0$ means the graph is concave down there.",
@@ -1676,7 +1889,8 @@ const topicSeeds: readonly TopicSeed[] = [
           },
           {
             step: 2,
-            explanation: "A negative second derivative at a critical point gives a local maximum.",
+            explanation:
+              "A negative second derivative at a critical point gives a local maximum.",
             math: "\\text{local maximum at }x=2",
           },
         ],
@@ -1687,12 +1901,12 @@ const topicSeeds: readonly TopicSeed[] = [
         difficulty: 3,
         skillTags: ["second_derivative_test", "inconclusive_case"],
         choices: [
-          "The test is inconclusive.",
           "$g$ has a local maximum at $x=0$.",
           "$g$ has no local extremum at $x=0$.",
           "$g$ is not differentiable at $x=0$.",
+          "The test is inconclusive.",
         ],
-        correctLetter: "A",
+        correctLetter: "D",
         hints: [
           "Compute $g'(0)$ and $g''(0)$.",
           "The Second Derivative Test requires $g''(0)$ to be positive or negative.",
@@ -1747,12 +1961,12 @@ const topicSeeds: readonly TopicSeed[] = [
         difficulty: 4,
         skillTags: ["second_derivative_test", "polynomial_extrema"],
         choices: [
-          "$p$ has a local maximum at $x=1$ and a local minimum at $x=3$.",
           "$p$ has a local minimum at $x=1$ and a local maximum at $x=3$.",
+          "$p$ has a local maximum at $x=1$ and a local minimum at $x=3$.",
           "$p$ has local maxima at both $x=1$ and $x=3$.",
           "$p$ has no local extrema.",
         ],
-        correctLetter: "A",
+        correctLetter: "B",
         hints: [
           "Find $p'$ and solve $p'=0$.",
           "$p'(x)=3(x-1)(x-3)$.",
@@ -1782,12 +1996,12 @@ const topicSeeds: readonly TopicSeed[] = [
         difficulty: 2,
         skillTags: ["second_derivative_test", "test_limitations"],
         choices: [
-          "$f'(c)=0$ and $f''(c)=0$",
           "$f'(c)=0$ and $f''(c)>0$",
           "$f'(c)=0$ and $f''(c)<0$",
+          "$f'(c)=0$ and $f''(c)=0$",
           "$f''(c)$ is positive",
         ],
-        correctLetter: "A",
+        correctLetter: "C",
         hints: [
           "The test only classifies when $f''(c)$ is clearly positive or negative.",
           "Positive gives local minimum; negative gives local maximum.",
@@ -1796,12 +2010,14 @@ const topicSeeds: readonly TopicSeed[] = [
         solution: [
           {
             step: 1,
-            explanation: "At a critical point, the test uses the sign of $f''(c)$.",
+            explanation:
+              "At a critical point, the test uses the sign of $f''(c)$.",
             math: "f''(c)=0",
           },
           {
             step: 2,
-            explanation: "If $f''(c)=0$, the Second Derivative Test is inconclusive.",
+            explanation:
+              "If $f''(c)=0$, the Second Derivative Test is inconclusive.",
             math: "\\text{no conclusion from this test}",
           },
         ],
@@ -1813,9 +2029,22 @@ const topicSeeds: readonly TopicSeed[] = [
       difficulty: 4,
       skillTags: ["second_derivative_test", "first_derivative_test_connection"],
       parts: [
-        { letter: "a", promptMarkdown: "Find the critical points of $f$.", points: 1 },
-        { letter: "b", promptMarkdown: "Use the Second Derivative Test to classify each critical point.", points: 2 },
-        { letter: "c", promptMarkdown: "Confirm the classifications using the sign of $f'$.", points: 2 },
+        {
+          letter: "a",
+          promptMarkdown: "Find the critical points of $f$.",
+          points: 1,
+        },
+        {
+          letter: "b",
+          promptMarkdown:
+            "Use the Second Derivative Test to classify each critical point.",
+          points: 2,
+        },
+        {
+          letter: "c",
+          promptMarkdown: "Confirm the classifications using the sign of $f'$.",
+          points: 2,
+        },
       ],
       hints: [
         "Critical points come from $f'(x)=0$.",
@@ -1826,10 +2055,26 @@ const topicSeeds: readonly TopicSeed[] = [
         maxPoints: 5,
         criteria: [
           { part: "a", points: 1, description: "Finds $x=1$ and $x=3$." },
-          { part: "b", points: 1, description: "Uses $f''(1)<0$ to classify a local maximum." },
-          { part: "b", points: 1, description: "Uses $f''(3)>0$ to classify a local minimum." },
-          { part: "c", points: 1, description: "Shows $f'$ changes $+\\to-$ at $x=1$." },
-          { part: "c", points: 1, description: "Shows $f'$ changes $-\\to+$ at $x=3$." },
+          {
+            part: "b",
+            points: 1,
+            description: "Uses $f''(1)<0$ to classify a local maximum.",
+          },
+          {
+            part: "b",
+            points: 1,
+            description: "Uses $f''(3)>0$ to classify a local minimum.",
+          },
+          {
+            part: "c",
+            points: 1,
+            description: "Shows $f'$ changes $+\\to-$ at $x=1$.",
+          },
+          {
+            part: "c",
+            points: 1,
+            description: "Shows $f'$ changes $-\\to+$ at $x=3$.",
+          },
         ],
       },
       commonErrors: [
@@ -1840,8 +2085,7 @@ const topicSeeds: readonly TopicSeed[] = [
       workedSolution: [
         {
           part: "a",
-          explanation:
-            "$f'(x)=(x-1)(x-3)=0$ at $x=1$ and $x=3$.",
+          explanation: "$f'(x)=(x-1)(x-3)=0$ at $x=1$ and $x=3$.",
         },
         {
           part: "b",
@@ -1868,8 +2112,8 @@ const topicSeeds: readonly TopicSeed[] = [
         difficulty: 3,
         skillTags: ["derivative_graph", "local_extrema"],
         figure: firstDerivativeShapeFigure,
-        choices: ["$x=-2$", "$x=0$", "$x=3$", "No local minimum"],
-        correctLetter: "A",
+        choices: ["$x=0$", "$x=3$", "No local minimum", "$x=-2$"],
+        correctLetter: "D",
         hints: [
           "A local minimum of $f$ occurs where $f'$ changes from negative to positive.",
           "Use the x-intercepts of the graph of $f'$.",
@@ -1894,7 +2138,12 @@ const topicSeeds: readonly TopicSeed[] = [
         difficulty: 3,
         skillTags: ["derivative_graph", "increasing_decreasing"],
         figure: firstDerivativeShapeFigure,
-        choices: ["$(-2,3)$", "$(-\\infty,-2)$", "$(3,\\infty)$", "$(-\\infty,-2)\\cup(3,\\infty)$"],
+        choices: [
+          "$(-2,3)$",
+          "$(-\\infty,-2)$",
+          "$(3,\\infty)$",
+          "$(-\\infty,-2)\\cup(3,\\infty)$",
+        ],
         correctLetter: "A",
         hints: [
           "$f$ increases where $f'>0$.",
@@ -1920,12 +2169,12 @@ const topicSeeds: readonly TopicSeed[] = [
         difficulty: 4,
         skillTags: ["derivative_graph", "concavity_from_f_prime"],
         choices: [
-          "$f$ changes from concave up to concave down.",
           "$f$ has a local maximum.",
+          "$f$ changes from concave up to concave down.",
           "$f$ has a local minimum.",
           "$f$ must have a horizontal tangent.",
         ],
-        correctLetter: "A",
+        correctLetter: "B",
         hints: [
           "Concavity of $f$ depends on whether $f'$ is increasing or decreasing.",
           "$f'$ increasing means $f''>0$.",
@@ -1953,14 +2202,17 @@ const topicSeeds: readonly TopicSeed[] = [
         questionLatex:
           "\\text{The graph of }f'\\text{ is below the x-axis and increasing on an interval. Which description of }f\\text{ is correct there?}",
         difficulty: 3,
-        skillTags: ["function_derivative_connection", "concavity_and_monotonicity"],
+        skillTags: [
+          "function_derivative_connection",
+          "concavity_and_monotonicity",
+        ],
         choices: [
-          "$f$ is decreasing and concave up.",
           "$f$ is increasing and concave up.",
           "$f$ is decreasing and concave down.",
+          "$f$ is decreasing and concave up.",
           "$f$ is increasing and concave down.",
         ],
-        correctLetter: "A",
+        correctLetter: "C",
         hints: [
           "Below the x-axis means $f'<0$.",
           "Increasing graph of $f'$ means $f''>0$.",
@@ -1974,7 +2226,8 @@ const topicSeeds: readonly TopicSeed[] = [
           },
           {
             step: 2,
-            explanation: "Since $f'$ is increasing, $f''>0$ and $f$ is concave up.",
+            explanation:
+              "Since $f'$ is increasing, $f''>0$ and $f$ is concave up.",
             math: "f''>0",
           },
         ],
@@ -1985,12 +2238,12 @@ const topicSeeds: readonly TopicSeed[] = [
         difficulty: 3,
         skillTags: ["graph_matching", "derivative_behavior"],
         choices: [
-          "$f'$ is positive and decreasing.",
           "$f'$ is positive and increasing.",
           "$f'$ is negative and decreasing.",
           "$f'$ is zero throughout the interval.",
+          "$f'$ is positive and decreasing.",
         ],
-        correctLetter: "A",
+        correctLetter: "D",
         hints: [
           "Increasing means $f'>0$.",
           "Concave down means $f''<0$.",
@@ -2011,15 +2264,29 @@ const topicSeeds: readonly TopicSeed[] = [
       },
     ],
     frq: {
-      questionLatex:
-        "\\text{The graph of }f'\\text{ is shown for }-4<x<5.",
+      questionLatex: "\\text{The graph of }f'\\text{ is shown for }-4<x<5.",
       difficulty: 4,
       skillTags: ["derivative_graph", "sketching_from_derivative", "concavity"],
       figure: firstDerivativeShapeFigure,
       parts: [
-        { letter: "a", promptMarkdown: "Determine the intervals where $f$ is increasing and decreasing.", points: 2 },
-        { letter: "b", promptMarkdown: "Identify the $x$-coordinates of the local extrema of $f$ and classify them.", points: 2 },
-        { letter: "c", promptMarkdown: "Describe the concavity of $f$ near $x=0$ based on the behavior of $f'$.", points: 1 },
+        {
+          letter: "a",
+          promptMarkdown:
+            "Determine the intervals where $f$ is increasing and decreasing.",
+          points: 2,
+        },
+        {
+          letter: "b",
+          promptMarkdown:
+            "Identify the $x$-coordinates of the local extrema of $f$ and classify them.",
+          points: 2,
+        },
+        {
+          letter: "c",
+          promptMarkdown:
+            "Describe the concavity of $f$ near $x=0$ based on the behavior of $f'$.",
+          points: 1,
+        },
       ],
       hints: [
         "Use the sign of $f'$ for increasing/decreasing.",
@@ -2029,11 +2296,32 @@ const topicSeeds: readonly TopicSeed[] = [
       rubric: {
         maxPoints: 5,
         criteria: [
-          { part: "a", points: 1, description: "Identifies $f$ increasing where $f'>0$." },
-          { part: "a", points: 1, description: "Identifies $f$ decreasing where $f'<0$." },
-          { part: "b", points: 1, description: "Classifies local minimum at $x=-2$." },
-          { part: "b", points: 1, description: "Classifies local maximum at $x=3$." },
-          { part: "c", points: 1, description: "Connects local maximum of $f'$ near $0$ to a concavity change in $f$." },
+          {
+            part: "a",
+            points: 1,
+            description: "Identifies $f$ increasing where $f'>0$.",
+          },
+          {
+            part: "a",
+            points: 1,
+            description: "Identifies $f$ decreasing where $f'<0$.",
+          },
+          {
+            part: "b",
+            points: 1,
+            description: "Classifies local minimum at $x=-2$.",
+          },
+          {
+            part: "b",
+            points: 1,
+            description: "Classifies local maximum at $x=3$.",
+          },
+          {
+            part: "c",
+            points: 1,
+            description:
+              "Connects local maximum of $f'$ near $0$ to a concavity change in $f$.",
+          },
         ],
       },
       commonErrors: [
@@ -2062,7 +2350,8 @@ const topicSeeds: readonly TopicSeed[] = [
   },
   {
     topicCode: "5.9",
-    title: "Connecting a Function, Its First Derivative, and Its Second Derivative",
+    title:
+      "Connecting a Function, Its First Derivative, and Its Second Derivative",
     subtopic:
       "Combining sign, slope, and concavity information across representations",
     mc: [
@@ -2091,7 +2380,8 @@ const topicSeeds: readonly TopicSeed[] = [
           },
           {
             step: 2,
-            explanation: "This gives a local maximum and concave down behavior.",
+            explanation:
+              "This gives a local maximum and concave down behavior.",
             math: "\\text{local maximum at }x=2",
           },
         ],
@@ -2101,8 +2391,13 @@ const topicSeeds: readonly TopicSeed[] = [
           "\\text{If }f\\text{ is increasing and concave down at }x=4,\\text{ which signs are consistent?}",
         difficulty: 2,
         skillTags: ["sign_interpretation", "concavity"],
-        choices: ["$f'(4)>0$ and $f''(4)<0$", "$f'(4)<0$ and $f''(4)<0$", "$f'(4)>0$ and $f''(4)>0$", "$f'(4)=0$ and $f''(4)=0$"],
-        correctLetter: "A",
+        choices: [
+          "$f'(4)<0$ and $f''(4)<0$",
+          "$f'(4)>0$ and $f''(4)<0$",
+          "$f'(4)>0$ and $f''(4)>0$",
+          "$f'(4)=0$ and $f''(4)=0$",
+        ],
+        correctLetter: "B",
         hints: [
           "Increasing is about $f'$.",
           "Concavity is about $f''$.",
@@ -2127,12 +2422,12 @@ const topicSeeds: readonly TopicSeed[] = [
         difficulty: 3,
         skillTags: ["function_behavior", "derivative_signs"],
         choices: [
-          "$f$ is decreasing and concave up.",
           "$f$ is decreasing and concave down.",
           "$f$ is increasing and concave up.",
+          "$f$ is decreasing and concave up.",
           "$f$ is increasing and concave down.",
         ],
-        correctLetter: "A",
+        correctLetter: "C",
         hints: [
           "$f'<0$ controls increasing/decreasing.",
           "$f''>0$ controls concavity.",
@@ -2157,12 +2452,12 @@ const topicSeeds: readonly TopicSeed[] = [
         difficulty: 3,
         skillTags: ["derivative_graph", "function_behavior"],
         choices: [
-          "$f$ is increasing and concave down.",
           "$f$ is decreasing and concave down.",
           "$f$ is increasing and concave up.",
           "$f$ is decreasing and concave up.",
+          "$f$ is increasing and concave down.",
         ],
-        correctLetter: "A",
+        correctLetter: "D",
         hints: [
           "Above the x-axis means $f'>0$.",
           "A decreasing $f'$ means $f''<0$.",
@@ -2176,7 +2471,8 @@ const topicSeeds: readonly TopicSeed[] = [
           },
           {
             step: 2,
-            explanation: "$f'$ decreasing means $f''<0$, so $f$ is concave down.",
+            explanation:
+              "$f'$ decreasing means $f''<0$, so $f$ is concave down.",
             math: "f''<0",
           },
         ],
@@ -2206,7 +2502,8 @@ const topicSeeds: readonly TopicSeed[] = [
           },
           {
             step: 2,
-            explanation: "This indicates a local minimum and concave up behavior.",
+            explanation:
+              "This indicates a local minimum and concave up behavior.",
             math: "\\text{local minimum}",
           },
         ],
@@ -2216,12 +2513,31 @@ const topicSeeds: readonly TopicSeed[] = [
       questionLatex:
         "\\text{The figure shows compatible sketches of }f,\\ f',\\text{ and }f''\\text{ on }-3<x<5.",
       difficulty: 4,
-      skillTags: ["first_second_derivative_connection", "local_extrema", "concavity"],
+      skillTags: [
+        "first_second_derivative_connection",
+        "local_extrema",
+        "concavity",
+      ],
       figure: functionDerivativeSecondDerivativeFigure,
       parts: [
-        { letter: "a", promptMarkdown: "Use the graph of $f'$ to determine where $f$ is increasing and decreasing.", points: 2 },
-        { letter: "b", promptMarkdown: "Use the graph of $f'$ to classify any local extremum at $x=1$.", points: 1 },
-        { letter: "c", promptMarkdown: "Use the graph of $f''$ to determine the concavity intervals and identify the inflection point.", points: 2 },
+        {
+          letter: "a",
+          promptMarkdown:
+            "Use the graph of $f'$ to determine where $f$ is increasing and decreasing.",
+          points: 2,
+        },
+        {
+          letter: "b",
+          promptMarkdown:
+            "Use the graph of $f'$ to classify any local extremum at $x=1$.",
+          points: 1,
+        },
+        {
+          letter: "c",
+          promptMarkdown:
+            "Use the graph of $f''$ to determine the concavity intervals and identify the inflection point.",
+          points: 2,
+        },
       ],
       hints: [
         "Read increasing/decreasing from where the graph of $f'$ is above or below the x-axis.",
@@ -2233,9 +2549,17 @@ const topicSeeds: readonly TopicSeed[] = [
         criteria: [
           { part: "a", points: 1, description: "States increasing interval." },
           { part: "a", points: 1, description: "States decreasing interval." },
-          { part: "b", points: 1, description: "Classifies local maximum at $x=1$." },
+          {
+            part: "b",
+            points: 1,
+            description: "Classifies local maximum at $x=1$.",
+          },
           { part: "c", points: 1, description: "States concavity intervals." },
-          { part: "c", points: 1, description: "Identifies inflection point at $x=2$." },
+          {
+            part: "c",
+            points: 1,
+            description: "Identifies inflection point at $x=2$.",
+          },
         ],
       },
       commonErrors: [
@@ -2265,8 +2589,7 @@ const topicSeeds: readonly TopicSeed[] = [
   {
     topicCode: "5.10",
     title: "Introduction to Optimization Problems",
-    subtopic:
-      "Building objective functions, constraints, and feasible domains",
+    subtopic: "Building objective functions, constraints, and feasible domains",
     mc: [
       {
         questionLatex:
@@ -2274,8 +2597,13 @@ const topicSeeds: readonly TopicSeed[] = [
         difficulty: 2,
         skillTags: ["optimization_setup", "rectangle_area"],
         figure: rectangleOptimizationFigure,
-        choices: ["$A(x)=x(20-x)$", "$A(x)=x(40-x)$", "$A(x)=2x(20-x)$", "$A(x)=40x$"],
-        correctLetter: "A",
+        choices: [
+          "$A(x)=x(40-x)$",
+          "$A(x)=x(20-x)$",
+          "$A(x)=2x(20-x)$",
+          "$A(x)=40x$",
+        ],
+        correctLetter: "B",
         hints: [
           "Perimeter $40$ means $2x+2y=40$.",
           "Solve the constraint for the other side.",
@@ -2301,12 +2629,12 @@ const topicSeeds: readonly TopicSeed[] = [
         skillTags: ["optimization_setup", "open_box"],
         figure: openBoxFigure,
         choices: [
-          "$V(x)=x(10-2x)(16-2x),\\ 0<x<5$",
           "$V(x)=x(10-x)(16-x),\\ 0<x<10$",
           "$V(x)=x(10-2x)(16-2x),\\ 0<x<8$",
+          "$V(x)=x(10-2x)(16-2x),\\ 0<x<5$",
           "$V(x)=x(10+x)(16+x),\\ x>0$",
         ],
-        correctLetter: "A",
+        correctLetter: "C",
         hints: [
           "The cut squares become the height of the box.",
           "Each base dimension loses $2x$.",
@@ -2315,7 +2643,8 @@ const topicSeeds: readonly TopicSeed[] = [
         solution: [
           {
             step: 1,
-            explanation: "Height is $x$, and base dimensions are reduced by two corner cuts.",
+            explanation:
+              "Height is $x$, and base dimensions are reduced by two corner cuts.",
             math: "10-2x,\\quad 16-2x",
           },
           {
@@ -2332,12 +2661,12 @@ const topicSeeds: readonly TopicSeed[] = [
         skillTags: ["optimization_setup", "constraint_modeling"],
         figure: riverFenceFigure,
         choices: [
-          "$A(x)=x(200-2x),\\ 0<x<100$",
           "$A(x)=x(200-x),\\ 0<x<200$",
           "$A(x)=2x(200-2x),\\ 0<x<100$",
           "$A(x)=x(100-x),\\ 0<x<100$",
+          "$A(x)=x(200-2x),\\ 0<x<100$",
         ],
-        correctLetter: "A",
+        correctLetter: "D",
         hints: [
           "Only three sides need fencing.",
           "The two widths use $2x$ feet of fencing total.",
@@ -2361,7 +2690,12 @@ const topicSeeds: readonly TopicSeed[] = [
           "\\text{Two positive numbers have sum }30.\\text{ If }x\\text{ is one number, which function should be maximized to maximize their product?}",
         difficulty: 2,
         skillTags: ["optimization_setup", "constraint"],
-        choices: ["$P(x)=x(30-x),\\ 0<x<30$", "$P(x)=30x$", "$P(x)=x(x-30)$", "$P(x)=x^2+30$"],
+        choices: [
+          "$P(x)=x(30-x),\\ 0<x<30$",
+          "$P(x)=30x$",
+          "$P(x)=x(x-30)$",
+          "$P(x)=x^2+30$",
+        ],
         correctLetter: "A",
         hints: [
           "If one number is $x$, express the other number using the sum.",
@@ -2387,12 +2721,12 @@ const topicSeeds: readonly TopicSeed[] = [
         difficulty: 4,
         skillTags: ["optimization_setup", "surface_area", "constraint"],
         choices: [
-          "$S(x)=2x^2+\\frac{2000}{x},\\ x>0$",
           "$S(x)=x^2+4xh,\\ x>0$",
+          "$S(x)=2x^2+\\frac{2000}{x},\\ x>0$",
           "$S(x)=2x^2+500x,\\ x>0$",
           "$S(x)=x^2+\\frac{500}{x},\\ x>0$",
         ],
-        correctLetter: "A",
+        correctLetter: "B",
         hints: [
           "Volume gives $x^2h=500$.",
           "A closed box has top, bottom, and four side faces.",
@@ -2418,9 +2752,21 @@ const topicSeeds: readonly TopicSeed[] = [
       difficulty: 4,
       skillTags: ["optimization_setup", "area_model", "domain"],
       parts: [
-        { letter: "a", promptMarkdown: "Express the poster height in terms of $x$.", points: 1 },
-        { letter: "b", promptMarkdown: "Write a one-variable function for the printed area.", points: 2 },
-        { letter: "c", promptMarkdown: "State a reasonable domain for $x$.", points: 1 },
+        {
+          letter: "a",
+          promptMarkdown: "Express the poster height in terms of $x$.",
+          points: 1,
+        },
+        {
+          letter: "b",
+          promptMarkdown: "Write a one-variable function for the printed area.",
+          points: 2,
+        },
+        {
+          letter: "c",
+          promptMarkdown: "State a reasonable domain for $x$.",
+          points: 1,
+        },
       ],
       hints: [
         "Total area gives width times height.",
@@ -2432,7 +2778,11 @@ const topicSeeds: readonly TopicSeed[] = [
         criteria: [
           { part: "a", points: 1, description: "Finds poster height $180/x$." },
           { part: "b", points: 1, description: "Uses printed width $x-2$." },
-          { part: "b", points: 1, description: "Uses printed height $180/x-4$." },
+          {
+            part: "b",
+            points: 1,
+            description: "Uses printed height $180/x-4$.",
+          },
           { part: "c", points: 1, description: "States domain $2<x<45$." },
         ],
       },
@@ -2472,8 +2822,13 @@ const topicSeeds: readonly TopicSeed[] = [
         difficulty: 3,
         skillTags: ["optimization", "rectangle_area"],
         figure: rectangleOptimizationFigure,
-        choices: ["$10\\text{ by }10$", "$5\\text{ by }15$", "$8\\text{ by }12$", "$1\\text{ by }19$"],
-        correctLetter: "A",
+        choices: [
+          "$5\\text{ by }15$",
+          "$8\\text{ by }12$",
+          "$10\\text{ by }10$",
+          "$1\\text{ by }19$",
+        ],
+        correctLetter: "C",
         hints: [
           "Use $A(x)=x(20-x)$.",
           "Differentiate the area function.",
@@ -2504,12 +2859,12 @@ const topicSeeds: readonly TopicSeed[] = [
         skillTags: ["optimization", "river_fence"],
         figure: riverFenceFigure,
         choices: [
-          "$60\\text{ ft perpendicular to the river and }120\\text{ ft along the river}$",
           "$80\\text{ ft perpendicular to the river and }80\\text{ ft along the river}$",
           "$40\\text{ ft perpendicular to the river and }160\\text{ ft along the river}$",
           "$120\\text{ ft perpendicular to the river and }0\\text{ ft along the river}$",
+          "$60\\text{ ft perpendicular to the river and }120\\text{ ft along the river}$",
         ],
-        correctLetter: "A",
+        correctLetter: "D",
         hints: [
           "Let $x$ be the perpendicular side and $y$ the side along the river.",
           "The fencing constraint is $2x+y=240$.",
@@ -2575,12 +2930,12 @@ const topicSeeds: readonly TopicSeed[] = [
         difficulty: 5,
         skillTags: ["optimization", "distance_minimization"],
         choices: [
-          "$\\left(\\pm\\sqrt{\\frac32},\\frac32\\right)$",
           "$(0,0)$",
+          "$\\left(\\pm\\sqrt{\\frac32},\\frac32\\right)$",
           "$(\\pm1,1)$",
           "$\\left(\\pm\\sqrt2,2\\right)$",
         ],
-        correctLetter: "A",
+        correctLetter: "B",
         hints: [
           "Minimize squared distance to avoid a square root.",
           "For a point $(x,x^2)$, use $D^2=x^2+(x^2-2)^2$.",
@@ -2609,8 +2964,13 @@ const topicSeeds: readonly TopicSeed[] = [
           "\\text{Among rectangles with area }16,\\text{ which dimensions minimize perimeter?}",
         difficulty: 3,
         skillTags: ["optimization", "perimeter_minimization"],
-        choices: ["$4\\text{ by }4$", "$2\\text{ by }8$", "$1\\text{ by }16$", "$3\\text{ by }\\frac{16}{3}$"],
-        correctLetter: "A",
+        choices: [
+          "$2\\text{ by }8$",
+          "$1\\text{ by }16$",
+          "$4\\text{ by }4$",
+          "$3\\text{ by }\\frac{16}{3}$",
+        ],
+        correctLetter: "C",
         hints: [
           "Let one side be $x$ and the other be $16/x$.",
           "Write perimeter as a function of $x$.",
@@ -2642,9 +3002,21 @@ const topicSeeds: readonly TopicSeed[] = [
       skillTags: ["optimization", "open_box", "endpoint_analysis"],
       figure: openBoxFigure,
       parts: [
-        { letter: "a", promptMarkdown: "Write the volume $V(x)$ and state its domain.", points: 2 },
-        { letter: "b", promptMarkdown: "Find the value of $x$ that maximizes the volume.", points: 3 },
-        { letter: "c", promptMarkdown: "Justify that your value gives an absolute maximum.", points: 1 },
+        {
+          letter: "a",
+          promptMarkdown: "Write the volume $V(x)$ and state its domain.",
+          points: 2,
+        },
+        {
+          letter: "b",
+          promptMarkdown: "Find the value of $x$ that maximizes the volume.",
+          points: 3,
+        },
+        {
+          letter: "c",
+          promptMarkdown: "Justify that your value gives an absolute maximum.",
+          points: 1,
+        },
       ],
       hints: [
         "The base dimensions are $12-2x$ and $20-2x$.",
@@ -2656,10 +3028,27 @@ const topicSeeds: readonly TopicSeed[] = [
         criteria: [
           { part: "a", points: 1, description: "Writes $V=x(12-2x)(20-2x)$." },
           { part: "a", points: 1, description: "States domain $0<x<6$." },
-          { part: "b", points: 1, description: "Computes derivative correctly." },
-          { part: "b", points: 1, description: "Solves the resulting quadratic." },
-          { part: "b", points: 1, description: "Chooses the feasible critical point." },
-          { part: "c", points: 1, description: "Justifies maximum using endpoint behavior or sign change." },
+          {
+            part: "b",
+            points: 1,
+            description: "Computes derivative correctly.",
+          },
+          {
+            part: "b",
+            points: 1,
+            description: "Solves the resulting quadratic.",
+          },
+          {
+            part: "b",
+            points: 1,
+            description: "Chooses the feasible critical point.",
+          },
+          {
+            part: "c",
+            points: 1,
+            description:
+              "Justifies maximum using endpoint behavior or sign change.",
+          },
         ],
       },
       commonErrors: [
@@ -2697,8 +3086,8 @@ const topicSeeds: readonly TopicSeed[] = [
           "\\text{For the relation }x^2+y^2=25,\\text{ what is }\\frac{dy}{dx}\\text{ at }(3,4)?",
         difficulty: 2,
         skillTags: ["implicit_derivative", "slope"],
-        choices: ["$-\\frac34$", "$\\frac34$", "$-\\frac43$", "$\\frac43$"],
-        correctLetter: "A",
+        choices: ["$\\frac34$", "$-\\frac43$", "$\\frac43$", "$-\\frac34$"],
+        correctLetter: "D",
         hints: [
           "Differentiate both sides with respect to $x$.",
           "Remember that $d(y^2)/dx=2y\\,dy/dx$.",
@@ -2758,12 +3147,12 @@ const topicSeeds: readonly TopicSeed[] = [
         difficulty: 4,
         skillTags: ["implicit_derivative", "vertical_tangent"],
         choices: [
-          "$\\left(\\mp2\\sqrt{\\frac73},\\pm\\sqrt{\\frac73}\\right)$",
           "$\\left(\\pm\\sqrt{\\frac73},\\mp2\\sqrt{\\frac73}\\right)$",
+          "$\\left(\\mp2\\sqrt{\\frac73},\\pm\\sqrt{\\frac73}\\right)$",
           "$\\left(0,\\pm\\sqrt7\\right)$",
           "$\\left(\\pm\\sqrt7,0\\right)$",
         ],
-        correctLetter: "A",
+        correctLetter: "B",
         hints: [
           "A vertical tangent occurs when the denominator of $dy/dx$ is zero while the numerator is not.",
           "Use $x+2y=0$.",
@@ -2793,12 +3182,12 @@ const topicSeeds: readonly TopicSeed[] = [
         difficulty: 4,
         skillTags: ["implicit_derivative", "slope_condition"],
         choices: [
-          "$\\left(\\pm\\frac8{\\sqrt5},\\pm\\frac2{\\sqrt5}\\right)$ with matching signs",
           "$\\left(\\pm\\frac8{\\sqrt5},\\mp\\frac2{\\sqrt5}\\right)$",
           "$(0,\\pm2)$",
+          "$\\left(\\pm\\frac8{\\sqrt5},\\pm\\frac2{\\sqrt5}\\right)$ with matching signs",
           "$(\\pm4,0)$",
         ],
-        correctLetter: "A",
+        correctLetter: "C",
         hints: [
           "Differentiate to get $dy/dx=-x/(4y)$.",
           "Set $-x/(4y)=-1$.",
@@ -2827,8 +3216,8 @@ const topicSeeds: readonly TopicSeed[] = [
           "\\text{For }x^2+y^2=25,\\text{ which point has a horizontal tangent?}",
         difficulty: 2,
         skillTags: ["implicit_derivative", "horizontal_tangent"],
-        choices: ["$(0,5)$", "$(3,4)$", "$(5,0)$", "$(4,3)$"],
-        correctLetter: "A",
+        choices: ["$(3,4)$", "$(5,0)$", "$(4,3)$", "$(0,5)$"],
+        correctLetter: "D",
         hints: [
           "The slope is $dy/dx=-x/y$.",
           "A horizontal tangent has slope $0$.",
@@ -2849,15 +3238,36 @@ const topicSeeds: readonly TopicSeed[] = [
       },
     ],
     frq: {
-      questionLatex:
-        "\\text{Consider the implicit relation }x^2+xy+y^2=7.",
+      questionLatex: "\\text{Consider the implicit relation }x^2+xy+y^2=7.",
       difficulty: 5,
-      skillTags: ["implicit_derivative", "horizontal_vertical_tangents", "relation_behavior"],
+      skillTags: [
+        "implicit_derivative",
+        "horizontal_vertical_tangents",
+        "relation_behavior",
+      ],
       parts: [
-        { letter: "a", promptMarkdown: "Find $\\frac{dy}{dx}$ in terms of $x$ and $y$.", points: 2 },
-        { letter: "b", promptMarkdown: "Find the slope of the tangent line at $(1,2)$.", points: 1 },
-        { letter: "c", promptMarkdown: "Find the points on the relation where the tangent is horizontal.", points: 2 },
-        { letter: "d", promptMarkdown: "Find the points on the relation where the tangent is vertical.", points: 2 },
+        {
+          letter: "a",
+          promptMarkdown: "Find $\\frac{dy}{dx}$ in terms of $x$ and $y$.",
+          points: 2,
+        },
+        {
+          letter: "b",
+          promptMarkdown: "Find the slope of the tangent line at $(1,2)$.",
+          points: 1,
+        },
+        {
+          letter: "c",
+          promptMarkdown:
+            "Find the points on the relation where the tangent is horizontal.",
+          points: 2,
+        },
+        {
+          letter: "d",
+          promptMarkdown:
+            "Find the points on the relation where the tangent is vertical.",
+          points: 2,
+        },
       ],
       hints: [
         "Differentiate $xy$ using the product rule.",
@@ -2867,13 +3277,42 @@ const topicSeeds: readonly TopicSeed[] = [
       rubric: {
         maxPoints: 7,
         criteria: [
-          { part: "a", points: 1, description: "Differentiates implicitly including product rule on $xy$." },
-          { part: "a", points: 1, description: "Solves for $dy/dx$ correctly." },
-          { part: "b", points: 1, description: "Evaluates slope at $(1,2)$ as $-4/5$." },
-          { part: "c", points: 1, description: "Uses $2x+y=0$ for horizontal tangents." },
-          { part: "c", points: 1, description: "Finds both horizontal-tangent points." },
-          { part: "d", points: 1, description: "Uses $x+2y=0$ for vertical tangents." },
-          { part: "d", points: 1, description: "Finds both vertical-tangent points." },
+          {
+            part: "a",
+            points: 1,
+            description:
+              "Differentiates implicitly including product rule on $xy$.",
+          },
+          {
+            part: "a",
+            points: 1,
+            description: "Solves for $dy/dx$ correctly.",
+          },
+          {
+            part: "b",
+            points: 1,
+            description: "Evaluates slope at $(1,2)$ as $-4/5$.",
+          },
+          {
+            part: "c",
+            points: 1,
+            description: "Uses $2x+y=0$ for horizontal tangents.",
+          },
+          {
+            part: "c",
+            points: 1,
+            description: "Finds both horizontal-tangent points.",
+          },
+          {
+            part: "d",
+            points: 1,
+            description: "Uses $x+2y=0$ for vertical tangents.",
+          },
+          {
+            part: "d",
+            points: 1,
+            description: "Finds both vertical-tangent points.",
+          },
         ],
       },
       commonErrors: [

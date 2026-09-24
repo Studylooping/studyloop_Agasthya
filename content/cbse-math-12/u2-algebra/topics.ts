@@ -13,7 +13,7 @@ import type {
 
 const COURSE = "cbse-math-12";
 const UNIT = "u2-algebra";
-const VERSION = "0.2.1";
+const VERSION = "0.2.2";
 const REVIEW_STATUS = "human_review_required" as const;
 const SOURCE_TYPE = "original_ai_assisted_question" as const;
 const LETTERS = ["A", "B", "C", "D"] as const;
@@ -81,11 +81,20 @@ function hints(items: readonly [string, string, string]): Hint[] {
   }));
 }
 
-function calibrateMcDifficulty(seedDifficulty: Difficulty, index: number): Difficulty {
-  return Math.max(seedDifficulty, MC_DIFFICULTY_FLOORS[index] ?? 2) as Difficulty;
+function calibrateMcDifficulty(
+  seedDifficulty: Difficulty,
+  index: number,
+): Difficulty {
+  return Math.max(
+    seedDifficulty,
+    MC_DIFFICULTY_FLOORS[index] ?? 2,
+  ) as Difficulty;
 }
 
-function calibrateConstructedDifficulty(seedDifficulty: Difficulty, type: ResponseType): Difficulty {
+function calibrateConstructedDifficulty(
+  seedDifficulty: Difficulty,
+  type: ResponseType,
+): Difficulty {
   const floor = type === "laq" || type === "case" ? 4 : type === "saq" ? 3 : 2;
   return Math.max(seedDifficulty, floor) as Difficulty;
 }
@@ -99,7 +108,11 @@ function feedbackFocus(seed: McSeed): string {
   if (tags.has("matrix_operations") || tags.has("matrix_multiplication")) {
     return "Match dimensions first, then compute row-by-column entries carefully.";
   }
-  if (tags.has("transpose") || tags.has("symmetric_matrix") || tags.has("skew_symmetric_matrix")) {
+  if (
+    tags.has("transpose") ||
+    tags.has("symmetric_matrix") ||
+    tags.has("skew_symmetric_matrix")
+  ) {
     return "Use transpose rules: symmetric means $A^T=A$, while skew-symmetric means $A^T=-A$.";
   }
   if (tags.has("inverse_matrix") || tags.has("matrix_equation")) {
@@ -134,29 +147,24 @@ function makeMc(meta: TopicMeta, seed: McSeed, index: number): McSingleItem {
       isCorrect,
       rationaleIfWrong: isCorrect
         ? null
-        : seed.rationales?.[seedLetter] ?? fallbackWrongRationale(seed, seedLetter),
+        : (seed.rationales?.[seedLetter] ??
+          fallbackWrongRationale(seed, seedLetter)),
       misconceptionTag: isCorrect
         ? null
-        : seed.misconceptionTags?.[seedLetter] ?? "incorrect_cbse_algebra_reasoning",
+        : (seed.misconceptionTags?.[seedLetter] ??
+          "incorrect_cbse_algebra_reasoning"),
     };
   });
 
-  const rotation = index % LETTERS.length;
-  const rotatedChoices =
-    rotation === 0
-      ? unletteredChoices
-      : [
-          ...unletteredChoices.slice(-rotation),
-          ...unletteredChoices.slice(0, -rotation),
-        ];
-  const choices = rotatedChoices.map((choice, choiceIndex) => ({
+  const choices = unletteredChoices.map((choice, choiceIndex) => ({
     letter: LETTERS[choiceIndex],
     text: choice.text,
     isCorrect: choice.isCorrect,
     rationaleIfWrong: choice.rationaleIfWrong,
     misconceptionTag: choice.misconceptionTag,
   })) as McChoice[];
-  const correctLetter = choices.find((choice) => choice.isCorrect)?.letter ?? "A";
+  const correctLetter =
+    choices.find((choice) => choice.isCorrect)?.letter ?? "A";
 
   return {
     contentId: `${COURSE}.u2.t${topicSlug(meta.topicCode)}.mc.${String(
@@ -184,7 +192,11 @@ function makeMc(meta: TopicMeta, seed: McSeed, index: number): McSingleItem {
   };
 }
 
-function makeConstructed(meta: TopicMeta, seed: ConstructedSeed, index: number): FrqItem {
+function makeConstructed(
+  meta: TopicMeta,
+  seed: ConstructedSeed,
+  index: number,
+): FrqItem {
   return {
     contentId: `${COURSE}.u2.t${topicSlug(meta.topicCode)}.${seed.responseType}.${String(
       index + 1,
@@ -194,7 +206,10 @@ function makeConstructed(meta: TopicMeta, seed: ConstructedSeed, index: number):
     course: COURSE,
     unit: UNIT,
     topic: meta.topicCode,
-    difficulty: calibrateConstructedDifficulty(seed.difficulty, seed.responseType),
+    difficulty: calibrateConstructedDifficulty(
+      seed.difficulty,
+      seed.responseType,
+    ),
     calculatorAllowed: seed.calculatorAllowed ?? false,
     skillTags: seed.skillTags,
     commonMisconceptions: seed.commonMisconceptions ?? [
@@ -224,16 +239,26 @@ function makeTopic(seed: TopicSeed): Topic {
     ...meta,
     items: [
       ...seed.mc.map((item, index) => makeMc(meta, item, index)),
-      ...seed.constructed.map((item, index) => makeConstructed(meta, item, index)),
+      ...seed.constructed.map((item, index) =>
+        makeConstructed(meta, item, index),
+      ),
     ],
   };
 }
 
-function singlePart(letter: string, promptMarkdown: string, points: number): FrqPart[] {
+function singlePart(
+  letter: string,
+  promptMarkdown: string,
+  points: number,
+): FrqPart[] {
   return [{ letter, promptMarkdown, points }];
 }
 
-function singleRubric(part: string, points: number, description: string): FrqRubric {
+function singleRubric(
+  part: string,
+  points: number,
+  description: string,
+): FrqRubric {
   return { maxPoints: points, criteria: [{ part, points, description }] };
 }
 
@@ -481,8 +506,18 @@ const topicSeeds: TopicSeed[] = [
         skillTags: ["matrix_notation", "matrix_order"],
         choices: ["$8$", "$7$", "$6$", "$5$"],
         correctLetter: "A",
-        hints: ["Use $i=2$ and $j=3$.", "Substitute into $i+2j$.", "Compute $2+2(3)$."],
-        solution: [{ step: 1, explanation: "Substitute the row and column indices.", math: "a_{23}=2+2(3)=8" }],
+        hints: [
+          "Use $i=2$ and $j=3$.",
+          "Substitute into $i+2j$.",
+          "Compute $2+2(3)$.",
+        ],
+        solution: [
+          {
+            step: 1,
+            explanation: "Substitute the row and column indices.",
+            math: "a_{23}=2+2(3)=8",
+          },
+        ],
         rationales: {
           B: "This usually comes from adding $2+3+2$ instead of using $2j$.",
           C: "This uses $2\\cdot3$ but forgets the extra $i=2$ term.",
@@ -494,10 +529,20 @@ const topicSeeds: TopicSeed[] = [
           "\\text{If }\\begin{bmatrix}x&2\\\\3&y\\end{bmatrix}=\\begin{bmatrix}5&2\\\\3&-1\\end{bmatrix},\\text{ then }(x,y)=",
         difficulty: 2,
         skillTags: ["matrix_equality"],
-        choices: ["$(5,-1)$", "$(-1,5)$", "$(2,3)$", "$(5,1)$"],
-        correctLetter: "A",
-        hints: ["Equal matrices have equal corresponding entries.", "Compare the top-left entries.", "Compare the bottom-right entries."],
-        solution: [{ step: 1, explanation: "Compare corresponding entries.", math: "x=5,\\quad y=-1" }],
+        choices: ["$(-1,5)$", "$(5,-1)$", "$(2,3)$", "$(5,1)$"],
+        correctLetter: "B",
+        hints: [
+          "Equal matrices have equal corresponding entries.",
+          "Compare the top-left entries.",
+          "Compare the bottom-right entries.",
+        ],
+        solution: [
+          {
+            step: 1,
+            explanation: "Compare corresponding entries.",
+            math: "x=5,\\quad y=-1",
+          },
+        ],
       },
       {
         questionLatex:
@@ -505,25 +550,45 @@ const topicSeeds: TopicSeed[] = [
         difficulty: 3,
         skillTags: ["matrix_order", "matrix_multiplication"],
         figure: productDimensionThreeTwoFigure,
-        choices: ["$3\\times4$", "$2\\times2$", "$4\\times3$", "$3\\times2$"],
-        correctLetter: "A",
-        hints: ["Inner dimensions decide whether the product exists.", "$2$ and $2$ match.", "The outer dimensions give the order."],
-        solution: [{ step: 1, explanation: "The product exists and has the outer dimensions.", math: "(3\\times2)(2\\times4)=3\\times4" }],
+        choices: ["$2\\times2$", "$4\\times3$", "$3\\times4$", "$3\\times2$"],
+        correctLetter: "C",
+        hints: [
+          "Inner dimensions decide whether the product exists.",
+          "$2$ and $2$ match.",
+          "The outer dimensions give the order.",
+        ],
+        solution: [
+          {
+            step: 1,
+            explanation: "The product exists and has the outer dimensions.",
+            math: "(3\\times2)(2\\times4)=3\\times4",
+          },
+        ],
       },
       {
-        questionLatex:
-          "\\text{Which matrix is skew-symmetric?}",
+        questionLatex: "\\text{Which matrix is skew-symmetric?}",
         difficulty: 3,
         skillTags: ["matrix_types", "skew_symmetric_matrix"],
         choices: [
-          "$\\begin{bmatrix}0&2&-1\\\\-2&0&4\\\\1&-4&0\\end{bmatrix}$",
           "$\\begin{bmatrix}1&2\\\\2&1\\end{bmatrix}$",
           "$\\begin{bmatrix}0&2\\\\2&0\\end{bmatrix}$",
           "$\\begin{bmatrix}1&0&0\\\\0&1&0\\\\0&0&1\\end{bmatrix}$",
+          "$\\begin{bmatrix}0&2&-1\\\\-2&0&4\\\\1&-4&0\\end{bmatrix}$",
         ],
-        correctLetter: "A",
-        hints: ["A skew-symmetric matrix has zero diagonal entries.", "Entries across the main diagonal must be opposites.", "Check whether $a_{ij}=-a_{ji}$."],
-        solution: [{ step: 1, explanation: "The first matrix satisfies $a_{ij}=-a_{ji}$ and has zero diagonal entries.", math: "A^T=-A" }],
+        correctLetter: "D",
+        hints: [
+          "A skew-symmetric matrix has zero diagonal entries.",
+          "Entries across the main diagonal must be opposites.",
+          "Check whether $a_{ij}=-a_{ji}$.",
+        ],
+        solution: [
+          {
+            step: 1,
+            explanation:
+              "The first matrix satisfies $a_{ij}=-a_{ji}$ and has zero diagonal entries.",
+            math: "A^T=-A",
+          },
+        ],
       },
       {
         questionLatex:
@@ -532,8 +597,18 @@ const topicSeeds: TopicSeed[] = [
         skillTags: ["matrix_types"],
         choices: ["$a=0,\\ b=0$", "$a=b$", "$a=1,\\ b=2$", "$ab=1$"],
         correctLetter: "A",
-        hints: ["A diagonal matrix is square.", "All non-diagonal entries must be zero.", "Here the non-diagonal entries are $a$ and $b$."],
-        solution: [{ step: 1, explanation: "The off-diagonal entries must vanish.", math: "a=0,\\quad b=0" }],
+        hints: [
+          "A diagonal matrix is square.",
+          "All non-diagonal entries must be zero.",
+          "Here the non-diagonal entries are $a$ and $b$.",
+        ],
+        solution: [
+          {
+            step: 1,
+            explanation: "The off-diagonal entries must vanish.",
+            math: "a=0,\\quad b=0",
+          },
+        ],
       },
     ],
     constructed: [
@@ -544,10 +619,27 @@ const topicSeeds: TopicSeed[] = [
         difficulty: 2,
         skillTags: ["matrix_notation"],
         parts: singlePart("a", "Write the matrix $A$.", 2),
-        hints: ["Find entries row by row.", "Use $j=1,2$ for each row.", "For example, $a_{21}=2(2)-1=3$."],
-        rubric: singleRubric("a", 2, "Writes $A=\\begin{bmatrix}1&0\\\\3&2\\\\5&4\\end{bmatrix}$ correctly."),
-        commonErrors: ["Interchanging row and column indices.", "Writing a $2\\times3$ matrix instead of a $3\\times2$ matrix."],
-        workedSolution: [{ part: "a", explanation: "Using $a_{ij}=2i-j$, the rows are $(1,0)$, $(3,2)$, and $(5,4)$. Hence $A=\\begin{bmatrix}1&0\\\\3&2\\\\5&4\\end{bmatrix}$." }],
+        hints: [
+          "Find entries row by row.",
+          "Use $j=1,2$ for each row.",
+          "For example, $a_{21}=2(2)-1=3$.",
+        ],
+        rubric: singleRubric(
+          "a",
+          2,
+          "Writes $A=\\begin{bmatrix}1&0\\\\3&2\\\\5&4\\end{bmatrix}$ correctly.",
+        ),
+        commonErrors: [
+          "Interchanging row and column indices.",
+          "Writing a $2\\times3$ matrix instead of a $3\\times2$ matrix.",
+        ],
+        workedSolution: [
+          {
+            part: "a",
+            explanation:
+              "Using $a_{ij}=2i-j$, the rows are $(1,0)$, $(3,2)$, and $(5,4)$. Hence $A=\\begin{bmatrix}1&0\\\\3&2\\\\5&4\\end{bmatrix}$.",
+          },
+        ],
       },
       {
         responseType: "vsaq",
@@ -559,7 +651,13 @@ const topicSeeds: TopicSeed[] = [
         hints: ["Compare corresponding entries.", "$2x=6$.", "$y-1=4$."],
         rubric: singleRubric("a", 2, "Finds $x=3$ and $y=5$."),
         commonErrors: ["Solving $y-1=3$ by comparing with the wrong entry."],
-        workedSolution: [{ part: "a", explanation: "By equality of matrices, $2x=6$ and $y-1=4$. Therefore $x=3$ and $y=5$." }],
+        workedSolution: [
+          {
+            part: "a",
+            explanation:
+              "By equality of matrices, $2x=6$ and $y-1=4$. Therefore $x=3$ and $y=5$.",
+          },
+        ],
       },
       {
         responseType: "saq",
@@ -568,17 +666,42 @@ const topicSeeds: TopicSeed[] = [
         difficulty: 3,
         skillTags: ["matrix_types"],
         parts: singlePart("a", "State the applicable types with reasons.", 3),
-        hints: ["Check the order first.", "Look at entries above the main diagonal.", "A diagonal matrix has all off-diagonal entries zero."],
+        hints: [
+          "Check the order first.",
+          "Look at entries above the main diagonal.",
+          "A diagonal matrix has all off-diagonal entries zero.",
+        ],
         rubric: {
           maxPoints: 3,
           criteria: [
-            { part: "a", points: 1, description: "Identifies that the matrix is square." },
-            { part: "a", points: 1, description: "Identifies that it is lower triangular." },
-            { part: "a", points: 1, description: "Correctly rejects diagonal, scalar, and identity." },
+            {
+              part: "a",
+              points: 1,
+              description: "Identifies that the matrix is square.",
+            },
+            {
+              part: "a",
+              points: 1,
+              description: "Identifies that it is lower triangular.",
+            },
+            {
+              part: "a",
+              points: 1,
+              description: "Correctly rejects diagonal, scalar, and identity.",
+            },
           ],
         },
-        commonErrors: ["Calling it diagonal because all diagonal entries are zero.", "Forgetting that nonzero entries below the diagonal are allowed in a lower triangular matrix."],
-        workedSolution: [{ part: "a", explanation: "The matrix is of order $3\\times3$, so it is square. All entries above the main diagonal are zero, so it is lower triangular. Since entries below the main diagonal are nonzero, it is not diagonal, scalar, or identity." }],
+        commonErrors: [
+          "Calling it diagonal because all diagonal entries are zero.",
+          "Forgetting that nonzero entries below the diagonal are allowed in a lower triangular matrix.",
+        ],
+        workedSolution: [
+          {
+            part: "a",
+            explanation:
+              "The matrix is of order $3\\times3$, so it is square. All entries above the main diagonal are zero, so it is lower triangular. Since entries below the main diagonal are nonzero, it is not diagonal, scalar, or identity.",
+          },
+        ],
       },
       {
         responseType: "laq",
@@ -588,23 +711,51 @@ const topicSeeds: TopicSeed[] = [
         skillTags: ["matrix_equality", "matrix_types"],
         parts: [
           { letter: "a", promptMarkdown: "Find $x,y,z$.", points: 3 },
-          { letter: "b", promptMarkdown: "State whether the resulting matrix is symmetric. Give a reason.", points: 2 },
+          {
+            letter: "b",
+            promptMarkdown:
+              "State whether the resulting matrix is symmetric. Give a reason.",
+            points: 2,
+          },
         ],
-        hints: ["Compare each corresponding entry.", "Use $x+1=4$, $2y=6$, and $z-4=1$.", "For symmetry, compare the off-diagonal entries $6$ and $3$."],
+        hints: [
+          "Compare each corresponding entry.",
+          "Use $x+1=4$, $2y=6$, and $z-4=1$.",
+          "For symmetry, compare the off-diagonal entries $6$ and $3$.",
+        ],
         rubric: {
           maxPoints: 5,
           criteria: [
             { part: "a", points: 1, description: "Finds $x=3$." },
             { part: "a", points: 1, description: "Finds $y=3$." },
             { part: "a", points: 1, description: "Finds $z=5$." },
-            { part: "b", points: 1, description: "States that the matrix is not symmetric." },
-            { part: "b", points: 1, description: "Justifies using unequal off-diagonal entries." },
+            {
+              part: "b",
+              points: 1,
+              description: "States that the matrix is not symmetric.",
+            },
+            {
+              part: "b",
+              points: 1,
+              description: "Justifies using unequal off-diagonal entries.",
+            },
           ],
         },
-        commonErrors: ["Comparing non-corresponding entries.", "Calling the matrix symmetric because both diagonal entries are real numbers."],
+        commonErrors: [
+          "Comparing non-corresponding entries.",
+          "Calling the matrix symmetric because both diagonal entries are real numbers.",
+        ],
         workedSolution: [
-          { part: "a", explanation: "By equality of matrices, $x+1=4$, $2y=6$, and $z-4=1$. Thus $x=3$, $y=3$, and $z=5$." },
-          { part: "b", explanation: "The resulting matrix is $\\begin{bmatrix}4&6\\\\3&1\\end{bmatrix}$. It is not symmetric because the off-diagonal entries $6$ and $3$ are not equal." },
+          {
+            part: "a",
+            explanation:
+              "By equality of matrices, $x+1=4$, $2y=6$, and $z-4=1$. Thus $x=3$, $y=3$, and $z=5$.",
+          },
+          {
+            part: "b",
+            explanation:
+              "The resulting matrix is $\\begin{bmatrix}4&6\\\\3&1\\end{bmatrix}$. It is not symmetric because the off-diagonal entries $6$ and $3$ are not equal.",
+          },
         ],
       },
       {
@@ -616,24 +767,69 @@ const topicSeeds: TopicSeed[] = [
         figure: clubEnrollmentBarFigure,
         parts: [
           { letter: "a", promptMarkdown: "State the order of $M$.", points: 1 },
-          { letter: "b", promptMarkdown: "Interpret the entry $m_{32}$.", points: 1 },
-          { letter: "c", promptMarkdown: "Find the total number of students in the Science club and write what $M^T$ would represent.", points: 2 },
+          {
+            letter: "b",
+            promptMarkdown: "Interpret the entry $m_{32}$.",
+            points: 1,
+          },
+          {
+            letter: "c",
+            promptMarkdown:
+              "Find the total number of students in the Science club and write what $M^T$ would represent.",
+            points: 2,
+          },
         ],
-        hints: ["Count rows and columns.", "$m_{32}$ means row $3$, column $2$.", "The transpose interchanges clubs and gender categories."],
+        hints: [
+          "Count rows and columns.",
+          "$m_{32}$ means row $3$, column $2$.",
+          "The transpose interchanges clubs and gender categories.",
+        ],
         rubric: {
           maxPoints: 4,
           criteria: [
-            { part: "a", points: 1, description: "States the order as $3\\times2$." },
-            { part: "b", points: 1, description: "Interprets $m_{32}=20$ as girls in the Art club." },
-            { part: "c", points: 1, description: "Finds Science club total $15+15=30$." },
-            { part: "c", points: 1, description: "Correctly explains that $M^T$ has gender rows and club columns." },
+            {
+              part: "a",
+              points: 1,
+              description: "States the order as $3\\times2$.",
+            },
+            {
+              part: "b",
+              points: 1,
+              description: "Interprets $m_{32}=20$ as girls in the Art club.",
+            },
+            {
+              part: "c",
+              points: 1,
+              description: "Finds Science club total $15+15=30$.",
+            },
+            {
+              part: "c",
+              points: 1,
+              description:
+                "Correctly explains that $M^T$ has gender rows and club columns.",
+            },
           ],
         },
-        commonErrors: ["Writing the order as $2\\times3$.", "Reading $m_{32}$ as row $2$, column $3$."],
+        commonErrors: [
+          "Writing the order as $2\\times3$.",
+          "Reading $m_{32}$ as row $2$, column $3$.",
+        ],
         workedSolution: [
-          { part: "a", explanation: "$M$ has $3$ rows and $2$ columns, so its order is $3\\times2$." },
-          { part: "b", explanation: "$m_{32}=20$, meaning there are $20$ girls in the Art club." },
-          { part: "c", explanation: "The Science club has $15+15=30$ students. In $M^T$, rows would represent boys and girls while columns would represent the clubs." },
+          {
+            part: "a",
+            explanation:
+              "$M$ has $3$ rows and $2$ columns, so its order is $3\\times2$.",
+          },
+          {
+            part: "b",
+            explanation:
+              "$m_{32}=20$, meaning there are $20$ girls in the Art club.",
+          },
+          {
+            part: "c",
+            explanation:
+              "The Science club has $15+15=30$ students. In $M^T$, rows would represent boys and girls while columns would represent the clubs.",
+          },
         ],
       },
     ],
@@ -649,20 +845,40 @@ const topicSeeds: TopicSeed[] = [
           "\\text{If }A\\text{ and }B\\text{ are both of order }2\\times3,\\text{ then }A+B\\text{ is of order}",
         difficulty: 2,
         skillTags: ["matrix_operations", "matrix_order"],
-        choices: ["$2\\times3$", "$3\\times2$", "$2\\times2$", "$3\\times3$"],
-        correctLetter: "A",
-        hints: ["Addition is defined only for matrices of the same order.", "The result keeps the same order.", "Here both are $2\\times3$."],
-        solution: [{ step: 1, explanation: "The sum has the same order as the addends.", math: "A+B\\text{ is }2\\times3" }],
+        choices: ["$3\\times2$", "$2\\times3$", "$2\\times2$", "$3\\times3$"],
+        correctLetter: "B",
+        hints: [
+          "Addition is defined only for matrices of the same order.",
+          "The result keeps the same order.",
+          "Here both are $2\\times3$.",
+        ],
+        solution: [
+          {
+            step: 1,
+            explanation: "The sum has the same order as the addends.",
+            math: "A+B\\text{ is }2\\times3",
+          },
+        ],
       },
       {
         questionLatex:
           "\\text{For }A=\\begin{bmatrix}1&-2\\\\3&0\\end{bmatrix}\\text{ and }B=\\begin{bmatrix}2&1\\\\-1&4\\end{bmatrix},\\text{ the }(1,2)\\text{ entry of }2A-3B\\text{ is}",
         difficulty: 2,
         skillTags: ["matrix_operations"],
-        choices: ["$-7$", "$-1$", "$7$", "$1$"],
-        correctLetter: "A",
-        hints: ["Use only the $(1,2)$ entries.", "The entries are $-2$ and $1$.", "Compute $2(-2)-3(1)$."],
-        solution: [{ step: 1, explanation: "Compute the requested entry.", math: "2(-2)-3(1)=-7" }],
+        choices: ["$-1$", "$7$", "$-7$", "$1$"],
+        correctLetter: "C",
+        hints: [
+          "Use only the $(1,2)$ entries.",
+          "The entries are $-2$ and $1$.",
+          "Compute $2(-2)-3(1)$.",
+        ],
+        solution: [
+          {
+            step: 1,
+            explanation: "Compute the requested entry.",
+            math: "2(-2)-3(1)=-7",
+          },
+        ],
       },
       {
         questionLatex:
@@ -671,29 +887,44 @@ const topicSeeds: TopicSeed[] = [
         skillTags: ["matrix_multiplication"],
         figure: productDimensionTwoThreeFigure,
         choices: [
-          "$\\begin{bmatrix}8&5\\\\1&-2\\end{bmatrix}$",
           "$\\begin{bmatrix}2&1\\\\0&-1\\end{bmatrix}$",
           "$\\begin{bmatrix}8&1\\\\5&-2\\end{bmatrix}$",
           "$\\begin{bmatrix}5&8\\\\-2&1\\end{bmatrix}$",
+          "$\\begin{bmatrix}8&5\\\\1&-2\\end{bmatrix}$",
         ],
-        correctLetter: "A",
-        hints: ["The result is $2\\times2$.", "Use row-by-column multiplication.", "For example, first entry is $1(2)+0(0)+2(3)=8$."],
-        solution: [{ step: 1, explanation: "Multiply rows of $A$ by columns of $B$.", math: "AB=\\begin{bmatrix}8&5\\\\1&-2\\end{bmatrix}" }],
+        correctLetter: "D",
+        hints: [
+          "The result is $2\\times2$.",
+          "Use row-by-column multiplication.",
+          "For example, first entry is $1(2)+0(0)+2(3)=8$.",
+        ],
+        solution: [
+          {
+            step: 1,
+            explanation: "Multiply rows of $A$ by columns of $B$.",
+            math: "AB=\\begin{bmatrix}8&5\\\\1&-2\\end{bmatrix}",
+          },
+        ],
       },
       {
         questionLatex:
           "\\text{Let }A=\\begin{bmatrix}0&1\\\\0&0\\end{bmatrix}\\text{ and }B=\\begin{bmatrix}0&0\\\\1&0\\end{bmatrix}.\\text{ Which statement is true?}",
         difficulty: 3,
         skillTags: ["matrix_multiplication", "non_commutativity"],
-        choices: [
-          "$AB\\ne BA$",
-          "$AB=BA=I$",
-          "$AB=BA=0$",
-          "$A+B=AB$",
-        ],
+        choices: ["$AB\\ne BA$", "$AB=BA=I$", "$AB=BA=0$", "$A+B=AB$"],
         correctLetter: "A",
-        hints: ["Compute both products separately.", "$AB=\\begin{bmatrix}1&0\\\\0&0\\end{bmatrix}$.", "$BA=\\begin{bmatrix}0&0\\\\0&1\\end{bmatrix}$."],
-        solution: [{ step: 1, explanation: "Matrix multiplication is not commutative here.", math: "AB=\\begin{bmatrix}1&0\\\\0&0\\end{bmatrix},\\quad BA=\\begin{bmatrix}0&0\\\\0&1\\end{bmatrix}" }],
+        hints: [
+          "Compute both products separately.",
+          "$AB=\\begin{bmatrix}1&0\\\\0&0\\end{bmatrix}$.",
+          "$BA=\\begin{bmatrix}0&0\\\\0&1\\end{bmatrix}$.",
+        ],
+        solution: [
+          {
+            step: 1,
+            explanation: "Matrix multiplication is not commutative here.",
+            math: "AB=\\begin{bmatrix}1&0\\\\0&0\\end{bmatrix},\\quad BA=\\begin{bmatrix}0&0\\\\0&1\\end{bmatrix}",
+          },
+        ],
       },
       {
         questionLatex:
@@ -701,14 +932,25 @@ const topicSeeds: TopicSeed[] = [
         difficulty: 4,
         skillTags: ["matrix_multiplication", "zero_product"],
         choices: [
-          "$A=\\begin{bmatrix}1&0\\\\0&0\\end{bmatrix},\\ B=\\begin{bmatrix}0&0\\\\0&1\\end{bmatrix}$",
           "$A=I,\\ B=I$",
+          "$A=\\begin{bmatrix}1&0\\\\0&0\\end{bmatrix},\\ B=\\begin{bmatrix}0&0\\\\0&1\\end{bmatrix}$",
           "$A=\\begin{bmatrix}1&0\\\\0&1\\end{bmatrix},\\ B=\\begin{bmatrix}0&1\\\\1&0\\end{bmatrix}$",
           "$A=0,\\ B=\\begin{bmatrix}1&2\\\\3&4\\end{bmatrix}$",
         ],
-        correctLetter: "A",
-        hints: ["Both matrices must be non-zero.", "Compute $AB$ for the first pair.", "Every entry of that product is zero."],
-        solution: [{ step: 1, explanation: "Both matrices are non-zero but their product is zero.", math: "\\begin{bmatrix}1&0\\\\0&0\\end{bmatrix}\\begin{bmatrix}0&0\\\\0&1\\end{bmatrix}=\\begin{bmatrix}0&0\\\\0&0\\end{bmatrix}" }],
+        correctLetter: "B",
+        hints: [
+          "Both matrices must be non-zero.",
+          "Compute $AB$ for the first pair.",
+          "Every entry of that product is zero.",
+        ],
+        solution: [
+          {
+            step: 1,
+            explanation:
+              "Both matrices are non-zero but their product is zero.",
+            math: "\\begin{bmatrix}1&0\\\\0&0\\end{bmatrix}\\begin{bmatrix}0&0\\\\0&1\\end{bmatrix}=\\begin{bmatrix}0&0\\\\0&0\\end{bmatrix}",
+          },
+        ],
       },
     ],
     constructed: [
@@ -719,10 +961,26 @@ const topicSeeds: TopicSeed[] = [
         difficulty: 2,
         skillTags: ["matrix_operations"],
         parts: singlePart("a", "Compute $A+B$.", 2),
-        hints: ["Add corresponding entries.", "Top row is $(2+1,-1+4)$.", "Bottom row is $(0+5,3-2)$."],
-        rubric: singleRubric("a", 2, "Finds $A+B=\\begin{bmatrix}3&3\\\\5&1\\end{bmatrix}$."),
-        commonErrors: ["Adding rows or columns instead of corresponding entries."],
-        workedSolution: [{ part: "a", explanation: "$A+B=\\begin{bmatrix}2+1&-1+4\\\\0+5&3-2\\end{bmatrix}=\\begin{bmatrix}3&3\\\\5&1\\end{bmatrix}$." }],
+        hints: [
+          "Add corresponding entries.",
+          "Top row is $(2+1,-1+4)$.",
+          "Bottom row is $(0+5,3-2)$.",
+        ],
+        rubric: singleRubric(
+          "a",
+          2,
+          "Finds $A+B=\\begin{bmatrix}3&3\\\\5&1\\end{bmatrix}$.",
+        ),
+        commonErrors: [
+          "Adding rows or columns instead of corresponding entries.",
+        ],
+        workedSolution: [
+          {
+            part: "a",
+            explanation:
+              "$A+B=\\begin{bmatrix}2+1&-1+4\\\\0+5&3-2\\end{bmatrix}=\\begin{bmatrix}3&3\\\\5&1\\end{bmatrix}$.",
+          },
+        ],
       },
       {
         responseType: "vsaq",
@@ -731,10 +989,20 @@ const topicSeeds: TopicSeed[] = [
         difficulty: 2,
         skillTags: ["scalar_multiplication"],
         parts: singlePart("a", "Find the required entry.", 2),
-        hints: ["The $(1,2)$ entry of $A$ is $2$.", "Scalar multiplication doubles every entry.", "Compute $2\\cdot2$."],
+        hints: [
+          "The $(1,2)$ entry of $A$ is $2$.",
+          "Scalar multiplication doubles every entry.",
+          "Compute $2\\cdot2$.",
+        ],
         rubric: singleRubric("a", 2, "Finds the entry as $4$."),
         commonErrors: ["Multiplying only the diagonal entries by the scalar."],
-        workedSolution: [{ part: "a", explanation: "The $(1,2)$ entry of $A$ is $2$, so the $(1,2)$ entry of $2A$ is $2(2)=4$." }],
+        workedSolution: [
+          {
+            part: "a",
+            explanation:
+              "The $(1,2)$ entry of $A$ is $2$, so the $(1,2)$ entry of $2A$ is $2(2)=4$.",
+          },
+        ],
       },
       {
         responseType: "saq",
@@ -743,17 +1011,42 @@ const topicSeeds: TopicSeed[] = [
         difficulty: 3,
         skillTags: ["matrix_multiplication"],
         parts: singlePart("a", "Find $AB$.", 3),
-        hints: ["The result is $2\\times2$.", "First row times first column gives $8$.", "Compute all four row-column products."],
+        hints: [
+          "The result is $2\\times2$.",
+          "First row times first column gives $8$.",
+          "Compute all four row-column products.",
+        ],
         rubric: {
           maxPoints: 3,
           criteria: [
-            { part: "a", points: 1, description: "Uses correct order and row-column multiplication." },
-            { part: "a", points: 1, description: "Computes first row correctly." },
-            { part: "a", points: 1, description: "Computes second row correctly." },
+            {
+              part: "a",
+              points: 1,
+              description: "Uses correct order and row-column multiplication.",
+            },
+            {
+              part: "a",
+              points: 1,
+              description: "Computes first row correctly.",
+            },
+            {
+              part: "a",
+              points: 1,
+              description: "Computes second row correctly.",
+            },
           ],
         },
-        commonErrors: ["Multiplying entrywise.", "Trying to compute $BA$ instead of $AB$."],
-        workedSolution: [{ part: "a", explanation: "$AB=\\begin{bmatrix}1(2)+0(0)+2(3)&1(1)+0(-1)+2(2)\\\\-1(2)+3(0)+1(3)&-1(1)+3(-1)+1(2)\\end{bmatrix}=\\begin{bmatrix}8&5\\\\1&-2\\end{bmatrix}$." }],
+        commonErrors: [
+          "Multiplying entrywise.",
+          "Trying to compute $BA$ instead of $AB$.",
+        ],
+        workedSolution: [
+          {
+            part: "a",
+            explanation:
+              "$AB=\\begin{bmatrix}1(2)+0(0)+2(3)&1(1)+0(-1)+2(2)\\\\-1(2)+3(0)+1(3)&-1(1)+3(-1)+1(2)\\end{bmatrix}=\\begin{bmatrix}8&5\\\\1&-2\\end{bmatrix}$.",
+          },
+        ],
       },
       {
         responseType: "laq",
@@ -765,19 +1058,47 @@ const topicSeeds: TopicSeed[] = [
           { letter: "a", promptMarkdown: "Find $3B-A$.", points: 2 },
           { letter: "b", promptMarkdown: "Hence find $X$.", points: 3 },
         ],
-        hints: ["Rearrange to $2X=3B-A$.", "Compute $3B$ first.", "Divide every entry of $3B-A$ by $2$."],
+        hints: [
+          "Rearrange to $2X=3B-A$.",
+          "Compute $3B$ first.",
+          "Divide every entry of $3B-A$ by $2$.",
+        ],
         rubric: {
           maxPoints: 5,
           criteria: [
-            { part: "a", points: 2, description: "Computes $3B-A=\\begin{bmatrix}8&1\\\\3&11\\end{bmatrix}$." },
-            { part: "b", points: 2, description: "Divides each entry by $2$ correctly." },
-            { part: "b", points: 1, description: "Writes the final matrix $X$." },
+            {
+              part: "a",
+              points: 2,
+              description:
+                "Computes $3B-A=\\begin{bmatrix}8&1\\\\3&11\\end{bmatrix}$.",
+            },
+            {
+              part: "b",
+              points: 2,
+              description: "Divides each entry by $2$ correctly.",
+            },
+            {
+              part: "b",
+              points: 1,
+              description: "Writes the final matrix $X$.",
+            },
           ],
         },
-        commonErrors: ["Writing $X=3B-A$ instead of $2X=3B-A$.", "Dividing only diagonal entries by $2$."],
+        commonErrors: [
+          "Writing $X=3B-A$ instead of $2X=3B-A$.",
+          "Dividing only diagonal entries by $2$.",
+        ],
         workedSolution: [
-          { part: "a", explanation: "$3B-A=\\begin{bmatrix}9&3\\\\6&15\\end{bmatrix}-\\begin{bmatrix}1&2\\\\3&4\\end{bmatrix}=\\begin{bmatrix}8&1\\\\3&11\\end{bmatrix}$." },
-          { part: "b", explanation: "Since $2X=3B-A$, $X=\\frac12\\begin{bmatrix}8&1\\\\3&11\\end{bmatrix}=\\begin{bmatrix}4&\\frac12\\\\\\frac32&\\frac{11}{2}\\end{bmatrix}$." },
+          {
+            part: "a",
+            explanation:
+              "$3B-A=\\begin{bmatrix}9&3\\\\6&15\\end{bmatrix}-\\begin{bmatrix}1&2\\\\3&4\\end{bmatrix}=\\begin{bmatrix}8&1\\\\3&11\\end{bmatrix}$.",
+          },
+          {
+            part: "b",
+            explanation:
+              "Since $2X=3B-A$, $X=\\frac12\\begin{bmatrix}8&1\\\\3&11\\end{bmatrix}=\\begin{bmatrix}4&\\frac12\\\\\\frac32&\\frac{11}{2}\\end{bmatrix}$.",
+          },
         ],
       },
       {
@@ -788,24 +1109,70 @@ const topicSeeds: TopicSeed[] = [
         skillTags: ["matrix_operations", "matrix_interpretation", "case_based"],
         figure: salesMatrixBarFigure,
         parts: [
-          { letter: "a", promptMarkdown: "Find the two-day sales matrix $M+T$.", points: 2 },
-          { letter: "b", promptMarkdown: "Find the total number of pens sold by Branch 2 over the two days.", points: 1 },
-          { letter: "c", promptMarkdown: "If each notebook costs Rs. 40 and each pen costs Rs. 10, find Branch 1's Monday revenue.", points: 1 },
+          {
+            letter: "a",
+            promptMarkdown: "Find the two-day sales matrix $M+T$.",
+            points: 2,
+          },
+          {
+            letter: "b",
+            promptMarkdown:
+              "Find the total number of pens sold by Branch 2 over the two days.",
+            points: 1,
+          },
+          {
+            letter: "c",
+            promptMarkdown:
+              "If each notebook costs Rs. 40 and each pen costs Rs. 10, find Branch 1's Monday revenue.",
+            points: 1,
+          },
         ],
-        hints: ["Add corresponding entries for the two-day sales matrix.", "Branch 2 pens are in row $2$, column $2$.", "For revenue, multiply quantities by their prices and add."],
+        hints: [
+          "Add corresponding entries for the two-day sales matrix.",
+          "Branch 2 pens are in row $2$, column $2$.",
+          "For revenue, multiply quantities by their prices and add.",
+        ],
         rubric: {
           maxPoints: 4,
           criteria: [
-            { part: "a", points: 2, description: "Finds $M+T=\\begin{bmatrix}65&85\\\\45&110\\end{bmatrix}$." },
-            { part: "b", points: 1, description: "Finds Branch 2 pen total as $110$." },
-            { part: "c", points: 1, description: "Computes Branch 1 Monday revenue as Rs. $1650$." },
+            {
+              part: "a",
+              points: 2,
+              description:
+                "Finds $M+T=\\begin{bmatrix}65&85\\\\45&110\\end{bmatrix}$.",
+            },
+            {
+              part: "b",
+              points: 1,
+              description: "Finds Branch 2 pen total as $110$.",
+            },
+            {
+              part: "c",
+              points: 1,
+              description: "Computes Branch 1 Monday revenue as Rs. $1650$.",
+            },
           ],
         },
-        commonErrors: ["Adding all four entries into one number.", "Using Branch 1 values for Branch 2.", "Multiplying pens by the notebook price."],
+        commonErrors: [
+          "Adding all four entries into one number.",
+          "Using Branch 1 values for Branch 2.",
+          "Multiplying pens by the notebook price.",
+        ],
         workedSolution: [
-          { part: "a", explanation: "$M+T=\\begin{bmatrix}30+35&45+40\\\\25+20&50+60\\end{bmatrix}=\\begin{bmatrix}65&85\\\\45&110\\end{bmatrix}$." },
-          { part: "b", explanation: "Branch 2 pens over two days are $50+60=110$." },
-          { part: "c", explanation: "Branch 1 Monday revenue is $30(40)+45(10)=1200+450=1650$ rupees." },
+          {
+            part: "a",
+            explanation:
+              "$M+T=\\begin{bmatrix}30+35&45+40\\\\25+20&50+60\\end{bmatrix}=\\begin{bmatrix}65&85\\\\45&110\\end{bmatrix}$.",
+          },
+          {
+            part: "b",
+            explanation: "Branch 2 pens over two days are $50+60=110$.",
+          },
+          {
+            part: "c",
+            explanation:
+              "Branch 1 Monday revenue is $30(40)+45(10)=1200+450=1650$ rupees.",
+          },
         ],
       },
     ],
@@ -822,24 +1189,44 @@ const topicSeeds: TopicSeed[] = [
         difficulty: 2,
         skillTags: ["transpose"],
         choices: [
-          "$\\begin{bmatrix}1&4\\\\2&5\\\\3&6\\end{bmatrix}$",
           "$\\begin{bmatrix}1&2&3\\\\4&5&6\\end{bmatrix}$",
           "$\\begin{bmatrix}4&5&6\\\\1&2&3\\end{bmatrix}$",
+          "$\\begin{bmatrix}1&4\\\\2&5\\\\3&6\\end{bmatrix}$",
           "$\\begin{bmatrix}1&4&2\\\\5&3&6\\end{bmatrix}$",
         ],
-        correctLetter: "A",
-        hints: ["Transpose interchanges rows and columns.", "The first row becomes the first column.", "The order changes from $2\\times3$ to $3\\times2$."],
-        solution: [{ step: 1, explanation: "Interchange rows and columns.", math: "A^T=\\begin{bmatrix}1&4\\\\2&5\\\\3&6\\end{bmatrix}" }],
+        correctLetter: "C",
+        hints: [
+          "Transpose interchanges rows and columns.",
+          "The first row becomes the first column.",
+          "The order changes from $2\\times3$ to $3\\times2$.",
+        ],
+        solution: [
+          {
+            step: 1,
+            explanation: "Interchange rows and columns.",
+            math: "A^T=\\begin{bmatrix}1&4\\\\2&5\\\\3&6\\end{bmatrix}",
+          },
+        ],
       },
       {
         questionLatex:
           "\\text{For }A=\\begin{bmatrix}1&x\\\\3&2\\end{bmatrix}\\text{ to be symmetric, }x\\text{ must be}",
         difficulty: 2,
         skillTags: ["symmetric_matrix"],
-        choices: ["$3$", "$1$", "$2$", "$-3$"],
-        correctLetter: "A",
-        hints: ["Symmetric means $A^T=A$.", "Off-diagonal entries must be equal.", "So compare $x$ and $3$."],
-        solution: [{ step: 1, explanation: "For symmetry, $a_{12}=a_{21}$.", math: "x=3" }],
+        choices: ["$1$", "$2$", "$-3$", "$3$"],
+        correctLetter: "D",
+        hints: [
+          "Symmetric means $A^T=A$.",
+          "Off-diagonal entries must be equal.",
+          "So compare $x$ and $3$.",
+        ],
+        solution: [
+          {
+            step: 1,
+            explanation: "For symmetry, $a_{12}=a_{21}$.",
+            math: "x=3",
+          },
+        ],
       },
       {
         questionLatex:
@@ -848,8 +1235,14 @@ const topicSeeds: TopicSeed[] = [
         skillTags: ["skew_symmetric_matrix"],
         choices: ["$5$", "$-5$", "$0$", "$1$"],
         correctLetter: "A",
-        hints: ["Skew-symmetric means $a_{12}=-a_{21}$.", "Here $a_{21}=-5$.", "So $a=-(-5)$."],
-        solution: [{ step: 1, explanation: "Use $a_{12}=-a_{21}$.", math: "a=5" }],
+        hints: [
+          "Skew-symmetric means $a_{12}=-a_{21}$.",
+          "Here $a_{21}=-5$.",
+          "So $a=-(-5)$.",
+        ],
+        solution: [
+          { step: 1, explanation: "Use $a_{12}=-a_{21}$.", math: "a=5" },
+        ],
       },
       {
         questionLatex:
@@ -857,24 +1250,44 @@ const topicSeeds: TopicSeed[] = [
         difficulty: 3,
         skillTags: ["transpose", "symmetric_matrix"],
         choices: [
-          "$\\begin{bmatrix}2&2\\\\2&6\\end{bmatrix}$",
           "$\\begin{bmatrix}2&4\\\\0&6\\end{bmatrix}$",
+          "$\\begin{bmatrix}2&2\\\\2&6\\end{bmatrix}$",
           "$\\begin{bmatrix}0&2\\\\-2&0\\end{bmatrix}$",
           "$\\begin{bmatrix}4&4\\\\4&12\\end{bmatrix}$",
         ],
-        correctLetter: "A",
-        hints: ["Find $A^T$ first.", "Add $A$ and $A^T$.", "Then multiply every entry by $1/2$."],
-        solution: [{ step: 1, explanation: "Compute the symmetric part.", math: "\\frac12(A+A^T)=\\frac12\\begin{bmatrix}4&4\\\\4&12\\end{bmatrix}=\\begin{bmatrix}2&2\\\\2&6\\end{bmatrix}" }],
+        correctLetter: "B",
+        hints: [
+          "Find $A^T$ first.",
+          "Add $A$ and $A^T$.",
+          "Then multiply every entry by $1/2$.",
+        ],
+        solution: [
+          {
+            step: 1,
+            explanation: "Compute the symmetric part.",
+            math: "\\frac12(A+A^T)=\\frac12\\begin{bmatrix}4&4\\\\4&12\\end{bmatrix}=\\begin{bmatrix}2&2\\\\2&6\\end{bmatrix}",
+          },
+        ],
       },
       {
         questionLatex:
           "\\text{If }A\\text{ is skew-symmetric, then every diagonal entry of }A\\text{ is}",
         difficulty: 4,
         skillTags: ["skew_symmetric_matrix"],
-        choices: ["$0$", "$1$", "$-1$", "$\\text{any real number}$"],
-        correctLetter: "A",
-        hints: ["Skew-symmetric means $A^T=-A$.", "For a diagonal entry, transpose does not change its position.", "So $a_{ii}=-a_{ii}$."],
-        solution: [{ step: 1, explanation: "A diagonal entry must be its own negative.", math: "a_{ii}=-a_{ii}\\Rightarrow a_{ii}=0" }],
+        choices: ["$1$", "$-1$", "$0$", "$\\text{any real number}$"],
+        correctLetter: "C",
+        hints: [
+          "Skew-symmetric means $A^T=-A$.",
+          "For a diagonal entry, transpose does not change its position.",
+          "So $a_{ii}=-a_{ii}$.",
+        ],
+        solution: [
+          {
+            step: 1,
+            explanation: "A diagonal entry must be its own negative.",
+            math: "a_{ii}=-a_{ii}\\Rightarrow a_{ii}=0",
+          },
+        ],
       },
     ],
     constructed: [
@@ -885,10 +1298,24 @@ const topicSeeds: TopicSeed[] = [
         difficulty: 2,
         skillTags: ["transpose"],
         parts: singlePart("a", "Write $A^T$.", 2),
-        hints: ["Rows become columns.", "The first row becomes the first column.", "The order changes to $3\\times2$."],
-        rubric: singleRubric("a", 2, "Writes $A^T=\\begin{bmatrix}2&3\\\\-1&4\\\\0&5\\end{bmatrix}$."),
+        hints: [
+          "Rows become columns.",
+          "The first row becomes the first column.",
+          "The order changes to $3\\times2$.",
+        ],
+        rubric: singleRubric(
+          "a",
+          2,
+          "Writes $A^T=\\begin{bmatrix}2&3\\\\-1&4\\\\0&5\\end{bmatrix}$.",
+        ),
         commonErrors: ["Reversing the rows instead of transposing."],
-        workedSolution: [{ part: "a", explanation: "$A^T=\\begin{bmatrix}2&3\\\\-1&4\\\\0&5\\end{bmatrix}$." }],
+        workedSolution: [
+          {
+            part: "a",
+            explanation:
+              "$A^T=\\begin{bmatrix}2&3\\\\-1&4\\\\0&5\\end{bmatrix}$.",
+          },
+        ],
       },
       {
         responseType: "vsaq",
@@ -900,7 +1327,12 @@ const topicSeeds: TopicSeed[] = [
         hints: ["Use $a_{12}=-a_{21}$.", "Here $a_{21}=-3$.", "So $x-1=3$."],
         rubric: singleRubric("a", 2, "Finds $x=4$."),
         commonErrors: ["Setting $x-1=-3$ as if the matrix were symmetric."],
-        workedSolution: [{ part: "a", explanation: "For skew-symmetry, $x-1=-(-3)=3$. Therefore $x=4$." }],
+        workedSolution: [
+          {
+            part: "a",
+            explanation: "For skew-symmetry, $x-1=-(-3)=3$. Therefore $x=4$.",
+          },
+        ],
       },
       {
         responseType: "saq",
@@ -909,17 +1341,42 @@ const topicSeeds: TopicSeed[] = [
         difficulty: 3,
         skillTags: ["transpose", "symmetric_matrix", "proof"],
         parts: singlePart("a", "Prove the statement.", 3),
-        hints: ["To prove symmetry, take the transpose.", "Use $(A+B)^T=A^T+B^T$.", "Also use $(A^T)^T=A$."],
+        hints: [
+          "To prove symmetry, take the transpose.",
+          "Use $(A+B)^T=A^T+B^T$.",
+          "Also use $(A^T)^T=A$.",
+        ],
         rubric: {
           maxPoints: 3,
           criteria: [
-            { part: "a", points: 1, description: "Takes transpose of $A+A^T$." },
-            { part: "a", points: 1, description: "Uses transpose properties correctly." },
-            { part: "a", points: 1, description: "Concludes that the result is symmetric." },
+            {
+              part: "a",
+              points: 1,
+              description: "Takes transpose of $A+A^T$.",
+            },
+            {
+              part: "a",
+              points: 1,
+              description: "Uses transpose properties correctly.",
+            },
+            {
+              part: "a",
+              points: 1,
+              description: "Concludes that the result is symmetric.",
+            },
           ],
         },
-        commonErrors: ["Checking only one numerical example.", "Forgetting that $A$ must be square for symmetry to be discussed."],
-        workedSolution: [{ part: "a", explanation: "$(A+A^T)^T=A^T+(A^T)^T=A^T+A=A+A^T$. Hence $A+A^T$ is symmetric." }],
+        commonErrors: [
+          "Checking only one numerical example.",
+          "Forgetting that $A$ must be square for symmetry to be discussed.",
+        ],
+        workedSolution: [
+          {
+            part: "a",
+            explanation:
+              "$(A+A^T)^T=A^T+(A^T)^T=A^T+A=A+A^T$. Hence $A+A^T$ is symmetric.",
+          },
+        ],
       },
       {
         responseType: "laq",
@@ -928,22 +1385,55 @@ const topicSeeds: TopicSeed[] = [
         difficulty: 4,
         skillTags: ["transpose", "symmetric_matrix", "skew_symmetric_matrix"],
         parts: [
-          { letter: "a", promptMarkdown: "Find $S=\\frac12(A+A^T)$.", points: 2 },
-          { letter: "b", promptMarkdown: "Find $K=\\frac12(A-A^T)$ and verify $A=S+K$.", points: 3 },
+          {
+            letter: "a",
+            promptMarkdown: "Find $S=\\frac12(A+A^T)$.",
+            points: 2,
+          },
+          {
+            letter: "b",
+            promptMarkdown: "Find $K=\\frac12(A-A^T)$ and verify $A=S+K$.",
+            points: 3,
+          },
         ],
-        hints: ["Use the standard decomposition formulas.", "Compute $A^T$ first.", "The symmetric and skew-symmetric parts must add back to $A$."],
+        hints: [
+          "Use the standard decomposition formulas.",
+          "Compute $A^T$ first.",
+          "The symmetric and skew-symmetric parts must add back to $A$.",
+        ],
         rubric: {
           maxPoints: 5,
           criteria: [
-            { part: "a", points: 2, description: "Finds $S=\\begin{bmatrix}2&1\\\\1&4\\end{bmatrix}$." },
-            { part: "b", points: 2, description: "Finds $K=\\begin{bmatrix}0&2\\\\-2&0\\end{bmatrix}$." },
+            {
+              part: "a",
+              points: 2,
+              description:
+                "Finds $S=\\begin{bmatrix}2&1\\\\1&4\\end{bmatrix}$.",
+            },
+            {
+              part: "b",
+              points: 2,
+              description:
+                "Finds $K=\\begin{bmatrix}0&2\\\\-2&0\\end{bmatrix}$.",
+            },
             { part: "b", points: 1, description: "Verifies $A=S+K$." },
           ],
         },
-        commonErrors: ["Using $A+A^T$ without multiplying by $1/2$.", "Writing the skew-symmetric part with equal off-diagonal entries."],
+        commonErrors: [
+          "Using $A+A^T$ without multiplying by $1/2$.",
+          "Writing the skew-symmetric part with equal off-diagonal entries.",
+        ],
         workedSolution: [
-          { part: "a", explanation: "$A^T=\\begin{bmatrix}2&-1\\\\3&4\\end{bmatrix}$, so $S=\\frac12(A+A^T)=\\begin{bmatrix}2&1\\\\1&4\\end{bmatrix}$." },
-          { part: "b", explanation: "$K=\\frac12(A-A^T)=\\begin{bmatrix}0&2\\\\-2&0\\end{bmatrix}$. Then $S+K=\\begin{bmatrix}2&3\\\\-1&4\\end{bmatrix}=A$." },
+          {
+            part: "a",
+            explanation:
+              "$A^T=\\begin{bmatrix}2&-1\\\\3&4\\end{bmatrix}$, so $S=\\frac12(A+A^T)=\\begin{bmatrix}2&1\\\\1&4\\end{bmatrix}$.",
+          },
+          {
+            part: "b",
+            explanation:
+              "$K=\\frac12(A-A^T)=\\begin{bmatrix}0&2\\\\-2&0\\end{bmatrix}$. Then $S+K=\\begin{bmatrix}2&3\\\\-1&4\\end{bmatrix}=A$.",
+          },
         ],
       },
       {
@@ -953,24 +1443,63 @@ const topicSeeds: TopicSeed[] = [
         difficulty: 4,
         skillTags: ["transpose", "matrix_interpretation", "case_based"],
         parts: [
-          { letter: "a", promptMarkdown: "Write the order of $G$ and $G^T$.", points: 1 },
+          {
+            letter: "a",
+            promptMarkdown: "Write the order of $G$ and $G^T$.",
+            points: 1,
+          },
           { letter: "b", promptMarkdown: "Write $G^T$.", points: 2 },
-          { letter: "c", promptMarkdown: "Explain why $G$ cannot be symmetric.", points: 1 },
+          {
+            letter: "c",
+            promptMarkdown: "Explain why $G$ cannot be symmetric.",
+            points: 1,
+          },
         ],
-        hints: ["Transpose changes $3\\times2$ into $2\\times3$.", "Rows become columns.", "Only square matrices can be symmetric."],
+        hints: [
+          "Transpose changes $3\\times2$ into $2\\times3$.",
+          "Rows become columns.",
+          "Only square matrices can be symmetric.",
+        ],
         rubric: {
           maxPoints: 4,
           criteria: [
-            { part: "a", points: 1, description: "States orders $3\\times2$ and $2\\times3$." },
-            { part: "b", points: 2, description: "Writes $G^T=\\begin{bmatrix}2&0&4\\\\1&3&2\\end{bmatrix}$." },
-            { part: "c", points: 1, description: "Explains that $G$ is not square, so it cannot be symmetric." },
+            {
+              part: "a",
+              points: 1,
+              description: "States orders $3\\times2$ and $2\\times3$.",
+            },
+            {
+              part: "b",
+              points: 2,
+              description:
+                "Writes $G^T=\\begin{bmatrix}2&0&4\\\\1&3&2\\end{bmatrix}$.",
+            },
+            {
+              part: "c",
+              points: 1,
+              description:
+                "Explains that $G$ is not square, so it cannot be symmetric.",
+            },
           ],
         },
-        commonErrors: ["Trying to compare $G$ with $G^T$ entry-by-entry despite different orders.", "Reversing columns instead of transposing."],
+        commonErrors: [
+          "Trying to compare $G$ with $G^T$ entry-by-entry despite different orders.",
+          "Reversing columns instead of transposing.",
+        ],
         workedSolution: [
-          { part: "a", explanation: "$G$ is $3\\times2$, so $G^T$ is $2\\times3$." },
-          { part: "b", explanation: "$G^T=\\begin{bmatrix}2&0&4\\\\1&3&2\\end{bmatrix}$." },
-          { part: "c", explanation: "A symmetric matrix must be square. Since $G$ is not square, it cannot be symmetric." },
+          {
+            part: "a",
+            explanation: "$G$ is $3\\times2$, so $G^T$ is $2\\times3$.",
+          },
+          {
+            part: "b",
+            explanation: "$G^T=\\begin{bmatrix}2&0&4\\\\1&3&2\\end{bmatrix}$.",
+          },
+          {
+            part: "c",
+            explanation:
+              "A symmetric matrix must be square. Since $G$ is not square, it cannot be symmetric.",
+          },
         ],
       },
     ],
@@ -986,10 +1515,20 @@ const topicSeeds: TopicSeed[] = [
           "\\text{The matrix }A=\\begin{bmatrix}2&1\\\\3&k\\end{bmatrix}\\text{ is invertible if}",
         difficulty: 2,
         skillTags: ["inverse_matrix", "determinants"],
-        choices: ["$k\\ne\\frac32$", "$k=\\frac32$", "$k=0$", "$k=3$"],
-        correctLetter: "A",
-        hints: ["A $2\\times2$ matrix is invertible when its determinant is nonzero.", "Compute $2k-3$.", "Require $2k-3\\ne0$."],
-        solution: [{ step: 1, explanation: "The determinant must be nonzero.", math: "\\det A=2k-3\\ne0\\Rightarrow k\\ne\\frac32" }],
+        choices: ["$k=\\frac32$", "$k=0$", "$k=3$", "$k\\ne\\frac32$"],
+        correctLetter: "D",
+        hints: [
+          "A $2\\times2$ matrix is invertible when its determinant is nonzero.",
+          "Compute $2k-3$.",
+          "Require $2k-3\\ne0$.",
+        ],
+        solution: [
+          {
+            step: 1,
+            explanation: "The determinant must be nonzero.",
+            math: "\\det A=2k-3\\ne0\\Rightarrow k\\ne\\frac32",
+          },
+        ],
       },
       {
         questionLatex:
@@ -1003,18 +1542,38 @@ const topicSeeds: TopicSeed[] = [
           "$\\begin{bmatrix}0&1\\\\1&2\\end{bmatrix}$",
         ],
         correctLetter: "A",
-        hints: ["Use the inverse formula for a $2\\times2$ matrix.", "The determinant is $1$.", "Change the sign of the off-diagonal entry $2$ in the formula."],
-        solution: [{ step: 1, explanation: "Apply the $2\\times2$ inverse formula.", math: "\\begin{bmatrix}1&2\\\\0&1\\end{bmatrix}^{-1}=\\begin{bmatrix}1&-2\\\\0&1\\end{bmatrix}" }],
+        hints: [
+          "Use the inverse formula for a $2\\times2$ matrix.",
+          "The determinant is $1$.",
+          "Change the sign of the off-diagonal entry $2$ in the formula.",
+        ],
+        solution: [
+          {
+            step: 1,
+            explanation: "Apply the $2\\times2$ inverse formula.",
+            math: "\\begin{bmatrix}1&2\\\\0&1\\end{bmatrix}^{-1}=\\begin{bmatrix}1&-2\\\\0&1\\end{bmatrix}",
+          },
+        ],
       },
       {
         questionLatex:
           "\\text{If }A\\text{ and }B\\text{ are square matrices of the same order and }AB=I,\\text{ then }B\\text{ is}",
         difficulty: 3,
         skillTags: ["inverse_matrix"],
-        choices: ["$A^{-1}$", "$A^T$", "$0$", "$A$"],
-        correctLetter: "A",
-        hints: ["An inverse multiplies with the matrix to give identity.", "For square matrices, a right inverse is the inverse in CBSE context.", "So $B$ is the inverse of $A$."],
-        solution: [{ step: 1, explanation: "By the definition of inverse matrix, $B=A^{-1}$.", math: "AB=I\\Rightarrow B=A^{-1}" }],
+        choices: ["$A^T$", "$A^{-1}$", "$0$", "$A$"],
+        correctLetter: "B",
+        hints: [
+          "An inverse multiplies with the matrix to give identity.",
+          "For square matrices, a right inverse is the inverse in CBSE context.",
+          "So $B$ is the inverse of $A$.",
+        ],
+        solution: [
+          {
+            step: 1,
+            explanation: "By the definition of inverse matrix, $B=A^{-1}$.",
+            math: "AB=I\\Rightarrow B=A^{-1}",
+          },
+        ],
       },
       {
         questionLatex:
@@ -1022,14 +1581,24 @@ const topicSeeds: TopicSeed[] = [
         difficulty: 3,
         skillTags: ["inverse_matrix", "matrix_equation"],
         choices: [
-          "$\\begin{bmatrix}2\\\\1\\end{bmatrix}$",
           "$\\begin{bmatrix}1\\\\2\\end{bmatrix}$",
           "$\\begin{bmatrix}3\\\\-1\\end{bmatrix}$",
+          "$\\begin{bmatrix}2\\\\1\\end{bmatrix}$",
           "$\\begin{bmatrix}5\\\\3\\end{bmatrix}$",
         ],
-        correctLetter: "A",
-        hints: ["This is the same as solving $2x+y=5$ and $x+y=3$.", "Subtract the second equation from the first.", "Then find $y$."],
-        solution: [{ step: 1, explanation: "Solve the corresponding system.", math: "x=2,\\quad y=1" }],
+        correctLetter: "C",
+        hints: [
+          "This is the same as solving $2x+y=5$ and $x+y=3$.",
+          "Subtract the second equation from the first.",
+          "Then find $y$.",
+        ],
+        solution: [
+          {
+            step: 1,
+            explanation: "Solve the corresponding system.",
+            math: "x=2,\\quad y=1",
+          },
+        ],
       },
       {
         questionLatex:
@@ -1037,14 +1606,25 @@ const topicSeeds: TopicSeed[] = [
         difficulty: 4,
         skillTags: ["inverse_matrix", "proof"],
         choices: [
-          "$\\text{If a square matrix has an inverse, then it has exactly one inverse.}$",
           "$\\text{Every square matrix has infinitely many inverses.}$",
           "$\\text{Only identity matrices have inverses.}$",
           "$\\text{A rectangular matrix always has a two-sided inverse.}$",
+          "$\\text{If a square matrix has an inverse, then it has exactly one inverse.}$",
         ],
-        correctLetter: "A",
-        hints: ["The CBSE theorem is about uniqueness once existence is known.", "Not every square matrix is invertible.", "A two-sided inverse, if it exists, is unique."],
-        solution: [{ step: 1, explanation: "The inverse of an invertible square matrix is unique.", math: "AB=I=AC\\Rightarrow B=C" }],
+        correctLetter: "D",
+        hints: [
+          "The CBSE theorem is about uniqueness once existence is known.",
+          "Not every square matrix is invertible.",
+          "A two-sided inverse, if it exists, is unique.",
+        ],
+        solution: [
+          {
+            step: 1,
+            explanation:
+              "The inverse of an invertible square matrix is unique.",
+            math: "AB=I=AC\\Rightarrow B=C",
+          },
+        ],
       },
     ],
     constructed: [
@@ -1055,10 +1635,23 @@ const topicSeeds: TopicSeed[] = [
         difficulty: 2,
         skillTags: ["inverse_matrix", "determinants"],
         parts: singlePart("a", "Use the determinant test.", 2),
-        hints: ["Compute $ad-bc$.", "Here $ad-bc=3(1)-1(2)$.", "A nonzero determinant means invertible."],
-        rubric: singleRubric("a", 2, "Computes determinant $1$ and concludes invertible."),
+        hints: [
+          "Compute $ad-bc$.",
+          "Here $ad-bc=3(1)-1(2)$.",
+          "A nonzero determinant means invertible.",
+        ],
+        rubric: singleRubric(
+          "a",
+          2,
+          "Computes determinant $1$ and concludes invertible.",
+        ),
         commonErrors: ["Saying invertible because all entries are nonzero."],
-        workedSolution: [{ part: "a", explanation: "$\\det A=3(1)-1(2)=1\\ne0$. Hence $A$ is invertible." }],
+        workedSolution: [
+          {
+            part: "a",
+            explanation: "$\\det A=3(1)-1(2)=1\\ne0$. Hence $A$ is invertible.",
+          },
+        ],
       },
       {
         responseType: "vsaq",
@@ -1067,10 +1660,26 @@ const topicSeeds: TopicSeed[] = [
         difficulty: 2,
         skillTags: ["inverse_matrix"],
         parts: singlePart("a", "Write $D^{-1}$.", 2),
-        hints: ["A diagonal matrix is inverted by reciprocating nonzero diagonal entries.", "The reciprocals are $1/2$ and $1/5$.", "Keep the off-diagonal entries zero."],
-        rubric: singleRubric("a", 2, "Finds $D^{-1}=\\begin{bmatrix}\\frac12&0\\\\0&\\frac15\\end{bmatrix}$."),
-        commonErrors: ["Writing negative diagonal entries instead of reciprocals."],
-        workedSolution: [{ part: "a", explanation: "$D^{-1}=\\begin{bmatrix}\\frac12&0\\\\0&\\frac15\\end{bmatrix}$." }],
+        hints: [
+          "A diagonal matrix is inverted by reciprocating nonzero diagonal entries.",
+          "The reciprocals are $1/2$ and $1/5$.",
+          "Keep the off-diagonal entries zero.",
+        ],
+        rubric: singleRubric(
+          "a",
+          2,
+          "Finds $D^{-1}=\\begin{bmatrix}\\frac12&0\\\\0&\\frac15\\end{bmatrix}$.",
+        ),
+        commonErrors: [
+          "Writing negative diagonal entries instead of reciprocals.",
+        ],
+        workedSolution: [
+          {
+            part: "a",
+            explanation:
+              "$D^{-1}=\\begin{bmatrix}\\frac12&0\\\\0&\\frac15\\end{bmatrix}$.",
+          },
+        ],
       },
       {
         responseType: "saq",
@@ -1079,7 +1688,11 @@ const topicSeeds: TopicSeed[] = [
         difficulty: 3,
         skillTags: ["inverse_matrix", "matrix_multiplication"],
         parts: singlePart("a", "Show the required multiplication.", 3),
-        hints: ["For inverse verification, multiply the matrices.", "Compute $AB$.", "It is enough here to show the identity product."],
+        hints: [
+          "For inverse verification, multiply the matrices.",
+          "Compute $AB$.",
+          "It is enough here to show the identity product.",
+        ],
         rubric: {
           maxPoints: 3,
           criteria: [
@@ -1087,8 +1700,17 @@ const topicSeeds: TopicSeed[] = [
             { part: "a", points: 1, description: "Concludes that $B=A^{-1}$." },
           ],
         },
-        commonErrors: ["Checking only one entry of the product.", "Adding matrices instead of multiplying them."],
-        workedSolution: [{ part: "a", explanation: "$AB=\\begin{bmatrix}1&1\\\\0&1\\end{bmatrix}\\begin{bmatrix}1&-1\\\\0&1\\end{bmatrix}=\\begin{bmatrix}1&0\\\\0&1\\end{bmatrix}$. Hence $B=A^{-1}$." }],
+        commonErrors: [
+          "Checking only one entry of the product.",
+          "Adding matrices instead of multiplying them.",
+        ],
+        workedSolution: [
+          {
+            part: "a",
+            explanation:
+              "$AB=\\begin{bmatrix}1&1\\\\0&1\\end{bmatrix}\\begin{bmatrix}1&-1\\\\0&1\\end{bmatrix}=\\begin{bmatrix}1&0\\\\0&1\\end{bmatrix}$. Hence $B=A^{-1}$.",
+          },
+        ],
       },
       {
         responseType: "laq",
@@ -1100,19 +1722,48 @@ const topicSeeds: TopicSeed[] = [
           { letter: "a", promptMarkdown: "Find $A^{-1}$.", points: 2 },
           { letter: "b", promptMarkdown: "Find $X=A^{-1}C$.", points: 3 },
         ],
-        hints: ["The determinant of $A$ is $1$.", "Use $A^{-1}=\\begin{bmatrix}1&-1\\\\-1&2\\end{bmatrix}$.", "Multiply $A^{-1}$ by $C$."],
+        hints: [
+          "The determinant of $A$ is $1$.",
+          "Use $A^{-1}=\\begin{bmatrix}1&-1\\\\-1&2\\end{bmatrix}$.",
+          "Multiply $A^{-1}$ by $C$.",
+        ],
         rubric: {
           maxPoints: 5,
           criteria: [
-            { part: "a", points: 2, description: "Finds $A^{-1}=\\begin{bmatrix}1&-1\\\\-1&2\\end{bmatrix}$." },
-            { part: "b", points: 2, description: "Multiplies $A^{-1}C$ correctly." },
-            { part: "b", points: 1, description: "Writes $X=\\begin{bmatrix}2&-1\\\\1&3\\end{bmatrix}$." },
+            {
+              part: "a",
+              points: 2,
+              description:
+                "Finds $A^{-1}=\\begin{bmatrix}1&-1\\\\-1&2\\end{bmatrix}$.",
+            },
+            {
+              part: "b",
+              points: 2,
+              description: "Multiplies $A^{-1}C$ correctly.",
+            },
+            {
+              part: "b",
+              points: 1,
+              description:
+                "Writes $X=\\begin{bmatrix}2&-1\\\\1&3\\end{bmatrix}$.",
+            },
           ],
         },
-        commonErrors: ["Multiplying $C A^{-1}$ instead of $A^{-1}C$.", "Forgetting that matrix multiplication order matters."],
+        commonErrors: [
+          "Multiplying $C A^{-1}$ instead of $A^{-1}C$.",
+          "Forgetting that matrix multiplication order matters.",
+        ],
         workedSolution: [
-          { part: "a", explanation: "$\\det A=2(1)-1(1)=1$, so $A^{-1}=\\begin{bmatrix}1&-1\\\\-1&2\\end{bmatrix}$." },
-          { part: "b", explanation: "$X=A^{-1}C=\\begin{bmatrix}1&-1\\\\-1&2\\end{bmatrix}\\begin{bmatrix}5&1\\\\3&2\\end{bmatrix}=\\begin{bmatrix}2&-1\\\\1&3\\end{bmatrix}$." },
+          {
+            part: "a",
+            explanation:
+              "$\\det A=2(1)-1(1)=1$, so $A^{-1}=\\begin{bmatrix}1&-1\\\\-1&2\\end{bmatrix}$.",
+          },
+          {
+            part: "b",
+            explanation:
+              "$X=A^{-1}C=\\begin{bmatrix}1&-1\\\\-1&2\\end{bmatrix}\\begin{bmatrix}5&1\\\\3&2\\end{bmatrix}=\\begin{bmatrix}2&-1\\\\1&3\\end{bmatrix}$.",
+          },
         ],
       },
       {
@@ -1122,24 +1773,58 @@ const topicSeeds: TopicSeed[] = [
         difficulty: 4,
         skillTags: ["inverse_matrix", "matrix_equation", "case_based"],
         parts: [
-          { letter: "a", promptMarkdown: "Show that $A$ is invertible.", points: 1 },
+          {
+            letter: "a",
+            promptMarkdown: "Show that $A$ is invertible.",
+            points: 1,
+          },
           { letter: "b", promptMarkdown: "Find $A^{-1}$.", points: 1 },
-          { letter: "c", promptMarkdown: "Find $X$ from $X=A^{-1}Y$.", points: 2 },
+          {
+            letter: "c",
+            promptMarkdown: "Find $X$ from $X=A^{-1}Y$.",
+            points: 2,
+          },
         ],
-        hints: ["Compute $\\det A$.", "Use the $2\\times2$ inverse formula.", "Multiply $A^{-1}$ by $Y$."],
+        hints: [
+          "Compute $\\det A$.",
+          "Use the $2\\times2$ inverse formula.",
+          "Multiply $A^{-1}$ by $Y$.",
+        ],
         rubric: {
           maxPoints: 4,
           criteria: [
             { part: "a", points: 1, description: "Shows $\\det A=1\\ne0$." },
-            { part: "b", points: 1, description: "Finds $A^{-1}=\\begin{bmatrix}1&-1\\\\-1&2\\end{bmatrix}$." },
-            { part: "c", points: 2, description: "Computes $X=\\begin{bmatrix}4\\\\3\\end{bmatrix}$." },
+            {
+              part: "b",
+              points: 1,
+              description:
+                "Finds $A^{-1}=\\begin{bmatrix}1&-1\\\\-1&2\\end{bmatrix}$.",
+            },
+            {
+              part: "c",
+              points: 2,
+              description: "Computes $X=\\begin{bmatrix}4\\\\3\\end{bmatrix}$.",
+            },
           ],
         },
-        commonErrors: ["Using $Y^{-1}A$ or treating a column matrix as invertible.", "Multiplying in the wrong order."],
+        commonErrors: [
+          "Using $Y^{-1}A$ or treating a column matrix as invertible.",
+          "Multiplying in the wrong order.",
+        ],
         workedSolution: [
-          { part: "a", explanation: "$\\det A=2(1)-1(1)=1$, so $A$ is invertible." },
-          { part: "b", explanation: "$A^{-1}=\\begin{bmatrix}1&-1\\\\-1&2\\end{bmatrix}$." },
-          { part: "c", explanation: "$X=A^{-1}Y=\\begin{bmatrix}1&-1\\\\-1&2\\end{bmatrix}\\begin{bmatrix}11\\\\7\\end{bmatrix}=\\begin{bmatrix}4\\\\3\\end{bmatrix}$." },
+          {
+            part: "a",
+            explanation: "$\\det A=2(1)-1(1)=1$, so $A$ is invertible.",
+          },
+          {
+            part: "b",
+            explanation: "$A^{-1}=\\begin{bmatrix}1&-1\\\\-1&2\\end{bmatrix}$.",
+          },
+          {
+            part: "c",
+            explanation:
+              "$X=A^{-1}Y=\\begin{bmatrix}1&-1\\\\-1&2\\end{bmatrix}\\begin{bmatrix}11\\\\7\\end{bmatrix}=\\begin{bmatrix}4\\\\3\\end{bmatrix}$.",
+          },
         ],
       },
     ],
@@ -1157,18 +1842,38 @@ const topicSeeds: TopicSeed[] = [
         skillTags: ["determinants"],
         choices: ["$7$", "$23$", "$-7$", "$1$"],
         correctLetter: "A",
-        hints: ["For $2\\times2$, use $ad-bc$.", "Compute $3(5)-4(2)$.", "Subtract $8$ from $15$."],
-        solution: [{ step: 1, explanation: "Use the determinant formula.", math: "3(5)-4(2)=7" }],
+        hints: [
+          "For $2\\times2$, use $ad-bc$.",
+          "Compute $3(5)-4(2)$.",
+          "Subtract $8$ from $15$.",
+        ],
+        solution: [
+          {
+            step: 1,
+            explanation: "Use the determinant formula.",
+            math: "3(5)-4(2)=7",
+          },
+        ],
       },
       {
         questionLatex:
           "\\text{The determinant of }\\begin{bmatrix}2&1&3\\\\0&4&5\\\\0&0&3\\end{bmatrix}\\text{ is}",
         difficulty: 2,
         skillTags: ["determinants", "triangular_matrix"],
-        choices: ["$24$", "$9$", "$0$", "$30$"],
-        correctLetter: "A",
-        hints: ["This is an upper triangular matrix.", "The determinant is the product of diagonal entries.", "Compute $2\\cdot4\\cdot3$."],
-        solution: [{ step: 1, explanation: "For a triangular matrix, multiply diagonal entries.", math: "\\det A=2\\cdot4\\cdot3=24" }],
+        choices: ["$9$", "$24$", "$0$", "$30$"],
+        correctLetter: "B",
+        hints: [
+          "This is an upper triangular matrix.",
+          "The determinant is the product of diagonal entries.",
+          "Compute $2\\cdot4\\cdot3$.",
+        ],
+        solution: [
+          {
+            step: 1,
+            explanation: "For a triangular matrix, multiply diagonal entries.",
+            math: "\\det A=2\\cdot4\\cdot3=24",
+          },
+        ],
       },
       {
         questionLatex:
@@ -1176,20 +1881,45 @@ const topicSeeds: TopicSeed[] = [
         difficulty: 3,
         skillTags: ["cofactors", "determinants"],
         figure: cofactorSignPatternFigure,
-        choices: ["$5$", "$-5$", "$6$", "$-6$"],
-        correctLetter: "A",
-        hints: ["Delete row $1$ and column $2$.", "The minor is $\\begin{vmatrix}0&5\\\\1&6\\end{vmatrix}=-5$.", "Cofactor $C_{12}=(-1)^{1+2}M_{12}$."],
-        solution: [{ step: 1, explanation: "Include the cofactor sign.", math: "M_{12}=-5,\\quad C_{12}=5" }],
+        choices: ["$-5$", "$6$", "$5$", "$-6$"],
+        correctLetter: "C",
+        hints: [
+          "Delete row $1$ and column $2$.",
+          "The minor is $\\begin{vmatrix}0&5\\\\1&6\\end{vmatrix}=-5$.",
+          "Cofactor $C_{12}=(-1)^{1+2}M_{12}$.",
+        ],
+        solution: [
+          {
+            step: 1,
+            explanation: "Include the cofactor sign.",
+            math: "M_{12}=-5,\\quad C_{12}=5",
+          },
+        ],
       },
       {
         questionLatex:
           "\\text{If two rows of a determinant are identical, then the determinant is}",
         difficulty: 3,
         skillTags: ["determinants", "determinant_properties"],
-        choices: ["$0$", "$1$", "$-1$", "$\\text{the product of diagonal entries}$"],
-        correctLetter: "A",
-        hints: ["This is a standard determinant property.", "Identical rows make the determinant vanish.", "No calculation is needed once the row repetition is noticed."],
-        solution: [{ step: 1, explanation: "A determinant with two identical rows is zero.", math: "\\Delta=0" }],
+        choices: [
+          "$1$",
+          "$-1$",
+          "$\\text{the product of diagonal entries}$",
+          "$0$",
+        ],
+        correctLetter: "D",
+        hints: [
+          "This is a standard determinant property.",
+          "Identical rows make the determinant vanish.",
+          "No calculation is needed once the row repetition is noticed.",
+        ],
+        solution: [
+          {
+            step: 1,
+            explanation: "A determinant with two identical rows is zero.",
+            math: "\\Delta=0",
+          },
+        ],
       },
       {
         questionLatex:
@@ -1198,8 +1928,18 @@ const topicSeeds: TopicSeed[] = [
         skillTags: ["determinants"],
         choices: ["$-9$", "$9$", "$3$", "$-12$"],
         correctLetter: "A",
-        hints: ["Expand along the first row.", "The first term is $1(8-5)=3$.", "The second term is $-2(6-0)$."],
-        solution: [{ step: 1, explanation: "Expand along row $1$.", math: "\\Delta=1(8-5)-2(6-0)+0=-9" }],
+        hints: [
+          "Expand along the first row.",
+          "The first term is $1(8-5)=3$.",
+          "The second term is $-2(6-0)$.",
+        ],
+        solution: [
+          {
+            step: 1,
+            explanation: "Expand along row $1$.",
+            math: "\\Delta=1(8-5)-2(6-0)+0=-9",
+          },
+        ],
       },
     ],
     constructed: [
@@ -1210,10 +1950,20 @@ const topicSeeds: TopicSeed[] = [
         difficulty: 2,
         skillTags: ["determinants"],
         parts: singlePart("a", "Find the determinant.", 2),
-        hints: ["Use $ad-bc$.", "Compute $4(3)-(-1)(2)$.", "Be careful with the negative sign."],
+        hints: [
+          "Use $ad-bc$.",
+          "Compute $4(3)-(-1)(2)$.",
+          "Be careful with the negative sign.",
+        ],
         rubric: singleRubric("a", 2, "Finds the determinant as $14$."),
         commonErrors: ["Writing $12-2$ instead of $12-(-2)$."],
-        workedSolution: [{ part: "a", explanation: "$\\begin{vmatrix}4&-1\\\\2&3\\end{vmatrix}=4(3)-(-1)(2)=12+2=14$." }],
+        workedSolution: [
+          {
+            part: "a",
+            explanation:
+              "$\\begin{vmatrix}4&-1\\\\2&3\\end{vmatrix}=4(3)-(-1)(2)=12+2=14$.",
+          },
+        ],
       },
       {
         responseType: "vsaq",
@@ -1223,10 +1973,20 @@ const topicSeeds: TopicSeed[] = [
         skillTags: ["cofactors"],
         figure: cofactorSignPatternFigure,
         parts: singlePart("a", "Find the cofactor $C_{23}$.", 2),
-        hints: ["Delete row $2$ and column $3$.", "The minor is $\\begin{vmatrix}1&2\\\\1&0\\end{vmatrix}$.", "Use the sign $(-1)^{2+3}$."],
+        hints: [
+          "Delete row $2$ and column $3$.",
+          "The minor is $\\begin{vmatrix}1&2\\\\1&0\\end{vmatrix}$.",
+          "Use the sign $(-1)^{2+3}$.",
+        ],
         rubric: singleRubric("a", 2, "Finds $C_{23}=2$."),
         commonErrors: ["Reporting the minor $-2$ as the cofactor."],
-        workedSolution: [{ part: "a", explanation: "$M_{23}=\\begin{vmatrix}1&2\\\\1&0\\end{vmatrix}=-2$. Since $(-1)^{2+3}=-1$, $C_{23}=2$." }],
+        workedSolution: [
+          {
+            part: "a",
+            explanation:
+              "$M_{23}=\\begin{vmatrix}1&2\\\\1&0\\end{vmatrix}=-2$. Since $(-1)^{2+3}=-1$, $C_{23}=2$.",
+          },
+        ],
       },
       {
         responseType: "saq",
@@ -1235,17 +1995,33 @@ const topicSeeds: TopicSeed[] = [
         difficulty: 3,
         skillTags: ["determinants"],
         parts: singlePart("a", "Evaluate the determinant.", 3),
-        hints: ["Expand along the first row.", "The zero entry removes one term.", "Compute $2(12)+1(2)$."],
+        hints: [
+          "Expand along the first row.",
+          "The zero entry removes one term.",
+          "Compute $2(12)+1(2)$.",
+        ],
         rubric: {
           maxPoints: 3,
           criteria: [
             { part: "a", points: 1, description: "Chooses a valid expansion." },
-            { part: "a", points: 1, description: "Computes the cofactors correctly." },
+            {
+              part: "a",
+              points: 1,
+              description: "Computes the cofactors correctly.",
+            },
             { part: "a", points: 1, description: "Gets final value $26$." },
           ],
         },
-        commonErrors: ["Using all plus signs in expansion without checking cofactor signs."],
-        workedSolution: [{ part: "a", explanation: "Expanding along the first row, $\\Delta=2\\begin{vmatrix}3&0\\\\2&4\\end{vmatrix}+1\\begin{vmatrix}1&3\\\\0&2\\end{vmatrix}=2(12)+2=26$." }],
+        commonErrors: [
+          "Using all plus signs in expansion without checking cofactor signs.",
+        ],
+        workedSolution: [
+          {
+            part: "a",
+            explanation:
+              "Expanding along the first row, $\\Delta=2\\begin{vmatrix}3&0\\\\2&4\\end{vmatrix}+1\\begin{vmatrix}1&3\\\\0&2\\end{vmatrix}=2(12)+2=26$.",
+          },
+        ],
       },
       {
         responseType: "laq",
@@ -1255,10 +2031,22 @@ const topicSeeds: TopicSeed[] = [
         skillTags: ["determinants", "cofactors"],
         figure: cofactorSignPatternFigure,
         parts: [
-          { letter: "a", promptMarkdown: "Find $C_{11},C_{12},C_{13}$.", points: 3 },
-          { letter: "b", promptMarkdown: "Use these cofactors to find $|A|$.", points: 2 },
+          {
+            letter: "a",
+            promptMarkdown: "Find $C_{11},C_{12},C_{13}$.",
+            points: 3,
+          },
+          {
+            letter: "b",
+            promptMarkdown: "Use these cofactors to find $|A|$.",
+            points: 2,
+          },
         ],
-        hints: ["Delete the row and column for each cofactor.", "Remember the signs $+,-,+$ across the first row.", "Use $|A|=a_{11}C_{11}+a_{12}C_{12}+a_{13}C_{13}$."],
+        hints: [
+          "Delete the row and column for each cofactor.",
+          "Remember the signs $+,-,+$ across the first row.",
+          "Use $|A|=a_{11}C_{11}+a_{12}C_{12}+a_{13}C_{13}$.",
+        ],
         rubric: {
           maxPoints: 5,
           criteria: [
@@ -1268,9 +2056,16 @@ const topicSeeds: TopicSeed[] = [
             { part: "b", points: 2, description: "Computes $|A|=18$." },
           ],
         },
-        commonErrors: ["Finding minors but forgetting cofactor signs.", "Multiplying cofactors by the wrong first-row entries."],
+        commonErrors: [
+          "Finding minors but forgetting cofactor signs.",
+          "Multiplying cofactors by the wrong first-row entries.",
+        ],
         workedSolution: [
-          { part: "a", explanation: "$C_{11}=\\begin{vmatrix}-1&4\\\\1&0\\end{vmatrix}=-4$, $C_{12}=-\\begin{vmatrix}0&4\\\\2&0\\end{vmatrix}=8$, and $C_{13}=\\begin{vmatrix}0&-1\\\\2&1\\end{vmatrix}=2$." },
+          {
+            part: "a",
+            explanation:
+              "$C_{11}=\\begin{vmatrix}-1&4\\\\1&0\\end{vmatrix}=-4$, $C_{12}=-\\begin{vmatrix}0&4\\\\2&0\\end{vmatrix}=8$, and $C_{13}=\\begin{vmatrix}0&-1\\\\2&1\\end{vmatrix}=2$.",
+          },
           { part: "b", explanation: "$|A|=1(-4)+2(8)+3(2)=18$." },
         ],
       },
@@ -1282,22 +2077,53 @@ const topicSeeds: TopicSeed[] = [
         skillTags: ["determinants", "case_based"],
         figure: cofactorSignPatternFigure,
         parts: [
-          { letter: "a", promptMarkdown: "Expand $|C|$ along the first row.", points: 2 },
-          { letter: "b", promptMarkdown: "Find the value of $|C|$.", points: 1 },
-          { letter: "c", promptMarkdown: "State whether $C$ is invertible.", points: 1 },
+          {
+            letter: "a",
+            promptMarkdown: "Expand $|C|$ along the first row.",
+            points: 2,
+          },
+          {
+            letter: "b",
+            promptMarkdown: "Find the value of $|C|$.",
+            points: 1,
+          },
+          {
+            letter: "c",
+            promptMarkdown: "State whether $C$ is invertible.",
+            points: 1,
+          },
         ],
-        hints: ["The first row has a zero entry.", "Use $1\\cdot C_{11}+2\\cdot C_{12}$.", "A square matrix is invertible when its determinant is nonzero."],
+        hints: [
+          "The first row has a zero entry.",
+          "Use $1\\cdot C_{11}+2\\cdot C_{12}$.",
+          "A square matrix is invertible when its determinant is nonzero.",
+        ],
         rubric: {
           maxPoints: 4,
           criteria: [
-            { part: "a", points: 2, description: "Sets up first-row expansion correctly." },
+            {
+              part: "a",
+              points: 2,
+              description: "Sets up first-row expansion correctly.",
+            },
             { part: "b", points: 1, description: "Finds $|C|=-9$." },
-            { part: "c", points: 1, description: "Concludes that $C$ is invertible." },
+            {
+              part: "c",
+              points: 1,
+              description: "Concludes that $C$ is invertible.",
+            },
           ],
         },
-        commonErrors: ["Ignoring the cofactor sign for the second term.", "Saying a negative determinant means not invertible."],
+        commonErrors: [
+          "Ignoring the cofactor sign for the second term.",
+          "Saying a negative determinant means not invertible.",
+        ],
         workedSolution: [
-          { part: "a", explanation: "$|C|=1\\begin{vmatrix}4&1\\\\5&2\\end{vmatrix}-2\\begin{vmatrix}3&1\\\\0&2\\end{vmatrix}+0$." },
+          {
+            part: "a",
+            explanation:
+              "$|C|=1\\begin{vmatrix}4&1\\\\5&2\\end{vmatrix}-2\\begin{vmatrix}3&1\\\\0&2\\end{vmatrix}+0$.",
+          },
           { part: "b", explanation: "$|C|=1(8-5)-2(6-0)=3-12=-9$." },
           { part: "c", explanation: "Since $|C|=-9\\ne0$, $C$ is invertible." },
         ],
@@ -1315,10 +2141,20 @@ const topicSeeds: TopicSeed[] = [
           "\\text{The area of the triangle with vertices }(0,0),(4,0),(0,3)\\text{ is}",
         difficulty: 2,
         skillTags: ["area_triangle", "determinants"],
-        choices: ["$6$", "$12$", "$7$", "$3$"],
-        correctLetter: "A",
-        hints: ["The triangle is right-angled.", "Use $\\frac12\\times\\text{base}\\times\\text{height}$.", "Base $=4$, height $=3$."],
-        solution: [{ step: 1, explanation: "Compute the right-triangle area.", math: "\\frac12(4)(3)=6" }],
+        choices: ["$12$", "$6$", "$7$", "$3$"],
+        correctLetter: "B",
+        hints: [
+          "The triangle is right-angled.",
+          "Use $\\frac12\\times\\text{base}\\times\\text{height}$.",
+          "Base $=4$, height $=3$.",
+        ],
+        solution: [
+          {
+            step: 1,
+            explanation: "Compute the right-triangle area.",
+            math: "\\frac12(4)(3)=6",
+          },
+        ],
       },
       {
         questionLatex:
@@ -1326,14 +2162,24 @@ const topicSeeds: TopicSeed[] = [
         difficulty: 2,
         skillTags: ["adjoint", "inverse_matrix"],
         choices: [
-          "$\\begin{bmatrix}4&-3\\\\-1&2\\end{bmatrix}$",
           "$\\begin{bmatrix}2&-3\\\\-1&4\\end{bmatrix}$",
           "$\\begin{bmatrix}4&3\\\\1&2\\end{bmatrix}$",
+          "$\\begin{bmatrix}4&-3\\\\-1&2\\end{bmatrix}$",
           "$\\begin{bmatrix}2&1\\\\3&4\\end{bmatrix}$",
         ],
-        correctLetter: "A",
-        hints: ["For $\\begin{bmatrix}a&b\\\\c&d\\end{bmatrix}$, adjoint is $\\begin{bmatrix}d&-b\\\\-c&a\\end{bmatrix}$.", "Swap $2$ and $4$.", "Change signs of $3$ and $1$."],
-        solution: [{ step: 1, explanation: "Use the $2\\times2$ adjoint formula.", math: "\\operatorname{adj}A=\\begin{bmatrix}4&-3\\\\-1&2\\end{bmatrix}" }],
+        correctLetter: "C",
+        hints: [
+          "For $\\begin{bmatrix}a&b\\\\c&d\\end{bmatrix}$, adjoint is $\\begin{bmatrix}d&-b\\\\-c&a\\end{bmatrix}$.",
+          "Swap $2$ and $4$.",
+          "Change signs of $3$ and $1$.",
+        ],
+        solution: [
+          {
+            step: 1,
+            explanation: "Use the $2\\times2$ adjoint formula.",
+            math: "\\operatorname{adj}A=\\begin{bmatrix}4&-3\\\\-1&2\\end{bmatrix}",
+          },
+        ],
       },
       {
         questionLatex:
@@ -1341,18 +2187,28 @@ const topicSeeds: TopicSeed[] = [
         difficulty: 3,
         skillTags: ["inverse_matrix", "adjoint"],
         choices: [
-          "$\\begin{bmatrix}1&-1\\\\-1&2\\end{bmatrix}$",
           "$\\begin{bmatrix}2&-1\\\\-1&1\\end{bmatrix}$",
           "$\\begin{bmatrix}1&1\\\\1&2\\end{bmatrix}$",
           "$\\begin{bmatrix}2&1\\\\1&1\\end{bmatrix}$",
+          "$\\begin{bmatrix}1&-1\\\\-1&2\\end{bmatrix}$",
         ],
-        correctLetter: "A",
-        hints: ["Compute determinant first.", "$\\det A=1$.", "Use $A^{-1}=\\frac1{|A|}\\operatorname{adj}A$."],
-        solution: [{ step: 1, explanation: "The determinant is $1$, so the inverse equals the adjoint.", math: "A^{-1}=\\begin{bmatrix}1&-1\\\\-1&2\\end{bmatrix}" }],
+        correctLetter: "D",
+        hints: [
+          "Compute determinant first.",
+          "$\\det A=1$.",
+          "Use $A^{-1}=\\frac1{|A|}\\operatorname{adj}A$.",
+        ],
+        solution: [
+          {
+            step: 1,
+            explanation:
+              "The determinant is $1$, so the inverse equals the adjoint.",
+            math: "A^{-1}=\\begin{bmatrix}1&-1\\\\-1&2\\end{bmatrix}",
+          },
+        ],
       },
       {
-        questionLatex:
-          "\\text{The points }(1,2),(2,4),(3,6)\\text{ are}",
+        questionLatex: "\\text{The points }(1,2),(2,4),(3,6)\\text{ are}",
         difficulty: 3,
         skillTags: ["area_triangle", "collinearity"],
         choices: [
@@ -1362,18 +2218,38 @@ const topicSeeds: TopicSeed[] = [
           "$\\text{not enough information}$",
         ],
         correctLetter: "A",
-        hints: ["Check whether the area determinant is zero.", "All three points lie on $y=2x$.", "Zero area means collinear."],
-        solution: [{ step: 1, explanation: "The three points lie on one straight line.", math: "y=2x" }],
+        hints: [
+          "Check whether the area determinant is zero.",
+          "All three points lie on $y=2x$.",
+          "Zero area means collinear.",
+        ],
+        solution: [
+          {
+            step: 1,
+            explanation: "The three points lie on one straight line.",
+            math: "y=2x",
+          },
+        ],
       },
       {
         questionLatex:
           "\\text{The area of the triangle with vertices }(-1,2),(3,2),(1,5)\\text{ is}",
         difficulty: 4,
         skillTags: ["area_triangle", "determinants"],
-        choices: ["$6$", "$12$", "$3$", "$9$"],
-        correctLetter: "A",
-        hints: ["The base from $(-1,2)$ to $(3,2)$ is horizontal.", "The base length is $4$.", "The height from $(1,5)$ to $y=2$ is $3$."],
-        solution: [{ step: 1, explanation: "Use base-height area.", math: "\\frac12(4)(3)=6" }],
+        choices: ["$12$", "$6$", "$3$", "$9$"],
+        correctLetter: "B",
+        hints: [
+          "The base from $(-1,2)$ to $(3,2)$ is horizontal.",
+          "The base length is $4$.",
+          "The height from $(1,5)$ to $y=2$ is $3$.",
+        ],
+        solution: [
+          {
+            step: 1,
+            explanation: "Use base-height area.",
+            math: "\\frac12(4)(3)=6",
+          },
+        ],
       },
     ],
     constructed: [
@@ -1384,10 +2260,24 @@ const topicSeeds: TopicSeed[] = [
         difficulty: 2,
         skillTags: ["adjoint"],
         parts: singlePart("a", "Write $\\operatorname{adj}A$.", 2),
-        hints: ["Use the $2\\times2$ adjoint formula.", "Swap the diagonal entries.", "Change signs of the off-diagonal entries."],
-        rubric: singleRubric("a", 2, "Finds $\\operatorname{adj}A=\\begin{bmatrix}1&-2\\\\-3&5\\end{bmatrix}$."),
+        hints: [
+          "Use the $2\\times2$ adjoint formula.",
+          "Swap the diagonal entries.",
+          "Change signs of the off-diagonal entries.",
+        ],
+        rubric: singleRubric(
+          "a",
+          2,
+          "Finds $\\operatorname{adj}A=\\begin{bmatrix}1&-2\\\\-3&5\\end{bmatrix}$.",
+        ),
         commonErrors: ["Finding the transpose instead of the adjoint."],
-        workedSolution: [{ part: "a", explanation: "$\\operatorname{adj}A=\\begin{bmatrix}1&-2\\\\-3&5\\end{bmatrix}$." }],
+        workedSolution: [
+          {
+            part: "a",
+            explanation:
+              "$\\operatorname{adj}A=\\begin{bmatrix}1&-2\\\\-3&5\\end{bmatrix}$.",
+          },
+        ],
       },
       {
         responseType: "vsaq",
@@ -1396,10 +2286,20 @@ const topicSeeds: TopicSeed[] = [
         difficulty: 2,
         skillTags: ["area_triangle"],
         parts: singlePart("a", "Find the area.", 2),
-        hints: ["The triangle is right-angled.", "Base length is $4$.", "Height is $3$."],
+        hints: [
+          "The triangle is right-angled.",
+          "Base length is $4$.",
+          "Height is $3$.",
+        ],
         rubric: singleRubric("a", 2, "Finds area $6$ square units."),
         commonErrors: ["Forgetting the factor $1/2$ in triangle area."],
-        workedSolution: [{ part: "a", explanation: "The base is $5-1=4$ and height is $4-1=3$, so the area is $\\frac12(4)(3)=6$ square units." }],
+        workedSolution: [
+          {
+            part: "a",
+            explanation:
+              "The base is $5-1=4$ and height is $4-1=3$, so the area is $\\frac12(4)(3)=6$ square units.",
+          },
+        ],
       },
       {
         responseType: "saq",
@@ -1408,17 +2308,39 @@ const topicSeeds: TopicSeed[] = [
         difficulty: 3,
         skillTags: ["inverse_matrix", "adjoint"],
         parts: singlePart("a", "Use adjoint and determinant.", 3),
-        hints: ["First find $|A|$.", "Then find $\\operatorname{adj}A$.", "Use $A^{-1}=\\frac1{|A|}\\operatorname{adj}A$."],
+        hints: [
+          "First find $|A|$.",
+          "Then find $\\operatorname{adj}A$.",
+          "Use $A^{-1}=\\frac1{|A|}\\operatorname{adj}A$.",
+        ],
         rubric: {
           maxPoints: 3,
           criteria: [
             { part: "a", points: 1, description: "Finds $|A|=1$." },
-            { part: "a", points: 1, description: "Finds $\\operatorname{adj}A=\\begin{bmatrix}1&-1\\\\-2&3\\end{bmatrix}$." },
-            { part: "a", points: 1, description: "Writes the correct inverse." },
+            {
+              part: "a",
+              points: 1,
+              description:
+                "Finds $\\operatorname{adj}A=\\begin{bmatrix}1&-1\\\\-2&3\\end{bmatrix}$.",
+            },
+            {
+              part: "a",
+              points: 1,
+              description: "Writes the correct inverse.",
+            },
           ],
         },
-        commonErrors: ["Using determinant $5$ by adding products instead of subtracting.", "Not changing signs of off-diagonal entries."],
-        workedSolution: [{ part: "a", explanation: "$|A|=3(1)-1(2)=1$ and $\\operatorname{adj}A=\\begin{bmatrix}1&-1\\\\-2&3\\end{bmatrix}$. Hence $A^{-1}=\\begin{bmatrix}1&-1\\\\-2&3\\end{bmatrix}$." }],
+        commonErrors: [
+          "Using determinant $5$ by adding products instead of subtracting.",
+          "Not changing signs of off-diagonal entries.",
+        ],
+        workedSolution: [
+          {
+            part: "a",
+            explanation:
+              "$|A|=3(1)-1(2)=1$ and $\\operatorname{adj}A=\\begin{bmatrix}1&-1\\\\-2&3\\end{bmatrix}$. Hence $A^{-1}=\\begin{bmatrix}1&-1\\\\-2&3\\end{bmatrix}$.",
+          },
+        ],
       },
       {
         responseType: "laq",
@@ -1428,24 +2350,60 @@ const topicSeeds: TopicSeed[] = [
         skillTags: ["inverse_matrix", "adjoint", "determinants"],
         parts: [
           { letter: "a", promptMarkdown: "Find $|A|$.", points: 1 },
-          { letter: "b", promptMarkdown: "Find $\\operatorname{adj}A$.", points: 3 },
+          {
+            letter: "b",
+            promptMarkdown: "Find $\\operatorname{adj}A$.",
+            points: 3,
+          },
           { letter: "c", promptMarkdown: "Write $A^{-1}$.", points: 1 },
         ],
-        hints: ["The determinant is $3$.", "Build the cofactor matrix first, then transpose it.", "Use $A^{-1}=\\frac1{|A|}\\operatorname{adj}A$."],
+        hints: [
+          "The determinant is $3$.",
+          "Build the cofactor matrix first, then transpose it.",
+          "Use $A^{-1}=\\frac1{|A|}\\operatorname{adj}A$.",
+        ],
         rubric: {
           maxPoints: 5,
           criteria: [
             { part: "a", points: 1, description: "Finds $|A|=3$." },
-            { part: "b", points: 2, description: "Finds the cofactor matrix correctly." },
-            { part: "b", points: 1, description: "Transposes cofactors to get the adjoint." },
-            { part: "c", points: 1, description: "Writes $A^{-1}=\\frac13\\operatorname{adj}A$ correctly." },
+            {
+              part: "b",
+              points: 2,
+              description: "Finds the cofactor matrix correctly.",
+            },
+            {
+              part: "b",
+              points: 1,
+              description: "Transposes cofactors to get the adjoint.",
+            },
+            {
+              part: "c",
+              points: 1,
+              description:
+                "Writes $A^{-1}=\\frac13\\operatorname{adj}A$ correctly.",
+            },
           ],
         },
-        commonErrors: ["Using the cofactor matrix directly as the adjoint without transposing.", "Forgetting to divide by determinant $3$."],
+        commonErrors: [
+          "Using the cofactor matrix directly as the adjoint without transposing.",
+          "Forgetting to divide by determinant $3$.",
+        ],
         workedSolution: [
-          { part: "a", explanation: "Expanding along the first row, $|A|=1\\begin{vmatrix}1&1\\\\0&1\\end{vmatrix}-2\\begin{vmatrix}0&1\\\\1&1\\end{vmatrix}=1-2(-1)=3$." },
-          { part: "b", explanation: "The cofactor matrix is $\\begin{bmatrix}1&1&-1\\\\-2&1&2\\\\2&-1&1\\end{bmatrix}$, so $\\operatorname{adj}A=\\begin{bmatrix}1&-2&2\\\\1&1&-1\\\\-1&2&1\\end{bmatrix}$." },
-          { part: "c", explanation: "$A^{-1}=\\frac13\\begin{bmatrix}1&-2&2\\\\1&1&-1\\\\-1&2&1\\end{bmatrix}$." },
+          {
+            part: "a",
+            explanation:
+              "Expanding along the first row, $|A|=1\\begin{vmatrix}1&1\\\\0&1\\end{vmatrix}-2\\begin{vmatrix}0&1\\\\1&1\\end{vmatrix}=1-2(-1)=3$.",
+          },
+          {
+            part: "b",
+            explanation:
+              "The cofactor matrix is $\\begin{bmatrix}1&1&-1\\\\-2&1&2\\\\2&-1&1\\end{bmatrix}$, so $\\operatorname{adj}A=\\begin{bmatrix}1&-2&2\\\\1&1&-1\\\\-1&2&1\\end{bmatrix}$.",
+          },
+          {
+            part: "c",
+            explanation:
+              "$A^{-1}=\\frac13\\begin{bmatrix}1&-2&2\\\\1&1&-1\\\\-1&2&1\\end{bmatrix}$.",
+          },
         ],
       },
       {
@@ -1456,24 +2414,68 @@ const topicSeeds: TopicSeed[] = [
         skillTags: ["area_triangle", "determinants", "case_based"],
         figure: triangleAreaFigure,
         parts: [
-          { letter: "a", promptMarkdown: "Write the determinant formula for the area of triangle $ABC$.", points: 1 },
-          { letter: "b", promptMarkdown: "Find the area of the garden.", points: 2 },
-          { letter: "c", promptMarkdown: "State whether the three points are collinear.", points: 1 },
+          {
+            letter: "a",
+            promptMarkdown:
+              "Write the determinant formula for the area of triangle $ABC$.",
+            points: 1,
+          },
+          {
+            letter: "b",
+            promptMarkdown: "Find the area of the garden.",
+            points: 2,
+          },
+          {
+            letter: "c",
+            promptMarkdown: "State whether the three points are collinear.",
+            points: 1,
+          },
         ],
-        hints: ["Use the coordinate area determinant.", "Substitute $(2,1),(5,3),(-1,4)$.", "Nonzero area means not collinear."],
+        hints: [
+          "Use the coordinate area determinant.",
+          "Substitute $(2,1),(5,3),(-1,4)$.",
+          "Nonzero area means not collinear.",
+        ],
         rubric: {
           maxPoints: 4,
           criteria: [
-            { part: "a", points: 1, description: "Writes the correct determinant area setup." },
-            { part: "b", points: 2, description: "Computes area $\\frac{15}{2}$ square units." },
-            { part: "c", points: 1, description: "Concludes that the points are not collinear." },
+            {
+              part: "a",
+              points: 1,
+              description: "Writes the correct determinant area setup.",
+            },
+            {
+              part: "b",
+              points: 2,
+              description: "Computes area $\\frac{15}{2}$ square units.",
+            },
+            {
+              part: "c",
+              points: 1,
+              description: "Concludes that the points are not collinear.",
+            },
           ],
         },
-        commonErrors: ["Forgetting the absolute value.", "Reporting determinant value $15$ as the area instead of half of it."],
+        commonErrors: [
+          "Forgetting the absolute value.",
+          "Reporting determinant value $15$ as the area instead of half of it.",
+        ],
         workedSolution: [
-          { part: "a", explanation: "Area $=\\frac12\\left|x_1(y_2-y_3)+x_2(y_3-y_1)+x_3(y_1-y_2)\\right|$." },
-          { part: "b", explanation: "Area $=\\frac12|2(3-4)+5(4-1)+(-1)(1-3)|=\\frac12|-2+15+2|=\\frac{15}{2}$." },
-          { part: "c", explanation: "Since the area is nonzero, the points are not collinear." },
+          {
+            part: "a",
+            explanation:
+              "Area $=\\frac12\\left|x_1(y_2-y_3)+x_2(y_3-y_1)+x_3(y_1-y_2)\\right|$.",
+          },
+          {
+            part: "b",
+            explanation:
+              "Area $=\\frac12|2(3-4)+5(4-1)+(-1)(1-3)|=\\frac12|-2+15+2|=\\frac{15}{2}$.",
+          },
+          {
+            part: "c",
+            explanation:
+              "Since the area is nonzero, the points are not collinear.",
+          },
         ],
       },
     ],
@@ -1485,30 +2487,48 @@ const topicSeeds: TopicSeed[] = [
       "Consistency, uniqueness, and solving systems of linear equations using inverse matrices.",
     mc: [
       {
-        questionLatex:
-          "\\text{The system }x+y=3,\\ 2x+2y=6\\text{ has}",
+        questionLatex: "\\text{The system }x+y=3,\\ 2x+2y=6\\text{ has}",
         difficulty: 2,
         skillTags: ["systems", "consistency"],
         figure: coincidentLinesFigure,
         choices: [
-          "$\\text{infinitely many solutions}$",
           "$\\text{a unique solution}$",
           "$\\text{no solution}$",
+          "$\\text{infinitely many solutions}$",
           "$\\text{exactly two solutions}$",
         ],
-        correctLetter: "A",
-        hints: ["The second equation is twice the first.", "Both equations represent the same line.", "So there are infinitely many common points."],
-        solution: [{ step: 1, explanation: "The equations are dependent and consistent.", math: "2(x+y=3)\\Rightarrow 2x+2y=6" }],
+        correctLetter: "C",
+        hints: [
+          "The second equation is twice the first.",
+          "Both equations represent the same line.",
+          "So there are infinitely many common points.",
+        ],
+        solution: [
+          {
+            step: 1,
+            explanation: "The equations are dependent and consistent.",
+            math: "2(x+y=3)\\Rightarrow 2x+2y=6",
+          },
+        ],
       },
       {
-        questionLatex:
-          "\\text{The solution of }2x+y=5,\\ x+y=3\\text{ is}",
+        questionLatex: "\\text{The solution of }2x+y=5,\\ x+y=3\\text{ is}",
         difficulty: 2,
         skillTags: ["systems"],
-        choices: ["$(2,1)$", "$(1,2)$", "$(3,-1)$", "$(5,3)$"],
-        correctLetter: "A",
-        hints: ["Subtract the second equation from the first.", "This gives $x=2$.", "Substitute into $x+y=3$."],
-        solution: [{ step: 1, explanation: "Solve by elimination.", math: "x=2,\\quad y=1" }],
+        choices: ["$(1,2)$", "$(3,-1)$", "$(5,3)$", "$(2,1)$"],
+        correctLetter: "D",
+        hints: [
+          "Subtract the second equation from the first.",
+          "This gives $x=2$.",
+          "Substitute into $x+y=3$.",
+        ],
+        solution: [
+          {
+            step: 1,
+            explanation: "Solve by elimination.",
+            math: "x=2,\\quad y=1",
+          },
+        ],
       },
       {
         questionLatex:
@@ -1523,42 +2543,86 @@ const topicSeeds: TopicSeed[] = [
           "$\\text{no conclusion}$",
         ],
         correctLetter: "A",
-        hints: ["Nonzero determinant means the coefficient matrix is invertible.", "An inverse matrix gives one solution.", "So the solution is unique."],
-        solution: [{ step: 1, explanation: "An invertible coefficient matrix gives a unique solution.", math: "|A|\\ne0\\Rightarrow X=A^{-1}B" }],
+        hints: [
+          "Nonzero determinant means the coefficient matrix is invertible.",
+          "An inverse matrix gives one solution.",
+          "So the solution is unique.",
+        ],
+        solution: [
+          {
+            step: 1,
+            explanation:
+              "An invertible coefficient matrix gives a unique solution.",
+            math: "|A|\\ne0\\Rightarrow X=A^{-1}B",
+          },
+        ],
       },
       {
         questionLatex:
           "\\text{The determinant of the coefficient matrix of }2x+y=7,\\ 4x+2y=9\\text{ is}",
         difficulty: 3,
         skillTags: ["systems", "determinants"],
-        choices: ["$0$", "$-2$", "$2$", "$18$"],
-        correctLetter: "A",
-        hints: ["Write the coefficient matrix.", "It is $\\begin{bmatrix}2&1\\\\4&2\\end{bmatrix}$.", "Compute $2(2)-1(4)$."],
-        solution: [{ step: 1, explanation: "Compute the determinant.", math: "\\begin{vmatrix}2&1\\\\4&2\\end{vmatrix}=4-4=0" }],
+        choices: ["$-2$", "$0$", "$2$", "$18$"],
+        correctLetter: "B",
+        hints: [
+          "Write the coefficient matrix.",
+          "It is $\\begin{bmatrix}2&1\\\\4&2\\end{bmatrix}$.",
+          "Compute $2(2)-1(4)$.",
+        ],
+        solution: [
+          {
+            step: 1,
+            explanation: "Compute the determinant.",
+            math: "\\begin{vmatrix}2&1\\\\4&2\\end{vmatrix}=4-4=0",
+          },
+        ],
       },
       {
         questionLatex:
           "\\text{For }AX=B,\\text{ where }A\\text{ is invertible, }X\\text{ equals}",
         difficulty: 4,
         skillTags: ["systems", "inverse_matrix", "matrix_equation"],
-        choices: ["$A^{-1}B$", "$BA^{-1}$", "$AB^{-1}$", "$A+B$"],
-        correctLetter: "A",
-        hints: ["Pre-multiply both sides by $A^{-1}$.", "Use $A^{-1}A=I$.", "Matrix order matters."],
-        solution: [{ step: 1, explanation: "Pre-multiply by the inverse of $A$.", math: "AX=B\\Rightarrow X=A^{-1}B" }],
+        choices: ["$BA^{-1}$", "$AB^{-1}$", "$A^{-1}B$", "$A+B$"],
+        correctLetter: "C",
+        hints: [
+          "Pre-multiply both sides by $A^{-1}$.",
+          "Use $A^{-1}A=I$.",
+          "Matrix order matters.",
+        ],
+        solution: [
+          {
+            step: 1,
+            explanation: "Pre-multiply by the inverse of $A$.",
+            math: "AX=B\\Rightarrow X=A^{-1}B",
+          },
+        ],
       },
     ],
     constructed: [
       {
         responseType: "vsaq",
-        questionLatex:
-          "\\text{Write the matrix form of }2x+3y=7,\\ x-y=1.",
+        questionLatex: "\\text{Write the matrix form of }2x+3y=7,\\ x-y=1.",
         difficulty: 2,
         skillTags: ["systems", "matrix_form"],
         parts: singlePart("a", "Write the system as $AX=B$.", 2),
-        hints: ["Use the coefficients as matrix $A$.", "Use $X=\\begin{bmatrix}x\\\\y\\end{bmatrix}$.", "Use the constants as $B$."],
-        rubric: singleRubric("a", 2, "Writes $\\begin{bmatrix}2&3\\\\1&-1\\end{bmatrix}\\begin{bmatrix}x\\\\y\\end{bmatrix}=\\begin{bmatrix}7\\\\1\\end{bmatrix}$."),
+        hints: [
+          "Use the coefficients as matrix $A$.",
+          "Use $X=\\begin{bmatrix}x\\\\y\\end{bmatrix}$.",
+          "Use the constants as $B$.",
+        ],
+        rubric: singleRubric(
+          "a",
+          2,
+          "Writes $\\begin{bmatrix}2&3\\\\1&-1\\end{bmatrix}\\begin{bmatrix}x\\\\y\\end{bmatrix}=\\begin{bmatrix}7\\\\1\\end{bmatrix}$.",
+        ),
         commonErrors: ["Putting constants into the coefficient matrix."],
-        workedSolution: [{ part: "a", explanation: "$\\begin{bmatrix}2&3\\\\1&-1\\end{bmatrix}\\begin{bmatrix}x\\\\y\\end{bmatrix}=\\begin{bmatrix}7\\\\1\\end{bmatrix}$." }],
+        workedSolution: [
+          {
+            part: "a",
+            explanation:
+              "$\\begin{bmatrix}2&3\\\\1&-1\\end{bmatrix}\\begin{bmatrix}x\\\\y\\end{bmatrix}=\\begin{bmatrix}7\\\\1\\end{bmatrix}$.",
+          },
+        ],
       },
       {
         responseType: "vsaq",
@@ -1567,29 +2631,52 @@ const topicSeeds: TopicSeed[] = [
         difficulty: 2,
         skillTags: ["systems", "determinants"],
         parts: singlePart("a", "Compute the determinant.", 2),
-        hints: ["Use the coefficient matrix.", "Compute $\\begin{vmatrix}2&1\\\\4&2\\end{vmatrix}$.", "The rows are proportional."],
+        hints: [
+          "Use the coefficient matrix.",
+          "Compute $\\begin{vmatrix}2&1\\\\4&2\\end{vmatrix}$.",
+          "The rows are proportional.",
+        ],
         rubric: singleRubric("a", 2, "Finds determinant $0$."),
         commonErrors: ["Using constants $4$ and $8$ as coefficients."],
-        workedSolution: [{ part: "a", explanation: "The coefficient determinant is $\\begin{vmatrix}2&1\\\\4&2\\end{vmatrix}=2(2)-1(4)=0$." }],
+        workedSolution: [
+          {
+            part: "a",
+            explanation:
+              "The coefficient determinant is $\\begin{vmatrix}2&1\\\\4&2\\end{vmatrix}=2(2)-1(4)=0$.",
+          },
+        ],
       },
       {
         responseType: "saq",
-        questionLatex:
-          "\\text{Solve }2x+3y=7,\\ x-y=1.",
+        questionLatex: "\\text{Solve }2x+3y=7,\\ x-y=1.",
         difficulty: 3,
         skillTags: ["systems"],
         parts: singlePart("a", "Find $x$ and $y$.", 3),
-        hints: ["From $x-y=1$, write $x=y+1$.", "Substitute into $2x+3y=7$.", "Then solve for both variables."],
+        hints: [
+          "From $x-y=1$, write $x=y+1$.",
+          "Substitute into $2x+3y=7$.",
+          "Then solve for both variables.",
+        ],
         rubric: {
           maxPoints: 3,
           criteria: [
-            { part: "a", points: 1, description: "Uses a valid elimination or substitution step." },
+            {
+              part: "a",
+              points: 1,
+              description: "Uses a valid elimination or substitution step.",
+            },
             { part: "a", points: 1, description: "Finds $y=1$." },
             { part: "a", points: 1, description: "Finds $x=2$." },
           ],
         },
         commonErrors: ["Changing the sign incorrectly in $x-y=1$."],
-        workedSolution: [{ part: "a", explanation: "From $x-y=1$, $x=y+1$. Substituting gives $2(y+1)+3y=7$, so $5y=5$ and $y=1$. Hence $x=2$." }],
+        workedSolution: [
+          {
+            part: "a",
+            explanation:
+              "From $x-y=1$, $x=y+1$. Substituting gives $2(y+1)+3y=7$, so $5y=5$ and $y=1$. Hence $x=2$.",
+          },
+        ],
       },
       {
         responseType: "laq",
@@ -1598,22 +2685,55 @@ const topicSeeds: TopicSeed[] = [
         difficulty: 5,
         skillTags: ["systems", "inverse_matrix", "matrix_equation"],
         parts: [
-          { letter: "a", promptMarkdown: "Write the system as $AX=B$.", points: 1 },
-          { letter: "b", promptMarkdown: "Use $A^{-1}=\\frac13\\begin{bmatrix}1&-2&2\\\\1&1&-1\\\\-1&2&1\\end{bmatrix}$ to find $X$.", points: 4 },
+          {
+            letter: "a",
+            promptMarkdown: "Write the system as $AX=B$.",
+            points: 1,
+          },
+          {
+            letter: "b",
+            promptMarkdown:
+              "Use $A^{-1}=\\frac13\\begin{bmatrix}1&-2&2\\\\1&1&-1\\\\-1&2&1\\end{bmatrix}$ to find $X$.",
+            points: 4,
+          },
         ],
-        hints: ["The coefficient matrix is $\\begin{bmatrix}1&2&0\\\\0&1&1\\\\1&0&1\\end{bmatrix}$.", "Multiply the given inverse by $B=\\begin{bmatrix}5\\\\5\\\\4\\end{bmatrix}$.", "The solution is $x=1,y=2,z=3$."],
+        hints: [
+          "The coefficient matrix is $\\begin{bmatrix}1&2&0\\\\0&1&1\\\\1&0&1\\end{bmatrix}$.",
+          "Multiply the given inverse by $B=\\begin{bmatrix}5\\\\5\\\\4\\end{bmatrix}$.",
+          "The solution is $x=1,y=2,z=3$.",
+        ],
         rubric: {
           maxPoints: 5,
           criteria: [
-            { part: "a", points: 1, description: "Writes correct matrix equation $AX=B$." },
-            { part: "b", points: 2, description: "Substitutes the given inverse and column matrix correctly." },
+            {
+              part: "a",
+              points: 1,
+              description: "Writes correct matrix equation $AX=B$.",
+            },
+            {
+              part: "b",
+              points: 2,
+              description:
+                "Substitutes the given inverse and column matrix correctly.",
+            },
             { part: "b", points: 2, description: "Finds $x=1,y=2,z=3$." },
           ],
         },
-        commonErrors: ["Multiplying $B A^{-1}$ instead of $A^{-1}B$.", "Forgetting the factor $1/3$."],
+        commonErrors: [
+          "Multiplying $B A^{-1}$ instead of $A^{-1}B$.",
+          "Forgetting the factor $1/3$.",
+        ],
         workedSolution: [
-          { part: "a", explanation: "$\\begin{bmatrix}1&2&0\\\\0&1&1\\\\1&0&1\\end{bmatrix}\\begin{bmatrix}x\\\\y\\\\z\\end{bmatrix}=\\begin{bmatrix}5\\\\5\\\\4\\end{bmatrix}$." },
-          { part: "b", explanation: "$X=A^{-1}B=\\frac13\\begin{bmatrix}1&-2&2\\\\1&1&-1\\\\-1&2&1\\end{bmatrix}\\begin{bmatrix}5\\\\5\\\\4\\end{bmatrix}=\\frac13\\begin{bmatrix}3\\\\6\\\\9\\end{bmatrix}=\\begin{bmatrix}1\\\\2\\\\3\\end{bmatrix}$." },
+          {
+            part: "a",
+            explanation:
+              "$\\begin{bmatrix}1&2&0\\\\0&1&1\\\\1&0&1\\end{bmatrix}\\begin{bmatrix}x\\\\y\\\\z\\end{bmatrix}=\\begin{bmatrix}5\\\\5\\\\4\\end{bmatrix}$.",
+          },
+          {
+            part: "b",
+            explanation:
+              "$X=A^{-1}B=\\frac13\\begin{bmatrix}1&-2&2\\\\1&1&-1\\\\-1&2&1\\end{bmatrix}\\begin{bmatrix}5\\\\5\\\\4\\end{bmatrix}=\\frac13\\begin{bmatrix}3\\\\6\\\\9\\end{bmatrix}=\\begin{bmatrix}1\\\\2\\\\3\\end{bmatrix}$.",
+          },
         ],
       },
       {
@@ -1623,24 +2743,61 @@ const topicSeeds: TopicSeed[] = [
         difficulty: 4,
         skillTags: ["systems", "matrix_form", "case_based"],
         parts: [
-          { letter: "a", promptMarkdown: "Write the system in matrix form.", points: 1 },
-          { letter: "b", promptMarkdown: "State why the system has a unique solution if the coefficient determinant is $-110$.", points: 1 },
+          {
+            letter: "a",
+            promptMarkdown: "Write the system in matrix form.",
+            points: 1,
+          },
+          {
+            letter: "b",
+            promptMarkdown:
+              "State why the system has a unique solution if the coefficient determinant is $-110$.",
+            points: 1,
+          },
           { letter: "c", promptMarkdown: "Find $x,y,z$.", points: 2 },
         ],
-        hints: ["Use coefficient matrix rows from the three equations.", "A nonzero determinant gives a unique solution.", "Use $x-y=10$ and $x+y+z=100$ to reduce the system."],
+        hints: [
+          "Use coefficient matrix rows from the three equations.",
+          "A nonzero determinant gives a unique solution.",
+          "Use $x-y=10$ and $x+y+z=100$ to reduce the system.",
+        ],
         rubric: {
           maxPoints: 4,
           criteria: [
-            { part: "a", points: 1, description: "Writes the correct matrix equation." },
-            { part: "b", points: 1, description: "Uses nonzero determinant to justify uniqueness." },
+            {
+              part: "a",
+              points: 1,
+              description: "Writes the correct matrix equation.",
+            },
+            {
+              part: "b",
+              points: 1,
+              description: "Uses nonzero determinant to justify uniqueness.",
+            },
             { part: "c", points: 2, description: "Finds $x=40,y=30,z=30$." },
           ],
         },
-        commonErrors: ["Using ticket prices as the variable column.", "Ignoring the third equation $x-y=10$.", "Dividing total revenue equally among ticket types."],
+        commonErrors: [
+          "Using ticket prices as the variable column.",
+          "Ignoring the third equation $x-y=10$.",
+          "Dividing total revenue equally among ticket types.",
+        ],
         workedSolution: [
-          { part: "a", explanation: "$\\begin{bmatrix}1&1&1\\\\100&50&20\\\\1&-1&0\\end{bmatrix}\\begin{bmatrix}x\\\\y\\\\z\\end{bmatrix}=\\begin{bmatrix}100\\\\6100\\\\10\\end{bmatrix}$." },
-          { part: "b", explanation: "Since the coefficient determinant is $-110\\ne0$, the system has a unique solution." },
-          { part: "c", explanation: "Solving gives $x=40$, $y=30$, and $z=30$. These satisfy $40+30+30=100$, $4000+1500+600=6100$, and $40-30=10$." },
+          {
+            part: "a",
+            explanation:
+              "$\\begin{bmatrix}1&1&1\\\\100&50&20\\\\1&-1&0\\end{bmatrix}\\begin{bmatrix}x\\\\y\\\\z\\end{bmatrix}=\\begin{bmatrix}100\\\\6100\\\\10\\end{bmatrix}$.",
+          },
+          {
+            part: "b",
+            explanation:
+              "Since the coefficient determinant is $-110\\ne0$, the system has a unique solution.",
+          },
+          {
+            part: "c",
+            explanation:
+              "Solving gives $x=40$, $y=30$, and $z=30$. These satisfy $40+30+30=100$, $4000+1500+600=6100$, and $40-30=10$.",
+          },
         ],
       },
     ],
