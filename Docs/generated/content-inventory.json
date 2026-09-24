@@ -1,0 +1,187 @@
+{
+  "generatedAt": "2026-09-24T12:53:33.086Z",
+  "courses": {
+    "calc-ab": {
+      "units": 8,
+      "topics": 81,
+      "items": 486,
+      "figures": 76,
+      "byKind": {
+        "frq": 81,
+        "mc_single": 405
+      },
+      "byReviewStatus": {
+        "verified": 486
+      }
+    },
+    "cbse-chemistry-11": {
+      "units": 11,
+      "topics": 54,
+      "items": 990,
+      "figures": 76,
+      "byKind": {
+        "frq": 495,
+        "mc_single": 495
+      },
+      "byReviewStatus": {
+        "verified": 990
+      }
+    },
+    "cbse-chemistry-12": {
+      "units": 12,
+      "topics": 59,
+      "items": 590,
+      "figures": 30,
+      "byKind": {
+        "frq": 295,
+        "mc_single": 295
+      },
+      "byReviewStatus": {
+        "verified": 590
+      }
+    },
+    "cbse-math-10": {
+      "units": 7,
+      "topics": 30,
+      "items": 300,
+      "figures": 75,
+      "byKind": {
+        "frq": 150,
+        "mc_single": 150
+      },
+      "byReviewStatus": {
+        "verified": 300
+      }
+    },
+    "cbse-math-11": {
+      "units": 6,
+      "topics": 39,
+      "items": 440,
+      "figures": 32,
+      "byKind": {
+        "frq": 145,
+        "mc_single": 245,
+        "numeric": 50
+      },
+      "byReviewStatus": {
+        "verified": 440
+      }
+    },
+    "cbse-math-12": {
+      "units": 7,
+      "topics": 45,
+      "items": 475,
+      "figures": 98,
+      "byKind": {
+        "frq": 200,
+        "mc_single": 250,
+        "numeric": 25
+      },
+      "byReviewStatus": {
+        "verified": 475
+      }
+    },
+    "cbse-math-9": {
+      "units": 6,
+      "topics": 30,
+      "items": 330,
+      "figures": 59,
+      "byKind": {
+        "frq": 165,
+        "mc_single": 165
+      },
+      "byReviewStatus": {
+        "verified": 330
+      }
+    },
+    "cbse-physics-11": {
+      "units": 11,
+      "topics": 55,
+      "items": 670,
+      "figures": 72,
+      "byKind": {
+        "frq": 335,
+        "mc_single": 335
+      },
+      "byReviewStatus": {
+        "verified": 670
+      }
+    },
+    "cbse-physics-12": {
+      "units": 10,
+      "topics": 53,
+      "items": 542,
+      "figures": 102,
+      "byKind": {
+        "frq": 267,
+        "mc_single": 275
+      },
+      "byReviewStatus": {
+        "verified": 542
+      }
+    },
+    "cbse-science-10": {
+      "units": 7,
+      "topics": 35,
+      "items": 350,
+      "figures": 62,
+      "byKind": {
+        "frq": 175,
+        "mc_single": 175
+      },
+      "byReviewStatus": {
+        "verified": 350
+      }
+    },
+    "cbse-science-9": {
+      "units": 5,
+      "topics": 25,
+      "items": 281,
+      "figures": 36,
+      "byKind": {
+        "frq": 141,
+        "mc_single": 140
+      },
+      "byReviewStatus": {
+        "verified": 281
+      }
+    },
+    "jee-main-math": {
+      "units": 3,
+      "topics": 15,
+      "items": 225,
+      "figures": 3,
+      "byKind": {
+        "mc_single": 150,
+        "numeric": 75
+      },
+      "byReviewStatus": {
+        "verified": 225
+      }
+    }
+  },
+  "totals": {
+    "units": 93,
+    "topics": 521,
+    "items": 5679,
+    "figures": 721
+  },
+  "byKind": {
+    "frq": 2449,
+    "mc_single": 3080,
+    "numeric": 150
+  },
+  "byReviewStatus": {
+    "verified": 5679
+  },
+  "bySourceType": {
+    "original_ai_assisted_question": 5679
+  },
+  "byDifficulty": {
+    "1": 386,
+    "2": 1864,
+    "3": 2473,
+    "4": 867,
+    "5": 89
+  }
+}

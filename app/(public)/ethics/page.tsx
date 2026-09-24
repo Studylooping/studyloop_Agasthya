@@ -26,13 +26,13 @@ export default function EthicsPage() {
           </h2>
           <p>
             Many items on {SITE.name} are drafted with AI assistance and then
-            revised through automated checks, reviewer passes, and founder
-            review before publication. The questions are meant to closely match
+            revised through automated checks and multiple review passes before
+            publication. The questions are meant to closely match
             the style and rigor of the relevant exam, including CBSE-style board
             questions where the course is a CBSE course, but mistakes can still
-            happen. If you spot a wrong answer, unclear wording, broken LaTeX,
-            or a poor figure, use the feedback button so the item can be
-            corrected quickly.
+            happen. A visible badge records the item's review status. If you spot
+            a wrong answer, unclear wording, broken LaTeX, or a poor figure, use
+            the feedback button so the item can be corrected quickly.
           </p>
         </section>
 

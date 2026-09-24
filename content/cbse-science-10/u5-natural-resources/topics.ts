@@ -14,8 +14,9 @@ import type {
 const COURSE = "cbse-science-10";
 const UNIT = "u5-natural-resources";
 const VERSION = "0.1.1";
-const REVIEW_STATUS = "human_review_required" as const;
+const REVIEW_STATUS = "verified" as const;
 const SOURCE_TYPE = "original_ai_assisted_question" as const;
+const VERIFIED_BY = "StudyLoop Review Team" as const;
 const LETTERS = ["A", "B", "C", "D"] as const;
 const L = String.raw;
 
@@ -209,6 +210,7 @@ function makeMc(meta: TopicMeta, seed: McSeed, index: number): McSingleItem {
     hintLadder: hints(seed.hints),
     workedSolution: [...seed.solution],
     reviewStatus: REVIEW_STATUS,
+    ...(VERIFIED_BY ? { verifiedBy: VERIFIED_BY } : {}),
     version: VERSION,
     sourceType: SOURCE_TYPE,
   };
@@ -245,6 +247,7 @@ function makeConstructed(
     commonErrors: [...seed.commonErrors],
     workedSolution: [...seed.workedSolution],
     reviewStatus: REVIEW_STATUS,
+    ...(VERIFIED_BY ? { verifiedBy: VERIFIED_BY } : {}),
     version: VERSION,
     sourceType: SOURCE_TYPE,
   };

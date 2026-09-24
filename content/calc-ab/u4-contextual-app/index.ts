@@ -5,7 +5,7 @@ import { contextualApplicationTopics } from "./topics";
  * Calc AB Unit 4 - Contextual Applications of Differentiation.
  *
  * Original AP-style content. Each topic has 5 MCQs and 1 FRQ.
- * Items keep internal review metadata for audit workflows.
+ * Items are marked verified after StudyLoop review.
  */
 export const u4ContextualApplications: Unit = {
   slug: "u4-contextual-app",

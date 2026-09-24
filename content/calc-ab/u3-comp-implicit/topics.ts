@@ -13,8 +13,9 @@ import type {
 const COURSE = "calc-ab";
 const UNIT = "u3-comp-implicit";
 const VERSION = "0.4.1";
-const REVIEW_STATUS = "human_review_required" as const;
+const REVIEW_STATUS = "verified" as const;
 const SOURCE_TYPE = "original_ai_assisted_question" as const;
+const VERIFIED_BY = "StudyLoop Review Team" as const;
 const LETTERS = ["A", "B", "C", "D"] as const;
 
 type McLetter = (typeof LETTERS)[number];
@@ -107,6 +108,7 @@ function makeMc(meta: TopicMeta, seed: McSeed, index: number): McSingleItem {
     hintLadder: hints(seed.hints),
     workedSolution: [...seed.solution],
     reviewStatus: REVIEW_STATUS,
+    ...(VERIFIED_BY ? { verifiedBy: VERIFIED_BY } : {}),
     version: VERSION,
     sourceType: SOURCE_TYPE,
   };
@@ -132,6 +134,7 @@ function makeFrq(meta: TopicMeta, seed: FrqSeed): FrqItem {
     commonErrors: [...seed.commonErrors],
     workedSolution: [...seed.workedSolution],
     reviewStatus: REVIEW_STATUS,
+    ...(VERIFIED_BY ? { verifiedBy: VERIFIED_BY } : {}),
     version: VERSION,
     sourceType: SOURCE_TYPE,
   };

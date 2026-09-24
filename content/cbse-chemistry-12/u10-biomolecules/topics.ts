@@ -14,8 +14,9 @@ import { calibrateCbseChemistryDifficulty } from "../../../lib/content/difficult
 const COURSE = "cbse-chemistry-12";
 const UNIT = "u10-biomolecules";
 const VERSION = "0.1.1";
-const REVIEW_STATUS = "human_review_required" as const;
+const REVIEW_STATUS = "verified" as const;
 const SOURCE_TYPE = "original_ai_assisted_question" as const;
+const VERIFIED_BY = "StudyLoop Review Team" as const;
 const LETTERS = ["A", "B", "C", "D"] as const;
 const TOPIC_CHOICE_ROTATION_OFFSETS: Record<string, number> = {
   "10.1": 0,
@@ -185,6 +186,7 @@ function makeMc(meta: TopicMeta, seed: McSeed, index: number): McSingleItem {
       repairSolutionStep(step, stepIndex),
     ),
     reviewStatus: REVIEW_STATUS,
+    ...(VERIFIED_BY ? { verifiedBy: VERIFIED_BY } : {}),
     version: VERSION,
     sourceType: SOURCE_TYPE,
   };
@@ -220,6 +222,7 @@ function makeConstructed(
     commonErrors: seed.commonErrors.map(repairInlineLatex),
     workedSolution: seed.workedSolution.map(repairWorkedSolution),
     reviewStatus: REVIEW_STATUS,
+    ...(VERIFIED_BY ? { verifiedBy: VERIFIED_BY } : {}),
     version: VERSION,
     sourceType: SOURCE_TYPE,
   };

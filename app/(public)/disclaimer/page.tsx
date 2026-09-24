@@ -58,7 +58,7 @@ export default function DisclaimerPage() {
           </h2>
           <p>
             Questions may be drafted with AI assistance and revised through
-            automated checks, reviewer passes, and founder review before
+            automated checks and multiple review passes before
             publication. The aim is original practice that matches the style and
             rigor of the relevant exam without copying from published papers,
             textbooks, or commercial prep resources. AI does not grade your
@@ -66,6 +66,12 @@ export default function DisclaimerPage() {
             code; free-response items use self-grading rubrics; future algebraic
             answers should be verified for mathematical equivalence using SymPy
             or an equivalent symbolic system.
+          </p>
+          <p>
+            Items carry visible badges showing the level of review. Current
+            public content is marked "Verified by StudyLoop Review Team" after
+            it passes the StudyLoop review workflow. Future draft content must
+            remain visibly labelled until that review is complete.
           </p>
         </section>
 

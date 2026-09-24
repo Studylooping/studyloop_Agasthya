@@ -68,7 +68,8 @@ export default function AboutPage() {
           copying from published papers or commercial resources. AI does not
           decide whether your answer is right: multiple-choice answers are
           checked by deterministic code, and free-response items use
-          self-grading rubrics.
+          self-grading rubrics. Items carry visible review badges so students,
+          parents, and schools can see the review status of each question.
         </p>
 
         <h2 className="pt-6 text-2xl font-semibold tracking-tight">Contact</h2>

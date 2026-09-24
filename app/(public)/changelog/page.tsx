@@ -312,7 +312,7 @@ const ENTRIES: Entry[] = [
       "AP Calculus AB Unit 1 now has all 16 Limits and Continuity topics live.",
       "Each topic has 5 original MCQs and 1 original FRQ, for 80 MCQs and 16 FRQs total.",
       "Item URLs now include the topic, such as t1-1-mc-001, so questions from different topics do not collide.",
-      "All new content now carries internal review metadata for audit and revision workflows.",
+      "All new content carries review metadata for visible status labels, audits, and revision workflows.",
     ],
   },
   {
