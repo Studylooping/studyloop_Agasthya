@@ -16,7 +16,7 @@ const subjects = [
 ];
 const subjectPaths = new Set(subjects.map(([slug]) => `/${slug}`));
 const checks = [
-  ["/cbse-chemistry-11/u1-some-basic-concepts/t1-3-mc-101", ["Need a hint?", "KNO"]],
+  ["/cbse-chemistry-11/u1-some-basic-concepts/t1-3-mc-101", ["Show hint 1", "KNO"]],
   ["/cbse-chemistry-11/u1-some-basic-concepts/t1-5-laq-115", ["5 marks"]],
   ["/", ["Class / exam", "Start practicing", "For teachers"]],
   ...subjects.map(([slug, title]) => [`/${slug}`, [title]]),
