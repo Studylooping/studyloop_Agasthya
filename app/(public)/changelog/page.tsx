@@ -17,6 +17,25 @@ interface Entry {
 
 const ENTRIES: Entry[] = [
   {
+    version: "v0.1-alpha.30",
+    date: "2026-09-26",
+    title: "More Class 11 Chemistry practice",
+    highlights: [
+      "Expanded Some Basic Concepts of Chemistry from 100 to 300 questions, with 40 additional questions in each of its five topics.",
+      "Added MCQs, short and long answers, and case-based practice with hints and worked solutions. The new content is AI-reviewed; independent teacher review is still pending.",
+      "Checked coverage against the nine NCERT theory chapters, each with at least 100 questions.",
+    ],
+  },
+  {
+    version: "v0.1-alpha.29",
+    date: "2026-09-26",
+    title: "Published subject descriptions",
+    highlights: [
+      "Updated Class 11 and 12 Physics and Chemistry descriptions to describe the available practice, hints, worked solutions, and practical work.",
+      "Added release checks for all 11 public subjects and for the removal of SAT Math and JEE Main from the catalogue.",
+    ],
+  },
+  {
     version: "v0.1-alpha.28",
     date: "2026-09-17",
     title: "Educator review repairs",

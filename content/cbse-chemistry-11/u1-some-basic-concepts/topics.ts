@@ -14,7 +14,7 @@ import { calibrateCbseChemistryDifficulty } from "../../../lib/content/difficult
 
 const COURSE = "cbse-chemistry-11";
 const UNIT = "u1-some-basic-concepts";
-const VERSION = "0.1.7";
+const VERSION = "0.2.0";
 const REVIEW_STATUS = "verified" as const;
 const SOURCE_TYPE = "original_ai_assisted_question" as const;
 const VERIFIED_BY = "StudyLoop Review Team" as const;
@@ -154,6 +154,9 @@ function makeMc(meta: TopicMeta, seed: McSeed, index: number): McSingleItem {
   })) as McChoice[];
   const correctLetter =
     choices.find((choice) => choice.isCorrect)?.letter ?? "A";
+  const reauthored =
+    (meta.topicCode === "1.2" && index === 9) ||
+    (meta.topicCode === "1.3" && (index === 5 || index === 6));
 
   return {
     contentId: `${COURSE}.u1.t${topicSlug(meta.topicCode)}.mc.${String(index + 1).padStart(3, "0")}`,
@@ -177,8 +180,8 @@ function makeMc(meta: TopicMeta, seed: McSeed, index: number): McSingleItem {
     correctLetter,
     hintLadder: hints(seed.hints),
     workedSolution: seed.solution.map(repairSolutionStep),
-    reviewStatus: REVIEW_STATUS,
-    ...(VERIFIED_BY ? { verifiedBy: VERIFIED_BY } : {}),
+    reviewStatus: reauthored ? "ai_reviewed" : REVIEW_STATUS,
+    ...(!reauthored && VERIFIED_BY ? { verifiedBy: VERIFIED_BY } : {}),
     version: VERSION,
     sourceType: SOURCE_TYPE,
   };
@@ -189,6 +192,8 @@ function makeConstructed(
   seed: ConstructedSeed,
   index: number,
 ): FrqItem {
+  const reauthored =
+    index === 5 && (meta.topicCode === "1.3" || meta.topicCode === "1.5");
   return {
     contentId: `${COURSE}.u1.t${topicSlug(meta.topicCode)}.${seed.responseType}.${String(index + 1).padStart(3, "0")}`,
     kind: "frq",
@@ -214,8 +219,8 @@ function makeConstructed(
     rubric: repairRubric(seed.rubric),
     commonErrors: seed.commonErrors.map(repairInlineLatex),
     workedSolution: seed.workedSolution.map(repairWorkedSolution),
-    reviewStatus: REVIEW_STATUS,
-    ...(VERIFIED_BY ? { verifiedBy: VERIFIED_BY } : {}),
+    reviewStatus: reauthored ? "ai_reviewed" : REVIEW_STATUS,
+    ...(!reauthored && VERIFIED_BY ? { verifiedBy: VERIFIED_BY } : {}),
     version: VERSION,
     sourceType: SOURCE_TYPE,
   };
@@ -397,7 +402,7 @@ const topicSeeds: readonly TopicSeed[] = [
       },
       {
         questionLatex: L`A student measures the mass of a liquid as $5.64\text{ g}$ and its volume as $2.3\text{ mL}$. The density should be reported as`,
-        difficulty: 3,
+        difficulty: 2,
         skillTags: ["density", "significant_figures", "division_rule"],
         choices: [
           L`$2.452\text{ g mL}^{-1}$`,
@@ -432,7 +437,7 @@ const topicSeeds: readonly TopicSeed[] = [
       },
       {
         questionLatex: L`A compound of carbon and oxygen is prepared twice. Sample I has $12\text{ g}$ carbon combined with $32\text{ g}$ oxygen. Sample II has $3\text{ g}$ carbon. According to the law of definite proportions, the mass of oxygen in Sample II is`,
-        difficulty: 3,
+        difficulty: 2,
         skillTags: ["law_of_definite_proportions", "mass_ratio"],
         choices: [
           L`$8\text{ g}$`,
@@ -792,7 +797,7 @@ const topicSeeds: readonly TopicSeed[] = [
       },
       {
         questionLatex: L`The total number of atoms present in $0.50\text{ mol}$ of $\mathrm{H_2SO_4}$ is`,
-        difficulty: 3,
+        difficulty: 2,
         skillTags: ["mole_concept", "atoms_in_formula_unit"],
         choices: [L`$0.50N_A$`, L`$7.0N_A$`, L`$4.0N_A$`, L`$3.5N_A$`],
         correctLetter: "D",
@@ -855,7 +860,7 @@ const topicSeeds: readonly TopicSeed[] = [
       },
       {
         questionLatex: L`A container has $1.2044\times10^{24}$ oxygen atoms present as $\mathrm{O_2}$ molecules. The mass of $\mathrm{O_2}$ in the container is`,
-        difficulty: 4,
+        difficulty: 3,
         skillTags: ["atoms_to_molecules", "mole_concept", "molar_mass"],
         choices: [
           L`$16\text{ g}$`,
@@ -895,7 +900,7 @@ const topicSeeds: readonly TopicSeed[] = [
       },
       {
         questionLatex: L`Equal masses of methane and oxygen gas are taken in two vessels. The ratio of number of molecules of $\mathrm{CH_4}$ to $\mathrm{O_2}$ is`,
-        difficulty: 3,
+        difficulty: 2,
         skillTags: ["molar_mass", "molecules_ratio", "inverse_molar_mass"],
         choices: [L`$1:1$`, L`$1:2$`, L`$2:1$`, L`$4:1$`],
         correctLetter: "C",
@@ -1328,7 +1333,7 @@ const topicSeeds: readonly TopicSeed[] = [
       },
       {
         questionLatex: L`On heating $2.50\text{ g}$ of hydrated copper(II) sulfate, $1.60\text{ g}$ of anhydrous $\mathrm{CuSO_4}$ remains. If $M(\mathrm{CuSO_4})=160$ and $M(\mathrm{H_2O})=18$, the formula of the hydrate is`,
-        difficulty: 4,
+        difficulty: 3,
         calculatorAllowed: true,
         skillTags: ["hydrate", "empirical_formula", "mole_ratio"],
         choices: [
@@ -1368,7 +1373,7 @@ const topicSeeds: readonly TopicSeed[] = [
       },
       {
         questionLatex: L`A $0.30\text{ g}$ organic compound containing only C, H and O gives $0.44\text{ g } \mathrm{CO_2}$ and $0.18\text{ g } \mathrm{H_2O}$ on complete combustion. Its empirical formula is`,
-        difficulty: 5,
+        difficulty: 4,
         calculatorAllowed: true,
         skillTags: ["combustion_analysis", "empirical_formula"],
         choices: [
@@ -1544,7 +1549,7 @@ const topicSeeds: readonly TopicSeed[] = [
       {
         responseType: "saq",
         questionLatex: L`A compound contains $52.2\%$ carbon, $13.0\%$ hydrogen and $34.8\%$ oxygen by mass. Its molar mass is $46\text{ g mol}^{-1}$.`,
-        difficulty: 4,
+        difficulty: 3,
         calculatorAllowed: true,
         skillTags: ["empirical_formula", "molecular_formula"],
         parts: [
@@ -1667,7 +1672,7 @@ const topicSeeds: readonly TopicSeed[] = [
       {
         questionLatex: L`The particle diagram represents a mixture before reaction according to $\mathrm{N_2+3H_2\rightarrow2NH_3}$. Which reactant is limiting, and how many $\mathrm{NH_3}$ molecules can form?`,
         figure: limitingParticleFigure,
-        difficulty: 4,
+        difficulty: 3,
         skillTags: ["limiting_reagent", "particle_diagram", "stoichiometry"],
         choices: [
           L`$\mathrm{N_2}$ is limiting; $8$ molecules of $\mathrm{NH_3}$ form`,
@@ -1750,7 +1755,7 @@ const topicSeeds: readonly TopicSeed[] = [
       },
       {
         questionLatex: L`For $\mathrm{2Al+3Cl_2\rightarrow2AlCl_3}$, $5.4\text{ g}$ aluminium reacts with $10.65\text{ g}$ chlorine. The mass of $\mathrm{AlCl_3}$ formed is`,
-        difficulty: 5,
+        difficulty: 3,
         calculatorAllowed: true,
         skillTags: ["limiting_reagent", "stoichiometry", "mass_product"],
         choices: [
@@ -2201,7 +2206,7 @@ const topicSeeds: readonly TopicSeed[] = [
       },
       {
         questionLatex: L`A solution contains $9.0\text{ g}$ glucose, $\mathrm{C_6H_{12}O_6}$, dissolved in $100\text{ g}$ water. Its molality is`,
-        difficulty: 3,
+        difficulty: 2,
         calculatorAllowed: true,
         skillTags: ["molality", "solution_concentration"],
         choices: [
@@ -2236,7 +2241,7 @@ const topicSeeds: readonly TopicSeed[] = [
       },
       {
         questionLatex: L`A solution is made by dissolving $10\text{ g}$ solute in $90\text{ g}$ water. The mass percentage of solute is`,
-        difficulty: 1,
+        difficulty: 2,
         skillTags: ["mass_percentage", "solution_concentration"],
         choices: [L`$9.0\%$`, L`$10\%$`, L`$11.1\%$`, L`$90\%$`],
         correctLetter: "B",
@@ -2260,7 +2265,7 @@ const topicSeeds: readonly TopicSeed[] = [
       },
       {
         questionLatex: L`$100\text{ mL}$ of $0.10\text{ M } \mathrm{NaCl}$ is mixed with $200\text{ mL}$ of $0.20\text{ M } \mathrm{NaCl}$. Assuming volumes are additive, the final molarity is closest to`,
-        difficulty: 4,
+        difficulty: 3,
         calculatorAllowed: true,
         skillTags: ["mixing_solutions", "molarity"],
         choices: [
@@ -2674,6 +2679,7 @@ const largeTopicExpansions: Record<
         ],
         "A least count of $0.01\\text{ g}$ supports reporting to two decimal places, so $12.35\\text{ g}$ is appropriate.",
         ["least_count", "measurement_precision"],
+        2,
       ),
       extraMc(
         L`A liquid sample has mass $50.0\text{ g}$ and volume $20.0\text{ mL}$. Its density is`,
@@ -2720,6 +2726,7 @@ const largeTopicExpansions: Record<
         ],
         "By the law of conservation of mass, the total mass remains $28.00\\text{ g}$.",
         ["law_conservation_mass"],
+        2,
       ),
       extraMc(
         L`The product of $2.50$ and $3.0$ should be reported as`,
@@ -2737,6 +2744,7 @@ const largeTopicExpansions: Record<
         ],
         "The product is $7.50$, but it must be rounded to two significant figures: $7.5$.",
         ["significant_figures"],
+        2,
       ),
       extraMc(
         L`Which sample is best classified as a homogeneous mixture?`,
@@ -2759,6 +2767,7 @@ const largeTopicExpansions: Record<
         ],
         "An aqueous sugar solution has uniform composition throughout, so it is homogeneous.",
         ["classification_matter"],
+        1,
       ),
     ],
     constructed: [
@@ -2817,7 +2826,7 @@ const largeTopicExpansions: Record<
       extraFrq(
         "saq",
         L`Two students report the same measured length as $25.4\text{ cm}$ and $25.40\text{ cm}$.`,
-        3,
+        2,
         ["precision", "significant_figures"],
         [
           {
@@ -2968,6 +2977,7 @@ const largeTopicExpansions: Record<
         ],
         "Number of molecules $=0.500N_A=3.01\\times10^{23}$.",
         ["avogadro_number"],
+        2,
       ),
       extraMc(
         L`The amount of $\mathrm{CO_2}$ in $22.0\text{ g}$ of $\mathrm{CO_2}$ is`,
@@ -2990,6 +3000,7 @@ const largeTopicExpansions: Record<
         ],
         "$n=22.0/44.0=0.500\\text{ mol}$.",
         ["mole_concept", "molar_mass"],
+        2,
       ),
       extraMc(
         L`A $4.00\text{ g}$ helium sample contains approximately how many atoms?`,
@@ -3012,6 +3023,7 @@ const largeTopicExpansions: Record<
         ],
         "$4.00\\text{ g}$ of helium is $1.00\\text{ mol}$, so it contains $6.02\\times10^{23}$ atoms.",
         ["mole_concept", "atoms_count"],
+        2,
       ),
       extraMc(
         L`An element has two isotopes of mass numbers $20$ and $22$ present in equal abundance. Its average atomic mass is`,
@@ -3034,28 +3046,30 @@ const largeTopicExpansions: Record<
         ],
         "Average atomic mass $=(20+22)/2=21.0\\text{ u}$.",
         ["average_atomic_mass", "isotopes"],
+        2,
       ),
       extraMc(
-        L`The mass of $0.250\text{ mol}$ of $\mathrm{CaCO_3}$ is approximately $(\mathrm{Ca}=40,\ \mathrm{C}=12,\ \mathrm{O}=16)$`,
+        L`A mixture contains $0.10\,\mathrm{mol}\ \mathrm{CaCO_3}$ and $0.20\,\mathrm{mol}\ \mathrm{MgCO_3}$. Using molar masses 100 and 84, the total mixture mass is`,
         [
-          L`$10.0\text{ g}$`,
-          L`$25.0\text{ g}$`,
-          L`$50.0\text{ g}$`,
-          L`$100\text{ g}$`,
+          L`$26.8\,\mathrm{g}$`,
+          L`$18.4\,\mathrm{g}$`,
+          L`$55.2\,\mathrm{g}$`,
+          L`$10.0\,\mathrm{g}$`,
         ],
-        "B",
+        "A",
         {
-          A: "This uses calcium mass only.",
-          C: "This is half a mole.",
-          D: "This is one mole.",
+          B: "This uses 0.10 mol of both salts.",
+          C: "Do not multiply the total mole amount by the sum of both molar masses.",
+          D: "This omits magnesium carbonate.",
         },
         [
-          "Find molar mass of calcium carbonate.",
-          "$M=40+12+3(16)=100\\text{ g mol}^{-1}$.",
-          "Multiply by $0.250$.",
+          "Find each component mass separately.",
+          "Use 100 and 84 g/mol for the respective salts.",
+          "Add the masses, not the molar masses.",
         ],
-        "Mass $=0.250\\times100=25.0\\text{ g}$.",
-        ["molar_mass", "mole_calculation"],
+        L`Calcium carbonate contributes $0.10(100)=10.0\,\mathrm{g}$ and magnesium carbonate contributes $0.20(84)=16.8\,\mathrm{g}$. Total mass $=26.8\,\mathrm{g}$.`,
+        ["mixture_mass", "mole_calculation"],
+        3,
       ),
     ],
     constructed: [
@@ -3229,50 +3243,45 @@ const largeTopicExpansions: Record<
   "1.3": {
     mc: [
       extraMc(
-        L`A compound has $40.0\%$ C, $6.7\%$ H and $53.3\%$ O by mass. Its empirical formula is`,
+        L`A compound contains $72.0\%$ C, $12.0\%$ H and $16.0\%$ O by mass. Use C = 12, H = 1 and O = 16. Its empirical formula is`,
         [
-          L`$\mathrm{CH_2O}$`,
-          L`$\mathrm{C_2H_4O_2}$`,
-          L`$\mathrm{CHO}$`,
-          L`$\mathrm{C_6H_{12}O_6}$`,
+          L`$\mathrm{C_6H_{12}O}$`,
+          L`$\mathrm{C_3H_6O}$`,
+          L`$\mathrm{C_6HO_{16}}$`,
+          L`$\mathrm{C_{12}H_{24}O_2}$`,
         ],
         "A",
         {
-          B: "This is a molecular formula multiple, not the simplest ratio.",
-          C: "This undercounts hydrogen.",
-          D: "This is a larger molecular formula multiple.",
+          B: "Dividing only the carbon and hydrogen subscripts changes the oxygen ratio.",
+          C: "Mass percentages must first be divided by atomic masses.",
+          D: "This ratio can still be divided by two, so it is not the empirical formula.",
         },
         [
-          "Assume $100\\text{ g}$ sample.",
-          "Convert masses to moles.",
-          "Divide by the smallest mole value.",
+          "Use a 100 g basis.",
+          "Convert all three masses to moles.",
+          "Use the simplest whole-number mole ratio.",
         ],
-        "Moles are C $3.33$, H $6.7$, O $3.33$, giving ratio $1:2:1$ and empirical formula $\\mathrm{CH_2O}$.",
+        L`For 100 g, the amounts are $72/12:12/1:16/16=6:12:1$. Thus the empirical formula is $\mathrm{C_6H_{12}O}$.`,
         ["empirical_formula"],
-        4,
-        true,
+        3,
       ),
       extraMc(
-        L`A nitrogen oxide has empirical formula $\mathrm{NO_2}$ and molar mass $92\text{ g mol}^{-1}$. Its molecular formula is`,
-        [
-          L`$\mathrm{NO_2}$`,
-          L`$\mathrm{N_2O_4}$`,
-          L`$\mathrm{N_2O_2}$`,
-          L`$\mathrm{N_4O_8}$`,
-        ],
-        "B",
+        L`A compound has empirical formula $\mathrm{CH_2}$ and molecular molar mass $56\,\mathrm{g\,mol^{-1}}$. Using C = 12 and H = 1, how many hydrogen atoms are present in each molecule?`,
+        ["8", "2", "4", "16"],
+        "A",
         {
-          A: "This has molar mass $46\\text{ g mol}^{-1}$, not $92\\text{ g mol}^{-1}$.",
-          C: "This does not preserve the empirical ratio $1:2$.",
-          D: "This has twice the required molar mass.",
+          B: "Two is the empirical hydrogen subscript, before applying the molecular multiplier.",
+          C: "Four is the number of empirical units, not hydrogen atoms.",
+          D: "The multiplier is four, not eight.",
         },
         [
-          "Find empirical formula mass.",
-          "$\\mathrm{NO_2}$ has mass $14+32=46$.",
-          "The multiplier is $92/46=2$.",
+          "Find the empirical formula mass.",
+          "Divide 56 by 14.",
+          "Apply that multiplier to the hydrogen subscript.",
         ],
-        "Multiplying all empirical-formula subscripts by $2$ gives $\\mathrm{N_2O_4}$.",
-        ["molecular_formula"],
+        L`The multiplier is $56/14=4$, giving molecular formula $\mathrm{C_4H_8}$. Each molecule contains eight hydrogen atoms.`,
+        ["molecular_formula", "atom_count"],
+        2,
       ),
       extraMc(
         L`The percentage by mass of nitrogen in $\mathrm{NH_4NO_3}$ is approximately`,
@@ -3290,7 +3299,7 @@ const largeTopicExpansions: Record<
         ],
         "Percentage nitrogen $=(28/80)\\times100=35.0\\%$.",
         ["percentage_composition"],
-        3,
+        2,
         true,
       ),
       extraMc(
@@ -3314,6 +3323,7 @@ const largeTopicExpansions: Record<
         ],
         "Dividing subscripts by $2$ gives $\\mathrm{CH_2O}$.",
         ["empirical_formula"],
+        2,
       ),
       extraMc(
         L`In $\mathrm{CuSO_4\cdot5H_2O}$, approximate percentage of water by mass is $(\mathrm{CuSO_4}=160,\ 5H_2O=90)$`,
@@ -3331,47 +3341,40 @@ const largeTopicExpansions: Record<
         ],
         "Water percentage $=90/250\\times100=36\\%$.",
         ["hydrate_composition"],
-        4,
+        2,
         true,
       ),
     ],
     constructed: [
       extraFrq(
         "saq",
-        L`A compound contains $52.2\%$ C, $13.0\%$ H and $34.8\%$ O by mass.`,
-        4,
-        ["empirical_formula"],
+        L`A $4.40\,\mathrm{g}$ compound containing only C, H and O has $2.40\,\mathrm{g}$ carbon and $0.40\,\mathrm{g}$ hydrogen. Use C = 12, H = 1, O = 16. Determine its empirical formula.`,
+        3,
+        ["empirical_formula", "oxygen_by_difference"],
         [
-          {
-            letter: "a",
-            promptMarkdown:
-              "Convert the percentages to mole amounts for a $100\\text{ g}$ sample.",
-            points: 2,
-          },
+          { letter: "a", promptMarkdown: "Find the oxygen mass.", points: 1 },
           {
             letter: "b",
-            promptMarkdown: "Find the empirical formula.",
+            promptMarkdown: "Find the mole ratio and empirical formula.",
             points: 2,
           },
         ],
         [
-          "Assume $100\\text{ g}$.",
-          "Divide by atomic masses $12,1,16$.",
-          "Divide all mole values by the smallest.",
+          "Subtract carbon and hydrogen masses from the sample mass.",
+          "Convert all three element masses to moles.",
+          "Divide by the smallest amount.",
         ],
         [
           {
             part: "a",
-            explanation:
-              "Moles: C $=52.2/12=4.35$, H $=13.0/1=13.0$, O $=34.8/16=2.175$.",
+            explanation: L`Oxygen mass $=4.40-2.40-0.40=1.60\,\mathrm{g}$.`,
           },
           {
             part: "b",
-            explanation:
-              "Dividing by $2.175$ gives $2:6:1$, so empirical formula is $\\mathrm{C_2H_6O}$.",
+            explanation: L`Amounts are $2.40/12=0.20$, $0.40/1=0.40$ and $1.60/16=0.10\,\mathrm{mol}$. The ratio $2:4:1$ gives $\mathrm{C_2H_4O}$.`,
           },
         ],
-        ["Rounding before finding the mole ratio."],
+        ["Using total compound mass as the oxygen mass."],
       ),
       extraFrq(
         "vsaq",
@@ -3460,7 +3463,7 @@ const largeTopicExpansions: Record<
       extraFrq(
         "case",
         L`Two compounds have the same empirical formula $\mathrm{CH_2O}$. Compound P has molar mass $60\text{ g mol}^{-1}$ and compound Q has molar mass $120\text{ g mol}^{-1}$.`,
-        4,
+        3,
         ["case_based", "molecular_formula"],
         [
           {
@@ -3522,6 +3525,7 @@ const largeTopicExpansions: Record<
         ],
         "$\\mathrm{O_2}$ is limiting because it is consumed first.",
         ["limiting_reagent"],
+        2,
       ),
       extraMc(
         L`On heating $\mathrm{CaCO_3\rightarrow CaO+CO_2}$, $10.0\text{ g}$ of pure $\mathrm{CaCO_3}$ gives theoretical mass of $\mathrm{CaO}$ approximately`,
@@ -3544,6 +3548,7 @@ const largeTopicExpansions: Record<
         ],
         "Moles $\\mathrm{CaCO_3}=0.100$, so mass $\\mathrm{CaO}=0.100\\times56=5.6\\text{ g}$.",
         ["stoichiometry", "mass_mass"],
+        2,
       ),
       extraMc(
         L`If theoretical yield is $12.5\text{ g}$ and actual yield is $10.0\text{ g}$, percentage yield is`,
@@ -3585,6 +3590,7 @@ const largeTopicExpansions: Record<
         ],
         "Hydrogen is limiting, and $3.0\\text{ mol }\\mathrm{H_2}$ forms $2.0\\text{ mol }\\mathrm{NH_3}$.",
         ["limiting_reagent", "stoichiometry"],
+        3,
       ),
       extraMc(
         L`In $\mathrm{CH_4+2O_2\rightarrow CO_2+2H_2O}$, complete combustion of $0.50\text{ mol}$ methane requires oxygen`,
@@ -3607,6 +3613,7 @@ const largeTopicExpansions: Record<
         ],
         "$0.50\\text{ mol}$ methane requires $1.00\\text{ mol}$ oxygen.",
         ["combustion_stoichiometry"],
+        2,
       ),
     ],
     constructed: [
@@ -3827,7 +3834,7 @@ const largeTopicExpansions: Record<
         ],
         "$V_1=25\\text{ mL}$.",
         ["dilution"],
-        3,
+        2,
         true,
       ),
       extraMc(
@@ -3870,6 +3877,7 @@ const largeTopicExpansions: Record<
         ],
         "$x_{ethanol}=1.0/(1.0+9.0)=0.10$.",
         ["mole_fraction"],
+        2,
       ),
       extraMc(
         L`A $5.0\text{ g}$ solute sample is dissolved to make $100\text{ g}$ solution. Mass percentage of solute is`,
@@ -3887,30 +3895,46 @@ const largeTopicExpansions: Record<
         ],
         "Mass percentage $=(5.0/100)\\times100=5.0\\%$.",
         ["mass_percent"],
+        2,
       ),
     ],
     constructed: [
       extraFrq(
         "saq",
-        L`What mass of anhydrous $\mathrm{Na_2CO_3}$ is required to prepare $250\text{ mL}$ of $0.100\text{ M}$ solution? Take $M(\mathrm{Na_2CO_3})=106\text{ g mol}^{-1}$.`,
-        4,
-        ["solution_preparation", "molarity"],
+        L`A student weighs $4.00\,\mathrm{g}$ NaOH to prepare $500\,\mathrm{mL}$ of $0.200\,\mathrm{M}$ solution, but accidentally makes the final volume $400\,\mathrm{mL}$. Use molar mass $40.0\,\mathrm{g\,mol^{-1}}$.`,
+        3,
+        ["solution_preparation", "correcting_dilution"],
         [
-          { letter: "a", promptMarkdown: "Find moles required.", points: 2 },
-          { letter: "b", promptMarkdown: "Find mass required.", points: 2 },
+          {
+            letter: "a",
+            promptMarkdown: "Calculate the actual molarity.",
+            points: 2,
+          },
+          {
+            letter: "b",
+            promptMarkdown:
+              "State how to correct the solution without discarding solute.",
+            points: 1,
+          },
         ],
-        ["Convert volume to litres.", "Moles $=MV$.", "Mass $=nM_r$."],
+        [
+          "The amount of solute is unchanged by the volume error.",
+          "Calculate moles and divide by the actual volume.",
+          "Determine the final volume needed for the target molarity.",
+        ],
         [
           {
             part: "a",
-            explanation: "$n=0.100\\times0.250=0.0250\\text{ mol}$.",
+            explanation: L`$n=4.00/40.0=0.100\,\mathrm{mol}$. Actual molarity $=0.100/0.400=0.250\,\mathrm{M}$.`,
           },
           {
             part: "b",
-            explanation: "Mass $=0.0250\\times106=2.65\\text{ g}$.",
+            explanation: L`Dilute to a final solution volume of $0.100/0.200=0.500\,\mathrm{L}=500\,\mathrm{mL}$ at the preparation temperature.`,
           },
         ],
-        ["Using $250$ as litres."],
+        [
+          "Removing a portion of uniform solution does not reduce its molarity.",
+        ],
       ),
       extraFrq(
         "saq",
@@ -3965,7 +3989,7 @@ const largeTopicExpansions: Record<
       extraFrq(
         "laq",
         L`A solution is prepared by dissolving $9.0\text{ g}$ glucose, $\mathrm{C_6H_{12}O_6}$, in $90.0\text{ g}$ water. Take molar mass of glucose as $180\text{ g mol}^{-1}$.`,
-        4,
+        3,
         ["molality", "mass_percent"],
         [
           { letter: "a", promptMarkdown: "Find moles of glucose.", points: 1 },
@@ -3998,7 +4022,7 @@ const largeTopicExpansions: Record<
       extraFrq(
         "case",
         L`A pharmacy label says a bottle contains $500\text{ mL}$ of $0.200\text{ M}$ saline-equivalent solution. A technician needs $100\text{ mL}$ of $0.0500\text{ M}$ solution from it.`,
-        4,
+        3,
         ["case_based", "dilution", "molarity"],
         [
           {

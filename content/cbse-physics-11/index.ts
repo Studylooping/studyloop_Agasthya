@@ -37,6 +37,6 @@ export const cbsePhysics11: Course = {
     "CBSE Class XI Physics 042 theory and practical syllabus 2026-27",
   status: "live",
   description:
-    "CBSE Class 11 Physics practice aligned to the Physics 042 theory and practical syllabus. Units are published only after local authoring and vetting checks pass.",
+    "CBSE Class 11 Physics practice aligned to the Physics 042 theory and practical syllabus, with original questions, hints, worked solutions, and practical activities.",
   units,
 };

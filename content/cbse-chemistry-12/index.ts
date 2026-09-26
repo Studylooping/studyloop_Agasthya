@@ -38,6 +38,6 @@ export const cbseChemistry12: Course = {
     "CBSE Class XII Chemistry 043 theory and practical syllabus 2026-27",
   status: "live",
   description:
-    "CBSE Class 12 Chemistry practice aligned to the Chemistry 043 theory and practical syllabus. Units are published only after local authoring and vetting checks pass.",
+    "CBSE Class 12 Chemistry practice aligned to the Chemistry 043 theory and practical syllabus, with original questions, hints, worked solutions, and practical work.",
   units,
 };
