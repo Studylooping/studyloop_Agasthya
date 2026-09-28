@@ -14,7 +14,7 @@ import { calibrateCbseChemistryDifficulty } from "../../../lib/content/difficult
 
 const COURSE = "cbse-chemistry-12";
 const UNIT = "u1-solutions";
-const VERSION = "0.1.4";
+const VERSION = "0.1.5";
 const REVIEW_STATUS = "verified" as const;
 const SOURCE_TYPE = "original_ai_assisted_question" as const;
 const VERIFIED_BY = "StudyLoop Review Team" as const;
@@ -1911,4 +1911,24 @@ const topicSeeds: readonly TopicSeed[] = [
   },
 ];
 
-export const solutionsTopics: Topic[] = topicSeeds.map(makeTopic);
+// Difficulty follows the reasoning required, not the answer format or marks.
+const difficultyCorrections: Record<string, Difficulty> = {
+  "1.2.laq.004": 3,
+  "1.3.laq.004": 3,
+  "1.4.mc.004": 3,
+  "1.4.laq.004": 3,
+  "1.5.mc.003": 2,
+  "1.5.mc.005": 3,
+  "1.5.laq.004": 3,
+  "1.5.case.005": 3,
+};
+export const solutionsTopics: Topic[] = topicSeeds
+  .map(makeTopic)
+  .map((topic) => ({
+    ...topic,
+    items: topic.items.map((item) => {
+      const suffix = item.contentId.split(".").slice(-2).join(".");
+      const corrected = difficultyCorrections[`${topic.topicCode}.${suffix}`];
+      return corrected ? { ...item, difficulty: corrected } : item;
+    }),
+  }));
