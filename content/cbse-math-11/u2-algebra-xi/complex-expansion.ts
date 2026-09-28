@@ -1,9 +1,19 @@
 import { builder } from "../expansion-builder";
 import { fraction as f, math as m, part } from "../practice-authoring";
 
-const z = (a: number, b: number) => a + (b < 0 ? "-" : "+") + Math.abs(b) + "i";
+const z = (a: number, b: number) => {
+  if (b === 0) return String(a);
+  const imaginary = (Math.abs(b) === 1 ? "" : Math.abs(b)) + "i";
+  if (a === 0) return (b < 0 ? "-" : "") + imaginary;
+  return a + (b < 0 ? "-" : "+") + imaginary;
+};
 export function complexExpansion() {
-  const B = builder({ unit: "u2-algebra-xi", topic: "2.1", chapter: 4 });
+  const B = builder({
+    unit: "u2-algebra-xi",
+    topic: "2.1",
+    chapter: 4,
+    version: "0.3.1",
+  });
   for (let v = 0; v < 8; v++) {
     const a = (v % 4) + 2,
       b = a + 1,
@@ -68,7 +78,7 @@ export function complexExpansion() {
         [
           "Multiply numerator and denominator by " + m("1-i") + ".",
           "The quotient is " +
-            m(f(a + 1, 2) + f(1 - a, 2) + "i") +
+            m(f(a + 1, 2) + f(1 - a, 2, "i")) +
             ", with imaginary coefficient " +
             m(f(1 - a, 2)) +
             ".",

@@ -12,7 +12,12 @@ import {
 } from "../practice-authoring";
 
 export function setsExpansion(topic: "1.1" | "1.2"): Item[] {
-  const c: Context = { unit: "u1-sets-functions", topic, chapter: 1 };
+  const c: Context = {
+    unit: "u1-sets-functions",
+    topic,
+    chapter: 1,
+    version: "0.3.1",
+  };
   const items: Item[] = [];
   for (let v = 0; v < 4; v++) {
     const j = 10 * v,
@@ -151,7 +156,7 @@ export function setsExpansion(topic: "1.1" | "1.2"): Item[] {
           "The set " +
             m("\\{x\\in\\mathbb R:|x-" + a + "|<" + b + "\\}") +
             " is",
-          3,
+          2,
           "absolute_interval",
           m("(" + (a - b) + "," + (a + b) + ")"),
           [
@@ -443,7 +448,7 @@ export function setsExpansion(topic: "1.1" | "1.2"): Item[] {
             ". Find " +
             m("A'\\cap B'") +
             ".",
-          2,
+          3,
           "de_morgan",
           m(set(outside)),
           [

@@ -12,15 +12,19 @@ export const set = (values: (number | string)[]) =>
   values.length
     ? "\\{" + [...new Set(values)].join(",") + "\\}"
     : "\\varnothing";
-export function fraction(n: number, d: number): string {
+export function fraction(n: number, d: number, symbol = ""): string {
   if (!d) throw new Error("Zero denominator in authored answer");
   const gcd = (a: number, b: number): number => (b ? gcd(b, a % b) : a);
   const g = gcd(Math.abs(n), Math.abs(d));
   const a = (n / g) * Math.sign(d),
     b = Math.abs(d) / g;
-  return b === 1
-    ? String(a)
-    : (a < 0 ? "-" : "") + "\\frac{" + Math.abs(a) + "}{" + b + "}";
+  if (a === 0) return "0";
+  const numerator =
+    (symbol && Math.abs(a) === 1 ? "" : String(Math.abs(a))) + symbol;
+  return (
+    (a < 0 ? "-" : "") +
+    (b === 1 ? numerator : "\\frac{" + numerator + "}{" + b + "}")
+  );
 }
 export const signed = (n: number) => (n < 0 ? String(n) : "+" + n);
 export const pair = (a: number | string, b: number | string) =>
@@ -31,6 +35,7 @@ export type Context = {
   topic: string;
   chapter: number;
   offset?: number;
+  version?: string;
 };
 export type WrittenPart = {
   prompt: string;
@@ -78,7 +83,7 @@ function base(
     hintLadder: clues.map((body, i) => ({ level: (i + 1) as 1 | 2 | 3, body })),
     reviewStatus: "ai_reviewed" as const,
     sourceType: "original_ai_assisted_question" as const,
-    version: "0.3.0",
+    version: c.version ?? "0.3.0",
     ...(figure ? { figure } : {}),
   };
 }

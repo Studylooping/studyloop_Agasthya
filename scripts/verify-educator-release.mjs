@@ -47,7 +47,51 @@ function checkChapterCounts(path, html) {
   });
 }
 
+const mathPolishChecks = {
+  "/cbse-math-11/u1-sets-functions/t1-1-mc-104": { difficulty: "Routine exam skill (2/5)" },
+  "/cbse-math-11/u1-sets-functions/t1-2-mc-102": { difficulty: "Standard multi-step (3/5)" },
+  "/cbse-math-11/u1-sets-functions/t1-9-mc-101": { difficulty: "Routine exam skill (2/5)" },
+  "/cbse-math-11/u1-sets-functions/t1-7-mc-104": { tex: ["\\pi", "\\frac{\\pi}{2}"] },
+  "/cbse-math-11/u1-sets-functions/t1-8-mc-104": { tex: ["\\sin x", "\\cos x"] },
+  "/cbse-math-11/u2-algebra-xi/t2-1-mc-102": { tex: ["(2+i)(3-i)", "7+i", "5"] },
+};
+
+function checkMathPolish(path, html) {
+  const expected = mathPolishChecks[path];
+  if (!expected) return;
+  const document = parse(html);
+  if (expected.difficulty) {
+    assert(descendants(document, node => node.tagName === "span")
+      .some(node => textContent(node).replace(/\s+/g, " ").trim() === expected.difficulty),
+    `${path}: stale difficulty label`);
+  }
+  const tex = descendants(document, node => node.tagName === "annotation")
+    .map(textContent);
+  for (const expression of expected.tex ?? []) {
+    assert(tex.includes(expression), `${path}: missing polished expression ${expression}`);
+  }
+  assert(!tex.some(value => /(?<![\d.])[01]i\b|(?<!\d)1x\b|(?<!\d)1\\pi\b/.test(value)),
+    `${path}: redundant coefficient remains`);
+}
+
+function checkSolutionsCount(path, html) {
+  if (path !== "/cbse-chemistry-12/u1-solutions") return;
+  const links = new Set(descendants(parse(html), node => node.tagName === "a")
+    .map(node => node.attrs?.find(attr => attr.name === "href")?.value)
+    .filter(href => href?.startsWith(`${path}/t1-`)));
+  assert.equal(links.size, 250, "Solutions: expected 250 question links");
+  for (let topic = 1; topic <= 5; topic++) {
+    assert.equal([...links].filter(href => href.startsWith(`${path}/t1-${topic}-`)).length, 50,
+      `Solutions topic 1.${topic}: expected 50 questions`);
+  }
+}
+
 const checks = [
+  ...Object.keys(mathPolishChecks).map(path => [path, []]),
+  ["/cbse-math-11/u2-algebra-xi/t2-3-mc-145", ["How many nonempty subsets does a set with 3 elements have?"]],
+  ["/cbse-chemistry-12/u1-solutions", ["Solutions"]],
+  ["/cbse-chemistry-12/u1-solutions/t1-1-mc-101", ["An aqueous glucose solution is", "by mass and has density", "its molarity is"]],
+  ["/cbse-chemistry-12/u1-solutions/t1-5-laq-117", ["fully dissociated binary electrolyte", "their particle contributions add"]],
   ["/cbse-math-11/u1-sets-functions/t1-7-mc-101", ["One complete cycle of a sinusoidal function", "<figure"]],
   ["/cbse-math-11/u2-algebra-xi/t2-5-case-110", ["A ball is released", "Find the first and third rebound heights."]],
   ["/cbse-physics-11/u6-gravitation/t6-1-mc-101", ["common star", "8:27"]],
@@ -68,7 +112,7 @@ const checks = [
   ["/schools", ["no teacher sign-off recorded", "2026-27"]],
   ["/schools/cells", ["t1-1-laq-206", "Print questions"]],
   ["/schools/cells/answers", ["Correct option:", "Accept equivalent correct wording"]],
-  ["/changelog", ["v0.1-alpha.31", "v0.1-alpha.30", "v0.1-alpha.29", "v0.1-alpha.28", "293 Class IX and 360 Class X"]],
+  ["/changelog", ["v0.1-alpha.32", "v0.1-alpha.31", "v0.1-alpha.30", "v0.1-alpha.29", "v0.1-alpha.28", "293 Class IX and 360 Class X"]],
 ];
 
 for (const [path, expected] of checks) {
@@ -76,6 +120,8 @@ for (const [path, expected] of checks) {
   assert.equal(response.status, 200, `${path}: HTTP ${response.status}`);
   const html = await response.text();
   checkChapterCounts(path, html);
+  checkMathPolish(path, html);
+  checkSolutionsCount(path, html);
   for (const fragment of expected) assert(html.includes(fragment), `${path}: missing ${fragment}`);
   if (path === "/" || subjectPaths.has(path)) {
     assert(!/SAT Math|JEE Main/.test(html), `${path}: removed subject is advertised`);

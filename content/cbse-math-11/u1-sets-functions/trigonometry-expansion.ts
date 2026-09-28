@@ -9,6 +9,9 @@ import {
   type Context,
 } from "../practice-authoring";
 
+const trig = (name: "sin" | "cos", coefficient: number) =>
+  "\\" + name + (coefficient === 1 ? " x" : "(" + coefficient + "x)");
+
 function sineGraph(a: number): ItemFigure {
   const pts = Array.from({ length: 161 }, (_, i) => {
     const t = (2 * Math.PI * i) / 160;
@@ -49,7 +52,12 @@ function sineGraph(a: number): ItemFigure {
 export function trigonometryExpansion(
   topic: "1.6" | "1.7" | "1.8" | "1.9",
 ): Item[] {
-  const c: Context = { unit: "u1-sets-functions", topic, chapter: 3 },
+  const c: Context = {
+      unit: "u1-sets-functions",
+      topic,
+      chapter: 3,
+      version: "0.3.1",
+    },
     out: Item[] = [];
   const triples = [
     [3, 4, 5],
@@ -72,21 +80,21 @@ export function trigonometryExpansion(
           "Express " + m(degrees + "^\\circ") + " in radians.",
           2,
           "degrees_radians",
-          m(f(num, den) + "\\pi"),
+          m(f(num, den, "\\pi")),
           [
             [
-              m(f(degrees, 90) + "\\pi"),
+              m(f(degrees, 90, "\\pi")),
               "The conversion factor is pi/180, not pi/90.",
             ],
-            [m(f(degrees, 360) + "\\pi"), "A complete turn is 2 pi, not pi."],
+            [m(f(degrees, 360, "\\pi")), "A complete turn is 2 pi, not pi."],
             [
-              m(f(180, degrees) + "\\pi"),
+              m(f(180, degrees, "\\pi")),
               "The conversion factor has been inverted.",
             ],
           ],
           [
             "Multiply degrees by " + m("\\pi/180") + ".",
-            m(degrees + "\\times\\frac{\\pi}{180}=" + f(num, den) + "\\pi") +
+            m(degrees + "\\times\\frac{\\pi}{180}=" + f(num, den, "\\pi")) +
               ".",
           ],
           [
@@ -228,7 +236,7 @@ export function trigonometryExpansion(
           c,
           j + 5,
           "vsaq",
-          "An angle measures " + m(f(2 * n + 1, 6) + "\\pi") + " radians.",
+          "An angle measures " + m(f(2 * n + 1, 6, "\\pi")) + " radians.",
           2,
           "radians_degrees",
           [
@@ -484,11 +492,11 @@ export function trigonometryExpansion(
             "?",
           2,
           "tangent_domain",
-          m(f(2 * n + 1, 2) + "\\pi"),
+          m(f(2 * n + 1, 2, "\\pi")),
           [
             [m(n + "\\pi"), "Cosine is nonzero at an integer multiple of pi."],
             [
-              m(f(4 * n + 1, 4) + "\\pi"),
+              m(f(4 * n + 1, 4, "\\pi")),
               "An odd multiple of pi/4 has nonzero cosine.",
             ],
             [m("0"), "Tangent is defined and equals zero at the origin."],
@@ -515,7 +523,7 @@ export function trigonometryExpansion(
           "The least positive period of " + m("f(x)=\\sin(" + n + "x)") + " is",
           2,
           "scaled_period",
-          m(f(2, n) + "\\pi"),
+          m(f(2, n, "\\pi")),
           [
             [
               m(2 * n + "\\pi"),
@@ -526,7 +534,7 @@ export function trigonometryExpansion(
               "This is a period but not the least one for this integer multiplier.",
             ],
             [
-              m(f(1, n) + "\\pi"),
+              m(f(1, n, "\\pi")),
               "This changes sine's sign rather than completing a full cycle.",
             ],
           ],
@@ -537,7 +545,7 @@ export function trigonometryExpansion(
             "Thus " +
               m(n + "T=2\\pi") +
               ", giving " +
-              m("T=" + f(2, n) + "\\pi") +
+              m("T=" + f(2, n, "\\pi")) +
               ".",
           ],
           [
@@ -881,14 +889,14 @@ export function trigonometryExpansion(
             ".",
           2,
           "recognise_sine_difference",
-          m("\\sin(" + (n - 1) + "x)"),
+          m(trig("sin", n - 1)),
           [
             [
               m("\\sin(" + (n + 1) + "x)"),
               "That corresponds to adding, not subtracting, the products.",
             ],
             [
-              m("\\cos(" + (n - 1) + "x)"),
+              m(trig("cos", n - 1)),
               "The given pattern is the sine-difference identity.",
             ],
             [
@@ -941,7 +949,7 @@ export function trigonometryExpansion(
           [
             part(
               "Write it as one trigonometric function.",
-              m("\\cos(" + (n - 1) + "x)") + ".",
+              m(trig("cos", n - 1)) + ".",
               "Use " + m("\\cos(A-B)=\\cos A\\cos B+\\sin A\\sin B") + ".",
               "Recognises the cosine-difference identity.",
               "Subtracts the two arguments.",
@@ -1043,13 +1051,8 @@ export function trigonometryExpansion(
             ),
             part(
               "Apply the result to sin(nx)+sin x.",
-              m(
-                "2\\sin\\frac{" +
-                  (n + 1) +
-                  "x}{2}\\cos\\frac{" +
-                  (n - 1) +
-                  "x}{2}",
-              ) + ".",
+              m("2\\sin " + f(n + 1, 2, "x") + "\\cos " + f(n - 1, 2, "x")) +
+                ".",
               "Substitute A=nx and B=x into the derived formula.",
               "Substitutes the two angles.",
               "Simplifies both half-arguments.",
@@ -1084,20 +1087,10 @@ export function trigonometryExpansion(
           [
             part(
               "Factor the numerator and denominator using sum-to-product identities.",
-              m(
-                "N=2\\sin\\frac{" +
-                  (n + 1) +
-                  "x}{2}\\cos\\frac{" +
-                  (n - 1) +
-                  "x}{2}",
-              ) +
+              m("N=2\\sin " + f(n + 1, 2, "x") + "\\cos " + f(n - 1, 2, "x")) +
                 " and " +
                 m(
-                  "D=2\\cos\\frac{" +
-                    (n + 1) +
-                    "x}{2}\\cos\\frac{" +
-                    (n - 1) +
-                    "x}{2}",
+                  "D=2\\cos " + f(n + 1, 2, "x") + "\\cos " + f(n - 1, 2, "x"),
                 ) +
                 ".",
               "Apply the sine-sum and cosine-sum identities separately.",

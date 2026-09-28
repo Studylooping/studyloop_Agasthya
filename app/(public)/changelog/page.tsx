@@ -17,6 +17,17 @@ interface Entry {
 
 const ENTRIES: Entry[] = [
   {
+    version: "v0.1-alpha.32",
+    date: "2026-09-28",
+    title: "Maths polish and more Class 12 Chemistry practice",
+    highlights: [
+      "Simplified redundant complex-number coefficients, trigonometric arguments and multiples of pi in questions, choices and worked solutions. Corrected subset-counting wording.",
+      "Reclassified absolute-value interval questions as routine (d2) and combined complement/intersection questions as standard multi-step (d3). Direct double-angle substitution remains d2.",
+      "Added regression checks while preserving question counts, answer keys and existing question links.",
+      "Expanded Class 12 Chemistry Solutions from 50 to 250 questions, with 50 questions in each of its five topics. The additional practice is AI-reviewed, not independently teacher-verified.",
+    ],
+  },
+  {
     version: "v0.1-alpha.31",
     date: "2026-09-28",
     title: "NCERT chapter practice for Class 11 Maths and Physics",

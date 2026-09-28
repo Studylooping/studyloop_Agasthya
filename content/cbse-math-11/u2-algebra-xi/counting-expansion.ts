@@ -2,7 +2,12 @@ import { builder, choose as C, factorial as F } from "../expansion-builder";
 import { math as m, part, range, set } from "../practice-authoring";
 
 export function countingExpansion() {
-  const B = builder({ unit: "u2-algebra-xi", topic: "2.3", chapter: 6 });
+  const B = builder({
+    unit: "u2-algebra-xi",
+    topic: "2.3",
+    chapter: 6,
+    version: "0.3.1",
+  });
   for (let v = 0; v < 8; v++) {
     const a = (v % 4) + 3,
       n = a + 3;
@@ -400,7 +405,7 @@ export function countingExpansion() {
         ],
       );
       B.mc(
-        "An " + a + "-element set has how many nonempty subsets?",
+        "How many nonempty subsets does a set with " + a + " elements have?",
         m(2 ** a - 1),
         [
           [m(2 ** a), "This includes the empty subset."],
