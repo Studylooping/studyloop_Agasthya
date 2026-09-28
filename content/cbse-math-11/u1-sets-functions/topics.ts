@@ -10,6 +10,9 @@ import type {
   SolutionStep,
   Topic,
 } from "@/lib/content/types";
+import { setsExpansion } from "./sets-expansion";
+import { functionsExpansion } from "./functions-expansion";
+import { trigonometryExpansion } from "./trigonometry-expansion";
 
 const COURSE = "cbse-math-11";
 const UNIT = "u1-sets-functions";
@@ -3877,4 +3880,11 @@ const topicSeeds: readonly TopicSeed[] = [
   },
 ];
 
-export const setsFunctionsTopics: Topic[] = topicSeeds.map(makeTopic);
+export const setsFunctionsTopics: Topic[] = topicSeeds.map(seed => {
+  const topic = makeTopic(seed);
+  const code = topic.topicCode;
+  const additions = code === "1.1" || code === "1.2" ? setsExpansion(code)
+    : code === "1.3" || code === "1.4" || code === "1.5" ? functionsExpansion(code)
+    : trigonometryExpansion(code as "1.6" | "1.7" | "1.8" | "1.9");
+  return { ...topic, items: [...topic.items, ...additions] };
+});

@@ -10,6 +10,9 @@ import type {
   SolutionStep,
   Topic,
 } from "@/lib/content/types";
+import { linesExpansion } from "./lines-expansion";
+import { conicsExpansion } from "./conics-expansion";
+import { spaceExpansion } from "./space-expansion";
 
 const COURSE = "cbse-math-11";
 const UNIT = "u3-coordinate-geometry";
@@ -2021,4 +2024,10 @@ const topicSeeds: readonly TopicSeed[] = [
   },
 ];
 
-export const coordinateGeometryTopics: Topic[] = topicSeeds.map(makeTopic);
+export const coordinateGeometryTopics: Topic[] = topicSeeds.map(seed => {
+  const topic = makeTopic(seed);
+  const code = topic.topicCode;
+  const additions = code === "3.1" || code === "3.2" ? linesExpansion(code)
+    : code === "3.3" || code === "3.4" ? conicsExpansion(code) : spaceExpansion();
+  return { ...topic, items: [...topic.items, ...additions] };
+});

@@ -17,6 +17,17 @@ interface Entry {
 
 const ENTRIES: Entry[] = [
   {
+    version: "v0.1-alpha.31",
+    date: "2026-09-28",
+    title: "NCERT chapter practice for Class 11 Maths and Physics",
+    highlights: [
+      "Added 1,170 Maths questions, bringing the main bank to 1,460. All 14 NCERT chapters now have at least 90 questions, and each Unit 1 topic has 50.",
+      "Added 290 Physics questions. NCERT chapters 1-7 now have 90 questions each; chapters 8-14 retain their existing banks and are not yet expanded to that minimum.",
+      "Added NCERT chapter navigation with question counts while preserving existing question links. The additions include MCQs, written answers and case-based practice with hints and worked solutions; numerical variants provide additional practice.",
+      "Recalibrated difficulty labels and repaired small fraction and subscript scrollbars. New content is AI-reviewed, not independently teacher-verified.",
+    ],
+  },
+  {
     version: "v0.1-alpha.30",
     date: "2026-09-26",
     title: "More Class 11 Chemistry practice",

@@ -1,9 +1,9 @@
 # StudyLoop Figure Integrity Report
 
-Generated: 2026-09-24T12:52:28.904Z
+Generated: 2026-09-28T14:54:53.700Z
 Mode: standard
 
-Figure-backed items: 721
+Figure-backed items: 733
 Reused SVG groups: 175
 Warnings: 0
 Failures: 0
@@ -278,9 +278,17 @@ Failures: 0
 | cbse-math-11.u1.t1-3.mc.004 | /cbse-math-11/u1-sets-functions/t1-3-mc-004 | Relation from A to B | 6692b75bf35d5fe4 | relation, arrow, relation |
 | cbse-math-11.u1.t1-3.case.005 | /cbse-math-11/u1-sets-functions/t1-3-case-005 | Relation from A to B | 6692b75bf35d5fe4 | relation, arrow, relation |
 | cbse-math-11.u1.t1-5.mc.001 | /cbse-math-11/u1-sets-functions/t1-5-mc-001 | V-shaped graph on coordinate axes | 1a0309be4b78d693 | shaped, graph, shaped, graph, vertex, origin |
+| cbse-math-11.u1.t1-5.mc.101 | /cbse-math-11/u1-sets-functions/t1-5-mc-101 | Graph of a real-valued function | fbbc210375cc309a | graph, function, graph, vertex, unit |
+| cbse-math-11.u1.t1-5.mc.111 | /cbse-math-11/u1-sets-functions/t1-5-mc-111 | Graph of a real-valued function | cd0f5a239b98ae4f | graph, function, graph, vertex, unit |
+| cbse-math-11.u1.t1-5.mc.121 | /cbse-math-11/u1-sets-functions/t1-5-mc-121 | Graph of a real-valued function | d40eb76a3e41acf2 | graph, function, graph, vertex, unit |
+| cbse-math-11.u1.t1-5.mc.131 | /cbse-math-11/u1-sets-functions/t1-5-mc-131 | Graph of a real-valued function | dc608bc6f73695ae | graph, function, graph, vertex, unit |
 | cbse-math-11.u1.t1-6.mc.004 | /cbse-math-11/u1-sets-functions/t1-6-mc-004 | Unit-circle reference angle | 031b102e756aba2b | unit, circle, angle, unit, circle, angle, point |
 | cbse-math-11.u1.t1-7.mc.002 | /cbse-math-11/u1-sets-functions/t1-7-mc-002 | Periodic graph with vertical asymptotes | 46f30c2bcd48cb50 | graph, vertical, asymptotes, central, branch, vertical, dashed, asymptotes |
 | cbse-math-11.u1.t1-7.mc.004 | /cbse-math-11/u1-sets-functions/t1-7-mc-004 | Two basic trigonometric graphs | 787299ebf303c56c | basic, trigonometric, graphs, graphs, starts, origin, starts, maximum |
+| cbse-math-11.u1.t1-7.mc.101 | /cbse-math-11/u1-sets-functions/t1-7-mc-101 | A trigonometric graph over one cycle | c9654c55c5507783 | graph, cycle, sine, maximum, minimum |
+| cbse-math-11.u1.t1-7.mc.111 | /cbse-math-11/u1-sets-functions/t1-7-mc-111 | A trigonometric graph over one cycle | caa04bc509d46efe | graph, cycle, sine, maximum, minimum |
+| cbse-math-11.u1.t1-7.mc.121 | /cbse-math-11/u1-sets-functions/t1-7-mc-121 | A trigonometric graph over one cycle | f39dfecd23864e2d | graph, cycle, sine, maximum, minimum |
+| cbse-math-11.u1.t1-7.mc.131 | /cbse-math-11/u1-sets-functions/t1-7-mc-131 | A trigonometric graph over one cycle | b552956dc8addbd4 | graph, cycle, sine, maximum, minimum |
 | cbse-math-11.u2.t2-1.mc.001 | /cbse-math-11/u2-algebra-xi/t2-1-mc-001 | Argand plane with labelled points | dcfbef8032dd924d | argand, plane, labelled, labelled, origin |
 | cbse-math-11.u2.t2-2.mc.002 | /cbse-math-11/u2-algebra-xi/t2-2-mc-002 | Number-line solution set | 9e72ef1f41f11428 | number, line, solution, shaded, interval, right, closed, point |
 | cbse-math-11.u2.t2-3.mc.001 | /cbse-math-11/u2-algebra-xi/t2-3-mc-001 | Code slots with choices | cc7b9341687f6dc0 | code, slots, choices, code, letter, slot, choices, then, digit, slots, choices, choices |
@@ -289,6 +297,10 @@ Failures: 0
 | cbse-math-11.u3.t3-1.mc.001 | /cbse-math-11/u3-coordinate-geometry/t3-1-mc-001 | Coordinate grid with three labelled points | 728b72bcd88b8673 | coordinate, grid, points, coordinate, grid |
 | cbse-math-11.u3.t3-2.mc.002 | /cbse-math-11/u3-coordinate-geometry/t3-2-mc-002 | Point and line for distance | f25ea557fefdf197 | point, line, distance, point, line |
 | cbse-math-11.u3.t3-3.mc.002 | /cbse-math-11/u3-coordinate-geometry/t3-3-mc-002 | Circle data on coordinate axes | 7fa3cc395657eeba | circle, data, coordinate, circle, centre, point, circle |
+| cbse-math-11.u3.t3-3.mc.103 | /cbse-math-11/u3-coordinate-geometry/t3-3-mc-103 | Parabola with a focus and directrix | 9bd8f5807b8e459d | parabola, focus, opening, parabola, vertex, origin, focus |
+| cbse-math-11.u3.t3-3.mc.113 | /cbse-math-11/u3-coordinate-geometry/t3-3-mc-113 | Parabola with a focus and directrix | 0df3ed31698b6fcf | parabola, focus, opening, parabola, vertex, origin, focus |
+| cbse-math-11.u3.t3-3.mc.123 | /cbse-math-11/u3-coordinate-geometry/t3-3-mc-123 | Parabola with a focus and directrix | 24e5b6fbfe683980 | parabola, focus, opening, parabola, vertex, origin, focus |
+| cbse-math-11.u3.t3-3.mc.133 | /cbse-math-11/u3-coordinate-geometry/t3-3-mc-133 | Parabola with a focus and directrix | c1a081ad6ffa07a7 | parabola, focus, opening, parabola, vertex, origin, focus |
 | cbse-math-11.u3.t3-4.mc.005 | /cbse-math-11/u3-coordinate-geometry/t3-4-mc-005 | Ellipse with labelled vertices | 9fab940bf45f6292 | ellipse, labelled, vertices, ellipse, vertices, vertices |
 | cbse-math-11.u3.t3-5.mc.005 | /cbse-math-11/u3-coordinate-geometry/t3-5-mc-005 | Point in three-dimensional coordinates | a273e9fbc7e66cc1 | point, three, dimensional, coordinates, coordinate, point, origin |
 | cbse-math-11.u4.t4-1.mc.001 | /cbse-math-11/u4-calculus-xi/t4-1-mc-001 | Limit graph with a removable break | ca6f754445e3c0f9 | limit, graph, removable, break, curve, approaches, same, height, both, sides, near, while, point, lower |

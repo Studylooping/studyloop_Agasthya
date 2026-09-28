@@ -10,6 +10,8 @@ import type {
   SolutionStep,
   Topic,
 } from "@/lib/content/types";
+import { statisticsExpansion } from "./statistics-expansion";
+import { probabilityExpansion } from "./probability-expansion";
 
 const COURSE = "cbse-math-11";
 const UNIT = "u5-statistics-probability";
@@ -2080,4 +2082,10 @@ const topicSeeds: readonly TopicSeed[] = [
   },
 ];
 
-export const statisticsProbabilityTopics: Topic[] = topicSeeds.map(makeTopic);
+export const statisticsProbabilityTopics: Topic[] = topicSeeds.map(seed => {
+  const topic = makeTopic(seed);
+  const code = topic.topicCode;
+  const additions = code === "5.1" || code === "5.2" || code === "5.3"
+    ? statisticsExpansion(code) : probabilityExpansion(code as "5.4" | "5.5");
+  return { ...topic, items: [...topic.items, ...additions] };
+});

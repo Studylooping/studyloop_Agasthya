@@ -10,6 +10,11 @@ import type {
   SolutionStep,
   Topic,
 } from "@/lib/content/types";
+import { complexExpansion } from "./complex-expansion";
+import { inequalitiesExpansion } from "./inequalities-expansion";
+import { countingExpansion } from "./counting-expansion";
+import { binomialExpansion } from "./binomial-expansion";
+import { sequencesExpansion } from "./sequences-expansion";
 
 const COURSE = "cbse-math-11";
 const UNIT = "u2-algebra-xi";
@@ -1951,4 +1956,8 @@ const topicSeeds: readonly TopicSeed[] = [
   },
 ];
 
-export const algebraXiTopics: Topic[] = topicSeeds.map(makeTopic);
+const chapterAdditions = [complexExpansion, inequalitiesExpansion, countingExpansion, binomialExpansion, sequencesExpansion];
+export const algebraXiTopics: Topic[] = topicSeeds.map((seed, index) => {
+  const topic = makeTopic(seed);
+  return { ...topic, items: [...topic.items, ...chapterAdditions[index]()] };
+});

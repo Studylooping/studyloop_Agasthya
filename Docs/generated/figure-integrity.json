@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-09-24T12:52:28.899Z",
+  "generatedAt": "2026-09-28T14:54:53.694Z",
   "strict": false,
-  "figureItems": 721,
+  "figureItems": 733,
   "reusedFigures": [
     {
       "svgHash": "d9b11afa5b92c71d",
@@ -6368,6 +6368,74 @@
       ]
     },
     {
+      "contentId": "cbse-math-11.u1.t1-5.mc.101",
+      "course": "cbse-math-11",
+      "unit": "u1-sets-functions",
+      "topic": "1.5",
+      "route": "/cbse-math-11/u1-sets-functions/t1-5-mc-101",
+      "figureTitle": "Graph of a real-valued function",
+      "figureDescription": "A V-shaped graph with vertex labelled (-2, 1), passing through (0, 3). Each grid division is one unit.",
+      "svgHash": "fbbc210375cc309a",
+      "tokenOverlap": [
+        "graph",
+        "function",
+        "graph",
+        "vertex",
+        "unit"
+      ]
+    },
+    {
+      "contentId": "cbse-math-11.u1.t1-5.mc.111",
+      "course": "cbse-math-11",
+      "unit": "u1-sets-functions",
+      "topic": "1.5",
+      "route": "/cbse-math-11/u1-sets-functions/t1-5-mc-111",
+      "figureTitle": "Graph of a real-valued function",
+      "figureDescription": "A V-shaped graph with vertex labelled (-1, 2), passing through (1, 4). Each grid division is one unit.",
+      "svgHash": "cd0f5a239b98ae4f",
+      "tokenOverlap": [
+        "graph",
+        "function",
+        "graph",
+        "vertex",
+        "unit"
+      ]
+    },
+    {
+      "contentId": "cbse-math-11.u1.t1-5.mc.121",
+      "course": "cbse-math-11",
+      "unit": "u1-sets-functions",
+      "topic": "1.5",
+      "route": "/cbse-math-11/u1-sets-functions/t1-5-mc-121",
+      "figureTitle": "Graph of a real-valued function",
+      "figureDescription": "A V-shaped graph with vertex labelled (0, 3), passing through (2, 5). Each grid division is one unit.",
+      "svgHash": "d40eb76a3e41acf2",
+      "tokenOverlap": [
+        "graph",
+        "function",
+        "graph",
+        "vertex",
+        "unit"
+      ]
+    },
+    {
+      "contentId": "cbse-math-11.u1.t1-5.mc.131",
+      "course": "cbse-math-11",
+      "unit": "u1-sets-functions",
+      "topic": "1.5",
+      "route": "/cbse-math-11/u1-sets-functions/t1-5-mc-131",
+      "figureTitle": "Graph of a real-valued function",
+      "figureDescription": "A V-shaped graph with vertex labelled (1, 4), passing through (3, 6). Each grid division is one unit.",
+      "svgHash": "dc608bc6f73695ae",
+      "tokenOverlap": [
+        "graph",
+        "function",
+        "graph",
+        "vertex",
+        "unit"
+      ]
+    },
+    {
       "contentId": "cbse-math-11.u1.t1-6.mc.004",
       "course": "cbse-math-11",
       "unit": "u1-sets-functions",
@@ -6424,6 +6492,74 @@
         "origin",
         "starts",
         "maximum"
+      ]
+    },
+    {
+      "contentId": "cbse-math-11.u1.t1-7.mc.101",
+      "course": "cbse-math-11",
+      "unit": "u1-sets-functions",
+      "topic": "1.7",
+      "route": "/cbse-math-11/u1-sets-functions/t1-7-mc-101",
+      "figureTitle": "A trigonometric graph over one cycle",
+      "figureDescription": "A smooth sine-shaped curve through (0,0), (pi,0), and (2 pi,0), with maximum 1 at pi/2 and minimum -1 at 3 pi/2.",
+      "svgHash": "c9654c55c5507783",
+      "tokenOverlap": [
+        "graph",
+        "cycle",
+        "sine",
+        "maximum",
+        "minimum"
+      ]
+    },
+    {
+      "contentId": "cbse-math-11.u1.t1-7.mc.111",
+      "course": "cbse-math-11",
+      "unit": "u1-sets-functions",
+      "topic": "1.7",
+      "route": "/cbse-math-11/u1-sets-functions/t1-7-mc-111",
+      "figureTitle": "A trigonometric graph over one cycle",
+      "figureDescription": "A smooth sine-shaped curve through (0,0), (pi,0), and (2 pi,0), with maximum 2 at pi/2 and minimum -2 at 3 pi/2.",
+      "svgHash": "caa04bc509d46efe",
+      "tokenOverlap": [
+        "graph",
+        "cycle",
+        "sine",
+        "maximum",
+        "minimum"
+      ]
+    },
+    {
+      "contentId": "cbse-math-11.u1.t1-7.mc.121",
+      "course": "cbse-math-11",
+      "unit": "u1-sets-functions",
+      "topic": "1.7",
+      "route": "/cbse-math-11/u1-sets-functions/t1-7-mc-121",
+      "figureTitle": "A trigonometric graph over one cycle",
+      "figureDescription": "A smooth sine-shaped curve through (0,0), (pi,0), and (2 pi,0), with maximum 3 at pi/2 and minimum -3 at 3 pi/2.",
+      "svgHash": "f39dfecd23864e2d",
+      "tokenOverlap": [
+        "graph",
+        "cycle",
+        "sine",
+        "maximum",
+        "minimum"
+      ]
+    },
+    {
+      "contentId": "cbse-math-11.u1.t1-7.mc.131",
+      "course": "cbse-math-11",
+      "unit": "u1-sets-functions",
+      "topic": "1.7",
+      "route": "/cbse-math-11/u1-sets-functions/t1-7-mc-131",
+      "figureTitle": "A trigonometric graph over one cycle",
+      "figureDescription": "A smooth sine-shaped curve through (0,0), (pi,0), and (2 pi,0), with maximum 4 at pi/2 and minimum -4 at 3 pi/2.",
+      "svgHash": "b552956dc8addbd4",
+      "tokenOverlap": [
+        "graph",
+        "cycle",
+        "sine",
+        "maximum",
+        "minimum"
       ]
     },
     {
@@ -6570,6 +6706,82 @@
         "centre",
         "point",
         "circle"
+      ]
+    },
+    {
+      "contentId": "cbse-math-11.u3.t3-3.mc.103",
+      "course": "cbse-math-11",
+      "unit": "u3-coordinate-geometry",
+      "topic": "3.3",
+      "route": "/cbse-math-11/u3-coordinate-geometry/t3-3-mc-103",
+      "figureTitle": "Parabola with a focus and directrix",
+      "figureDescription": "A right-opening parabola has vertex at the origin, focus F at (2,0), and vertical directrix x=-2.",
+      "svgHash": "9bd8f5807b8e459d",
+      "tokenOverlap": [
+        "parabola",
+        "focus",
+        "opening",
+        "parabola",
+        "vertex",
+        "origin",
+        "focus"
+      ]
+    },
+    {
+      "contentId": "cbse-math-11.u3.t3-3.mc.113",
+      "course": "cbse-math-11",
+      "unit": "u3-coordinate-geometry",
+      "topic": "3.3",
+      "route": "/cbse-math-11/u3-coordinate-geometry/t3-3-mc-113",
+      "figureTitle": "Parabola with a focus and directrix",
+      "figureDescription": "A right-opening parabola has vertex at the origin, focus F at (3,0), and vertical directrix x=-3.",
+      "svgHash": "0df3ed31698b6fcf",
+      "tokenOverlap": [
+        "parabola",
+        "focus",
+        "opening",
+        "parabola",
+        "vertex",
+        "origin",
+        "focus"
+      ]
+    },
+    {
+      "contentId": "cbse-math-11.u3.t3-3.mc.123",
+      "course": "cbse-math-11",
+      "unit": "u3-coordinate-geometry",
+      "topic": "3.3",
+      "route": "/cbse-math-11/u3-coordinate-geometry/t3-3-mc-123",
+      "figureTitle": "Parabola with a focus and directrix",
+      "figureDescription": "A right-opening parabola has vertex at the origin, focus F at (4,0), and vertical directrix x=-4.",
+      "svgHash": "24e5b6fbfe683980",
+      "tokenOverlap": [
+        "parabola",
+        "focus",
+        "opening",
+        "parabola",
+        "vertex",
+        "origin",
+        "focus"
+      ]
+    },
+    {
+      "contentId": "cbse-math-11.u3.t3-3.mc.133",
+      "course": "cbse-math-11",
+      "unit": "u3-coordinate-geometry",
+      "topic": "3.3",
+      "route": "/cbse-math-11/u3-coordinate-geometry/t3-3-mc-133",
+      "figureTitle": "Parabola with a focus and directrix",
+      "figureDescription": "A right-opening parabola has vertex at the origin, focus F at (5,0), and vertical directrix x=-5.",
+      "svgHash": "c1a081ad6ffa07a7",
+      "tokenOverlap": [
+        "parabola",
+        "focus",
+        "opening",
+        "parabola",
+        "vertex",
+        "origin",
+        "focus"
       ]
     },
     {

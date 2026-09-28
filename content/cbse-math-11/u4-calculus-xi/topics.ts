@@ -10,6 +10,7 @@ import type {
   SolutionStep,
   Topic,
 } from "@/lib/content/types";
+import { calculusExpansion } from "./calculus-expansion";
 
 const COURSE = "cbse-math-11";
 const UNIT = "u4-calculus-xi";
@@ -2095,4 +2096,7 @@ const topicSeeds: readonly TopicSeed[] = [
   },
 ];
 
-export const calculusXiTopics: Topic[] = topicSeeds.map(makeTopic);
+export const calculusXiTopics: Topic[] = topicSeeds.map(seed => {
+  const topic = makeTopic(seed);
+  return { ...topic, items: [...topic.items, ...calculusExpansion(topic.topicCode)] };
+});

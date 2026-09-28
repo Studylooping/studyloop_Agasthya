@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-24T12:53:33.086Z",
+  "generatedAt": "2026-09-28T14:50:39.053Z",
   "courses": {
     "calc-ab": {
       "units": 8,
@@ -24,7 +24,8 @@
         "mc_single": 495
       },
       "byReviewStatus": {
-        "verified": 990
+        "ai_reviewed": 5,
+        "verified": 985
       }
     },
     "cbse-chemistry-12": {
@@ -56,14 +57,15 @@
     "cbse-math-11": {
       "units": 6,
       "topics": 39,
-      "items": 440,
-      "figures": 32,
+      "items": 1610,
+      "figures": 44,
       "byKind": {
-        "frq": 145,
-        "mc_single": 245,
+        "frq": 731,
+        "mc_single": 829,
         "numeric": 50
       },
       "byReviewStatus": {
+        "ai_reviewed": 1170,
         "verified": 440
       }
     },
@@ -163,25 +165,26 @@
   "totals": {
     "units": 93,
     "topics": 521,
-    "items": 5679,
-    "figures": 721
+    "items": 6849,
+    "figures": 733
   },
   "byKind": {
-    "frq": 2449,
-    "mc_single": 3080,
+    "frq": 3035,
+    "mc_single": 3664,
     "numeric": 150
   },
   "byReviewStatus": {
-    "verified": 5679
+    "ai_reviewed": 1175,
+    "verified": 5674
   },
   "bySourceType": {
-    "original_ai_assisted_question": 5679
+    "original_ai_assisted_question": 6849
   },
   "byDifficulty": {
     "1": 386,
-    "2": 1864,
-    "3": 2473,
-    "4": 867,
+    "2": 2585,
+    "3": 2929,
+    "4": 860,
     "5": 89
   }
 }

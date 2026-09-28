@@ -8,6 +8,8 @@ import { findCourse, COURSES } from "@/content/courses";
 import { cn } from "@/lib/utils";
 import { pageMetadata, jsonLd, organizationData } from "@/lib/seo";
 import { siteUrl } from "@/lib/site-origin";
+import { physics11ChapterCounts } from "@/content/cbse-physics-11/ncert-chapters";
+import { math11ChapterCounts } from "@/content/cbse-math-11/ncert-chapters";
 
 interface Params {
   courseSlug: string;
@@ -40,13 +42,16 @@ export default async function CourseHubPage({
   const course = findCourse(courseSlug);
   if (!course) notFound();
 
-  const supplementaryUnitCodes = new Set(["ia", "lab", "note", "formative"]);
+  const chapters = course.slug === "cbse-math-11" ? math11ChapterCounts(course)
+    : course.slug === "cbse-physics-11" ? physics11ChapterCounts(course) : [];
+  const supplementaryUnitCodes = new Set(["ia", "lab", "note", "formative", "challenge"]);
   const syllabusUnitCount = course.units.filter(
     (unit) => !supplementaryUnitCodes.has(unit.unitCode.toLowerCase()),
   ).length;
   const includesPracticals = course.units.some((unit) =>
     ["ia", "lab"].includes(unit.unitCode.toLowerCase()),
   );
+  const includesChallenges = course.units.some(unit => unit.unitCode.toLowerCase() === "challenge");
 
   return (
     <div className="container max-w-content px-4 py-12">
@@ -72,12 +77,38 @@ export default async function CourseHubPage({
         </p>
       </header>
 
+      {chapters.length > 0 && (
+        <section className="mt-10" aria-labelledby="ncert-chapters">
+          <h2 id="ncert-chapters" className="text-xl font-semibold">NCERT Chapters</h2>
+          <ol className="mt-4 divide-y border-y">
+            {chapters.map(chapter => (
+              <li key={chapter.number} className="py-4">
+                <div className="flex flex-wrap items-baseline justify-between gap-2">
+                  <h3 className="font-semibold">{chapter.number}. {chapter.title}</h3>
+                  <span className="text-sm text-muted-foreground">{chapter.count} questions</span>
+                </div>
+                <div className="mt-2 flex flex-wrap gap-x-5 gap-y-2 text-sm">
+                  {course.units.find(unit => unit.slug === chapter.unit)?.topics
+                    .filter(topic => (chapter.topics as readonly string[]).includes(topic.topicCode))
+                    .map(topic => (
+                      <Link key={topic.topicCode} href={`/${course.slug}/${chapter.unit}#topic-${topic.topicCode}`}
+                        className="text-primary underline-offset-4 hover:underline">
+                        {topic.title}
+                      </Link>
+                    ))}
+                </div>
+              </li>
+            ))}
+          </ol>
+        </section>
+      )}
+
       <section className="mt-10">
         <h2 className="text-xl font-semibold tracking-tight">Units</h2>
         <p className="mt-1 text-sm text-muted-foreground">
           {syllabusUnitCount} units
           {includesPracticals ? " plus practicals" : ""} mapped to the{" "}
-          {course.frameworkLabel}. Click into a live unit to start practicing.
+          {course.frameworkLabel}.{includesChallenges ? " Challenge practice is listed separately from syllabus units." : ""} Click into a live unit to start practicing.
         </p>
 
         <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">

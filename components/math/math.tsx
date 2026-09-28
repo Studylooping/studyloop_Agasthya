@@ -35,12 +35,15 @@ export function Tex({ tex, display = false, className, ariaLabel }: MathProps) {
     html = `<span class="text-destructive">[math error]</span>`;
   }
 
+  // KaTeX glyphs can extend beyond line boxes; leave room for fractions and subscripts.
   const Tag = display ? "div" : "span";
   return (
     <Tag
       className={cn(
         "max-w-full",
-        display ? "my-3 overflow-x-auto" : "inline-block overflow-x-auto align-middle",
+        display
+          ? "my-3 overflow-x-auto"
+          : "inline-block overflow-x-auto overflow-y-hidden py-1.5 pr-1 align-middle",
         className,
       )}
       aria-label={ariaLabel}
